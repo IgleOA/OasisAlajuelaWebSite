@@ -14,14 +14,16 @@ namespace OasisAlajuelaWebSite.Controllers
 
         public ActionResult Index()
         {
-            //HomePage home = new HomePage();
-
-            //home.MainBanners = HBL.Banners("HomePage");
-
-            //return View(home);
             return View();
+            
         }
 
+        public ActionResult _Banners()
+        {
+            var banners = HBL.Banners("HomePage");
+
+            return View(banners.ToList());
+        }
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";

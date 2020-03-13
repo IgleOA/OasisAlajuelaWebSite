@@ -19,8 +19,10 @@ namespace DAL
             try 
             { 
                 SqlCon.Open();
-                var SqlCmd = new SqlCommand("[config].[uspReadBanners]", SqlCon);
-                SqlCmd.CommandType = CommandType.StoredProcedure;
+                var SqlCmd = new SqlCommand("[config].[uspReadBanners]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
 
                 SqlParameter parLocation = new SqlParameter
                 {
@@ -38,15 +40,14 @@ namespace DAL
                         var banner = new Banner
                         {
                             BannerID = Convert.ToInt32(dr["BannerID"]),
-                            BannerPicture = (byte[])dr["BannerPicture"],
+                            BannerData = (byte[])dr["BannerData"],
+                            BannerExt = dr["BannerExt"].ToString(),
                             BannerName = dr["BannerName"].ToString(),
                             LocationBanner = dr["Location"].ToString(),
                             ActiveFlag = Convert.ToBoolean(dr["ACtiveFlag"]),
-                            Order = Convert.ToInt32(dr["Order"])                            
+                            Order = Convert.ToInt32(dr["Order"]),
+                            Slide = Convert.ToInt32(dr["Slide"])
                         };
-                        MemoryStream ms = new MemoryStream(banner.BannerPicture);
-                        banner.BannerImage = new Bitmap(ms);
-
                         List.Add(banner);
                     }
                 }

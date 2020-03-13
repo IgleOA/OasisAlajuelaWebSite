@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{0
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BL", "BL\BL.csproj", "{28B14554-FD4B-47F5-9487-52EE2DEFC0F0}"
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "DB_MAIN_CR_OA", "DB_MAIN_CR_OA\DB_MAIN_CR_OA.sqlproj", "{FB13D0CC-C990-40F1-BD03-4741B2F54DC2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestingMode", "TestingMode\TestingMode.csproj", "{ED70D571-946D-4C34-9089-58C805175154}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,16 @@ Global
 		{28B14554-FD4B-47F5-9487-52EE2DEFC0F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28B14554-FD4B-47F5-9487-52EE2DEFC0F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28B14554-FD4B-47F5-9487-52EE2DEFC0F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB13D0CC-C990-40F1-BD03-4741B2F54DC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB13D0CC-C990-40F1-BD03-4741B2F54DC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB13D0CC-C990-40F1-BD03-4741B2F54DC2}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{FB13D0CC-C990-40F1-BD03-4741B2F54DC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB13D0CC-C990-40F1-BD03-4741B2F54DC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB13D0CC-C990-40F1-BD03-4741B2F54DC2}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{ED70D571-946D-4C34-9089-58C805175154}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED70D571-946D-4C34-9089-58C805175154}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED70D571-946D-4C34-9089-58C805175154}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED70D571-946D-4C34-9089-58C805175154}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

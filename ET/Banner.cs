@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Drawing;
 
 namespace ET
@@ -9,7 +10,9 @@ namespace ET
         public int BannerID { get; set; }
 
         [Display(Name ="Imagen")]
-        public byte[] BannerPicture { get; set; }
+        public byte[] BannerData { get; set; }
+
+        public string  BannerExt { get; set; }
 
         [Display(Name ="Leyenda")]
         public string BannerName { get; set; }
@@ -23,8 +26,8 @@ namespace ET
         [Display(Name = "Orden")]
         public int Order { get; set; }
 
-        public Bitmap BannerImage { get; set; }
-
+        public int Slide { get; set; }
+        
         public string ActionType { get; set; }
     }
 }
