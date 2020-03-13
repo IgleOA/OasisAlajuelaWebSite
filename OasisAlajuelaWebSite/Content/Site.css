@@ -1,24 +1,33 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+﻿header {
+    background-color:black;
 }
 
-/* Set padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+body {   
+    
+}
+.container {
+    max-width: 100% !important;
 }
 
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
-*/
-.dl-horizontal dt {
-    white-space: normal;
+footer {
+    background-color:black;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
+footer > div .card {
+    background-color: transparent !important;
+}
+
+footer > div .card-title  {
+    color: white !important;
+    font-size: 1.75vw !important;
+}
+
+footer > div .card-text, div .card-link  {
+    color: darkgray !important;
+    font-size: 1.5vw !important;
+}
+
+img > .d-block {
+    max-width: 70% !important;
+    min-width: 70% !important;
 }

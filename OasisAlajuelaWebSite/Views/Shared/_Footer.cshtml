@@ -1,0 +1,84 @@
+﻿
+<div class="card-deck">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Contacto</h5>
+            <p class="card-text">
+                <i class="fas fa-map-marker-alt"></i> 200 Sureste de la Arrocera, Pacto de Jocote, Coyol, Alajuela, Costa Rica
+            </p>
+            <p class="card-text">
+                <i class="fas fa-phone-alt"></i> +(506) 2433 6502
+            </p>
+            <p class="card-text">
+                <i class="far fa-envelope"></i> admin@oasisalajuela.com
+            </p>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Accesos Rápidos</h5>
+            <p class="card-text">
+                @Html.ActionLink("Oasis Kids", "Kids", "Home", routeValues: null, htmlAttributes: new { title = "Oasis Kids", @class = "card-link" })
+            </p>
+            <p class="card-text">
+                @Html.ActionLink("Ministerios", "Ministres", "Home", routeValues: null, htmlAttributes: new { title = "Miniterios", @class = "card-link" })
+            </p>
+            <p class="card-text">
+                @Html.ActionLink("Mensajes", "Index", "Sermons", routeValues: null, htmlAttributes: new { title = "Mensajes", @class = "card-link" })
+            </p>
+            <p class="card-text">
+                @Html.ActionLink("Eventos", "Events", "Home", routeValues: null, htmlAttributes: new { title = "Eventos", @class = "card-link" })
+            </p>
+            
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Servicios</h5>
+            <p class="card-text">
+                Reunión de Enseñanza <br />
+                <small class="text-muted">
+                    <i class="far fa-clock"></i> Jueves 7:00 PM a 9:00 PM
+                </small>
+            </p>
+            <p class="card-text">
+                Reunión de Jovenes <br />
+                <small class="text-muted">
+                    <i class="far fa-clock"></i> Viernes 7:00 PM a 9:00 PM
+                </small>
+            </p>
+            <p class="card-text">
+                Escuela Domimical <br />
+                <small class="text-muted">
+                    <i class="far fa-clock"></i> Domingos 7:30 AM a 9:30 AM
+                </small><br />
+                <small class="text-muted">
+                    <i class="far fa-clock"></i> Domingos 10:00 AM a 12:00 AM
+                </small>
+            </p>
+        </div>
+    </div>
+</div>
+<div class="row" style="color: darkgray;">
+    <div class="col-md-12 text-center">
+        <p>
+            <a href="https://twitter.com/oasisalajuela" class="card-link" title="Twitter">
+                <i class="fab fa-twitter-square fa-2x"></i>
+            </a>
+            <a href="https://www.facebook.com/IGLEOA/" class="card-link" title="Facebook">
+                <i class="fab fa-facebook-square fa-2x"></i>
+            </a>
+            <a href="https://www.instagram.com/aes_oasis/" class="card-link" title="Instagram">
+                <i class="fab fa-instagram-square fa-2x"></i>
+            </a>
+            <a href="https://api.whatsapp.com/send?phone=50683102429" class="card-link" title="WhatsApp">
+                <i class="fab fa-whatsapp-square fa-2x"></i>
+            </a>
+        </p>
+        <p>
+            Oasis Alajuela &copy;
+            <script>document.write(new Date().getFullYear());</script>
+            Derechos reservados
+        </p>
+    </div>
+</div>
