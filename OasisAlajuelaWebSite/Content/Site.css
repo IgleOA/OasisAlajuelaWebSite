@@ -32,6 +32,39 @@ img > .d-block {
     min-width: 70% !important;
 }
 
+.upevent-intro {
+    width: 100%;
+    height: 100%;
+    position: inherit;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    position: relative;
+    margin: 0 !important;
+}
+
+    .upevent-intro .overlay {
+        position: absolute;
+        width: 50%;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        content: '';
+        opacity: .8;
+        background: #c7b198;
+    }
+
+    .upevent-intro h2.subheading {
+        font-size: 20px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+
+    .upevent-intro h2 a {
+        color: #fff;
+    }
+
 #timer {
     width: 100%;
 }
@@ -42,6 +75,7 @@ img > .d-block {
         font-weight: 200;
         border-left: 1px solid rgba(255, 255, 255, 0.1);
         color: #fff;
+        text-align: center !important;
     }
 
         #timer .time:first-child {

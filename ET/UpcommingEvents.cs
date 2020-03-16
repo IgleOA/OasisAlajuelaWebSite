@@ -23,7 +23,7 @@ namespace ET
         [Required]
         [Display(Name ="Fecha")]
         [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy hh:mm tt}")]
         public DateTime ScheduledDate { get; set; }
 
         [Display(Name ="Status")]
