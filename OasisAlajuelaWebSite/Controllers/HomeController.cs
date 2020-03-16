@@ -10,7 +10,8 @@ namespace OasisAlajuelaWebSite.Controllers
 {
     public class HomeController : Controller
     {
-        private HomeBL HBL = new HomeBL();
+        private BannersBL BBL = new BannersBL();
+        private UpcommingEventsBL UBL = new UpcommingEventsBL();
 
         public ActionResult Index()
         {
@@ -20,10 +21,18 @@ namespace OasisAlajuelaWebSite.Controllers
 
         public ActionResult _Banners()
         {
-            var banners = HBL.Banners("HomePage");
+            var banners = BBL.Banners("HomePage",true);
 
             return View(banners.ToList());
         }
+
+        public ActionResult _UpcommingEvents()
+        {
+            var lastEvent = UBL.List(DateTime.Today).Where(x => x.Order == 1).FirstOrDefault();
+
+            return View(lastEvent);
+        }
+
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";

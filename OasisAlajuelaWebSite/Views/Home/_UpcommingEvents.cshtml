@@ -1,0 +1,75 @@
+﻿@model ET.UpcommingEvents
+
+@{  Layout = null; }
+
+
+@*<div class="overlay">
+
+</div>
+<div class="container">
+    <div class="row d-flex align-items-center">
+        <div class="col-md-6 ftco-animate">
+            <h2 class="subheading"><span class="icon-calendar"></span> Upcoming Events</h2>
+            <h2><a href="#">"The Law Demands, but Grace Supplies" &mdash; Pastor John Doe </a></h2>
+        </div>
+        <div class="col-md-6 pl-md-5 ftco-animate">
+            <div id="timer" class="d-flex mb-3">
+                <div class="time" id="days"></div>
+                <div class="time pl-4" id="hours"></div>
+                <div class="time pl-4" id="minutes"></div>
+                <div class="time pl-4" id="seconds"></div>
+            </div>
+            <p><a href="#" class="btn btn-primary px-4 py-2">Join our event</a></p>
+        </div>
+    </div>
+</div>*@
+<div class="overlay">
+</div>
+<div class="container">
+    <div class="row d-flex align-items-center">
+        <div class="col-md-6">
+            <h2 class="subheading"><span class="fas fa-calendar-alt"></span> Próximo evento</h2>
+            <h2><a href="#">@Model.Title - @Model.MinisterName</a></h2>
+        </div>
+        <div class="col-md-6 pl-md-5">
+            <div id="timer" class="d-flex mb-3">
+                <div class="time"><p id="Tdays"></p></div>
+                <div class="time"><p id="Thours"></p></div>
+                <div class="time"><p id="Tminutes"></p></div>
+                <div class="time"><p id="Tseconds"></p></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    // Set the date we're counting down to
+    var countDownDate = new Date('@Model.ScheduledDate').getTime();
+
+    // Update the count down every 1 second
+    var x = setInterval(function() {
+
+      // Get today's date and time
+      var now = new Date().getTime();
+
+      // Find the distance between now and the count down date
+      var distance = countDownDate - now;
+
+      // Time calculations for days, hours, minutes and seconds
+      var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      // Output the result in an element with id="demo"
+        document.getElementById("Tdays").innerHTML = das + " dias";
+        document.getElementById("Thours").innerHTML = hours + " horas";
+        document.getElementById("Tminutes").innerHTML = minutes + " minutos";
+        document.getElementById("Tseconds").innerHTML = seconds + " segundos";
+
+      // If the count down is over, write some text
+      if (distance < 0) {
+        clearInterval(x);
+        //document.getElementById("demo").innerHTML = "EXPIRED";
+      }
+    }, 1000);
+</script>

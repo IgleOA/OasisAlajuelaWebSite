@@ -19,15 +19,37 @@ footer > div .card {
 
 footer > div .card-title  {
     color: white !important;
-    font-size: 1.75vw !important;
+    font-size: 1.25vw !important;
 }
 
 footer > div .card-text, div .card-link  {
     color: darkgray !important;
-    font-size: 1.5vw !important;
+    font-size: 1vw !important;
 }
 
 img > .d-block {
     max-width: 70% !important;
     min-width: 70% !important;
 }
+
+#timer {
+    width: 100%;
+}
+
+    #timer .time {
+        width: 25%;
+        font-size: 38px;
+        font-weight: 200;
+        border-left: 1px solid rgba(255, 255, 255, 0.1);
+        color: #fff;
+    }
+
+        #timer .time:first-child {
+            border-left: transparent;
+        }
+
+        #timer .time span {
+            font-size: 16px;
+            display: block;
+            color: #fff;
+        }
