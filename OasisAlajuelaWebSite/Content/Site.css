@@ -65,6 +65,16 @@ img > .d-block {
         color: #fff;
     }
 
+.hp-section {
+    padding: 8em 0;
+    position: relative;
+}
+
+.hp-animate {
+    opacity: 0;
+    visibility: hidden;
+}
+
 #timer {
     width: 100%;
 }
