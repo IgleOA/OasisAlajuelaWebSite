@@ -8,11 +8,13 @@
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Content/Site.css" rel="stylesheet" />
     <link href="~/Content/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="~/Content/flaticon.css" rel="stylesheet" />
+    
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
 
-<body>    
+<body>
     <!-- Header -->
     <header>
         @Html.Partial("_LoginPartial")
@@ -28,6 +30,8 @@
         @Html.Partial("_Footer")
     </footer>
 
+    
+    
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)

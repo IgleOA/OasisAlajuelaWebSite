@@ -36,3 +36,6 @@ namespace ET
         public string ActionType { get; set; }
     }
 }
+/*
+ * BANNER FOR HOME PAGE 800x400px
+ */

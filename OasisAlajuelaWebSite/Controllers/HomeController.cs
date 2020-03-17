@@ -13,6 +13,7 @@ namespace OasisAlajuelaWebSite.Controllers
         private HomeBL HBL = new HomeBL();
         private BannersBL BBL = new BannersBL();
         private UpcommingEventsBL UBL = new UpcommingEventsBL();
+        private SermonsBL SBL = new SermonsBL();
 
         public ActionResult Index()
         {
@@ -33,6 +34,16 @@ namespace OasisAlajuelaWebSite.Controllers
             var lastEvent = UBL.List(DateTime.Today).Where(x => x.Order == 1).FirstOrDefault();
 
             return View(lastEvent);
+        }
+
+        public ActionResult _Sermons()
+        {
+            var data = (from d in SBL.List()
+                       where d.ActiveFlag == true
+                       orderby d.SermonDate descending
+                       select d).Take(3);
+
+            return View(data.ToList());
         }
 
         public ActionResult About()
