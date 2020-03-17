@@ -8,6 +8,8 @@ namespace ET
 {
     public class HomePage
     {
-        public List<Banner> MainBanners { get; set; }
+        public string DailyVerse { get; set; }
+
+        public string DailyVerseReference { get; set; }
     }
 }

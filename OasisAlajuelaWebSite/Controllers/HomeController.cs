@@ -10,12 +10,14 @@ namespace OasisAlajuelaWebSite.Controllers
 {
     public class HomeController : Controller
     {
+        private HomeBL HBL = new HomeBL();
         private BannersBL BBL = new BannersBL();
         private UpcommingEventsBL UBL = new UpcommingEventsBL();
 
         public ActionResult Index()
         {
-            return View();
+            HomePage Home = HBL.Home();
+            return View(Home);
             
         }
 

@@ -11,8 +11,19 @@
         Html.RenderAction("_Banners");
      }
 </section>
-<section class="upevent py-5" style="background-image: url(../Images/bg_4.jpg); background-size: 100%;">
+<section class="upevent-intro py-5" style="background-image: url(../Images/bg_4.jpg); background-size: 100%;">
     @{ 
         Html.RenderAction("_UpcommingEvents");
     }
+</section>
+<section class="hp-daily-verse bg-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10 daily-verse text-center p-5">
+                <span class="fas fa-bible"></span>
+                <h3>"@Model.DailyVerse"</h3>
+                <h4 class="h5 mt-4 font-weight-bold">&mdash; @Model.DailyVerseReference</h4>
+            </div> 
+        </div>
+    </div>
 </section>
