@@ -1,80 +1,58 @@
 ﻿@using Microsoft.AspNet.Identity
 
-<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
-<!DOCTYPE html>
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: transparent !important;">
-    <div class="container">
-        <a class="navbar-brand" href="@Url.Action("Index","Home")">
-            <i></i>
-            <span>Oasis</span>
-            <span>Alajuela</span>
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span> Menu
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            @if (Request.IsAuthenticated)
-            {
-                using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
-                {
-                    @Html.AntiForgeryToken()
-                    <ul class="navbar-nav ml-0">
-                        <li class="nav-item active">
-                            @Html.ActionLink("Inicio", "Index", "Home", routeValues: null, htmlAttributes: new { title = "Menu Principal" , @class = "nav-link" })
-                        </li>
-                        <li class="nav-item">
-                            @Html.ActionLink("Acerca de", "About", "Home", routeValues: null, htmlAttributes: new { title = "Acerca de" , @class = "nav-link" })
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Ministerios
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                @Html.ActionLink("Ministerio de Artes", "MDA", "Home", routeValues: null, htmlAttributes: new { title = "MDA", @class = "dropdown-item" })
-                                @Html.ActionLink("Ministerio de Servidores", "Servers", "Home", routeValues: null, htmlAttributes: new { title = "Servidores", @class = "dropdown-item" })
-                                @Html.ActionLink("Oasis Kids", "Kids", "Home", routeValues: null, htmlAttributes: new { title = "Oasis Kids", @class = "dropdown-item" })
-                            </div>
-                        </li>
-                        <li class="nav-item">
-                            @Html.ActionLink("Hola " + User.Identity.GetUserName() + "!", "Index", "Home", routeValues: null, htmlAttributes: new { title = "Menu Principal" , @class = "nav-link" })
-                        </li>
-                        <li class="nav-item">
-                            <a href="javascript:document.getElementById('logoutForm').submit()" class="nav-link">Cerrar Sesión</a>
-                        </li>
-                    </ul>
-                }
-            }
-            else
-            {
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
-                            @Html.ActionLink("Inicio", "Index", "Home", routeValues: null, htmlAttributes: new { title = "Menu Principal", @class = "nav-link" })
-                        </li>
-                        <li class="nav-item">
-                            @Html.ActionLink("Acerca de", "About", "Home", routeValues: null, htmlAttributes: new { title = "Acerca de", @class = "nav-link" })
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Ministerios
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                @Html.ActionLink("Ministerio de Artes", "MDA", "Home", routeValues: null, htmlAttributes: new { title = "MDA", @class = "dropdown-item" })
-                                @Html.ActionLink("Ministerio de Servidores", "Servers", "Home", routeValues: null, htmlAttributes: new { title = "Servidores", @class = "dropdown-item" })
-                                @Html.ActionLink("Oasis Kids", "Kids", "Home", routeValues: null, htmlAttributes: new { title = "Oasis Kids", @class = "dropdown-item" })
-                            </div>
-                        </li>
-                    <li class="nav-item">
-                        @Html.ActionLink("Registrarse", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "nav-link" })
-                    </li>
-                    <li class="nav-item">
-                        @Html.ActionLink("Accesar", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "nav-link" })
-                    </li>
-                </ul>
-            }
-        </div>
-    </div>
-</nav>
-<script src="~/Scripts/bootstrap.min.js"></script>
-<script src="~/Scripts/jquery-3.4.1.min.js"></script>
-
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+    {
+        @Html.AntiForgeryToken()
+        <ul class="links">
+            <li>
+                @Html.ActionLink("Inicio", "Index", "Home", routeValues: null, htmlAttributes: new { title = "Menu Principal", @class = "Menulinks" })
+            </li>
+            <li>
+                @Html.ActionLink("Acerca de", "About", "Home", routeValues: null, htmlAttributes: new { title = "Acerca de", @class = "Menulinks" })
+            </li>
+            <li>
+                @Html.ActionLink("Ministerio de Artes", "MDA", "Home", routeValues: null, htmlAttributes: new { title = "MDA", @class = "Menulinks" })
+            </li>
+            <li>
+                @Html.ActionLink("Servidores", "Servers", "Home", routeValues: null, htmlAttributes: new { title = "Servidores", @class = "Menulinks" })
+            </li>
+            <li>
+                @Html.ActionLink("Oasis Kids", "Kids", "Home", routeValues: null, htmlAttributes: new { title = "Oasis Kids", @class = "Menulinks" })            
+            </li>
+            <li>
+                @Html.ActionLink("Hola " + User.Identity.GetUserName() + "!", "Index", "Home", routeValues: null, htmlAttributes: new { title = "Menu Principal", @class = "Menulinks" })
+            </li>
+            <li>
+                <a href="javascript:document.getElementById('logoutForm').submit()" class="Menulinks">Cerrar Sesión</a>
+            </li>
+        </ul>
+    }
+}
+else
+{
+    <ul class="links">
+        <li>
+            @Html.ActionLink("Inicio", "Index", "Home", routeValues: null, htmlAttributes: new { title = "Menu Principal", @class = "Menulinks" })
+        </li>
+        <li>
+            @Html.ActionLink("Acerca de", "About", "Home", routeValues: null, htmlAttributes: new { title = "Acerca de", @class = "Menulinks" })
+        </li>
+        <li>
+            @Html.ActionLink("Ministerio de Artes", "MDA", "Home", routeValues: null, htmlAttributes: new { title = "MDA", @class = "Menulinks" })
+        </li>
+        <li>
+            @Html.ActionLink("Servidores", "Servers", "Home", routeValues: null, htmlAttributes: new { title = "Servidores", @class = "Menulinks" })
+        </li>
+        <li>
+            @Html.ActionLink("Oasis Kids", "Kids", "Home", routeValues: null, htmlAttributes: new { title = "Oasis Kids", @class = "Menulinks" })            
+        </li>
+        <li>
+            @Html.ActionLink("Registrarse", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "Menulinks" })
+        </li>
+        <li>
+            @Html.ActionLink("Accesar", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "Menulinks" })
+        </li>
+    </ul>
+}

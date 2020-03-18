@@ -160,15 +160,22 @@
     <Content Include="Content\font-awesome\css\all.min.css" />
     <Content Include="Content\font-awesome\css\brands.css" />
     <Content Include="Content\font-awesome\css\brands.min.css" />
+    <Content Include="Content\font-awesome\css\font-awesome.min.css" />
+    <Content Include="Content\font-awesome\js\chosen.jquery.min.js" />
     <Content Include="Content\font-awesome\css\fontawesome.css" />
     <Content Include="Content\font-awesome\css\fontawesome.min.css" />
+    <Content Include="Content\font-awesome\js\jquery.min.js" />
+    <Content Include="Content\font-awesome\js\jquery.scrollex.min.js" />
     <Content Include="Content\font-awesome\css\main.css" />
+    <Content Include="Content\font-awesome\js\main.js" />
     <Content Include="Content\font-awesome\css\regular.css" />
     <Content Include="Content\font-awesome\css\regular.min.css" />
+    <Content Include="Content\font-awesome\js\skel.min.js" />
     <Content Include="Content\font-awesome\css\solid.css" />
     <Content Include="Content\font-awesome\css\solid.min.css" />
     <Content Include="Content\font-awesome\css\svg-with-js.css" />
     <Content Include="Content\font-awesome\css\svg-with-js.min.css" />
+    <Content Include="Content\font-awesome\js\util.js" />
     <Content Include="Content\font-awesome\css\v4-shims.css" />
     <Content Include="Content\font-awesome\css\v4-shims.min.css" />
     <Content Include="Content\font-awesome\js\all.js" />
@@ -1763,8 +1770,14 @@
     <Content Include="fonts\open-iconic\open-iconic.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\AM.png" />
+    <Content Include="Images\bg.jpg" />
     <Content Include="Images\bg_4.jpg" />
+    <Content Include="Images\detail.jpg" />
+    <Content Include="Images\Edit.png" />
+    <Content Include="Images\EmptyStar.png" />
     <Content Include="Images\fondo.png" />
+    <Content Include="Images\FullyStar.png" />
     <Content Include="Images\Icon_Delete.png" />
     <Content Include="Images\Icon_Delete_View.png" />
     <Content Include="Images\Icon_Download.png" />
@@ -1773,16 +1786,20 @@
     <Content Include="Images\Icon_Sound.png" />
     <Content Include="Images\Icon_Zoom.png" />
     <Content Include="Images\logo-OasisAlajuela-Black.png" />
+    <Content Include="Images\logo-OasisAlajuela-White.png" />
     <Content Include="Images\pic01.jpg" />
     <Content Include="Images\pic02.jpg" />
     <Content Include="Images\pic03.jpg" />
     <Content Include="Images\pic04.jpg" />
     <Content Include="Images\pic05.jpg" />
+    <Content Include="Images\profile.png" />
+    <Content Include="Images\Remove.png" />
     <Content Include="Images\slide01.jpg" />
     <Content Include="Images\slide02.jpg" />
     <Content Include="Images\slide03.jpg" />
     <Content Include="Images\slide04.jpg" />
     <Content Include="Images\slide05.jpg" />
+    <Content Include="logo-OasisAlajuela-Black.ico" />
     <Content Include="Scripts\aos.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -1995,6 +2012,7 @@
     <Content Include="Views\Home\_Banners.cshtml" />
     <Content Include="Views\Home\_UpcommingEvents.cshtml" />
     <Content Include="Views\Home\_Sermons.cshtml" />
+    <Content Include="Views\Home\_Services.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -2024,6 +2042,9 @@
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>logo-OasisAlajuela-Black.ico</ApplicationIcon>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />

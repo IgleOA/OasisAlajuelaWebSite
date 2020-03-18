@@ -1,8 +1,4 @@
-﻿header {
-    background-color:black;
-}
-
-body {   
+﻿body {   
     
 }
 .container {
@@ -19,12 +15,11 @@ footer > div .card {
 
 footer > div .card-title  {
     color: white !important;
-    font-size: 1.25vw !important;
 }
 
 footer > div .card-text, div .card-link  {
     color: darkgray !important;
-    font-size: 1vw !important;
+    text-decoration: none !important;
 }
 
 img > .d-block {
@@ -43,15 +38,15 @@ img > .d-block {
     margin: 0 !important;
 }
 
-    .upevent-intro .overlay {
+    .overlay {
         position: absolute;
+        display: block;
         width: 50%;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
-        content: '';
-        opacity: .8;
+        opacity: 0.6;
         background: #c7b198;
     }
 

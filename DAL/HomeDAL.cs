@@ -28,6 +28,10 @@ namespace DAL
                     {
                         Detail.DailyVerse = dr["DailyVerse"].ToString();
                         Detail.DailyVerseReference = dr["DailyVerseReference"].ToString();
+                        Detail.ServicesTitle = dr["ServicesTitle"].ToString();
+                        Detail.ServicesDescription = dr["ServicesDescription"].ToString();
+                        Detail.SermonsTitle = dr["SermonsTitle"].ToString();
+                        Detail.SermonsDescription = dr["SermonsDescription"].ToString();
                     }
                 }
                 if (SqlCon.State == ConnectionState.Open) SqlCon.Close();

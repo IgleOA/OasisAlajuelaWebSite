@@ -14,6 +14,7 @@ namespace OasisAlajuelaWebSite.Controllers
         private BannersBL BBL = new BannersBL();
         private UpcommingEventsBL UBL = new UpcommingEventsBL();
         private SermonsBL SBL = new SermonsBL();
+        private ServicesBL SVCBL = new ServicesBL();
 
         public ActionResult Index()
         {
@@ -34,6 +35,13 @@ namespace OasisAlajuelaWebSite.Controllers
             var lastEvent = UBL.List(DateTime.Today).Where(x => x.Order == 1).FirstOrDefault();
 
             return View(lastEvent);
+        }
+
+        public ActionResult _Services()
+        {
+            var svcs = SVCBL.List(true);
+
+            return View(svcs.ToList());
         }
 
         public ActionResult _Sermons()

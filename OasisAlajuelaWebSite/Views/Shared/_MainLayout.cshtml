@@ -4,24 +4,41 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title</title>
+
     <link href="~/Content/bootstrap.css" rel="stylesheet" />
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/Content/Site.css" rel="stylesheet" />
     <link href="~/Content/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome/css/main.css" rel="stylesheet" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
     <link href="~/Content/flaticon.css" rel="stylesheet" />
-    
-    @Styles.Render("~/Content/css")
+
     @Scripts.Render("~/bundles/modernizr")
 </head>
 
 <body>
     <!-- Header -->
-    <header>
-        @Html.Partial("_LoginPartial")
+    <header id="header" class="alt">
+        <div class="logo">
+            <a href="@Url.Action()">
+                <img src="~/Images/logo-OasisAlajuela-White.png" width="60em;" />
+            </a>
+        </div>
+        <a href="#menu"><i class="fas fa-bars"></i> Menu</a>
     </header>
-
+    <nav id="menu" name="menu">
+        @Html.Partial("_LoginPartial")
+    </nav>
+    <!-- Two -->
+    <section id="two" class="wrapper style3">
+        <div class="inner">
+            <header class="align-center">
+                <p>Amamos al Espíritu Santo</p>
+                <h2>Oasis Alajuela</h2>
+            </header>
+        </div>
+    </section>
     <!-- Body -->
-    <div class="container body-content" style="padding: 0;">
+    <div class="container body-content" style="padding: 0 !important; margin:0 !important; width: 100% !important;">
         @RenderBody()
     </div>
 
@@ -30,10 +47,17 @@
         @Html.Partial("_Footer")
     </footer>
 
-    
-    
+    <script src="~/Content/font-awesome/js/jquery.min.js"></script>
+    <script src="~/Content/font-awesome/js/jquery.scrollex.min.js"></script>
+    <script src="~/Content/font-awesome/js/skel.min.js"></script>
+    <script src="~/Content/font-awesome/js/util.js"></script>
+    <script src="~/Content/font-awesome/js/main.js"></script>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/popper.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+
     @RenderSection("scripts", required: false)
 </body>
 </html>
