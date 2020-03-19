@@ -28,9 +28,7 @@ namespace ET
 
         [Display(Name ="Status")]
         public bool ActiveFlag { get; set; }
-
-        public int Order { get; set; }
-
+        
         public List<Ministers> MinisterList { get; set; }
 
         public Ministers MinisterData { get; set; }

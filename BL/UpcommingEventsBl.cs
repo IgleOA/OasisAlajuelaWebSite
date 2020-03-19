@@ -9,9 +9,9 @@ namespace BL
     {
         private UpcommingEventsDAL UDAL = new UpcommingEventsDAL();
 
-        public List<UpcommingEvents> List(DateTime startdate)
+        public List<UpcommingEvents> List(DateTime startdate, bool upcommingflag)
         {
-            return UDAL.List(startdate);
+            return UDAL.List(startdate, upcommingflag);
         }
     }
 }

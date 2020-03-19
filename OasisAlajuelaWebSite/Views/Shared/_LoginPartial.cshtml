@@ -13,13 +13,7 @@
                 @Html.ActionLink("Acerca de", "About", "Home", routeValues: null, htmlAttributes: new { title = "Acerca de", @class = "Menulinks" })
             </li>
             <li>
-                @Html.ActionLink("Ministerio de Artes", "MDA", "Home", routeValues: null, htmlAttributes: new { title = "MDA", @class = "Menulinks" })
-            </li>
-            <li>
-                @Html.ActionLink("Servidores", "Servers", "Home", routeValues: null, htmlAttributes: new { title = "Servidores", @class = "Menulinks" })
-            </li>
-            <li>
-                @Html.ActionLink("Oasis Kids", "Kids", "Home", routeValues: null, htmlAttributes: new { title = "Oasis Kids", @class = "Menulinks" })            
+                @Html.ActionLink("Ministerios", "Ministries", "Home", routeValues: null, htmlAttributes: new { title = "Ministerios", @class = "Menulinks" })
             </li>
             <li>
                 @Html.ActionLink("Hola " + User.Identity.GetUserName() + "!", "Index", "Home", routeValues: null, htmlAttributes: new { title = "Menu Principal", @class = "Menulinks" })
@@ -40,14 +34,8 @@ else
             @Html.ActionLink("Acerca de", "About", "Home", routeValues: null, htmlAttributes: new { title = "Acerca de", @class = "Menulinks" })
         </li>
         <li>
-            @Html.ActionLink("Ministerio de Artes", "MDA", "Home", routeValues: null, htmlAttributes: new { title = "MDA", @class = "Menulinks" })
-        </li>
-        <li>
-            @Html.ActionLink("Servidores", "Servers", "Home", routeValues: null, htmlAttributes: new { title = "Servidores", @class = "Menulinks" })
-        </li>
-        <li>
-            @Html.ActionLink("Oasis Kids", "Kids", "Home", routeValues: null, htmlAttributes: new { title = "Oasis Kids", @class = "Menulinks" })            
-        </li>
+            @Html.ActionLink("Ministerios", "Ministries", "Home", routeValues: null, htmlAttributes: new { title = "Ministerios", @class = "Menulinks" })
+        </li>        
         <li>
             @Html.ActionLink("Registrarse", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "Menulinks" })
         </li>

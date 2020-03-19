@@ -32,7 +32,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
         public ActionResult _UpcommingEvents()
         {
-            var lastEvent = UBL.List(DateTime.Today).Where(x => x.Order == 1).FirstOrDefault();
+            var lastEvent = UBL.List(DateTime.Today,false).Take(1).FirstOrDefault();
 
             return View(lastEvent);
         }

@@ -31,7 +31,7 @@
 
 <section class="hp-section">
     <div class="container">
-        <div class="row justify-content-center mb-5 pb-5">
+        <div class="row justify-content-center">
             <div class="col-md-6 text-center heading-section">
                 <span class="subheading">Nuestros servicios</span>
                 <h2 class="mb-4">@Model.ServicesTitle</h2>
@@ -48,7 +48,7 @@
 
 <section class="hp-section" style="background-color: #f8f9fa !important">
     <div class="container">
-        <div class="row no-gutters justify-content-center mb-5 pb-5">
+        <div class="row no-gutters justify-content-center">
             <div class="col-md-7 text-center heading-section">
                 <span class="subheading">Prédicas</span>
                 <h2 class="mb-4">
@@ -63,6 +63,9 @@
             @{
                 Html.RenderAction("_Sermons");
             }
+        </div>
+        <div class="row justify-content-center">
+            @Html.ActionLink("Ver más...", "Index", "Sermons", null, htmlAttributes: new { @class = "button alt" })
         </div>
     </div>
 </section>

@@ -11,7 +11,7 @@ namespace DAL
     {
         private SqlConnection SqlCon = new SqlConnection(ConfigurationManager.ConnectionStrings["DB_MAIN_CR_OA_Connection"].ToString());
 
-        public List<UpcommingEvents> List(DateTime Startdate)
+        public List<UpcommingEvents> List(DateTime Startdate, bool UpCommingFlag)
         {
             List<UpcommingEvents> List = new List<UpcommingEvents>();
 
@@ -31,6 +31,14 @@ namespace DAL
                 };
                 SqlCmd.Parameters.Add(parDate);
 
+                SqlParameter parUp = new SqlParameter
+                {
+                    ParameterName = "@pUpCommingFlag",
+                    SqlDbType = SqlDbType.Bit,
+                    Value = UpCommingFlag
+                };
+                SqlCmd.Parameters.Add(parUp);
+
                 using (var dr = SqlCmd.ExecuteReader())
                 {
                     while (dr.Read())
@@ -42,8 +50,7 @@ namespace DAL
                             MinisterID = Convert.ToInt32(dr["MinisterID"]),
                             MinisterName = dr["MinisterName"].ToString(),
                             ScheduledDate = Convert.ToDateTime(dr["ScheduledDate"]),
-                            ActiveFlag = Convert.ToBoolean(dr["ACtiveFlag"]),
-                            Order = Convert.ToInt32(dr["Order"])
+                            ActiveFlag = Convert.ToBoolean(dr["ACtiveFlag"])
                         };
                         List.Add(detail);
                     }

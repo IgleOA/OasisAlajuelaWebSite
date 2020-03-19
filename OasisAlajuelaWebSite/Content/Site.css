@@ -169,3 +169,56 @@ img > .d-block {
     opacity: 0.3;
     color: black;
 }
+
+.quick-contact-info {
+    background: black;
+    color: rgba(255,255,255,0.5);
+}
+
+.site-footer {
+    padding: 4em 0;
+    background-image: url('../Images/igleoa1.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    color: rgba(255, 255, 255, 0.5);
+    position: relative;
+}
+
+    .site-footer:before {
+        position: absolute;
+        content: "";
+        background: rgba(0, 0, 0, 0.8);
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+
+    .site-footer .footer-heading {
+        font-size: 20px;
+    }
+
+    .site-footer a {
+        color: rgba(255, 255, 255, 0.3);
+    }
+
+        .site-footer a:hover {
+            color: #fff;
+        }
+
+    .site-footer ul li {
+        margin-bottom: 10px;
+    }
+
+.bannersize {
+    width: 100% !important;
+    max-height: 500px !important;
+}
+
+@media (max-width: 1300px) {
+    .bannersize {
+        max-height: 400px !important;
+    }
+}
+

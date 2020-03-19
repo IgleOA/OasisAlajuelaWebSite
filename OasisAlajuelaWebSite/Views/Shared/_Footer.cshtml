@@ -1,5 +1,5 @@
 ﻿
-<div class="card-deck">
+@*<div class="card-deck">
     <div class="card">
         <div class="card-body">
             <h3 class="card-title">Contacto</h3>
@@ -80,5 +80,85 @@
             <script>document.write(new Date().getFullYear());</script>
             Derechos reservados
         </p>
+    </div>
+</div>*@
+
+    <div class="py-5 quick-contact-info">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 text-center">
+                    <div>
+                        <i class="fas fa-map-marker-alt text-white d-block fa-2x"></i>
+                        <h3 class="text-white">Ubicación</h3>
+                        <p class="mb-0">200 Sureste de la Arrocera, Pacto de Jocote <br>El Coyol, Alajuela, Costa Rica</p>
+                    </div>
+                </div>
+                <div class="col-md-4 text-center">
+                    <div>
+                        <span class="far fa-clock text-white h2 d-block"></span>
+                        <h3 class="text-white">Horario de Servicios</h3>
+                        <p class="mb-0">
+                            Jueves 7:00 PM - 9:00 PM <br>
+                            Viernes de Jovenes - 7:00 PM <br>
+                            Domingo 7:30 AM -9:30 AM <br>
+                            Domingo 10:00 AM - 12:00 AM
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4 text-center">
+                    <div>
+                        <span class="fas fa-comments fa-2x text-white h2 d-block"></span>
+                        <h3 class="text-white">Contacto</h3>
+                        <p class="mb-0">
+                            <i class="fas fa-phone-alt"></i> +(506) 2433 6502
+                        </p>
+                        <p class="mb-0">
+                            <i class="far fa-envelope"></i> admin@oasisalajuela.com
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<div class="site-footer">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <h3 class="footer-heading mb-4 text-white">Sobre Nosotros</h3>
+                <p class="m-0">Si quieres saber mas sobre nuestra comunidad de fe, ingresa y se parte de esta linda familia.</p>
+                @Html.ActionLink("Ver más", "About", "Home", null, htmlAttributes: new { @class = "button alt" })
+            </div>
+            <div class="col-md-4">
+                <h3 class="footer-heading mb-4 text-white">Ministerios</h3>
+                <ul class="list-unstyled">
+                    <li>@Html.ActionLink("Oasis Kids", "Kids", "Home", routeValues: null, htmlAttributes: new { @class = "card-link" })</li>
+                    <li>@Html.ActionLink("Mujeres", "Womens", "Home", routeValues: null, htmlAttributes: new { @class = "card-link" })</li>
+                    <li>@Html.ActionLink("Ministerio de Artes", "MDA", "Home", routeValues: null, htmlAttributes: new { @class = "card-link" })</li>
+                    <li>@Html.ActionLink("Consejeria", "Counseling", "Home", routeValues: null, htmlAttributes: new { @class = "card-link" })</li>
+                    <li>@Html.ActionLink("Matrimonios", "Marriages", "Home", routeValues: null, htmlAttributes: new { @class = "card-link" })</li>
+                    <li>@Html.ActionLink("Servidores", "Servers", "Home", routeValues: null, htmlAttributes: new { @class = "card-link" })</li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <div class="col-md-12">
+                    <h3 class="footer-heading mb-4 text-white">Redes Sociales</h3>
+                    <ul class="list-unstyled">
+                        <li><a href="https://twitter.com/oasisalajuela" class="card-link" title="Twitter"><i class="fab fa-twitter-square fa-2x" style="vertical-align: middle;"></i> Twitter</a></li>
+                        <li><a href="https://www.facebook.com/OasisAlajuela/" class="card-link" title="Facebook"><i class="fab fa-facebook-square fa-2x" style="vertical-align: middle;"></i> Facebook</a></li>
+                        <li><a href="https://www.instagram.com/aes_oasis/" class="card-link" title="Instagram"><i class="fab fa-instagram-square fa-2x" style="vertical-align: middle;"></i> Instagram</a></li>
+                        <li><a href="https://api.whatsapp.com/send?phone=50683102429" class="card-link" title="WhatsApp"><i class="fab fa-whatsapp-square fa-2x" style="vertical-align: middle;"></i> WhatsApp</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-12 text-center">
+                <p>
+                    Oasis Alajuela &copy;
+                    <script>document.write(new Date().getFullYear());</script>
+                    Derechos reservados
+                </p>
+            </div>
+        </div>
     </div>
 </div>
