@@ -15,7 +15,7 @@ namespace OasisAlajuelaWebSite.Controllers
         private UpcommingEventsBL UBL = new UpcommingEventsBL();
         private SermonsBL SBL = new SermonsBL();
         private ServicesBL SVCBL = new ServicesBL();
-
+        private YouTubeBL YBL = new YouTubeBL();
         public ActionResult Index()
         {
             HomePage Home = HBL.Home();
@@ -50,6 +50,15 @@ namespace OasisAlajuelaWebSite.Controllers
                        where d.ActiveFlag == true
                        orderby d.SermonDate descending
                        select d).Take(3);
+
+            return View(data.ToList());
+        }
+
+        public ActionResult _YouTubeVideos()
+        {
+            var data = (from d in YBL.Youtubelist()
+                        orderby d.PublishedAt descending
+                        select d).Take(3);
 
             return View(data.ToList());
         }

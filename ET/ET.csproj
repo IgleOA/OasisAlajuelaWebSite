@@ -52,6 +52,7 @@
     <Compile Include="Services.cs" />
     <Compile Include="UpcommingEvents.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="YouTubeVideo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

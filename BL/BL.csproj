@@ -47,6 +47,7 @@
     <Compile Include="SermonsBL.cs" />
     <Compile Include="ServicesBL.cs" />
     <Compile Include="UpcommingEventsBL.cs" />
+    <Compile Include="YouTubeBL.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DAL\DAL.csproj">

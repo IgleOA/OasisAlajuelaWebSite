@@ -2015,6 +2015,7 @@
     <Content Include="Views\Home\_UpcommingEvents.cshtml" />
     <Content Include="Views\Home\_Sermons.cshtml" />
     <Content Include="Views\Home\_Services.cshtml" />
+    <Content Include="Views\Home\_YouTubeVideos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

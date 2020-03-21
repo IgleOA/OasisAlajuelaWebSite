@@ -210,15 +210,3 @@ img > .d-block {
     .site-footer ul li {
         margin-bottom: 10px;
     }
-
-.bannersize {
-    width: 100% !important;
-    max-height: 500px !important;
-}
-
-@media (max-width: 1300px) {
-    .bannersize {
-        max-height: 400px !important;
-    }
-}
-
