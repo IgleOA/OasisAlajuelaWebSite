@@ -119,6 +119,10 @@ img > .d-block {
         margin: 0;
         padding: 0;
     }
+
+    .overlay {
+        display: none !important;
+    }
 }
 
 .heading-section.heading-section-white .subheading {
