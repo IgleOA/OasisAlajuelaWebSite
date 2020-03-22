@@ -9,9 +9,9 @@ namespace BL
     {
         private YouTubeDAL YDAL = new YouTubeDAL();
 
-        public List<YouTubeVideo> Youtubelist()
+        public List<YouTubeVideo> Youtubelist(int maxresults)
         {
-            return YDAL.Youtubelist();
+            return YDAL.Youtubelist(maxresults);
         }
     }
 }

@@ -110,6 +110,15 @@ img > .d-block {
     .heading-section h2 {
         font-size: 28px;
     }
+    .subheading {
+        font-size: 20px;
+        margin: 0;
+    }
+
+    #Tdays, #Thours, #Tminutes, #Tseconds {
+        margin: 0;
+        padding: 0;
+    }
 }
 
 .heading-section.heading-section-white .subheading {
@@ -210,3 +219,4 @@ img > .d-block {
     .site-footer ul li {
         margin-bottom: 10px;
     }
+

@@ -11,18 +11,18 @@
             @if (Model.MinisterName.Length == 0)
             {
                 var title = "\"" + Model.Title + "\"";
-                <h2 style="color:white;">
+                <h2 class="subheading" style="color:white;">
                     @title
                 </h2>
             }
             else
             {
-                <h2 style="color:white;">
+                <h2 class="subheading" style="color:white;">
                     @Model.Title - @Model.MinisterName
                 </h2>
             }
-                <p style="color:white;">@Html.DisplayFor(x => x.ScheduledDate) CR</p>
-            </div>
+            <p class="card-subtitle" style="color:white;">@Html.DisplayFor(x => x.ScheduledDate) CR</p>
+        </div>
         <div class="col-md-6 pl-md-5">
             <div id="timer" class="d-flex mb-3">
                 <div class="time"><p id="Tdays"></p></div>

@@ -3,6 +3,7 @@ using Google.Apis.YouTube.v3;
 using Google.Apis.Services;
 using System.Collections.Generic;
 using ET;
+using System.Threading.Tasks;
 
 namespace DAL
 {
@@ -10,7 +11,7 @@ namespace DAL
     {
         YouTubeService yt = new YouTubeService(new BaseClientService.Initializer() { ApiKey = "AIzaSyBqdmvtcDCB56cTfs3O2kbYLTZANZrm9ts" });
 
-        public List<YouTubeVideo> Youtubelist()
+        public List<YouTubeVideo> Youtubelist(int MaxResults)
         {
             List<YouTubeVideo> list = new List<YouTubeVideo>();
 
@@ -18,6 +19,8 @@ namespace DAL
             //var ListRequest = yt.Videos.List("snippet");
             ListRequest.ChannelId = "UCsWIb3EobSzS-pNrPXvq7_A";
             ListRequest.Type = "video";
+            ListRequest.Order = SearchResource.ListRequest.OrderEnum.Date;
+            ListRequest.MaxResults = MaxResults;
             var ListResponse = ListRequest.Execute();
 
             foreach(var item in ListResponse.Items)

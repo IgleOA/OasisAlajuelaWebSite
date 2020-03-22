@@ -56,7 +56,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
         public ActionResult _YouTubeVideos()
         {
-            var data = (from d in YBL.Youtubelist()
+            var data = (from d in YBL.Youtubelist(5)
                         orderby d.PublishedAt descending
                         select d).Take(3);
 
