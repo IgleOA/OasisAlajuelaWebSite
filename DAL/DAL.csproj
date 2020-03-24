@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="BannnersDAL.cs" />
     <Compile Include="HomeDAL.cs" />
+    <Compile Include="NewsDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SermonsDAL.cs" />
     <Compile Include="ServicesDAL.cs" />

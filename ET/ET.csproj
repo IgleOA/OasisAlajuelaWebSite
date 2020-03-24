@@ -48,6 +48,7 @@
     <Compile Include="Banner.cs" />
     <Compile Include="HomePage.cs" />
     <Compile Include="Ministers.cs" />
+    <Compile Include="News.cs" />
     <Compile Include="Sermons.cs" />
     <Compile Include="Services.cs" />
     <Compile Include="UpcommingEvents.cs" />

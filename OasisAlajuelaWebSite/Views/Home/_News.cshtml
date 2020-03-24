@@ -1,0 +1,13 @@
+﻿@model IEnumerable<ET.News>
+
+@{ Layout = null; }
+
+@foreach (var item in Model)
+{
+    <span style="font-weight: bold; text-transform: uppercase;">@item.Title.</span>
+    <span>@item.Description</span>
+    <span style="color: transparent;">----</span>
+
+}
+    <span><a href='@Url.Action("Index","News")' target="_blank" style="font-weight: bold; text-transform: uppercase; text-decoration: none; color: white;">Ver mas Noticias...</a></span>
+    <span style="color: transparent;">----</span>

@@ -2017,6 +2017,7 @@
     <Content Include="Views\Home\_Sermons.cshtml" />
     <Content Include="Views\Home\_Services.cshtml" />
     <Content Include="Views\Home\_YouTubeVideos.cshtml" />
+    <Content Include="Views\Home\_News.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

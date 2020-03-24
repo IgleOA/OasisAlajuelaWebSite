@@ -16,6 +16,8 @@ namespace OasisAlajuelaWebSite.Controllers
         private SermonsBL SBL = new SermonsBL();
         private ServicesBL SVCBL = new ServicesBL();
         private YouTubeBL YBL = new YouTubeBL();
+        private NewsBL NBL = new NewsBL();
+
         public ActionResult Index()
         {
             HomePage Home = HBL.Home();
@@ -59,6 +61,13 @@ namespace OasisAlajuelaWebSite.Controllers
             var data = (from d in YBL.Youtubelist(5)
                         orderby d.PublishedAt descending
                         select d).Take(3);
+
+            return View(data.ToList());
+        }
+
+        public ActionResult _News()
+        {
+            var data = NBL.List(true);
 
             return View(data.ToList());
         }

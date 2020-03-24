@@ -224,3 +224,48 @@ img > .d-block {
         margin-bottom: 10px;
     }
 
+.headerFixed {
+    position: fixed;
+    background: url('../Images/bg.jpg');
+    height: 60px !important;
+}
+
+@media (max-width: 800px)  {
+    .headerFixed {
+        height: 44px !important;
+    }
+}
+
+.marquee {
+    height: 50px;
+    overflow: hidden;
+    position: relative;
+}
+
+    .marquee div {
+        display: block;
+        width: 125%;
+        height: 30px;
+        position: absolute;
+        overflow: hidden;
+        animation: marquee 25s linear infinite;
+    }
+
+@keyframes marquee {
+    0% { left: 100%;}
+
+    100% {left: -100%;}
+}
+
+#FootherBanner {
+    background-color: black;
+    color: #a6a6a6;
+    cursor: default;
+    height: 3.25em;
+    left: 0;
+    position: fixed;
+    text-align: right;
+    width: 100%;
+    z-index: 10001;
+    bottom: 0;
+}
