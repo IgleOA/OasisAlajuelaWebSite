@@ -4,9 +4,11 @@ using System.Net.Mail;
 using ET;
 using BL;
 using System.Web.Security;
+using OasisAlajuelaWebSite.Models;
 
 namespace OasisAlajuelaWebSite.Controllers
-{
+{ 
+    [AllowSameSite]
     [Authorize]
     public class AccountController : Controller
     {

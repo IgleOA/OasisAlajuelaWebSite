@@ -17,7 +17,8 @@ namespace DAL
 
             var ListRequest = yt.Search.List("snippet");
             //var ListRequest = yt.Videos.List("snippet");
-            ListRequest.ChannelId = "UCsWIb3EobSzS-pNrPXvq7_A";
+            ListRequest.ChannelId = "UCsWIb3EobSzS-pNrPXvq7_A"; //Igle Channel
+            //ListRequest.ChannelId = "UCgs9_FAGGtcforOWC91fgDw"; // test Channel
             ListRequest.Type = "video";
             ListRequest.Order = SearchResource.ListRequest.OrderEnum.Date;
             ListRequest.MaxResults = MaxResults;

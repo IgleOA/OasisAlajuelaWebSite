@@ -3,9 +3,11 @@ using System.Linq;
 using System.Web.Mvc;
 using ET;
 using BL;
+using OasisAlajuelaWebSite.Models;
 
 namespace OasisAlajuelaWebSite.Controllers
-{
+{ 
+    [AllowSameSite]
     public class MinistriesController : Controller
     {
         private MinistriesBL MBL = new MinistriesBL();

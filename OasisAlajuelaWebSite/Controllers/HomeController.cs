@@ -3,9 +3,11 @@ using System.Linq;
 using System.Web.Mvc;
 using ET;
 using BL;
+using OasisAlajuelaWebSite.Models;
 
 namespace OasisAlajuelaWebSite.Controllers
 {
+    [AllowSameSite]
     public class HomeController : Controller
     {
         private HomeBL HBL = new HomeBL();
