@@ -1,4 +1,6 @@
-﻿@{
+﻿@model ET.AboutPage
+
+@{
     ViewBag.Title = "Acerca de Nosotros";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
@@ -9,7 +11,7 @@
                 <div class="media block-6 services d-block text-justify">
                     <div class="media-body p-2 mt-3">
                         <h3 class="heading font-weight-bold">Historia</h3>
-                        <p>Oasis Alajuela nació en el corazón de Cristo hace XXX años, empezamos...</p>
+                        <p>@Html.Raw(Model.History)</p>
                     </div>
                 </div>
             </div>
@@ -19,7 +21,7 @@
                 <div class="media block-6 services d-block text-justify">
                     <div class="media-body p-2 mt-3">
                         <h3 class="heading font-weight-bold">Misión</h3>
-                        <p>Ir y hacer discípulos a Alajuela, Costa Rica y el mundo, por medio de un encuentro con Jesús, conocimiento de la Palabra de Dios y la unción del Espíritu Santo.</p>
+                        <p>@Html.Raw(Model.Mision)</p>
                     </div>
                 </div>
             </div>
@@ -29,7 +31,7 @@
                 <div class="media block-6 services d-block text-justify">
                     <div class="media-body p-2 mt-3">
                         <h3 class="heading font-weight-bold">Visión</h3>
-                        <p>Ver un pueblo rendido a los pies de Cristo, llenos del Espíritu Santo a la espera de la venida de nuestro de Señor.</p>
+                        <p>@Html.Raw(Model.Vision)</p>
                     </div>
                 </div>
             </div>
@@ -41,10 +43,10 @@
                         <h3 class="heading font-weight-bold">Pastores</h3>
                         <div class="d-flex justify-content-center">
                             <div class="d-flex justify-content-center mb-3">
-                                <img src="~/Images/igleoa1.jpg" width="80%"/>
+                                <img src="~/Images/Pastores.jpg" width="60%"/>
                             </div>
                         </div>
-                        <p>Gracias al Espíritu Santo, al timón de esta hermosa iglesia tenemos al <span class="font-weight-bold">Pastor Gerardo Montero</span> y a la <span class="font-weight-bold">Pastora Alicia Guillen</span>, ellos se han caracterizado por ser personas integras, con una búsqueda interminable de la voluntad y presencia de Dios.</p>
+                        <p>@Html.Raw(Model.Pastors)</p>
                     </div>
                 </div>
             </div>

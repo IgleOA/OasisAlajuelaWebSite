@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "Confirmación de Registro";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<div class="card bg-light">
+    <article class="card-body mx-auto" style="max-width: 400px;">
+        <h4 class="card-title mt-3 text-center font-weight-bold">Confirmación de registro</h4>
+        <p class="text-center m-0">Gracias @ViewBag.FullName por registrarse...</p>
+        <p class="text-center">Bendiciones...</p>
+        @Html.ActionLink("Ingresar","Login","Account",null, htmlAttributes: new { @class = "btn btn-primary btn-block alt" })
+    </article>
+</div>

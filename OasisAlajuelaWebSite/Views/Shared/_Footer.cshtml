@@ -57,12 +57,9 @@
             <div class="col-md-4">
                 <h3 class="footer-heading mb-4 text-white">Ministerios</h3>
                 <ul class="list-unstyled">
-                    <li>@Html.ActionLink("Oasis Kids", "Kids", "Home", routeValues: null, htmlAttributes: new { @class = "card-link" })</li>
-                    <li>@Html.ActionLink("Mujeres", "Womens", "Home", routeValues: null, htmlAttributes: new { @class = "card-link" })</li>
-                    <li>@Html.ActionLink("Ministerio de Artes", "MDA", "Home", routeValues: null, htmlAttributes: new { @class = "card-link" })</li>
-                    <li>@Html.ActionLink("Consejeria", "Counseling", "Home", routeValues: null, htmlAttributes: new { @class = "card-link" })</li>
-                    <li>@Html.ActionLink("Matrimonios", "Marriages", "Home", routeValues: null, htmlAttributes: new { @class = "card-link" })</li>
-                    <li>@Html.ActionLink("Servidores", "Servers", "Home", routeValues: null, htmlAttributes: new { @class = "card-link" })</li>
+                    @{
+                        Html.RenderAction("_FooterMinistries", "Ministries");
+                    }
                 </ul>
             </div>
             <div class="col-md-4">
@@ -92,7 +89,7 @@
     <div class="marquee" role="banner">
         <div style="margin:15px; color: white;">
             @{
-                Html.RenderAction("_News");
+                Html.RenderAction("_News","Home");
             }
         </div>
     </div>

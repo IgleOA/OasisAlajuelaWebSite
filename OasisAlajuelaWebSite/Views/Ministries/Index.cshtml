@@ -1,0 +1,29 @@
+﻿@model IEnumerable<ET.Ministries>
+
+@{
+    ViewBag.Title = "Ministerios";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<section class="hp-section">
+    <div class="container">
+        @foreach (var item in Model)
+        {
+            <div class="row">
+                <div>
+                    <div class="media services d-block text-justify">
+                        <div class="media-body p-2 mt-3">
+                            <h3 class="font-weight-bold">@item.Name</h3>
+                            <p class="m-0">@Html.Raw(item.Description)</p>
+                            @if(item.ActionLink.Length > 0)
+                            {
+                                @Html.ActionLink("Ver más...",item.ActionLink,"Ministries", null, htmlAttributes: new { @class = "button alt"})
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+

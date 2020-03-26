@@ -1,0 +1,9 @@
+﻿@model IEnumerable<ET.Ministries>
+
+@{ Layout = null; }
+
+
+@foreach (var item in Model)
+    {
+        <li>@Html.ActionLink(item.Name, item.ActionLink, "Ministries", routeValues: null, htmlAttributes: new { @class = "card-link" })</li>
+    }                    

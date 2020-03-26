@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using ET;
 using BL;
@@ -17,6 +15,7 @@ namespace OasisAlajuelaWebSite.Controllers
         private ServicesBL SVCBL = new ServicesBL();
         private YouTubeBL YBL = new YouTubeBL();
         private NewsBL NBL = new NewsBL();
+        private AboutPageBL ABL = new AboutPageBL();
 
         public ActionResult Index()
         {
@@ -74,16 +73,9 @@ namespace OasisAlajuelaWebSite.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+            AboutPage Aboutpage = ABL.About();
 
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+            return View(Aboutpage);
         }
     }
 }
