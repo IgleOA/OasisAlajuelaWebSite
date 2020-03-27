@@ -1,0 +1,76 @@
+﻿@model PagedList.IPagedList<ET.Banner>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Editar - Banners";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<section class="hp-section">
+    <div class="container">
+        <div class="row justify-content-start">
+            <h2 class="heading-section font-weight-bold m-0 p-0">@ViewBag.Title</h2>
+        </div>
+        @using (Html.BeginForm("Banners", "Admin", FormMethod.Get))
+        {
+            <div class="row justify-content-start">
+                <div class="form-group input-group p-0 searchfield w-50">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text w"><i class="fas fa-search"></i></span>
+                    </div>
+                    @Html.TextBox("SearchString", null, new { @class = "form-control", @placeholder = "Buscar por leyenda" })
+                </div>
+                <input type="submit" value="Buscar" class="btn btn-dark alt mt-0 mb-2" style="height: 2.75rem !important;" />
+            </div>
+        }
+        <div class="row justify-content-start">
+            <table class="table-responsive-xl align-content-center p-0">
+                <tbody>
+                    <tr class="align-middle">
+                        <th class="text-center py-2">@Html.ActionLink("Ubicación", "Banners", new { sortOrder = ViewBag.LocationOrder, currentFilter = ViewBag.CurrentFilter })</th>
+                        <th class="text-center py-2">@Html.DisplayNameFor(model => model.FirstOrDefault().Order)</th>
+                        <th class="text-center py-2">@Html.DisplayNameFor(model => model.FirstOrDefault().BannerName)</th>
+                        <th class="text-center py-2">Banner</th>
+                        <th class="text-center py-2">@Html.ActionLink("Status", "Banners", new { sortOrder = ViewBag.StatusOrder, currentFilter = ViewBag.CurrentFilter })</th>
+                        <th class="text-center py-2">Acción</th>
+                    </tr>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="text-center align-middle">@Html.DisplayFor(modelItem => item.LocationBanner)</td>
+                            <td class="text-center align-middle">@Html.DisplayFor(modelItem => item.Order)</td>
+                            <td class="text-center align-middle">@Html.DisplayFor(modelItem => item.BannerName)</td>
+                            @{
+                                var base64 = Convert.ToBase64String(item.BannerData, 0, item.BannerData.Length);
+                                var imgSrc = string.Format("data:image/{0};base64,{1}", item.BannerExt, base64);
+                                var text = imgSrc;
+                            }
+                            <td class="text-center align-middle"><img src="@imgSrc" class="d-block zoom" title="@item.BannerName" /></td>
+                            @{
+                                var isActive = (item.ActiveFlag ? "Activo" : "Inactivo");
+                            }
+                            <td class="text-center align-middle">@Html.DisplayFor(modelItem => isActive)</td>
+                            <td class="text-center align-middle">
+                                @if (item.ActiveFlag == false)
+                                {
+                                    <a href="#" class="card-link" onclick="Activate(@item.BannerID)" title="Activar"><i class="fas fa-check-circle fa-2x" style="vertical-align: middle; color:green;"></i></a>
+                                }
+                                else
+                                {
+                                    <a href="#" class="card-link" onclick="Desactive(@item.BannerID)" title="Activar"><i class="fas fa-times-circle fa-2x" style="vertical-align: middle; color:red;"></i></a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>            
+        </div>
+        <div class="row justify-content-start">
+            @if (Model.PageCount > 1)
+            {
+                @Html.PagedListPager(Model, page => Url.Action("Banners", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }), new PagedListRenderOptions() { ContainerDivClasses = new string[] { "p-0" }, UlElementClasses = new string[] { "pagination m-0"}  })
+            }
+        </div>
+    </div>
+</section>

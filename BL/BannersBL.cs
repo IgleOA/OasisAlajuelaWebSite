@@ -9,7 +9,7 @@ namespace BL
     {
         private BannnersDAL BDAL = new BannnersDAL();
 
-        public List<Banner> Banners(string location, bool activeflag)
+        public List<Banner> Banners(string location, bool? activeflag)
         {
             return BDAL.Banners(location, activeflag);
         }

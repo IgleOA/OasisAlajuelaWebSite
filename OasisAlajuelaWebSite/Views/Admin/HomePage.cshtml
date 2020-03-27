@@ -1,0 +1,127 @@
+﻿@model ET.HomePage
+
+@{
+    ViewBag.Title = "Editar - HomePage";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var flag = '@(Model.ActionType)';
+
+        if (flag == "CREATE")
+        {
+            opener.location.reload();
+            window.close();
+        }
+    });
+</script>
+<script type="text/javascript">
+    function Validate() {
+        var x = confirm("Esta seguro que quiere desea guardar el nuevo HomePage???");
+        if (x) {
+            alert("Gracias...");
+        }
+    }
+</script>
+
+
+
+@using (Html.BeginForm("HomePage","Admin",FormMethod.Post,new { onsubmit = "Validate();" }))
+{
+    @Html.AntiForgeryToken()
+    <section class="hp-section">
+        <div class="container">
+            <div class="row justify-content-start border-bottom">
+                <div class="col-md-offset-2 col-md-10 p-2">
+                    <h2 class="heading-section font-weight-bold m-0">@ViewBag.Title - Versión 1.@Model.HomePageID</h2>                    
+                </div>
+            </div>
+            <div class="row justify-content-start">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="col-md-6 d-flex align-self-stretch p-0">
+                    <div class="d-block text-center w-100">
+                        <div class="media-body p-2 mt-0">
+                            @Html.LabelFor(model => model.DailyVerseReference, htmlAttributes: new { @class = "heading w-100 text-left" })
+                            <div>
+                                @Html.EditorFor(model => model.DailyVerseReference, new { htmlAttributes = new { @class = "form-control w-75" } })
+                                @Html.ValidationMessageFor(model => model.DailyVerseReference, "", new { @class = "text-danger" })
+                            </div>
+                            @Html.LabelFor(model => model.DailyVerse, htmlAttributes: new { @class = "heading w-100 text-left" })
+                            <div>
+                                @Html.TextAreaFor(model => model.DailyVerse, 5, 1, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.DailyVerse, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 d-flex align-self-stretch p-0">
+                    <div class="d-block text-center w-100">
+                        <div class="media-body p-2 mt-0">
+                            @Html.LabelFor(model => model.ServicesTitle, htmlAttributes: new { @class = "heading w-100 text-left" })
+                            <div>
+                                @Html.EditorFor(model => model.ServicesTitle, new { htmlAttributes = new { @class = "form-control w-75" } })
+                                @Html.ValidationMessageFor(model => model.ServicesTitle, "", new { @class = "text-danger" })
+                            </div>
+                            @Html.LabelFor(model => model.ServicesDescription, htmlAttributes: new { @class = "heading w-100 text-left" })
+                            <div>
+                                @Html.TextAreaFor(model => model.ServicesDescription, 5, 1, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.ServicesDescription, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 d-flex align-self-stretch p-0">
+                    <div class="d-block text-center w-100">
+                        <div class="media-body p-2 mt-0">
+                            @Html.LabelFor(model => model.SermonsTitle, htmlAttributes: new { @class = "heading w-100 text-left" })
+                            <div>
+                                @Html.EditorFor(model => model.SermonsTitle, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.SermonsTitle, "", new { @class = "text-danger" })
+                            </div>
+                            @Html.LabelFor(model => model.SermonsDescription, htmlAttributes: new { @class = "heading w-100 text-left" })
+                            <div>
+                                @Html.TextAreaFor(model => model.SermonsDescription, 5, 1, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.SermonsDescription, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 d-flex align-self-stretch p-0">
+                    <div class="d-block text-center w-100 align-middle m-auto">
+                        <div class="row">
+                            <div class="col-sm">
+                                <a href='@Url.Action("Banners","Admin")' title="Banners" class="align-self-center">
+                                    <span class='align-self-center fas fa-sign fa-4x'></span>
+                                    <h3 class="heading">Banners</h3>
+                                </a>
+                                <a href='@Url.Action("UpcommingEvents","Admin")' title="Próximos eventos" class="align-self-center">
+                                    <span class='align-self-center far fa-calendar-alt fa-4x'></span>
+                                    <h3 class="heading">Próximos eventos</h3>
+                                </a>
+                                
+                            </div>
+                            <div class="col-sm">
+                                <a href='@Url.Action("Ministries","Admin")' title="Ministerios" class="align-self-center">
+                                    <span class='align-self-center fas fa-church fa-4x'></span>
+                                    <h3 class="heading">Ministerios</h3>
+                                </a>
+                                <a href='@Url.Action("Services","Admin")' title="Servicios" class="align-self-center">
+                                    <span class='align-self-center fas fa-people-carry fa-4x'></span>
+                                    <h3 class="heading">Servicios</h3>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-start">
+                <div class="col-md-offset-2 col-md-10 p-2">
+                    <input type="submit" value="Guardar" class="btn btn-primary alt" />
+                    <input type="button" value="Cancelar" onclick="javascript: window.close();" class="btn btn-primary alt" />
+                </div>
+            </div>
+        </div>
+    </section>
+}

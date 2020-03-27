@@ -91,11 +91,11 @@ namespace OasisAlajuelaWebSite.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult Login(string returnUrl)
+        public ActionResult Login(string ReturnUrl)
         {
             if ((Request.IsAuthenticated))
             {
-                return this.RedirectToAction("Index", "Home");
+                return this.Redirect(ReturnUrl);
             }
             else
             {
@@ -108,7 +108,7 @@ namespace OasisAlajuelaWebSite.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(Login model, string returnUrl)
+        public ActionResult Login(string ReturnUrl, Login model)
         {
             if (!ModelState.IsValid)
             {
@@ -120,10 +120,10 @@ namespace OasisAlajuelaWebSite.Controllers
             if (userid >= 1)
             {
                 FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
-                if (this.Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
-                    && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
+                if (this.Url.IsLocalUrl(ReturnUrl) && ReturnUrl.Length > 1 && ReturnUrl.StartsWith("/")
+                    && !ReturnUrl.StartsWith("//") && !ReturnUrl.StartsWith("/\\"))
                 {
-                    return this.Redirect(returnUrl);
+                    return this.Redirect(ReturnUrl);
                 }
 
                 ViewBag.UserName = model.UserName;

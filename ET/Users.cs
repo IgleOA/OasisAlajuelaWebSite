@@ -65,6 +65,8 @@ namespace ET
 
         [Display(Name = "Recordarme?")]
         public bool RememberMe { get; set; }
+
+        public string ReturnUrl { get; set; }
     }
 
     public class ForgotPasswordModel

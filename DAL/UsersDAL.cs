@@ -29,7 +29,7 @@ namespace DAL
                     ParameterName = "@TxtValidate",
                     SqlDbType = SqlDbType.VarChar,
                     Size = 50,
-                    Value = TxtValidate
+                    Value = TxtValidate.Trim()
                 };
                 SqlCmd.Parameters.Add(ParUserName);
 
@@ -143,7 +143,7 @@ namespace DAL
                     ParameterName = "@TxtName",
                     SqlDbType = SqlDbType.VarChar,
                     Size = 50,
-                    Value = User.UserName
+                    Value = User.UserName.Trim()
                 };
                 SqlCmd.Parameters.Add(ParUserName);
 
@@ -152,7 +152,7 @@ namespace DAL
                     ParameterName = "@Password",
                     SqlDbType = SqlDbType.VarChar,
                     Size = 50,
-                    Value = User.Password
+                    Value = User.Password.Trim()
                 };
                 SqlCmd.Parameters.Add(ParPassword);
 
@@ -186,7 +186,7 @@ namespace DAL
                     ParameterName = "@Email",
                     SqlDbType = SqlDbType.VarChar,
                     Size = 50,
-                    Value = Email
+                    Value = Email.Trim()
                 };
                 SqlCmd.Parameters.Add(ParEmail);
 
@@ -267,7 +267,7 @@ namespace DAL
                     ParameterName = "@Password",
                     SqlDbType = SqlDbType.VarChar,
                     Size = 50,
-                    Value = Model.Password
+                    Value = Model.Password.Trim()
                 };
                 SqlCmd.Parameters.Add(ParPassword);
 

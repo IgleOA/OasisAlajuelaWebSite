@@ -11,5 +11,10 @@ namespace BL
         {
             return HDL.Home();
         }
+
+        public bool AddHomePage(HomePage hp, string insertuser)
+        {
+            return HDL.AddHomePage(hp, insertuser);
+        }
     }
 }

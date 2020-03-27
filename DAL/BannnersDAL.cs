@@ -10,7 +10,7 @@ namespace DAL
     public class BannnersDAL
     {
         private SqlConnection SqlCon = new SqlConnection(ConfigurationManager.ConnectionStrings["DB_MAIN_CR_OA_Connection"].ToString());
-        public List<Banner> Banners(string Location, bool ActiveFlag)
+        public List<Banner> Banners(string Location, bool? ActiveFlag)
         {
             List<Banner> List = new List<Banner>();
 

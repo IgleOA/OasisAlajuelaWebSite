@@ -4,19 +4,6 @@
 
 <div class="container p-0 justify-content-center">
     <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
-        @*<ol class="carousel-indicators">
-            @foreach (var item in Model)
-            {
-                if (item.Slide == 0)
-                {
-                    <li data-target="#carouselExampleCaptions" data-slide-to="@item.Slide" class="active"></li>
-                }
-                else
-                {
-                    <li data-target="#carouselExampleCaptions" data-slide-to="@item.Slide"></li>
-                }
-            }
-        </ol>*@
         <div class="carousel-inner">
             @foreach (var item in Model)
             {

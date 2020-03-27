@@ -16,14 +16,14 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text"><i class="far fa-user"></i></span>
                 </div>
-                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @placeholder = "Usuario o Correo Electrónico" })
+                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @placeholder = "Usuario o Email" })
                 @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
             </div>
             <div class="form-group input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text"><i class="fas fa-lock"></i></span>
                 </div>
-                @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Crear Contraseña" })
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Contraseña" })
                 @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
             </div>
             <div class="form-group">

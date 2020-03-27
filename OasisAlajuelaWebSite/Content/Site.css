@@ -359,3 +359,21 @@ img > .d-block {
 .Menulinks:hover {
     color: rgb(255, 255, 255);
 }
+
+.zoom {
+    transition: transform .2s;
+    width: 150px;
+    
+}
+
+.zoom:hover {
+        -ms-transform: scale(3); /* IE 9 */
+        -webkit-transform: scale(3); /* Safari 3-8 */
+        transform: scale(3);
+    }
+
+@media (max-width: 480px) {
+    .searchfield {
+        width: 100% !important;
+    }
+}

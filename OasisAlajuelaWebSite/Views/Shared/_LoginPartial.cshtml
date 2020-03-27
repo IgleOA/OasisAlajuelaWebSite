@@ -7,6 +7,11 @@
         @Html.AntiForgeryToken()
         <ul class="links">
             <li>
+                <a href='@Url.Action("Details","Profile")' class="Menulinks align-middle" title="Perfil">
+                    <i class="far fa-user"></i> Hola @User.Identity.GetUserName()!
+                </a>
+            </li>
+            <li>
                 @Html.ActionLink("Inicio", "Index", "Home", routeValues: null, htmlAttributes: new { title = "Menu Principal", @class = "Menulinks" })
             </li>
             <li>
@@ -14,10 +19,7 @@
             </li>
             <li>
                 @Html.ActionLink("Ministerios", "Index", "Ministries", routeValues: null, htmlAttributes: new { title = "Ministerios", @class = "Menulinks" })
-            </li>
-            <li>
-                @Html.ActionLink("Hola " + User.Identity.GetUserName() + "!", "Index", "Home", routeValues: null, htmlAttributes: new { title = "Menu Principal", @class = "Menulinks" })
-            </li>
+            </li>            
             <li>
                 <a href="javascript:document.getElementById('logoutForm').submit()" class="Menulinks">Cerrar Sesión</a>
             </li>
