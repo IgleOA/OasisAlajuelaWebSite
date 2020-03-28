@@ -5,7 +5,23 @@
     ViewBag.Title = "Editar - Banners";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-
+<script type="text/javascript">
+    function Activate(BID) {
+        $.ajax({
+            url: '@Url.Action("BannersChangeStatus")',
+            data: { id: BID }
+        }).done(function () { location.reload(); });
+    }
+    function Desactivate(BID) {
+        var x = confirm("Esta seguro que quiere desactivar este banner???");
+        if (x) {
+            $.ajax({
+                url: '@Url.Action("BannersChangeStatus")',
+                data: { id: BID }
+            }).done(function () { alert('Hecho!!!'); location.reload(); });
+        }
+    }
+</script>
 <section class="hp-section">
     <div class="container">
         <div class="row justify-content-start">
@@ -46,7 +62,7 @@
                                 var imgSrc = string.Format("data:image/{0};base64,{1}", item.BannerExt, base64);
                                 var text = imgSrc;
                             }
-                            <td class="text-center align-middle"><img src="@imgSrc" class="d-block zoom" title="@item.BannerName" /></td>
+                            <td class="text-center align-middle"><img src="@imgSrc" class="zoom" title="@item.BannerName" /></td>
                             @{
                                 var isActive = (item.ActiveFlag ? "Activo" : "Inactivo");
                             }
@@ -58,7 +74,7 @@
                                 }
                                 else
                                 {
-                                    <a href="#" class="card-link" onclick="Desactive(@item.BannerID)" title="Activar"><i class="fas fa-times-circle fa-2x" style="vertical-align: middle; color:red;"></i></a>
+                                    <a href="#" class="card-link" onclick="Desactivate(@item.BannerID)" title="Desactivar"><i class="fas fa-times-circle fa-2x" style="vertical-align: middle; color:red;"></i></a>
                                 }
                             </td>
                         </tr>

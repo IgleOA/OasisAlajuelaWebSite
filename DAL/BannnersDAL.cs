@@ -66,5 +66,49 @@ namespace DAL
 
             return List;
         }
+
+        public bool Update(int BannerID, string User)
+        {
+            bool rpta = false;
+
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[adm].[uspUpdateBanner]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                //Insert Parameters
+                SqlParameter ParInsertUser = new SqlParameter
+                {
+                    ParameterName = "@User",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 50,
+                    Value = User
+                };
+                SqlCmd.Parameters.Add(ParInsertUser);
+
+                SqlParameter ParID = new SqlParameter
+                {
+                    ParameterName = "@BannerID",
+                    SqlDbType = SqlDbType.Int,
+                    Value = BannerID
+                };
+                SqlCmd.Parameters.Add(ParID);
+
+                //EXEC Command
+                SqlCmd.ExecuteNonQuery();
+
+                rpta = true;
+
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            return rpta;
+        }
     }
 }

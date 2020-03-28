@@ -87,5 +87,22 @@ namespace OasisAlajuelaWebSite.Controllers
             int pageNumber = (page ?? 1);
             return View(banners.ToPagedList(pageNumber,pageSize));
         }
+
+        public ActionResult BannersChangeStatus(int id)
+        {
+            string InsertUser = User.Identity.GetUserName();
+
+            var r = BBL.Update(id, InsertUser);
+
+            if (!r)
+            {
+                ViewBag.Mensaje = "Ha ocurrido un error inesperado.";
+                return View("~/Views/Shared/Error.cshtml");
+            }
+            else
+            {
+                return this.RedirectToAction("Banners", "Admin");
+            }
+        }
     }
 }

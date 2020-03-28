@@ -13,5 +13,10 @@ namespace BL
         {
             return BDAL.Banners(location, activeflag);
         }
+
+        public bool Update(int bannerid, string user)
+        {
+            return BDAL.Update(bannerid, user);
+        }
     }
 }
