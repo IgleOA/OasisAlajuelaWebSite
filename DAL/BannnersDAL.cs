@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using Dapper;
 using System.Configuration;
 using ET;
 
@@ -51,7 +52,6 @@ namespace DAL
                             BannerName = dr["BannerName"].ToString(),
                             LocationBanner = dr["Location"].ToString(),
                             ActiveFlag = Convert.ToBoolean(dr["ACtiveFlag"]),
-                            Order = Convert.ToInt32(dr["Order"]),
                             Slide = Convert.ToInt32(dr["Slide"])
                         };
                         List.Add(banner);
@@ -110,5 +110,36 @@ namespace DAL
             }
             return rpta;
         }
+
+        public bool AddNew(Banner NewBanner, string InserUser)
+        {
+            bool rpta = false;
+
+            try
+            {
+                DynamicParameters Parm = new DynamicParameters();
+                Parm.Add("@InsertUser", InserUser);
+                Parm.Add("@Banner", NewBanner.BannerData);
+                Parm.Add("@BannerExt", NewBanner.BannerExt);
+                Parm.Add("@BannerName", NewBanner.BannerName);
+                Parm.Add("@Location", NewBanner.LocationBanner);
+
+                SqlCon.Open();
+
+                SqlCon.Execute("[adm].[uspAddBanner]", Parm, commandType: CommandType.StoredProcedure);
+
+                rpta = true;
+
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            return rpta;
+        }
+
     }
 }

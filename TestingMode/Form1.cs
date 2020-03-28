@@ -44,14 +44,14 @@ namespace TestingMode
             images = brs.ReadBytes((int)Stream.Length);
 
             SqlCon.Open();
-            var SqlCmd = new SqlCommand("INSERT INTO [config].[utbBanners] ([BannerData],[BannerExt],[BannerName],[Location],[Order]) VALUES (@Picture,@Ext,@Name,@Location,@Order)", SqlCon)
+            var SqlCmd = new SqlCommand("[adm].[uspAddBanner]", SqlCon)
             {
-                CommandType = CommandType.Text
+                CommandType = CommandType.StoredProcedure
             };
 
             SqlParameter parName = new SqlParameter
             {
-                ParameterName = "@Name",
+                ParameterName = "@BannerName",
                 SqlDbType = SqlDbType.VarChar,
                 Size = 100,
                 Value = txtName.Text.Trim()
@@ -60,7 +60,7 @@ namespace TestingMode
 
             SqlParameter parExt = new SqlParameter
             {
-                ParameterName = "@Ext",
+                ParameterName = "@BannerExt",
                 SqlDbType = SqlDbType.VarChar,
                 Size = 10,
                 Value = txtExt.Text.Trim()
@@ -76,17 +76,19 @@ namespace TestingMode
             };
             SqlCmd.Parameters.Add(parLocation);
 
-            SqlParameter parOrder = new SqlParameter
+            SqlParameter parInsert = new SqlParameter
             {
-                ParameterName = "@Order",
-                SqlDbType = SqlDbType.Int,
-                Value = Convert.ToInt32(txtOrder.Text)
+                ParameterName = "@InsertUser",
+                SqlDbType = SqlDbType.VarChar,
+                Size = 100,
+                Value = "johmstone"
             };
-            SqlCmd.Parameters.Add(parOrder);
+            SqlCmd.Parameters.Add(parInsert);
+
 
             SqlParameter parPicture = new SqlParameter
             {
-                ParameterName = "@Picture",
+                ParameterName = "@Banner",
                 Value = images
             };
             SqlCmd.Parameters.Add(parPicture);

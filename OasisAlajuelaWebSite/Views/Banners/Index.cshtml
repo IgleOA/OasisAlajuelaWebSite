@@ -21,13 +21,17 @@
             }).done(function () { alert('Hecho!!!'); location.reload(); });
         }
     }
+    function Create() {
+        var url = '@Url.Action("AddNew")';
+        window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
+    }
 </script>
 <section class="hp-section">
     <div class="container">
         <div class="row justify-content-start">
-            <h2 class="heading-section font-weight-bold m-0 p-0">@ViewBag.Title</h2>
+            <h2 class="heading-section font-weight-bold my-2 p-0">@ViewBag.Title</h2>
         </div>
-        @using (Html.BeginForm("Banners", "Admin", FormMethod.Get))
+        @using (Html.BeginForm("Index", "Banners", FormMethod.Get))
         {
             <div class="row justify-content-start">
                 <div class="form-group input-group p-0 searchfield w-50">
@@ -37,17 +41,17 @@
                     @Html.TextBox("SearchString", null, new { @class = "form-control", @placeholder = "Buscar por leyenda" })
                 </div>
                 <input type="submit" value="Buscar" class="btn btn-dark alt mt-0 mb-2" style="height: 2.75rem !important;" />
+                <input type="button" value="Agregar" class="btn btn-dark alt mt-0 mb-2" style="height: 2.75rem !important;" onclick="Create()"/>
             </div>
         }
         <div class="row justify-content-start">
             <table class="table-responsive-xl align-content-center p-0">
                 <tbody>
                     <tr class="align-middle">
-                        <th class="text-center py-2">@Html.ActionLink("Ubicación", "Banners", new { sortOrder = ViewBag.LocationOrder, currentFilter = ViewBag.CurrentFilter })</th>
-                        <th class="text-center py-2">@Html.DisplayNameFor(model => model.FirstOrDefault().Order)</th>
+                        <th class="text-center py-2">@Html.ActionLink("Ubicación", "Index", new { sortOrder = ViewBag.LocationOrder, currentFilter = ViewBag.CurrentFilter })</th>
                         <th class="text-center py-2">@Html.DisplayNameFor(model => model.FirstOrDefault().BannerName)</th>
                         <th class="text-center py-2">Banner</th>
-                        <th class="text-center py-2">@Html.ActionLink("Status", "Banners", new { sortOrder = ViewBag.StatusOrder, currentFilter = ViewBag.CurrentFilter })</th>
+                        <th class="text-center py-2">@Html.ActionLink("Status", "Index", new { sortOrder = ViewBag.StatusOrder, currentFilter = ViewBag.CurrentFilter })</th>
                         <th class="text-center py-2">Acción</th>
                     </tr>
 
@@ -55,7 +59,6 @@
                     {
                         <tr>
                             <td class="text-center align-middle">@Html.DisplayFor(modelItem => item.LocationBanner)</td>
-                            <td class="text-center align-middle">@Html.DisplayFor(modelItem => item.Order)</td>
                             <td class="text-center align-middle">@Html.DisplayFor(modelItem => item.BannerName)</td>
                             @{
                                 var base64 = Convert.ToBase64String(item.BannerData, 0, item.BannerData.Length);
@@ -80,12 +83,12 @@
                         </tr>
                     }
                 </tbody>
-            </table>            
+            </table>
         </div>
         <div class="row justify-content-start">
             @if (Model.PageCount > 1)
             {
-                @Html.PagedListPager(Model, page => Url.Action("Banners", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }), new PagedListRenderOptions() { ContainerDivClasses = new string[] { "p-0" }, UlElementClasses = new string[] { "pagination m-0"}  })
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }), new PagedListRenderOptions() { ContainerDivClasses = new string[] { "p-0" }, UlElementClasses = new string[] { "pagination m-0" } })
             }
         </div>
     </div>

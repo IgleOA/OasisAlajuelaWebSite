@@ -322,6 +322,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\BannersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MinistriesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -2224,7 +2225,9 @@
     <Content Include="Views\Shared\_AdminLayout.cshtml" />
     <Content Include="Views\Shared\_AdminFooter.cshtml" />
     <Content Include="Views\Admin\HomePage.cshtml" />
-    <Content Include="Views\Admin\Banners.cshtml" />
+    <Content Include="Views\Shared\_PupopLayout.cshtml" />
+    <Content Include="Views\Banners\Index.cshtml" />
+    <Content Include="Views\Banners\AddNew.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

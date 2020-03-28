@@ -18,5 +18,10 @@ namespace BL
         {
             return BDAL.Update(bannerid, user);
         }
+
+        public bool AddNew(Banner newbanner, string insertuser)
+        {
+            return BDAL.AddNew(newbanner, insertuser);
+        }
     }
 }
