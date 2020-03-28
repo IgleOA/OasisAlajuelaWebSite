@@ -18,7 +18,7 @@ namespace ET
 
         [Required(ErrorMessage = "Por favor seleccione el archivo")]
         [DataType(DataType.Upload)]
-        //[AllowExtensions(Extensions = "png,jpg", ErrorMessage = "Por favor seleccione solo archivos soportados .png | .jpg")]
+        [AllowExtensions(Extensions = "png,jpg,jpeg,gif", ErrorMessage = "Por favor seleccione solo archivos soportados .png, .jpg, .jpeg, .gif")]
         [Display(Name = "Archivo")]
         public HttpPostedFileBase file { get; set; }
 
@@ -40,33 +40,33 @@ namespace ET
         
         public string ActionType { get; set; }
 
-        //public class AllowExtensionsAttribute : ValidationAttribute
-        //{
-        //    public string Extensions { get; set; } = "png,jpg,jpeg,gif";
+        public class AllowExtensionsAttribute : ValidationAttribute
+        {
+            public string Extensions { get; set; } = "png,jpg,jpeg,gif";
 
-        //    public override bool IsValid(object value)
-        //    {
-        //        // Initialization  
-        //        HttpPostedFileBase file = value as HttpPostedFileBase;
-        //        bool isValid = true;
+            public override bool IsValid(object value)
+            {
+                // Initialization  
+                HttpPostedFileBase file = value as HttpPostedFileBase;
+                bool isValid = true;
 
-        //        // Settings.  
-        //        List<string> allowedExtensions = this.Extensions.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                // Settings.  
+                List<string> allowedExtensions = this.Extensions.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
-        //        // Verification.  
-        //        if (file != null)
-        //        {
-        //            // Initialization.  
-        //            var fileName = file.FileName;
+                // Verification.  
+                if (file != null)
+                {
+                    // Initialization.  
+                    var fileName = file.FileName;
 
-        //            // Settings.  
-        //            isValid = allowedExtensions.Any(y => fileName.EndsWith(y));
-        //        }
+                    // Settings.  
+                    isValid = allowedExtensions.Any(y => fileName.EndsWith(y));
+                }
 
-        //        // Info  
-        //        return isValid;
-        //    }
-        //}
+                // Info  
+                return isValid;
+            }
+        }
     }
 }
 /*

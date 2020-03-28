@@ -1,0 +1,29 @@
+﻿@using Microsoft.AspNet.Identity
+
+
+@using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+{
+    @Html.AntiForgeryToken()
+    <ul class="links">
+        <li>
+            <a href='@Url.Action("Details","Profile")' class="Menulinks align-middle" title="Perfil">
+                <i class="far fa-user"></i> Hola @User.Identity.GetUserName()!
+            </a>
+        </li>
+        <li>
+            @Html.ActionLink("Administrativo", "Index", "Admin", routeValues: null, htmlAttributes: new { title = "AdminPage", @class = "Menulinks" })
+        </li>
+        <li>
+            @Html.ActionLink("Inicio", "Index", "Home", routeValues: null, htmlAttributes: new { title = "Inicio", @class = "Menulinks" })
+        </li>
+        <li>
+            @Html.ActionLink("Acerca de", "About", "Home", routeValues: null, htmlAttributes: new { title = "Acerca de", @class = "Menulinks" })
+        </li>
+        <li>
+            @Html.ActionLink("Ministerios", "Index", "Ministries", routeValues: null, htmlAttributes: new { title = "Ministerios", @class = "Menulinks" })
+        </li>
+        <li>
+            <a href="javascript:document.getElementById('logoutForm').submit()" class="Menulinks">Cerrar Sesión</a>
+        </li>
+    </ul>
+}

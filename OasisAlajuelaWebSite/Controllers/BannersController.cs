@@ -116,10 +116,7 @@ namespace OasisAlajuelaWebSite.Controllers
             }
             else
             {
-
-                ViewBag.FileStatus = "Archivo de formato Invalido.";
                 return View(MS);
-
             }
         }
     }
