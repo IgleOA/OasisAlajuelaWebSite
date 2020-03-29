@@ -325,6 +325,7 @@
     <Compile Include="Controllers\BannersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MinistriesController.cs" />
+    <Compile Include="Controllers\UpcommingEventsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -2229,6 +2230,8 @@
     <Content Include="Views\Banners\Index.cshtml" />
     <Content Include="Views\Banners\AddNew.cshtml" />
     <Content Include="Views\Shared\_AdminLoginPartial.cshtml" />
+    <Content Include="Views\UpcommingEvents\Index.cshtml" />
+    <Content Include="Views\UpcommingEvents\AddNew.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

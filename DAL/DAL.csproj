@@ -71,6 +71,7 @@
     <Compile Include="AboutPageDAL.cs" />
     <Compile Include="BannnersDAL.cs" />
     <Compile Include="HomeDAL.cs" />
+    <Compile Include="MinistersDAL.cs" />
     <Compile Include="MinistriesDAL.cs" />
     <Compile Include="NewsDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

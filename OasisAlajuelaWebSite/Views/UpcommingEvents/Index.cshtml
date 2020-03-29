@@ -1,0 +1,87 @@
+﻿@model IEnumerable<ET.UpcommingEvents>
+    
+@{
+    Layout = ViewBag.Layout;
+}
+<script type="text/javascript">
+    function Edit(EventID) {
+        var url = '@Url.Action("Edit", new { id = "ID"})';
+        url = url.replace("ID", EventID)
+        window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
+    }
+    function Disable(EventID) {
+        var x = confirm("Esta seguro que quiere eliminar este evento???");
+        if (x) {
+            $.ajax({
+                url: '@Url.Action("Disable")',
+                data: { id: EventID }
+            }).done(function () { alert('Hecho!!!'); location.reload(); });
+        }
+    }
+    function AddNew() {
+        var url = '@Url.Action("AddNew")';
+        window.open(url, '_blank' , 'left=100,top=100,width=500,height=850,toolbar=0,resizable=0');
+    }
+</script>
+
+<section class="hp-section">
+    <div class="container">
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <h3 class="panel-title text-center">
+                    <span class="fas fa-calendar-alt"></span>
+                    Próximos Eventos
+                </h3>
+                <hr />
+            </div>
+            <div class="panel-body">
+                <ul class="media-list p-0 m-0">
+                    @foreach (var item in Model)
+                    {
+                        <li class="media py-2 px-0">
+                            <div class="media-left">
+                                <div class="panel panel-danger text-center date">
+                                    <div class="panel-heading month">
+                                        <span class="panel-title strong">
+                                            @item.EventMonth
+                                        </span>
+                                    </div>
+                                    <div class="panel-body day text-danger">
+                                        @item.EventDay
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading mb-2">
+                                    @item.ScheduledTime.ToString("hh\\:mm") - @item.Title
+                                </h4>
+                                @if (item.MinisterName.Length > 0)
+                                {
+                                    <p class="ml-1 mt-1 mb-1 mr-3 text-justify">
+                                        <b><em>@item.MinisterName</em></b> - @item.Description
+                                    </p>
+                                }
+                                else
+                                {
+                                    <p class="ml-1 mt-1 mb-1 mr-3 text-justify">@item.Description</p>
+                                }
+                            </div>
+                            <div class="media-right h-100 m-auto">
+                                <div class="row">
+                                    <a href="#" title="Editar" onclick="Edit(@item.EventID)"><i class="far fa-edit"></i></a>
+                                </div>
+                                <div class="row">
+                                    <a href="#" title="Eliminar" onclick="Disable(@item.EventID)"><i class="far fa-trash-alt"></i></a>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                </ul>
+                <hr />
+            </div>
+            <div>
+                <a href="#" class="btn btn-default" onclick="AddNew()" title="Agregar un Nuevo Evento"><i class="far fa-calendar-plus fa-2x align-middle"></i></a>
+            </div>
+        </div>
+    </div>
+    </section>

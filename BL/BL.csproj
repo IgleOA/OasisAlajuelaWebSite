@@ -45,6 +45,7 @@
     <Compile Include="AboutPageBL.cs" />
     <Compile Include="BannersBL.cs" />
     <Compile Include="HomeBL.cs" />
+    <Compile Include="MinistersBL.cs" />
     <Compile Include="MinistriesBL.cs" />
     <Compile Include="NewsBL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
