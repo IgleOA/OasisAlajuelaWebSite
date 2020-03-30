@@ -18,5 +18,15 @@ namespace BL
         {
             return UDAL.AddNew(Event, insertuser);
         }
+
+        public UpcommingEvents Details(int eventid)
+        {
+            return UDAL.Details(eventid);
+        }
+
+        public bool Update(UpcommingEvents Event, string insertuser)
+        {
+            return UDAL.Update(Event, insertuser);
+        }
     }
 }

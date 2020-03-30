@@ -1,0 +1,84 @@
+﻿@model ET.UpcommingEvents
+
+@{
+    ViewBag.Title = "Editar Evento";
+    Layout = "~/Views/Shared/_PupopLayout.cshtml";
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var flag = '@(Model.ActionType)';
+        if (flag == "UPDATE")
+        {
+            opener.location.reload();
+            window.close();
+        }
+    });
+
+    function Create() {
+        var url = '@Url.Action("AddNew", "Ministers")';
+        window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
+    }
+</script>
+
+<div class="card bg-light">
+    <article class="card-body mx-auto" style="max-width: 400px;">
+        <h4 class="card-title mt-3 font-weight-bold">@ViewBag.Title del <span style="color: blue;">@Model.EventDay de @Model.EventMonth</span></h4>
+        @using (Html.BeginForm("Edit", "UpcommingEvents", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger m-0" })
+                @Html.HiddenFor(model => model.EventID)
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10 d-flex justify-content-between">
+                        @Html.LabelFor(model => model.MinisterID, htmlAttributes: new { @class = "control-label m-0", @style = "float: left;" })
+                        <a href="#" onclick="Create();" title="Agregar Predicador"><i class="fas fa-user-plus"></i></a>
+                    </div>
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.MinisterID, new SelectList(Model.MinisterList, "MinisterID", "FullName"), new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.MinisterID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ScheduledDate, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ScheduledDate, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ScheduledDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ScheduledTime, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ScheduledTime, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ScheduledTime, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.Description, 5, 1, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Guardar" class="btn btn-dark alt mt-0 mb-2" />
+                        <input type="button" value="Cancelar" class="btn btn-dark alt mt-0 mb-2" onclick="javascript: window.close();" />
+                    </div>
+                </div>
+            </div>
+        }
+    </article>
+</div>

@@ -62,7 +62,8 @@ namespace DAL
                             ScheduledTime = (TimeSpan)dr["ScheduledTime"],
                             ActiveFlag = Convert.ToBoolean(dr["ACtiveFlag"]),
                             EventMonth = dr["Month"].ToString(),
-                            EventDay = dr["Day"].ToString()
+                            EventDay = dr["Day"].ToString(),
+                            EventTime = dr["Time"].ToString()
                         };
                         List.Add(detail);
                     }
@@ -130,6 +131,156 @@ namespace DAL
                     Value = InsertUser
                 };
                 SqlCmd.Parameters.Add(ParInsertUser);
+
+                //Exec Command
+                SqlCmd.ExecuteNonQuery();
+
+                rpta = true;
+
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            return rpta;
+        }
+
+        public UpcommingEvents Details(int EventID)
+        {
+            UpcommingEvents ET = new UpcommingEvents();
+
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[config].[uspReadUpcommingEvents]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                //Insert Parameters
+                SqlParameter parDate = new SqlParameter
+                {
+                    ParameterName = "@pDate",
+                    SqlDbType = SqlDbType.DateTime,
+                    Value = DateTime.Now
+                };
+                SqlCmd.Parameters.Add(parDate);
+
+                SqlParameter parUp = new SqlParameter
+                {
+                    ParameterName = "@pUpCommingFlag",
+                    SqlDbType = SqlDbType.Bit,
+                    Value = 1
+                };
+                SqlCmd.Parameters.Add(parUp);
+
+                SqlParameter pEventID = new SqlParameter
+                {
+                    ParameterName = "@pEventID",
+                    SqlDbType = SqlDbType.Int,
+                    Value = EventID
+                };
+                SqlCmd.Parameters.Add(pEventID);
+
+                using (var dr = SqlCmd.ExecuteReader())
+                {
+                    dr.Read();
+                    if (dr.HasRows)
+                    {
+                        ET.EventID = Convert.ToInt32(dr["EventID"]);
+                        ET.Title = dr["Title"].ToString();
+                        ET.MinisterID = Convert.ToInt32(dr["MinisterID"]);
+                        ET.MinisterName = dr["MinisterName"].ToString();
+                        ET.Description = dr["Description"].ToString();
+                        ET.ScheduledDate = Convert.ToDateTime(dr["ScheduledDate"]);
+                        ET.ScheduledTime = (TimeSpan)dr["ScheduledTime"];
+                        ET.ActiveFlag = Convert.ToBoolean(dr["ACtiveFlag"]);
+                        ET.EventMonth = dr["Month"].ToString();
+                        ET.EventDay = dr["Day"].ToString();
+                        ET.EventTime = dr["Time"].ToString();
+                    }
+                }
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();                    
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            return ET;
+        }
+
+        public bool Update(UpcommingEvents Event, string InsertUser)
+        {
+            bool rpta = false;
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[adm].[uspUpdateUpcommingEvent]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                //Insert Parameters
+                SqlParameter EventID = new SqlParameter
+                {
+                    ParameterName = "@EventID",
+                    SqlDbType = SqlDbType.Int,
+                    Value = Event.EventID
+                };
+                SqlCmd.Parameters.Add(EventID);
+
+                SqlParameter Title = new SqlParameter
+                {
+                    ParameterName = "@Title",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 50,
+                    Value = Event.Title
+                };
+                SqlCmd.Parameters.Add(Title);
+
+                SqlParameter MinisterID = new SqlParameter
+                {
+                    ParameterName = "@MinisterID",
+                    SqlDbType = SqlDbType.Int,
+                    Value = Event.MinisterID
+                };
+                SqlCmd.Parameters.Add(MinisterID);
+
+                SqlParameter Description = new SqlParameter
+                {
+                    ParameterName = "@Description",
+                    SqlDbType = SqlDbType.VarChar,
+                    Value = Event.Description
+                };
+                SqlCmd.Parameters.Add(Description);
+
+                SqlParameter ScheduleDate = new SqlParameter
+                {
+                    ParameterName = "@ScheduleDate",
+                    SqlDbType = SqlDbType.DateTime,
+                    Value = Event.ScheduledDate
+                };
+                SqlCmd.Parameters.Add(ScheduleDate);
+
+                SqlParameter ParInsertUser = new SqlParameter
+                {
+                    ParameterName = "@InsertUser",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 50,
+                    Value = InsertUser
+                };
+                SqlCmd.Parameters.Add(ParInsertUser);
+
+                SqlParameter UpdateType = new SqlParameter
+                {
+                    ParameterName = "@UpdateType",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 10,
+                    Value = Event.ActionType
+                };
+                SqlCmd.Parameters.Add(UpdateType);
 
                 //Exec Command
                 SqlCmd.ExecuteNonQuery();

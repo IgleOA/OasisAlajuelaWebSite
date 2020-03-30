@@ -49,6 +49,8 @@ namespace ET
 
         public string EventDay { get; set; }
 
+        public string EventTime { get; set; }
+
         public UpcommingEvents ()
         {
             MinisterData = new Ministers();
