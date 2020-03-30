@@ -4,7 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
 using ET;
-
+using Dapper;
 
 namespace DAL
 {
@@ -12,7 +12,7 @@ namespace DAL
     {
         private SqlConnection SqlCon = new SqlConnection(ConfigurationManager.ConnectionStrings["DB_MAIN_CR_OA_Connection"].ToString());
 
-        public List<News> List(bool ActiveFlag)
+        public List<News> List()
         {
             List<News> List = new List<News>();
 
@@ -24,14 +24,6 @@ namespace DAL
                     CommandType = CommandType.StoredProcedure
                 };
 
-                SqlParameter parStatus = new SqlParameter
-                {
-                    ParameterName = "@pActiveFlag",
-                    SqlDbType = SqlDbType.Bit,
-                    Value = ActiveFlag
-                };
-                SqlCmd.Parameters.Add(parStatus);
-
                 using (var dr = SqlCmd.ExecuteReader())
                 {
                     while (dr.Read())
@@ -41,7 +33,12 @@ namespace DAL
                             NewID = Convert.ToInt32(dr["NewID"]),
                             Title = dr["Title"].ToString(),
                             Description = dr["Description"].ToString(),
-                            ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"])
+                            BannerData = (byte[])dr["BannerData"],
+                            BannerExt = dr["BannerExt"].ToString(),
+                            ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]),
+                            NewYear = dr["Year"].ToString(),
+                            NewMonth = dr["Month"].ToString(),
+                            NewDay = dr["Day"].ToString()
                         };
                         List.Add(detail);
                     }
@@ -54,6 +51,37 @@ namespace DAL
             }
 
             return List;
+        }
+
+        public bool AddNew(News NewMS, string InserUser)
+        {
+            bool rpta = false;
+
+            try
+            {
+                DynamicParameters Parm = new DynamicParameters();
+                Parm.Add("@InsertUser", InserUser);
+                Parm.Add("@Title", NewMS.Title);
+                Parm.Add("@Description", NewMS.Description);
+                Parm.Add("@BannerData", NewMS.BannerData);
+                Parm.Add("@BannerExt", NewMS.BannerExt);
+                Parm.Add("@InsertDate", NewMS.InsertDate);
+
+                SqlCon.Open();
+
+                SqlCon.Execute("[adm].[uspAddNew]", Parm, commandType: CommandType.StoredProcedure);
+
+                rpta = true;
+
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            return rpta;
         }
     }
 }

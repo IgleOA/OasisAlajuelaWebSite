@@ -68,7 +68,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
         public ActionResult _News()
         {
-            var data = NBL.List(true);
+            var data = NBL.List().Take(3);
 
             return View(data.ToList());
         }

@@ -2236,10 +2236,11 @@
     <Content Include="Views\UpcommingEvents\AddNew.cshtml" />
     <Content Include="Views\UpcommingEvents\Edit.cshtml" />
     <Content Include="Views\Sermons\Index.cshtml" />
+    <Content Include="Views\News\Index.cshtml" />
+    <Content Include="Views\News\AddNew.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\News\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
