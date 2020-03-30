@@ -16,14 +16,14 @@ namespace OasisAlajuelaWebSite.Controllers
 
         public ActionResult Index(string id)
         {
-            List<UpcommingEvents> list = new List<UpcommingEvents>();
-
             ViewBag.Type = id;
 
             if (id == "Public")
             {
                 ViewBag.Layout = "~/Views/Shared/_MainLayout.cshtml";
-                list = UBL.List(DateTime.Now, true, true);                
+                var list = (from u in UBL.List(DateTime.Now, false, true)
+                            select u).Take(10);
+                
                 return View(list.ToList());
             }
             else
@@ -31,7 +31,7 @@ namespace OasisAlajuelaWebSite.Controllers
                 if (Request.IsAuthenticated)
                 {
                     ViewBag.Layout = "~/Views/Shared/_AdminLayout.cshtml";
-                    list = UBL.List(DateTime.Now, true, true);
+                    var list = UBL.List(DateTime.Now, true, true);
                     return View(list.ToList());
                 }
                 else

@@ -325,6 +325,7 @@
     <Compile Include="Controllers\BannersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MinistriesController.cs" />
+    <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\SermonsController.cs" />
     <Compile Include="Controllers\UpcommingEventsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -2238,6 +2239,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\News\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

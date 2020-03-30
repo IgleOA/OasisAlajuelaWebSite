@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<ET.UpcommingEvents>
     
 @{
+    ViewBag.Title = "Próximos Eventos";
     Layout = ViewBag.Layout;
 }
 <script type="text/javascript">
@@ -30,7 +31,7 @@
             <div class="panel-heading">
                 <h3 class="panel-title text-center">
                     <span class="fas fa-calendar-alt"></span>
-                    Próximos Eventos
+                    @ViewBag.Title
                 </h3>
                 <hr />
             </div>
