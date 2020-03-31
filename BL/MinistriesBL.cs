@@ -6,11 +6,26 @@ namespace BL
 {
     public class MinistriesBL
     {
-        private MinistriesDAL MBL = new MinistriesDAL();
+        private MinistriesDAL MDAL = new MinistriesDAL();
 
-        public List<Ministries> List (bool activeflag)
+        public List<Ministries> List ()
         {
-            return MBL.List(activeflag);
+            return MDAL.List();
         }       
+
+        public bool AddNew(Ministries min, string insertuser)
+        {
+            return MDAL.AddNew(min, insertuser);
+        }
+
+        public Ministries Details(int ministryid)
+        {
+            return MDAL.Details(ministryid);
+        }
+
+        public bool Update(Ministries ministry, string insertuser)
+        {
+            return MDAL.Update(ministry, insertuser);
+        }
     }
 }

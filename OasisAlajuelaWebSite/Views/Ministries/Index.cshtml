@@ -5,25 +5,96 @@
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
 
-<section class="hp-section">
-    <div class="container">
-        @foreach (var item in Model)
-        {
+@if (ViewBag.Page == "Admin")
+{
+    <script type="text/javascript">
+        function AddNew() {
+            var url = '@Url.Action("AddNew")';
+            window.open(url, '_blank', 'left=100,top=100,width=1000,height=650,toolbar=1,resizable=0');
+        }
+        function Edit(MinistryID) {
+            var url = '@Url.Action("Edit", new { id = "ID"})';
+            url = url.replace("ID", MinistryID)
+            window.open(url, '_blank', 'left=100,top=100,width=1000,height=650,toolbar=1,resizable=0');
+        }
+        function Disable(MinistryID) {
+            var x = confirm("Esta seguro que quiere eliminar este ministerio???");
+            if (x) {
+                $.ajax({
+                    url: '@Url.Action("Disable")',
+                    data: { id: MinistryID }
+                }).done(function () { alert('Hecho!!!'); location.reload(); });
+            }
+        }
+    </script>
+    <section class="hp-section">
+        <div class="container">
+            <div class="row justify-content-center border-bottom mb-2">
+                <h2 class="heading-section font-weight-bold my-2 p-0">@ViewBag.Title</h2>
+            </div>
+            @foreach (var item in Model)
+            {
+                <div class="row">
+                    <div class="p-0">
+                        <div class="media services d-block text-justify">
+                            <div class="media-body p-2 mt-3">
+                                <div class="d-flex justify-content-between">
+                                    <h3 class="font-weight-bold">
+                                        @item.Name
+                                    </h3>
+                                    <div>
+                                        <a href="#" onclick="Edit(@item.MinistryID)" title="Editar"><i class="fas fa-edit fa-1x"></i></a>
+                                        <a href="#" onclick="Disable(@item.MinistryID)" title="Borrar"><i class="fas fa-trash-alt fa-1x"></i></a>
+                                    </div>
+                                </div>
+                                <p class="m-0">@Html.Raw(item.Description)</p>
+                                @if (item.ActionLink.Length > 0)
+                                {
+                                    @Html.ActionLink("Ver más...", item.ActionLink, "Ministries", null, htmlAttributes: new { @class = "button alt" })
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
             <div class="row">
-                <div>
+                <div class="p-0">
                     <div class="media services d-block text-justify">
                         <div class="media-body p-2 mt-3">
-                            <h3 class="font-weight-bold">@item.Name</h3>
-                            <p class="m-0">@Html.Raw(item.Description)</p>
-                            @if(item.ActionLink.Length > 0)
-                            {
-                                @Html.ActionLink("Ver más...",item.ActionLink,"Ministries", null, htmlAttributes: new { @class = "button alt"})
-                            }
+                            <div class="d-flex justify-content-between">
+                                <a href="#" onclick="AddNew()" title="Agregar un nuevo Ministerio" class="btn btn-light" style="text-decoration: none;"><i class="fas fa-plus-square fa-1x"></i> Agregar un nuevo Ministerio</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        }
-    </div>
-</section>
-
+        </div>
+    </section>
+}
+else
+{
+    <section class="hp-section">
+        <div class="container">
+            <div class="row justify-content-center border-bottom mb-2">
+                <h2 class="heading-section font-weight-bold my-2 p-0">@ViewBag.Title</h2>
+            </div>
+            @foreach (var item in Model)
+            {
+                <div class="row">
+                    <div class="p-0">
+                        <div class="media services d-block text-justify">
+                            <div class="media-body p-2 mt-3">
+                                <h3 class="font-weight-bold">@item.Name</h3>
+                                <p class="m-0">@Html.Raw(item.Description)</p>
+                                @if (item.ActionLink.Length > 0)
+                                {
+                                    @Html.ActionLink("Ver más...", item.ActionLink, "Ministries", null, htmlAttributes: new { @class = "button alt" })
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+}

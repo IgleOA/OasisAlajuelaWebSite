@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace ET
 {
@@ -13,12 +14,15 @@ namespace ET
 
         [Required]
         [Display(Name = "Descripción")]
+        [AllowHtml]
         public string Description { get; set; }
 
+        [Display(Name = "Enlace de Página (si aplica)")]
         public string ActionLink { get; set; }
 
         [Display(Name ="Status")]
         public bool ActiveFlag { get; set; }
 
+        public string ActionType { get; set; }
     }
 }
