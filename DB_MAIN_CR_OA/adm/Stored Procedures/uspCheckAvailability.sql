@@ -1,8 +1,8 @@
 ﻿-- ======================================================================
--- Name: [config].[uspReadBanners]
--- Desc: Retorna los banner segun la locacion
+-- Name: [adm].[uspCheckAvailability]
+-- Desc: Es para validar si un nombre de usuario o email ya existe en la base de datos
 -- Auth: Jonathan Piedra johmstone@gmail.com
--- Date: 3/13/2020
+-- Date: 03/25/2020
 -------------------------------------------------------------
 -- Change History
 -------------------------------------------------------------
@@ -10,9 +10,8 @@
 -- --	----		------		-----------------------------
 -- ======================================================================
 
-CREATE PROCEDURE [config].[uspReadBanners]
-	@pLocation	VARCHAR(100) = NULL,
-	@pActiveFlag BIT = NULL
+CREATE PROCEDURE [adm].[uspCheckAvailability]
+	@TxtValidate VARCHAR(50)
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -22,23 +21,17 @@ AS
             DECLARE @lErrorState INT
 
             -- =======================================================
-				DECLARE @lLocationID INT = (SELECT [LocationID]
-										    FROM   [config].[utbBannersLocation]
-										    WHERE  [LocationName] = @pLocation)
+				DECLARE @Validation BIT = 1
 
-				SELECT	B.[BannerID]
-						,B.[BannerData]
-						,B.[BannerExt]
-						,B.[BannerName]
-						,B.[LocationID]
-						,[Location]		=	L.[LocationName]
-						,B.[ActiveFlag]
-						,[Slide]		= ROW_NUMBER() OVER(ORDER BY B.[BannerName]) - 1
-				FROM	[config].[utbBanners] B
-						LEFT JOIN [config].[utbBannersLocation] L ON L.[LocationID] = B.[LocationID]
-				WHERE	B.[LocationID] = ISNULL(@lLocationID,B.[LocationID])
-						AND B.[ActiveFlag]  = ISNULL(@pActiveFlag,B.[ActiveFlag])
-				ORDER BY [Location],[ActiveFlag] DESC
+				IF EXISTS(SELECT * FROM	[adm].[utbUsers] WHERE [Email] = @TxtValidate)
+					BEGIN
+						SET @Validation = 0
+					END
+				IF EXISTS(SELECT * FROM	[adm].[utbUsers] WHERE [UserName] = @TxtValidate)
+					BEGIN
+						SET @Validation = 0
+					END
+				SELECT @Validation				
 			-- =======================================================
 
         END TRY

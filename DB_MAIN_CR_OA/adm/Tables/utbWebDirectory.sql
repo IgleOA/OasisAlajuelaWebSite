@@ -1,11 +1,11 @@
 ﻿CREATE TABLE [adm].[utbWebDirectory] (
     [WebID]          INT           IDENTITY (1, 1) NOT NULL,
     [AppID]          INT           NOT NULL,
-    [WebName]        VARCHAR (50)  NOT NULL,
-    [MainClass]      VARCHAR (50)  NOT NULL,
-    [MainOrder]      INT           NULL,
     [Controller]     VARCHAR (50)  NOT NULL,
-    [ViewPage]       VARCHAR (50)  NOT NULL,
+    [Action]         VARCHAR (50)  NOT NULL,
+    [PublicMenu]     BIT           NOT NULL,
+    [AdminMenu]      BIT           NOT NULL,
+    [DisplayName]    VARCHAR (50)  NOT NULL,
     [Parameter]      VARCHAR (50)  NULL,
     [Order]          INT           NOT NULL,
     [ActiveFlag]     BIT           CONSTRAINT [utbWebDirectoryDefaultActiveFlagIsTrue] DEFAULT ((1)) NOT NULL,
@@ -19,6 +19,8 @@
 
 
 GO
+
+
 
 CREATE TRIGGER [adm].[utrLogWebDirectory] ON [adm].[utbWebDirectory]
 FOR INSERT,UPDATE

@@ -1,26 +1,29 @@
 ﻿CREATE TABLE [config].[utbBanners] (
-    [BannerID]       INT           IDENTITY (1, 1) NOT NULL,
-    [BannerPicture]  IMAGE         NOT NULL,
-    [BannerName]     VARCHAR (200) NOT NULL,
-    [Location]       VARCHAR (200) NOT NULL,
-    [Order]          INT           NOT NULL,
-    [ActiveFlag]     BIT           CONSTRAINT [utbBannersDefaultActiveFlagTrue] DEFAULT ((1)) NOT NULL,
-    [InsertDate]     DATETIME      CONSTRAINT [utbBannersDefaultInsertDateSysDateTime] DEFAULT (sysdatetime()) NOT NULL,
-    [InsertUser]     VARCHAR (100) CONSTRAINT [utbBannersDefaultInsertUserSuser_Sname] DEFAULT (suser_sname()) NOT NULL,
-    [LastModifyDate] DATETIME      CONSTRAINT [utbBannersDefaultLastModifyDateSysDateTime] DEFAULT (sysdatetime()) NOT NULL,
-    [LastModifyUser] VARCHAR (100) CONSTRAINT [utbBannersDefaultLastModifyUserSuser_Sname] DEFAULT (suser_sname()) NOT NULL,
-    CONSTRAINT [utbBannerID] PRIMARY KEY CLUSTERED ([BannerID] ASC)
+    [BannerID]       INT             IDENTITY (1, 1) NOT NULL,
+    [BannerData]     VARBINARY (MAX) NOT NULL,
+    [BannerExt]      VARCHAR (10)    NOT NULL,
+    [BannerName]     VARCHAR (200)   NOT NULL,
+    [LocationID]     INT             NOT NULL,
+    [ActiveFlag]     BIT             CONSTRAINT [utbBannersDefaultActiveFlagTrue] DEFAULT ((1)) NOT NULL,
+    [InsertDate]     DATETIME        CONSTRAINT [utbBannersDefaultInsertDateSysDateTime] DEFAULT (sysdatetime()) NOT NULL,
+    [InsertUser]     VARCHAR (100)   CONSTRAINT [utbBannersDefaultInsertUserSuser_Sname] DEFAULT (suser_sname()) NOT NULL,
+    [LastModifyDate] DATETIME        CONSTRAINT [utbBannersDefaultLastModifyDateSysDateTime] DEFAULT (sysdatetime()) NOT NULL,
+    [LastModifyUser] VARCHAR (100)   CONSTRAINT [utbBannersDefaultLastModifyUserSuser_Sname] DEFAULT (suser_sname()) NOT NULL,
+    CONSTRAINT [utbBannerID] PRIMARY KEY CLUSTERED ([BannerID] ASC),
+    CONSTRAINT [FK.config.utbBannersLocation.config.utbBanners.LocationID] FOREIGN KEY ([LocationID]) REFERENCES [config].[utbBannersLocation] ([LocationID])
 );
 
 
 GO
-CREATE TRIGGER [config].[utrBanners] ON [config].[utbBanners]
+
+
+CREATE TRIGGER [config].[utrLogBanners] ON [config].[utbBanners]
 FOR INSERT,UPDATE
 AS
 	BEGIN
 		DECLARE @INSERTUPDATE VARCHAR(30)
-		DECLARE @StartValues	XML = (SELECT [BannerID],[BannerName],[Location],[Order],[ActiveFlag],[InsertDate],[InsertUser],[LastModifyDate],[LastModifyUser] FROM Deleted [Values] for xml AUTO, ELEMENTS XSINIL)
-		DECLARE @EndValues		XML = (SELECT [BannerID],[BannerName],[Location],[Order],[ActiveFlag],[InsertDate],[InsertUser],[LastModifyDate],[LastModifyUser] FROM Inserted [Values] for xml AUTO, ELEMENTS XSINIL)
+		DECLARE @StartValues	XML = (SELECT [BannerID],[BannerExt],[BannerName],[LocationID],[ActiveFlag],[InsertDate],[InsertUser],[LastModifyDate],[LastModifyUser] FROM Deleted [Values] for xml AUTO, ELEMENTS XSINIL)
+		DECLARE @EndValues		XML = (SELECT [BannerID],[BannerExt],[BannerName],[LocationID],[ActiveFlag],[InsertDate],[InsertUser],[LastModifyDate],[LastModifyUser] FROM Inserted [Values] for xml AUTO, ELEMENTS XSINIL)
 
 		CREATE TABLE #DBCC (EventType varchar(50), Parameters varchar(50), EventInfo nvarchar(max))
 
@@ -41,5 +44,5 @@ AS
 				,@EndValues
 				,[LastModifyUser]
 				,GETDATE()
-		FROM Inserted
-	END;
+		FROM Inserted 
+	END

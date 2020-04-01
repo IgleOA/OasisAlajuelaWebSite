@@ -1,8 +1,8 @@
 ﻿-- ======================================================================
--- Name: [config].[uspReadBanners]
--- Desc: Retorna los banner segun la locacion
+-- Name: [adm].[uspAddRole]
+-- Desc: Se utiliza para agregar un rol
 -- Auth: Jonathan Piedra johmstone@gmail.com
--- Date: 3/13/2020
+-- Date: 03/28/2020
 -------------------------------------------------------------
 -- Change History
 -------------------------------------------------------------
@@ -10,39 +10,46 @@
 -- --	----		------		-----------------------------
 -- ======================================================================
 
-CREATE PROCEDURE [config].[uspReadBanners]
-	@pLocation	VARCHAR(100) = NULL,
-	@pActiveFlag BIT = NULL
+CREATE PROCEDURE [adm].[uspAddRole]
+	@InsertUser		VARCHAR(50),
+	@RoleName			VARCHAR(50),
+	@RoleDescription	VARCHAR(MAX)
 AS 
     BEGIN
         SET NOCOUNT ON
+        SET XACT_ABORT ON
+                           
         BEGIN TRY
             DECLARE @lErrorMessage NVARCHAR(4000)
             DECLARE @lErrorSeverity INT
             DECLARE @lErrorState INT
+            DECLARE @lLocalTran BIT = 0
+                               
+            IF @@TRANCOUNT = 0 
+                BEGIN
+                    BEGIN TRANSACTION
+                    SET @lLocalTran = 1
+                END
 
             -- =======================================================
-				DECLARE @lLocationID INT = (SELECT [LocationID]
-										    FROM   [config].[utbBannersLocation]
-										    WHERE  [LocationName] = @pLocation)
-
-				SELECT	B.[BannerID]
-						,B.[BannerData]
-						,B.[BannerExt]
-						,B.[BannerName]
-						,B.[LocationID]
-						,[Location]		=	L.[LocationName]
-						,B.[ActiveFlag]
-						,[Slide]		= ROW_NUMBER() OVER(ORDER BY B.[BannerName]) - 1
-				FROM	[config].[utbBanners] B
-						LEFT JOIN [config].[utbBannersLocation] L ON L.[LocationID] = B.[LocationID]
-				WHERE	B.[LocationID] = ISNULL(@lLocationID,B.[LocationID])
-						AND B.[ActiveFlag]  = ISNULL(@pActiveFlag,B.[ActiveFlag])
-				ORDER BY [Location],[ActiveFlag] DESC
+				INSERT INTO [adm].[utbRoles] ([RoleName],[RoleDescription],[CreationUser],LastModifyUser)
+				VALUES (@RoleName, @RoleDescription, @InsertUser, @InsertUser)
 			-- =======================================================
 
+        IF ( @@trancount > 0
+                 AND @lLocalTran = 1
+               ) 
+                BEGIN
+                    COMMIT TRANSACTION
+                END
         END TRY
         BEGIN CATCH
+            IF ( @@trancount > 0
+                 AND XACT_STATE() <> 0
+               ) 
+                BEGIN
+                    ROLLBACK TRANSACTION
+                END
 
             SELECT  @lErrorMessage = ERROR_MESSAGE() ,
                     @lErrorSeverity = ERROR_SEVERITY() ,
@@ -51,4 +58,6 @@ AS
             RAISERROR (@lErrorMessage, @lErrorSeverity, @lErrorState);
         END CATCH
     END
+
     SET NOCOUNT OFF
+    SET XACT_ABORT OFF

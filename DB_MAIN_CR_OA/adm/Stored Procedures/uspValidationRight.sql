@@ -1,6 +1,6 @@
 ﻿-- ======================================================================
--- Name: [config].[uspReadBanners]
--- Desc: Retorna los banner segun la locacion
+-- Name: [adm].[uspValidationRight]
+-- Desc: Valida los derechos de cada usuario
 -- Auth: Jonathan Piedra johmstone@gmail.com
 -- Date: 3/13/2020
 -------------------------------------------------------------
@@ -10,9 +10,10 @@
 -- --	----		------		-----------------------------
 -- ======================================================================
 
-CREATE PROCEDURE [config].[uspReadBanners]
-	@pLocation	VARCHAR(100) = NULL,
-	@pActiveFlag BIT = NULL
+CREATE PROCEDURE [adm].[uspValidationRight]
+	@UserName	VARCHAR(50),
+	@Controller VARCHAR(50),
+	@Action		VARCHAR(50)
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -22,23 +23,19 @@ AS
             DECLARE @lErrorState INT
 
             -- =======================================================
-				DECLARE @lLocationID INT = (SELECT [LocationID]
-										    FROM   [config].[utbBannersLocation]
-										    WHERE  [LocationName] = @pLocation)
-
-				SELECT	B.[BannerID]
-						,B.[BannerData]
-						,B.[BannerExt]
-						,B.[BannerName]
-						,B.[LocationID]
-						,[Location]		=	L.[LocationName]
-						,B.[ActiveFlag]
-						,[Slide]		= ROW_NUMBER() OVER(ORDER BY B.[BannerName]) - 1
-				FROM	[config].[utbBanners] B
-						LEFT JOIN [config].[utbBannersLocation] L ON L.[LocationID] = B.[LocationID]
-				WHERE	B.[LocationID] = ISNULL(@lLocationID,B.[LocationID])
-						AND B.[ActiveFlag]  = ISNULL(@pActiveFlag,B.[ActiveFlag])
-				ORDER BY [Location],[ActiveFlag] DESC
+				SELECT	W.[WebID]
+						,[ReadRight]	= CONVERT(BIT,ISNULL(R.[Read],0))
+						,[WriteRight]	= CONVERT(BIT,ISNULL(R.[Write],0))
+			
+			  FROM		[adm].[utbWebDirectory] W
+						OUTER APPLY (SELECT	RR.[Read]
+											,RR.[Write]
+									 FROM	[adm].[utbRightsbyRole] RR
+											INNER JOIN [adm].[utbUsers] U ON U.[RoleID] = RR.[RoleID] 
+									 WHERE  RR.[WebID] = W.[WebID]
+											AND U.[UserName] = @UserName) R
+			  WHERE		W.[Controller] = @Controller
+						AND W.[Action] = @Action											
 			-- =======================================================
 
         END TRY
@@ -52,3 +49,6 @@ AS
         END CATCH
     END
     SET NOCOUNT OFF
+	/*
+	
+	*/

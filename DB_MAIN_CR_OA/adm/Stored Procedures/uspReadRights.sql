@@ -1,6 +1,6 @@
 ﻿-- ======================================================================
--- Name: [config].[uspReadBanners]
--- Desc: Retorna los banner segun la locacion
+-- Name: [adm].[uspReadRights]
+-- Desc: Retorna los derechos de cada rol
 -- Auth: Jonathan Piedra johmstone@gmail.com
 -- Date: 3/13/2020
 -------------------------------------------------------------
@@ -10,9 +10,8 @@
 -- --	----		------		-----------------------------
 -- ======================================================================
 
-CREATE PROCEDURE [config].[uspReadBanners]
-	@pLocation	VARCHAR(100) = NULL,
-	@pActiveFlag BIT = NULL
+CREATE PROCEDURE [adm].[uspReadRights]
+	@RoleID INT
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -22,23 +21,17 @@ AS
             DECLARE @lErrorState INT
 
             -- =======================================================
-				DECLARE @lLocationID INT = (SELECT [LocationID]
-										    FROM   [config].[utbBannersLocation]
-										    WHERE  [LocationName] = @pLocation)
-
-				SELECT	B.[BannerID]
-						,B.[BannerData]
-						,B.[BannerExt]
-						,B.[BannerName]
-						,B.[LocationID]
-						,[Location]		=	L.[LocationName]
-						,B.[ActiveFlag]
-						,[Slide]		= ROW_NUMBER() OVER(ORDER BY B.[BannerName]) - 1
-				FROM	[config].[utbBanners] B
-						LEFT JOIN [config].[utbBannersLocation] L ON L.[LocationID] = B.[LocationID]
-				WHERE	B.[LocationID] = ISNULL(@lLocationID,B.[LocationID])
-						AND B.[ActiveFlag]  = ISNULL(@pActiveFlag,B.[ActiveFlag])
-				ORDER BY [Location],[ActiveFlag] DESC
+				SELECT	W.[WebID]
+						,[RoleID]		= @RoleID
+						,W.[DisplayName]
+						,[RightID]		= ISNULL(RR.[RightID],0)
+						,[ReadRight]	= CONVERT(BIT,ISNULL(RR.[Read],0))
+						,[WriteRight]	= CONVERT(BIT,ISNULL(RR.[Write],0))
+				FROM	[adm].[utbWebDirectory] W
+						LEFT JOIN [adm].[utbRightsbyRole] RR ON RR.[WebID] = W.[WebID] 
+																AND RR.[ActiveFlag] = 1
+																AND RR.[RoleID] = @RoleID
+				WHERE	W.[ActiveFlag] = 1
 			-- =======================================================
 
         END TRY

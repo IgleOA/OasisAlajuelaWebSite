@@ -2,7 +2,8 @@
     [AppID]          INT           IDENTITY (1, 1) NOT NULL,
     [AppName]        VARCHAR (50)  NOT NULL,
     [Order]          INT           NOT NULL,
-    [PrivateSite]    INT           NOT NULL,
+    [PrivateSite]    BIT           NOT NULL,
+    [URL]            VARCHAR (200) NOT NULL,
     [Description]    VARCHAR (MAX) NULL,
     [ActiveFlag]     BIT           CONSTRAINT [utbAppDirectoryDefaultActiveFlagIsTrue] DEFAULT ((1)) NOT NULL,
     [CreationDate]   DATETIME      CONSTRAINT [utbAppDirectoryDefaultCreationDateSysDatetime] DEFAULT (sysdatetime()) NOT NULL,
@@ -14,6 +15,7 @@
 
 
 GO
+
 
 CREATE TRIGGER [adm].[utrLogAppDirectory] ON [adm].[utbAppDirectory]
 FOR INSERT,UPDATE

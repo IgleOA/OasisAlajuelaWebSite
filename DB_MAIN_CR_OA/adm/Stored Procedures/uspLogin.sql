@@ -1,8 +1,8 @@
 ﻿-- ======================================================================
--- Name: [config].[uspReadBanners]
--- Desc: Retorna los banner segun la locacion
+-- Name: [adm].[uspLogin]
+-- Desc: Se utiliza para la validación de los usuarios al logearse
 -- Auth: Jonathan Piedra johmstone@gmail.com
--- Date: 3/13/2020
+-- Date: 03/25/2020
 -------------------------------------------------------------
 -- Change History
 -------------------------------------------------------------
@@ -10,9 +10,9 @@
 -- --	----		------		-----------------------------
 -- ======================================================================
 
-CREATE PROCEDURE [config].[uspReadBanners]
-	@pLocation	VARCHAR(100) = NULL,
-	@pActiveFlag BIT = NULL
+CREATE PROCEDURE [adm].[uspLogin]
+	@TxtName	VARCHAR(50),
+	@Password	VARCHAR(50)
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -22,23 +22,27 @@ AS
             DECLARE @lErrorState INT
 
             -- =======================================================
-				DECLARE @lLocationID INT = (SELECT [LocationID]
-										    FROM   [config].[utbBannersLocation]
-										    WHERE  [LocationName] = @pLocation)
+				DECLARE @UserID	INT,
+						@UserName VARCHAR(50)
 
-				SELECT	B.[BannerID]
-						,B.[BannerData]
-						,B.[BannerExt]
-						,B.[BannerName]
-						,B.[LocationID]
-						,[Location]		=	L.[LocationName]
-						,B.[ActiveFlag]
-						,[Slide]		= ROW_NUMBER() OVER(ORDER BY B.[BannerName]) - 1
-				FROM	[config].[utbBanners] B
-						LEFT JOIN [config].[utbBannersLocation] L ON L.[LocationID] = B.[LocationID]
-				WHERE	B.[LocationID] = ISNULL(@lLocationID,B.[LocationID])
-						AND B.[ActiveFlag]  = ISNULL(@pActiveFlag,B.[ActiveFlag])
-				ORDER BY [Location],[ActiveFlag] DESC
+				IF EXISTS(SELECT * FROM [adm].[utbUsers] WHERE [UserName] = @TxtName OR [Email] = @TxtName)
+					BEGIN
+						SELECT	@UserID = [UserID]
+								,@UserName = [UserName]
+						FROM	[adm].[utbUsers] 
+						WHERE	([UserName] = @TxtName 
+								 OR [Email] = @TxtName)
+								AND [PasswordHash] = HASHBYTES('SHA2_512',@Password)
+								AND [ActiveFlag] = 1
+						
+						SELECT	[UserID] = ISNULL(@UserID,-1),
+								[UserName] = @UserName
+					END
+				ELSE
+					BEGIN
+						SELECT	[UserID] = 0 /*Usuario No registrado*/
+								,[UserName] = @UserName
+					END	
 			-- =======================================================
 
         END TRY

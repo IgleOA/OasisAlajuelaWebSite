@@ -1,6 +1,6 @@
 ﻿-- ======================================================================
--- Name: [config].[uspReadBanners]
--- Desc: Retorna los banner segun la locacion
+-- Name: [config].[uspReadNews]
+-- Desc: Retorna los detalles de los Noticias
 -- Auth: Jonathan Piedra johmstone@gmail.com
 -- Date: 3/13/2020
 -------------------------------------------------------------
@@ -10,9 +10,7 @@
 -- --	----		------		-----------------------------
 -- ======================================================================
 
-CREATE PROCEDURE [config].[uspReadBanners]
-	@pLocation	VARCHAR(100) = NULL,
-	@pActiveFlag BIT = NULL
+CREATE PROCEDURE [config].[uspReadNews]
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -22,23 +20,20 @@ AS
             DECLARE @lErrorState INT
 
             -- =======================================================
-				DECLARE @lLocationID INT = (SELECT [LocationID]
-										    FROM   [config].[utbBannersLocation]
-										    WHERE  [LocationName] = @pLocation)
-
-				SELECT	B.[BannerID]
-						,B.[BannerData]
-						,B.[BannerExt]
-						,B.[BannerName]
-						,B.[LocationID]
-						,[Location]		=	L.[LocationName]
-						,B.[ActiveFlag]
-						,[Slide]		= ROW_NUMBER() OVER(ORDER BY B.[BannerName]) - 1
-				FROM	[config].[utbBanners] B
-						LEFT JOIN [config].[utbBannersLocation] L ON L.[LocationID] = B.[LocationID]
-				WHERE	B.[LocationID] = ISNULL(@lLocationID,B.[LocationID])
-						AND B.[ActiveFlag]  = ISNULL(@pActiveFlag,B.[ActiveFlag])
-				ORDER BY [Location],[ActiveFlag] DESC
+				SET LANGUAGE Spanish
+				SELECT	[NewID]
+						,[Title]
+						,[Description]
+						,[BannerData]
+						,[BannerExt]
+						,[ActiveFlag]
+						,[Year]			= CONVERT(VARCHAR(4),YEAR([InsertDate]))
+						,[Month]		= DATENAME(MONTH,[InsertDate])
+						,[Day]			= CASE WHEN DATEPART(DAY,[InsertDate]) <10 THEN '0' + CONVERT(VARCHAR(1),DATEPART(DAY,[InsertDate]))
+											   ELSE CONVERT(VARCHAR(2),DATEPART(DAY,[InsertDate])) END
+				FROM	[config].[utbNews]
+				WHERE	[ActiveFlag] = 1
+				ORDER BY [LastModifyUser] DESC, [InsertDate] DESC
 			-- =======================================================
 
         END TRY

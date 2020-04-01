@@ -6,7 +6,7 @@
     <Name>DB_MAIN_CR_OA</Name>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
-    <ProjectGuid>{fb13d0cc-c990-40f1-bd03-4741b2f54dc2}</ProjectGuid>
+    <ProjectGuid>{2955f508-bd4d-499b-9c75-0fc358f9cab6}</ProjectGuid>
     <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
@@ -63,18 +63,61 @@
     <Folder Include="adm\" />
     <Folder Include="adm\Tables\" />
     <Folder Include="config\Stored Procedures\" />
+    <Folder Include="adm\Stored Procedures\" />
     <Folder Include="Security\" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="config\Tables\utbBanners.sql" />
+    <Build Include="adm\Tables\utbAppDirectory.sql" />
+    <Build Include="config\Tables\utbAboutPage.sql" />
+    <Build Include="adm\Tables\utbWebDirectory.sql" />
+    <Build Include="adm\Tables\utbRightsbyRole.sql" />
+    <Build Include="config\Tables\utbMinistries.sql" />
+    <Build Include="adm\Tables\utbResetPasswords.sql" />
+    <Build Include="config\Tables\utbSermons.sql" />
+    <Build Include="config\Tables\utbUpcomingEvents.sql" />
     <Build Include="adm\Tables\utbLogActivities.sql" />
+    <Build Include="config\Tables\utbHomePage.sql" />
     <Build Include="adm\Tables\utbRoles.sql" />
     <Build Include="adm\Tables\utbUsers.sql" />
-    <Build Include="adm\Tables\utbAppDirectory.sql" />
-    <Build Include="adm\Tables\utbWebDirectory.sql" />
+    <Build Include="config\Tables\utbWorships.sql" />
+    <Build Include="config\Tables\utbServices.sql" />
+    <Build Include="config\Tables\utbNews.sql" />
+    <Build Include="config\Tables\utbBannersLocation.sql" />
     <Build Include="config\Tables\utbMinisters.sql" />
-    <Build Include="config\Tables\utbUpcomingEvents.sql" />
+    <Build Include="config\Stored Procedures\uspReadBannersLocation.sql" />
     <Build Include="config\Stored Procedures\uspReadBanners.sql" />
+    <Build Include="config\Stored Procedures\uspReadAboutPage.sql" />
+    <Build Include="config\Stored Procedures\uspReadMinistries.sql" />
+    <Build Include="config\Stored Procedures\uspReadHomePage.sql" />
+    <Build Include="adm\Stored Procedures\uspReadWebDirectory.sql" />
+    <Build Include="adm\Stored Procedures\uspCheckAvailability.sql" />
+    <Build Include="adm\Stored Procedures\uspAddWebDirectory.sql" />
+    <Build Include="adm\Stored Procedures\uspAddUser.sql" />
+    <Build Include="adm\Stored Procedures\uspReadRoles.sql" />
+    <Build Include="adm\Stored Procedures\uspLogin.sql" />
+    <Build Include="config\Stored Procedures\uspReadSermons.sql" />
+    <Build Include="adm\Stored Procedures\uspAddRole.sql" />
+    <Build Include="adm\Stored Procedures\uspReadRights.sql" />
+    <Build Include="adm\Stored Procedures\uspUpdateRights.sql" />
+    <Build Include="adm\Stored Procedures\uspWebDirectorybyUser.sql" />
+    <Build Include="adm\Stored Procedures\uspReadUsers.sql" />
+    <Build Include="adm\Stored Procedures\uspValidationRight.sql" />
+    <Build Include="adm\Stored Procedures\uspGenerateGUIDResetPassword.sql" />
+    <Build Include="adm\Stored Procedures\uspValidateGUIDResetPassword.sql" />
+    <Build Include="adm\Stored Procedures\uspResetPassword.sql" />
+    <Build Include="adm\Stored Procedures\uspAddHomePage.sql" />
+    <Build Include="adm\Stored Procedures\uspUpdateBanner.sql" />
+    <Build Include="adm\Stored Procedures\uspAddBanner.sql" />
+    <Build Include="adm\Stored Procedures\uspAddUpcommingEvent.sql" />
+    <Build Include="config\Stored Procedures\uspReadMinisters.sql" />
+    <Build Include="config\Stored Procedures\uspReadUpcommingEvents.sql" />
+    <Build Include="adm\Stored Procedures\uspUpdateUpcommingEvent.sql" />
+    <Build Include="config\Stored Procedures\uspReadServices.sql" />
+    <Build Include="adm\Stored Procedures\uspAddNew.sql" />
+    <Build Include="adm\Stored Procedures\uspAddMinistry.sql" />
+    <Build Include="adm\Stored Procedures\uspUpdateMinistry.sql" />
+    <Build Include="config\Stored Procedures\uspReadNews.sql" />
     <Build Include="Security\adm.sql" />
     <Build Include="Security\config.sql" />
     <Build Include="Security\pub.sql" />

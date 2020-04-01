@@ -1,6 +1,6 @@
 ﻿-- ======================================================================
--- Name: [config].[uspReadBanners]
--- Desc: Retorna los banner segun la locacion
+-- Name: [config].[uspReadSermons]
+-- Desc: Retorna los detalles de los sermones
 -- Auth: Jonathan Piedra johmstone@gmail.com
 -- Date: 3/13/2020
 -------------------------------------------------------------
@@ -10,9 +10,7 @@
 -- --	----		------		-----------------------------
 -- ======================================================================
 
-CREATE PROCEDURE [config].[uspReadBanners]
-	@pLocation	VARCHAR(100) = NULL,
-	@pActiveFlag BIT = NULL
+CREATE PROCEDURE [config].[uspReadSermons]
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -22,23 +20,21 @@ AS
             DECLARE @lErrorState INT
 
             -- =======================================================
-				DECLARE @lLocationID INT = (SELECT [LocationID]
-										    FROM   [config].[utbBannersLocation]
-										    WHERE  [LocationName] = @pLocation)
-
-				SELECT	B.[BannerID]
-						,B.[BannerData]
-						,B.[BannerExt]
-						,B.[BannerName]
-						,B.[LocationID]
-						,[Location]		=	L.[LocationName]
-						,B.[ActiveFlag]
-						,[Slide]		= ROW_NUMBER() OVER(ORDER BY B.[BannerName]) - 1
-				FROM	[config].[utbBanners] B
-						LEFT JOIN [config].[utbBannersLocation] L ON L.[LocationID] = B.[LocationID]
-				WHERE	B.[LocationID] = ISNULL(@lLocationID,B.[LocationID])
-						AND B.[ActiveFlag]  = ISNULL(@pActiveFlag,B.[ActiveFlag])
-				ORDER BY [Location],[ActiveFlag] DESC
+				SELECT	S.[SermonID]
+						,S.[Title]
+						,S.[Description]
+						,S.[Tags]
+						,S.[MinisterID]
+						,[MinisterName] =	M.[Title] + ' ' + M.[FullName]
+						,S.[SermonDate]
+						--,S.[SermonURL]
+						,[SermonURL]	=	REPLACE(REPLACE(REPLACE(S.[SermonURL],'https://youtu.be/','https://www.youtube.com/embed/'),'https://www.youtube.com/watch?v=','https://www.youtube.com/embed/'),'\','')
+						,S.[BackgroundImage]
+						,S.[BackgroundExt]
+						,S.[ActiveFlag]
+				FROM	[config].[utbSermons] S
+						LEFT JOIN [config].[utbMinisters] M ON M.[MinisterID] = S.[MinisterID]
+				ORDER BY S.[SermonDate] DESC
 			-- =======================================================
 
         END TRY

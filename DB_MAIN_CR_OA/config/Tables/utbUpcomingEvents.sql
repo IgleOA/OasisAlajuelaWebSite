@@ -2,6 +2,7 @@
     [EventID]        INT           IDENTITY (1, 1) NOT NULL,
     [Title]          VARCHAR (50)  NOT NULL,
     [MinisterID]     INT           NOT NULL,
+    [Description]    VARCHAR (MAX) NULL,
     [ScheduledDate]  DATETIME      NOT NULL,
     [ActiveFlag]     BIT           CONSTRAINT [utbUpcomingEventsDefaultActiveFlagIsTrue] DEFAULT ((1)) NOT NULL,
     [InsertDate]     DATETIME      CONSTRAINT [utbUpcomingEventsDefaultInsertDatesysdatetime] DEFAULT (sysdatetime()) NOT NULL,
@@ -14,6 +15,7 @@
 
 
 GO
+
 CREATE TRIGGER [config].[utrLogUpcommingEvents] ON [config].[utbUpcomingEvents]
 FOR INSERT,UPDATE
 AS

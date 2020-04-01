@@ -1,6 +1,6 @@
 ﻿-- ======================================================================
--- Name: [config].[uspReadBanners]
--- Desc: Retorna los banner segun la locacion
+-- Name: [adm].[uspReadUsers]
+-- Desc: Retorna los usuarios registrados
 -- Auth: Jonathan Piedra johmstone@gmail.com
 -- Date: 3/13/2020
 -------------------------------------------------------------
@@ -10,9 +10,8 @@
 -- --	----		------		-----------------------------
 -- ======================================================================
 
-CREATE PROCEDURE [config].[uspReadBanners]
-	@pLocation	VARCHAR(100) = NULL,
-	@pActiveFlag BIT = NULL
+CREATE PROCEDURE [adm].[uspReadUsers]
+	@UserID INT = NULL
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -22,23 +21,18 @@ AS
             DECLARE @lErrorState INT
 
             -- =======================================================
-				DECLARE @lLocationID INT = (SELECT [LocationID]
-										    FROM   [config].[utbBannersLocation]
-										    WHERE  [LocationName] = @pLocation)
-
-				SELECT	B.[BannerID]
-						,B.[BannerData]
-						,B.[BannerExt]
-						,B.[BannerName]
-						,B.[LocationID]
-						,[Location]		=	L.[LocationName]
-						,B.[ActiveFlag]
-						,[Slide]		= ROW_NUMBER() OVER(ORDER BY B.[BannerName]) - 1
-				FROM	[config].[utbBanners] B
-						LEFT JOIN [config].[utbBannersLocation] L ON L.[LocationID] = B.[LocationID]
-				WHERE	B.[LocationID] = ISNULL(@lLocationID,B.[LocationID])
-						AND B.[ActiveFlag]  = ISNULL(@pActiveFlag,B.[ActiveFlag])
-				ORDER BY [Location],[ActiveFlag] DESC
+				SELECT	U.[UserID]
+						,U.[RoleID]
+						,U.[FullName]
+						,U.[UserName]
+						,U.[Email]
+						,U.[ActiveFlag]
+						,U.[LastActivityDate]
+						,U.[CreationDate]
+						,R.[RoleName]
+				FROM	[adm].[utbUsers] U
+						LEFT JOIN [adm].[utbRoles] R ON R.RoleID = U.[RoleID]
+				WHERE	U.[UserID] = ISNULL(@UserID,[UserID])
 			-- =======================================================
 
         END TRY
