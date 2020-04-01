@@ -5,6 +5,7 @@ using ET;
 using BL;
 using System.Web.Security;
 using OasisAlajuelaWebSite.Models;
+using System.Text;
 
 namespace OasisAlajuelaWebSite.Controllers
 { 
@@ -48,6 +49,18 @@ namespace OasisAlajuelaWebSite.Controllers
                         SubjectEmail = "Oasis Alajuela - Registro satisfactorio",
                         BodyEmail = "Gracias " + User.FullName + " por registrarse y por tener el sentir de hacerte parte de esta familia. Dios trae cosas grandes para esta casa y ahora seras parte de ellas. Bendiciones..."
                     };
+
+                    StringBuilder mailBody = new StringBuilder();
+
+                    mailBody.AppendFormat("<h1>Oasis Alajuela</h1>");
+                    mailBody.AppendFormat("<br />");
+                    mailBody.AppendFormat("<p>Gracias {0} por registrarse y por tener el sentir de hacerte parte de esta familia. Dios trae cosas grandes para esta casa y ahora seras parte de ellas.</p>", User.FullName);
+                    mailBody.AppendFormat("<br />");
+                    mailBody.AppendFormat("<p>Desde ya puedes ver el contenido completo de nuestro website http://igleoa.azurewebsites.net/ </p>");
+                    mailBody.AppendFormat("<br />");
+                    mailBody.AppendFormat("<h3>Bendiciones....</h3>");
+
+                    Email.BodyEmail = mailBody.ToString();
 
                     MailMessage mm = new MailMessage(Email.FromEmail, Email.ToEmail);
                     mm.Subject = Email.SubjectEmail;
@@ -115,23 +128,23 @@ namespace OasisAlajuelaWebSite.Controllers
                 return View(model);
             }
 
-            int userid = UBL.Login(model);
+            Users LoginUser = UBL.Login(model);
 
-            if (userid >= 1)
+            if (LoginUser.UserID >= 1)
             {
-                FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
+                FormsAuthentication.SetAuthCookie(LoginUser.UserName, model.RememberMe);
                 if (this.Url.IsLocalUrl(ReturnUrl) && ReturnUrl.Length > 1 && ReturnUrl.StartsWith("/")
                     && !ReturnUrl.StartsWith("//") && !ReturnUrl.StartsWith("/\\"))
                 {
                     return this.Redirect(ReturnUrl);
                 }
 
-                ViewBag.UserName = model.UserName;
+                ViewBag.UserName = LoginUser.UserName;
                 return RedirectToAction("Index", "Home");
             }
             else
             {
-                if (userid == -1)
+                if (LoginUser.UserID == -1)
                 {
                     this.ModelState.AddModelError(String.Empty, "El nombre de usuario o Contraseña es incorrecto.");
                 }
@@ -171,7 +184,7 @@ namespace OasisAlajuelaWebSite.Controllers
                 Email.FromEmail = "johmstone@gmail.com";
                 Email.ToEmail = model.Email;
                 Email.SubjectEmail = Code.FullName + " - Restablecer contraseña";
-                Email.BodyEmail = "Para restablecer su contraseña, utilice el siguiente link http://localhost:61214/Account/ResetPassword?GUID=" + Code.GUID;
+                Email.BodyEmail = "Para restablecer su contraseña, utilice el siguiente link http://igleoa.azurewebsites.net/Account/ResetPassword?GUID=" + Code.GUID;
                 //Email.BodyEmail = "Para restablecer su contraseña, utilice el siguiente link http://localhost:61214/Account/ResetPassword?GUID=" + Code.GUID;
 
                 MailMessage mm = new MailMessage(Email.FromEmail, Email.ToEmail);

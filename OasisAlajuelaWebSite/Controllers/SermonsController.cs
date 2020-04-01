@@ -12,7 +12,7 @@ namespace OasisAlajuelaWebSite.Controllers
         YouTubeBL YBL = new YouTubeBL();
         SermonsBL SBL = new SermonsBL();
 
-        public ActionResult Index()
+        public ActionResult Index(string id)
         {
             //var data = from d in YBL.Youtubelist(50)
             //           orderby d.PublishedAt descending

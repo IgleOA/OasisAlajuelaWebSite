@@ -2495,6 +2495,7 @@
     <Content Include="Views\Ministries\AddNew.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\tinymce_jquery_full.cshtml" />
     <Content Include="Views\Ministries\Edit.cshtml" />
+    <Content Include="Views\Home\_Menu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

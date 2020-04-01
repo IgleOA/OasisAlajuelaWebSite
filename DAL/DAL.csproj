@@ -69,16 +69,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AboutPageDAL.cs" />
+    <Compile Include="BannersLocationDAL.cs" />
     <Compile Include="BannnersDAL.cs" />
     <Compile Include="HomeDAL.cs" />
     <Compile Include="MinistersDAL.cs" />
     <Compile Include="MinistriesDAL.cs" />
     <Compile Include="NewsDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RightsDAL.cs" />
     <Compile Include="SermonsDAL.cs" />
     <Compile Include="ServicesDAL.cs" />
     <Compile Include="UpcommingEventsDAL.cs" />
     <Compile Include="UsersDAL.cs" />
+    <Compile Include="WebDirectoryDAL.cs" />
     <Compile Include="YouTubeDAL.cs" />
   </ItemGroup>
   <ItemGroup>

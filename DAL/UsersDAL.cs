@@ -125,9 +125,9 @@ namespace DAL
             return rpta;
         }
 
-        public int Login(Login User)
+        public Users Login(Login User)
         {
-            int userid = 0;
+            Users LoginUser = new Users();
 
             try
             {
@@ -157,7 +157,15 @@ namespace DAL
                 SqlCmd.Parameters.Add(ParPassword);
 
                 //EXEC Command
-                userid = Convert.ToInt32(SqlCmd.ExecuteScalar());
+                using (var dr = SqlCmd.ExecuteReader())
+                {
+                    dr.Read();
+                    if (dr.HasRows)
+                    {
+                        LoginUser.UserID = Convert.ToInt32(dr["UserID"]);
+                        LoginUser.UserName = dr["UserName"].ToString();
+                    }
+                }
 
                 if (SqlCon.State == ConnectionState.Open) SqlCon.Close();                
             }
@@ -165,7 +173,7 @@ namespace DAL
             {
                 throw;
             }
-            return userid;
+            return LoginUser;
         }
 
         public AuthorizationCode AuthCode(string Email)

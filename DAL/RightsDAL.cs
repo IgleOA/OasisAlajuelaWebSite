@@ -1,0 +1,125 @@
+﻿using ET;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
+
+namespace DAL
+{
+    public class RightsDAL
+    {
+        private SqlConnection SqlCon = new SqlConnection(ConfigurationManager.ConnectionStrings["DB_MAIN_CR_OA_Connection"].ToString());
+        public List<Rights> List(int RoleID)
+        {
+            List<Rights> List = new List<Rights>();
+
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[adm].[uspReadWebDirectory]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                SqlParameter pRoleID = new SqlParameter
+                {
+                    ParameterName = "@RoleID",
+                    SqlDbType = SqlDbType.Int,
+                    Value = RoleID
+                };
+                SqlCmd.Parameters.Add(pRoleID);
+
+                using (var dr = SqlCmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        var detail = new Rights
+                        {
+                            WebID = Convert.ToInt32(dr["WebID"]),
+                            RoleID = Convert.ToInt32(dr["RoleID"]),
+                            DisplayName = dr["DisplayName"].ToString(),
+                            RightID = Convert.ToInt32(dr["RightID"]),
+                            ReadRight = Convert.ToBoolean(dr["ReadRight"]),
+                            WriteRight = Convert.ToBoolean(dr["WriteRight"])
+                        };
+                        List.Add(detail);
+                    }
+                }
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            return List;
+        }
+
+        public bool Update(Rights Detail, string InsertUser)
+        {
+            bool rpta = false;
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[adm].[uspUpdateRights]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                //Insert Parameters
+                SqlParameter WebID = new SqlParameter
+                {
+                    ParameterName = "@WebID",
+                    SqlDbType = SqlDbType.Int,
+                    Value = Detail.WebID
+                };
+                SqlCmd.Parameters.Add(WebID);
+
+                SqlParameter RoleID = new SqlParameter
+                {
+                    ParameterName = "@RoleID",
+                    SqlDbType = SqlDbType.Int,
+                    Value = Detail.RoleID
+                };
+                SqlCmd.Parameters.Add(RoleID);
+
+                SqlParameter RightID = new SqlParameter
+                {
+                    ParameterName = "@RightID",
+                    SqlDbType = SqlDbType.Int,
+                    Value = Detail.RightID
+                };
+                SqlCmd.Parameters.Add(RightID);
+
+                SqlParameter ReadRight = new SqlParameter
+                {
+                    ParameterName = "@Read",
+                    SqlDbType = SqlDbType.Bit,
+                    Value = Detail.ReadRight
+                };
+                SqlCmd.Parameters.Add(ReadRight);
+
+                SqlParameter WriteRight = new SqlParameter
+                {
+                    ParameterName = "@Write",
+                    SqlDbType = SqlDbType.Bit,
+                    Value = Detail.WriteRight
+                };
+                SqlCmd.Parameters.Add(WriteRight);
+
+                //Exec Command
+                SqlCmd.ExecuteNonQuery();
+
+                rpta = true;
+
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            return rpta;
+        }
+    }
+}

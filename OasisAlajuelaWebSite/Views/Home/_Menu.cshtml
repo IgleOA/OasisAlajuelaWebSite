@@ -1,0 +1,46 @@
+﻿@model IEnumerable<ET.WebDirectory>
+
+@using Microsoft.AspNet.Identity
+
+@{ Layout = null; }
+
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+    {
+        @Html.AntiForgeryToken()
+        <ul class="links">
+            <li>
+                <a href='@Url.Action("Details","Profile")' class="Menulinks align-middle" title="Perfil">
+                    <i class="far fa-user"></i> Hola @User.Identity.GetUserName()!
+                </a>
+            </li>
+            @foreach(var item in Model)
+            {
+                <li>
+                    @Html.ActionLink(item.DisplayName,item.Action,item.Controller, routeValues: null, htmlAttributes: new { @class = "Menulinks" })
+                </li>
+            }
+            <li>
+                <a href="javascript:document.getElementById('logoutForm').submit()" class="Menulinks">Cerrar Sesión</a>
+            </li>
+        </ul>
+    }
+}
+else
+{
+    <ul class="links">
+        @foreach(var item in Model)
+        {
+            <li>
+                @Html.ActionLink(item.DisplayName,item.Action,item.Controller, routeValues: null, htmlAttributes: new { @class = "Menulinks" })
+            </li>
+        }
+        <li>
+            @Html.ActionLink("Registrarse", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "Menulinks" })
+        </li>
+        <li>
+            @Html.ActionLink("Accesar", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "Menulinks" })
+        </li>
+    </ul>
+}

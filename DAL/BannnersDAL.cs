@@ -50,6 +50,7 @@ namespace DAL
                             BannerData = (byte[])dr["BannerData"],
                             BannerExt = dr["BannerExt"].ToString(),
                             BannerName = dr["BannerName"].ToString(),
+                            LocationID = Convert.ToInt32(dr["LocationID"]),
                             LocationBanner = dr["Location"].ToString(),
                             ActiveFlag = Convert.ToBoolean(dr["ACtiveFlag"]),
                             Slide = Convert.ToInt32(dr["Slide"])
@@ -122,7 +123,7 @@ namespace DAL
                 Parm.Add("@Banner", NewBanner.BannerData);
                 Parm.Add("@BannerExt", NewBanner.BannerExt);
                 Parm.Add("@BannerName", NewBanner.BannerName);
-                Parm.Add("@Location", NewBanner.LocationBanner);
+                Parm.Add("@LocationID", NewBanner.LocationID);
 
                 SqlCon.Open();
 

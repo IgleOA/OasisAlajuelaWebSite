@@ -13,6 +13,7 @@ namespace OasisAlajuelaWebSite.Controllers
     public class BannersController : Controller
     {
         private BannersBL BBL = new BannersBL();
+        private BannersLocationBL BLBL = new BannersLocationBL();
 
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
@@ -59,6 +60,7 @@ namespace OasisAlajuelaWebSite.Controllers
             return View(banners.ToPagedList(pageNumber, pageSize));
         }
 
+        [Authorize]
         public ActionResult BannersChangeStatus(int id)
         {
             string InsertUser = User.Identity.GetUserName();
@@ -76,9 +78,13 @@ namespace OasisAlajuelaWebSite.Controllers
             }
         }
 
+        [Authorize]
         public ActionResult AddNew()
         {
             Banner NewBanner = new Banner();
+
+            NewBanner.LList = BLBL.List();
+
             return View(NewBanner);
         }
 
@@ -110,12 +116,13 @@ namespace OasisAlajuelaWebSite.Controllers
                 else
                 {
                     MS.ActionType = "CREATE";
-
+                    MS.LList = BLBL.List();
                     return View(MS);
                 }
             }
             else
             {
+                MS.LList = BLBL.List();
                 return View(MS);
             }
         }

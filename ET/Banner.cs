@@ -31,6 +31,8 @@ namespace ET
 
         [Required]
         [Display(Name = "Ubicación")]
+        public int LocationID { get; set; }
+
         public string LocationBanner { get; set; }
 
         [Display(Name ="Status")]
@@ -39,6 +41,16 @@ namespace ET
         public int Slide { get; set; }
         
         public string ActionType { get; set; }
+         
+        public List<BannersLocation> LList { get; set; }
+
+        public BannersLocation BLData { get; set; }
+
+
+        public Banner()
+        {
+            BLData = new BannersLocation();
+        }
 
         public class AllowExtensionsAttribute : ValidationAttribute
         {

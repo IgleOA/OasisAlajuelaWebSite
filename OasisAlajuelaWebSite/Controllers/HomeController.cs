@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using ET;
 using BL;
 using OasisAlajuelaWebSite.Models;
+using Microsoft.AspNet.Identity;
 
 namespace OasisAlajuelaWebSite.Controllers
 {
@@ -18,6 +19,7 @@ namespace OasisAlajuelaWebSite.Controllers
         private YouTubeBL YBL = new YouTubeBL();
         private NewsBL NBL = new NewsBL();
         private AboutPageBL ABL = new AboutPageBL();
+        private WebDirectoryBL WBL = new WebDirectoryBL();
 
         public ActionResult Index()
         {
@@ -78,6 +80,13 @@ namespace OasisAlajuelaWebSite.Controllers
             AboutPage Aboutpage = ABL.About();
 
             return View(Aboutpage);
+        }
+
+        public ActionResult _Menu()
+        {
+            var menu = WBL.WDByUser(User.Identity.GetUserName());
+
+            return View(menu.ToList());
         }
     }
 }

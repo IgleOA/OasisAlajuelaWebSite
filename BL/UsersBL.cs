@@ -17,7 +17,7 @@ namespace BL
             return UDAL.AddUser(user, insertuser);
         }
 
-        public int Login(Login User)
+        public Users Login(Login User)
         {
             return UDAL.Login(User);
         }
