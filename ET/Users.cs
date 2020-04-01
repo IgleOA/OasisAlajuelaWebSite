@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace ET
@@ -38,10 +39,18 @@ namespace ET
         [Display(Name = "Rol")]
         public int RoleID { get; set; }
 
-        [Required]
+        [Display(Name = "Rol")]
+        public string RoleName { get; set; }
+
         [Display(Name = "Status")]
         public bool ActiveFlag { get; set; }
-        
+
+        [Display(Name = "Ultima actividad")]
+        public Nullable<DateTime> LastActivityDate { get; set; }
+
+        [Display(Name = "Fecha de registro")]
+        public DateTime CreationDate { get; set; }
+
         public List<Roles> RolesList { get; set; }
 
         public Roles RolesData { get; set; }

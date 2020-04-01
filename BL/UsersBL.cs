@@ -1,5 +1,6 @@
 ﻿using ET;
 using DAL;
+using System.Collections.Generic;
 
 namespace BL
 {
@@ -35,6 +36,11 @@ namespace BL
         public bool ResetPassword(ResetPasswordModel model)
         {
             return UDAL.ResetPassword(model);
+        }
+
+        public List<Users> List ()
+        {
+            return UDAL.List();
         }
     }
 }

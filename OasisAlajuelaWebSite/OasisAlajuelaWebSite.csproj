@@ -326,8 +326,12 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MinistriesController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
+    <Compile Include="Controllers\RightsController.cs" />
+    <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SermonsController.cs" />
     <Compile Include="Controllers\UpcommingEventsController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="Controllers\WebDirectoryController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -2496,6 +2500,12 @@
     <Content Include="Views\Shared\EditorTemplates\tinymce_jquery_full.cshtml" />
     <Content Include="Views\Ministries\Edit.cshtml" />
     <Content Include="Views\Home\_Menu.cshtml" />
+    <Content Include="Views\WebDirectory\Index.cshtml" />
+    <Content Include="Views\WebDirectory\AddNew.cshtml" />
+    <Content Include="Views\Roles\Index.cshtml" />
+    <Content Include="Views\Rights\Index.cshtml" />
+    <Content Include="Views\Roles\AddNew.cshtml" />
+    <Content Include="Views\Users\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

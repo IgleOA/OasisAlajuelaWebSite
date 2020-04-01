@@ -17,5 +17,10 @@ namespace BL
         {
             return RDAL.Update(detail, insertuser);
         }
+
+        public AccessRights ValidationRights(string username, string controller, string action)
+        {
+            return RDAL.ValidationRights(username, controller, action);
+        }
     }
 }

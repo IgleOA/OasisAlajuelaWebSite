@@ -292,5 +292,53 @@ namespace DAL
             }
             return rpta;
         }
+
+        public List<Users> List()
+        {
+            List<Users> List = new List<Users>();
+
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[adm].[uspReadUsers]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                using (var dr = SqlCmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        var detail = new Users
+                        {
+                            UserID = Convert.ToInt32(dr["UserID"]),
+                            RoleID = Convert.ToInt32(dr["RoleID"]),
+                            FullName = dr["FullName"].ToString(),
+                            UserName = dr["UserName"].ToString(),
+                            Email = dr["Email"].ToString(),
+                            ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]),
+                            CreationDate = Convert.ToDateTime(dr["CreationDate"]),
+                            RoleName = dr["RoleName"].ToString()                            
+                        };
+                        if(!Convert.IsDBNull(dr["LastActivityDate"]))
+                        {
+                            detail.LastActivityDate = Convert.ToDateTime(dr["LastActivityDate"]);
+                        }
+                        else
+                        {
+                            detail.LastActivityDate = null;
+                        }
+                        List.Add(detail);
+                    }
+                }
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            return List;
+        }
     }
 }

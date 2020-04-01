@@ -16,9 +16,8 @@ namespace ET
         [Display(Name = "Descripción")]
         public string RoleDescription { get; set; }
 
-        [Required]
-        [Display(Name = "Status")]
-        public bool ActiveFlag { get; set; }
+        public string ActionType { get; set; }
+
     }
 
 }

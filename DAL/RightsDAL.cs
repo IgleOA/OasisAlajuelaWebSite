@@ -17,7 +17,7 @@ namespace DAL
             try
             {
                 SqlCon.Open();
-                var SqlCmd = new SqlCommand("[adm].[uspReadWebDirectory]", SqlCon)
+                var SqlCmd = new SqlCommand("[adm].[uspReadRights]", SqlCon)
                 {
                     CommandType = CommandType.StoredProcedure
                 };
@@ -108,6 +108,15 @@ namespace DAL
                 };
                 SqlCmd.Parameters.Add(WriteRight);
 
+                SqlParameter ParInsertUser = new SqlParameter
+                {
+                    ParameterName = "@InsertUser",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 50,
+                    Value = InsertUser
+                };
+                SqlCmd.Parameters.Add(ParInsertUser);
+
                 //Exec Command
                 SqlCmd.ExecuteNonQuery();
 
@@ -120,6 +129,62 @@ namespace DAL
                 throw;
             }
             return rpta;
+        }
+
+        public AccessRights ValidationRights(string UserName, string Controller, string Action)
+        {
+            var Detail = new AccessRights();
+
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[adm].[uspValidationRight]", SqlCon);
+                SqlCmd.CommandType = CommandType.StoredProcedure;
+
+                SqlParameter pUserName = new SqlParameter
+                {
+                    ParameterName = "@UserName",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 50,
+                    Value = UserName
+                };
+                SqlCmd.Parameters.Add(pUserName);
+
+                SqlParameter pController = new SqlParameter
+                {
+                    ParameterName = "@Controller",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 50,
+                    Value = Controller
+                };
+                SqlCmd.Parameters.Add(pController);
+
+                SqlParameter pAction = new SqlParameter
+                {
+                    ParameterName = "@Action",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 50,
+                    Value = Action
+                };
+                SqlCmd.Parameters.Add(pAction);
+
+                using (var dr = SqlCmd.ExecuteReader())
+                {
+                    dr.Read();
+                    if (dr.HasRows)
+                    {
+                        Detail.ReadRight = Convert.ToBoolean(dr["ReadRight"]);
+                        Detail.WriteRight = Convert.ToBoolean(dr["WriteRight"]);
+                    }
+                }
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            return Detail;
         }
     }
 }

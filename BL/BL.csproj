@@ -51,6 +51,7 @@
     <Compile Include="NewsBL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RightsBL.cs" />
+    <Compile Include="RolesBL.cs" />
     <Compile Include="SermonsBL.cs" />
     <Compile Include="ServicesBL.cs" />
     <Compile Include="UpcommingEventsBL.cs" />

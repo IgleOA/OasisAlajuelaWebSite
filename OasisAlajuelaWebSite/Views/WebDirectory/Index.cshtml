@@ -1,0 +1,75 @@
+﻿@model IEnumerable<ET.WebDirectory>
+
+@{
+    ViewBag.Title = "Directorio Web";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<script type="text/javascript">
+    function AddNew() {
+        var url = '@Url.Action("AddNew")';
+        window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
+    }
+    function Edit(WebID) {
+        var url = '@Url.Action("Edit", new { id = "webid"})';
+        url = url.replace("webid", WebID);
+        window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
+    }
+</script>
+<section class="hp-section">
+    <div class="container">
+        <div class="row justify-content-start">
+            <h2 class="heading-section font-weight-bold my-2 p-0">@ViewBag.Title</h2>
+        </div>
+        <div class="row justify-content-start">
+            <table class="table-responsive-xl align-content-center p-0">
+                <tbody>
+                    <tr class="align-middle">
+                        @*<th class="text-center py-2"></th>*@
+                        <th class="py-2">@Html.DisplayNameFor(model => model.Controller)</th>
+                        <th class="text-center py-2">@Html.DisplayNameFor(model => model.Action)</th>
+                        <th class="text-center py-2">@Html.DisplayNameFor(model => model.PublicMenu)</th>
+                        <th class="text-center py-2">@Html.DisplayNameFor(model => model.AdminMenu)</th>
+                        <th class="text-center py-2">@Html.DisplayNameFor(model => model.DisplayName)</th>
+                        <th class="text-center py-2">@Html.DisplayNameFor(model => model.Parameter)</th>
+                        <th class="text-center py-2">@Html.DisplayNameFor(model => model.Order)</th>                        
+                    </tr>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            @*<td class="text-center align-middle">
+                                <a href="#" onclick="Edit(@item.WebID)" title="Editar"><i class="fas fa-edit fa-1x"></i></a>
+                            </td>*@
+                            <td class="align-middle">@Html.DisplayFor(modelItem => item.Controller)</td>
+                            <td class="text-center align-middle">@Html.DisplayFor(modelItem => item.Action)</td>                            
+                            @{
+                                var isPublic = (item.PublicMenu ? "X" : "");
+                                var isAdmin = (item.AdminMenu ? "X" : "");
+                            }
+                            <td class="text-center align-middle">@Html.DisplayFor(modelItem => isPublic)</td>
+                            <td class="text-center align-middle">@Html.DisplayFor(modelItem => isAdmin)</td>
+                            <td class="text-center align-middle">@Html.DisplayFor(modelItem => item.DisplayName)</td>                            
+                            <td class="text-center align-middle">@Html.DisplayFor(modelItem => item.Parameter)</td>                            
+                            <td class="text-center align-middle">@Html.DisplayFor(modelItem => item.Order)</td>  
+                            
+                        </tr>
+                    }
+                </tbody>
+            </table>            
+        </div>     
+        @if (ViewBag.WriteRight == true)
+        {
+            <div class="row">
+                <div class="p-0">
+                    <div class="media services d-block text-justify">
+                        <div class="media-body p-0 mt-0">
+                            <div class="d-flex justify-content-between">
+                                <a href="#" onclick="AddNew()" title="Agregar un nuevo Web Directory" class="btn btn-light" style="text-decoration: none;"><i class="fas fa-plus-square fa-1x"></i> Agregar un nuevo Web Directory</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>

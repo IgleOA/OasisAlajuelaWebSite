@@ -1,0 +1,67 @@
+﻿@model IEnumerable<ET.Roles>
+
+@{
+    ViewBag.Title = "Directorio Web";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<script type="text/javascript">
+    function AddNew() {
+        var url = '@Url.Action("AddNew")';
+        window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
+    }
+    function Edit(RoleID) {
+        var url = '@Url.Action("Edit", new { id = "roleid"})';
+        url = url.replace("roleid", RoleID);
+        window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
+    }
+    function Rights(RoleID) {
+        var url = '@Url.Action("Index","Rights", new { id = "roleID"})';
+        url = url.replace("roleID", RoleID);
+        window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
+    }
+</script>
+<section class="hp-section">
+    <div class="container">
+        <div class="row justify-content-start">
+            <h2 class="heading-section font-weight-bold my-2 p-0">@ViewBag.Title</h2>
+        </div>
+        <div class="row justify-content-start">
+            <table class="table-responsive-xl align-content-center p-0">
+                <tbody>
+                    <tr class="align-middle">
+                        @*<th class="text-center py-2"></th>*@
+                        <th class="py-2">@Html.DisplayNameFor(model => model.RoleName)</th>
+                        <th class="py-2">@Html.DisplayNameFor(model => model.RoleDescription)</th>
+                        <th class="py-2"></th>
+                    </tr>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="align-middle">@Html.DisplayFor(modelItem => item.RoleName)</td>
+                            <td class="align-middle">@Html.DisplayFor(modelItem => item.RoleDescription)</td>
+                            <td class="text-justify align-middle" style="width: 130px;">
+                                <a href="#" title="Derechos" onclick="Rights(@item.RoleID)"><i class="fas fa-chevron-circle-right fa-1x"></i> Derechos</a>
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        @if (ViewBag.WriteRight == true)
+        {
+            <div class="row">
+                <div class="p-0">
+                    <div class="media services d-block text-justify">
+                        <div class="media-body p-0 mt-0">
+                            <div class="d-flex justify-content-between">
+                                <a href="#" onclick="AddNew()" title="Agregar un nuevo Rol" class="btn btn-light" style="text-decoration: none;"><i class="fas fa-plus-square fa-1x"></i> Agregar un nuevo Rol</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>
