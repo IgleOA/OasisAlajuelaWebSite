@@ -6,6 +6,7 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script type="text/javascript">
     function Activate(UserID) {
         $.ajax({
@@ -22,7 +23,7 @@
             }).done(function () { alert('Hecho!!!'); location.reload(); });
         }
     }
-    function Create() {
+    function AddNew() {
         var url = '@Url.Action("AddNew")';
         window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
     }
@@ -47,16 +48,16 @@
             </div>
         }
         <div class="row justify-content-start">
-            <table class="table-responsive-xl align-content-center p-0">
+            <table class="table-responsive-xl align-content-center p-0 m-0">
                 <tbody>
                     <tr class="align-middle">
-                        <th class="py-2">@Html.DisplayNameFor(model => model.FirstOrDefault().FullName)</th>
-                        <th class="py-2">@Html.DisplayNameFor(model => model.FirstOrDefault().UserName)</th>
-                        <th class="py-2">@Html.DisplayNameFor(model => model.FirstOrDefault().RoleName)</th>
-                        <th class="text-center py-2">@Html.DisplayNameFor(model => model.FirstOrDefault().ActiveFlag)</th>
-                         @if (ViewBag.WriteRight == true)
+                        <th class="py-2 align-middle">@Html.DisplayNameFor(model => model.FirstOrDefault().FullName)</th>
+                        <th class="py-2 align-middle">@Html.DisplayNameFor(model => model.FirstOrDefault().UserName)</th>
+                        <th class="py-2 align-middle">@Html.DisplayNameFor(model => model.FirstOrDefault().RoleName)</th>
+                        <th class="text-center py-2 align-middle">@Html.DisplayNameFor(model => model.FirstOrDefault().ActiveFlag)</th>
+                        @if (ViewBag.WriteRight == true)
                         {
-                            <th class="text-center py-2" colspan="3">Acción</th>
+                            <th class="text-center py-2 align-middle" colspan="3">Acción</th>
                         }
                     </tr>
 
@@ -66,9 +67,11 @@
                             <td class="align-middle">@Html.DisplayFor(modelItem => item.FullName)</td>
                             <td class="align-middle">@Html.DisplayFor(modelItem => item.UserName)</td>
                             <td class="align-middle">@Html.DisplayFor(modelItem => item.RoleName)</td>
-                           
+
                             @{
                                 var isActive = (item.ActiveFlag ? "Activo" : "Inactivo");
+                                var Editflag = "EditFlag" + item.UserID.ToString();
+
                             }
                             <td class="text-center align-middle">@Html.DisplayFor(modelItem => isActive)</td>
                             @if (ViewBag.WriteRight == true)
@@ -76,20 +79,42 @@
                                 <td class="text-center align-middle">
                                     @if (item.ActiveFlag == false)
                                     {
-                                        <a href="#" class="card-link" onclick="Activate(@item.UserID)" title="Habilitar"><i class="fas fa-check-circle fa-1x" style="vertical-align: middle; color:green;"></i></a>
+                                        <script type="text/javascript">
+                                            $(document).ready(function () {
+                                                $("#@Editflag").hover(function () {
+                                                    $(this).removeClass('fas fa-times-circle fa-2x DisactiveColor');
+                                                    $(this).addClass('fas fa-check-circle fa-2x ActiveColor');
+                                                }, function () {
+                                                    $(this).removeClass('fas fa-check-circle fa-2x ActiveColor');
+                                                    $(this).addClass('fas fa-times-circle fa-2x DisactiveColor');
+                                                });
+                                            });
+                                        </script>
+                                        <a href="#" class="card-link" onclick="Activate(@item.UserID)" title="Habilitar"><i id="@Editflag" class="fas fa-times-circle fa-2x DisactiveColor" style="vertical-align: middle;"></i></a>
                                     }
                                     else
                                     {
-                                        <a href="#" class="card-link" onclick="Desactivate(@item.UserID)" title="Deshabilitar"><i class="fas fa-times-circle fa-1x" style="vertical-align: middle; color:red;"></i></a>
+                                        <script type="text/javascript">
+                                            $(document).ready(function () {
+                                                $("#@Editflag").hover(function () {
+                                                    $(this).removeClass('fas fa-check-circle fa-2x ActiveColor');
+                                                    $(this).addClass('fas fa-times-circle fa-2x DisactiveColor');
+                                                }, function () {
+                                                    $(this).removeClass('fas fa-times-circle fa-2x DisactiveColor');
+                                                    $(this).addClass('fas fa-check-circle fa-2x ActiveColor');
+                                                });
+                                            });
+                                        </script>
+                                        <a href="#" class="card-link" onclick="Desactivate(@item.UserID)" title="Deshabilitar"><i id="@Editflag" class="fas fa-check-circle fa-2x ActiveColor" style="vertical-align: middle;"></i></a>
                                     }
                                 </td>
                                 <td class="text-center align-middle">
-                                    <a href="#" class="card-link" onclick="Details(@item.UserID)" title="Detalles"><i class="fas fa-user-circle fa-1x" style="vertical-align: middle; color: green;"></i></a>
+                                    <a href='@Url.Action("Profile", new { id = item.UserID })' target="_blank" class="card-link" onclick="Details(@item.UserID)" title="Detalles"><i class="fas fa-user-circle fa-2x" style="vertical-align: middle; color: green;"></i></a>
                                 </td>
                                 <td class="text-center align-middle">
-                                    <a href="#" class="card-link" onclick="Edit(@item.UserID)" title="Editar"><i class="fas fa-user-edit fa-1x" style="vertical-align: middle; color: green;"></i></a>
+                                    <a href="#" class="card-link" onclick="Edit(@item.UserID)" title="Editar"><i class="fas fa-user-edit fa-2x" style="vertical-align: middle; color: green;"></i></a>
                                 </td>
-                             }
+                            }
                         </tr>
                     }
                 </tbody>
@@ -101,5 +126,19 @@
                 @Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter }), new PagedListRenderOptions() { ContainerDivClasses = new string[] { "p-0" }, UlElementClasses = new string[] { "pagination m-0" } })
             }
         </div>
+        @if (ViewBag.WriteRight == true)
+        {
+            <div class="row">
+                <div class="p-0">
+                    <div class="media services d-block text-justify">
+                        <div class="media-body py-2 mt-3">
+                            <div class="d-flex justify-content-between">
+                                <a href="#" onclick="AddNew()" title="Agregar un nuevo Usuario" class="btn btn-light" style="text-decoration: none;"><i class="fas fa-plus-square fa-1x"></i> Agregar un nuevo Usuario</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
 </section>

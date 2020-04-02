@@ -38,7 +38,7 @@ AS
 						LEFT JOIN [config].[utbBannersLocation] L ON L.[LocationID] = B.[LocationID]
 				WHERE	B.[LocationID] = ISNULL(@lLocationID,B.[LocationID])
 						AND B.[ActiveFlag]  = ISNULL(@pActiveFlag,B.[ActiveFlag])
-				ORDER BY [Location],[ActiveFlag] DESC
+				ORDER BY L.[LocationName], B.[ActiveFlag] DESC
 			-- =======================================================
 
         END TRY

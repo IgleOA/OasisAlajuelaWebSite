@@ -14,6 +14,7 @@ namespace OasisAlajuelaWebSite.Controllers
     {
         private UsersBL UBL = new UsersBL();
         private RightsBL RRBL = new RightsBL();
+        private UserProfileBL UPBL = new UserProfileBL();
 
         public ActionResult Index(string currentFilter, string searchString, int? page)
         {
@@ -43,7 +44,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
                 if (!String.IsNullOrEmpty(searchString))
                 {
-                    list = list.Where(b => b.FullName.Contains(searchString) | b.UserName.Contains(searchString));
+                    list = list.Where(b => b.FullName.ToLower().Contains(searchString.ToLower()) | b.UserName.ToLower().Contains(searchString.ToLower()));
                 }
                 
                 int pageSize = 10;
@@ -72,6 +73,65 @@ namespace OasisAlajuelaWebSite.Controllers
             else
             {
                 return this.RedirectToAction("Index");
+            }
+        }
+
+        public new ActionResult Profile(int id)
+        {
+            var r = UPBL.Detail(id);
+
+            if (r.LastActivityDate.ToString().Length == 0)
+            {
+                r.LastActivityDate = r.CreationDate;
+            }
+
+            if (r.UserName == User.Identity.GetUserName())
+            {
+                ViewBag.Layout = "~/Views/Shared/_MainLayout.cshtml";
+                ViewBag.Write = true;
+                return View(r);
+            }
+            else
+            {
+                var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(),"Index");
+                if (validation.ReadRight == false)
+                {
+                    ViewBag.Mensaje = "Usted no esta autorizado para ingresar a esta seccion, si necesita acceso contacte con un administrador.";
+                    return View("~/Views/Shared/Error.cshtml");
+                }
+                else
+                {
+                    ViewBag.Write = false;
+                    ViewBag.Layout = "~/Views/Shared/_AdminLayout.cshtml";
+                    return View(r);
+                }
+            }
+        }
+
+        [HttpPost]
+        public ActionResult UpdateMainInfo(UserProfile UP)
+        {
+            string insertuser = User.Identity.GetUserName();
+
+            Users user = new Users()
+            {
+                UserID = UP.UserID,
+                FullName = UP.FullName,
+                UserName = UP.UserName,
+                RoleID = UP.RoleID,
+                ActiveFlag = true,
+                ActionType = "UPDATE"
+            };
+            var r = UBL.Update(user, insertuser);
+
+            if (!r)
+            {
+                ViewBag.Mensaje = "Ha ocurrido un error inesperado.";
+                return View("~/Views/Shared/Error.cshtml");
+            }
+            else
+            {
+                return RedirectToAction("Profile", new { id = UP.UserID });
             }
         }
 

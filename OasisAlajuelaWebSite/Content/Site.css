@@ -531,3 +531,11 @@ span.yr, span.mos {
         .tagcloud a:hover {
             border: 1px solid #000;
         }
+
+.ActiveColor {
+    color: green;
+}
+
+.DisactiveColor {
+    color: red;
+}

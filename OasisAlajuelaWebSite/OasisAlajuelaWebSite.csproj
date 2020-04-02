@@ -2506,6 +2506,7 @@
     <Content Include="Views\Rights\Index.cshtml" />
     <Content Include="Views\Roles\AddNew.cshtml" />
     <Content Include="Views\Users\Index.cshtml" />
+    <Content Include="Views\Users\Profile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
