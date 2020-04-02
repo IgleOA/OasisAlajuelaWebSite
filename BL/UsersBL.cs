@@ -42,5 +42,10 @@ namespace BL
         {
             return UDAL.List();
         }
+
+        public bool Update(Users user, string insertuser)
+        {
+            return UDAL.Update(user, insertuser);
+        }
     }
 }

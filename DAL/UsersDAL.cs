@@ -340,5 +340,101 @@ namespace DAL
 
             return List;
         }
+
+        public bool Update(Users User, string InsertUser)
+        {
+            bool rpta = false;
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[adm].[uspUpdateUser]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                //Insert Parameters
+                SqlParameter ParInsertUser = new SqlParameter
+                {
+                    ParameterName = "@InsertUser",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 50,
+                    Value = InsertUser.Trim()
+                };
+                SqlCmd.Parameters.Add(ParInsertUser);
+
+                SqlParameter pActionType = new SqlParameter
+                {
+                    ParameterName = "@ActionType",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 50,
+                    Value = User.ActionType
+                };
+                SqlCmd.Parameters.Add(pActionType);
+
+                SqlParameter pUserID = new SqlParameter
+                {
+                    ParameterName = "@UserID",
+                    SqlDbType = SqlDbType.Int,
+                    Value = User.UserID
+                };
+                SqlCmd.Parameters.Add(pUserID);
+
+                SqlParameter ParFullName = new SqlParameter
+                {
+                    ParameterName = "@FullName",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 50,
+                    Value = User.FullName
+                };
+                SqlCmd.Parameters.Add(ParFullName);
+
+                SqlParameter ParUserName = new SqlParameter
+                {
+                    ParameterName = "@UserName",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 50,
+                    Value = User.UserName           
+                };
+                SqlCmd.Parameters.Add(ParUserName);
+
+                SqlParameter ParEmail = new SqlParameter
+                {
+                    ParameterName = "@Email",
+                    SqlDbType = SqlDbType.VarChar,
+                    Value = User.Email
+                };
+                SqlCmd.Parameters.Add(ParEmail);
+
+
+                SqlParameter pActiveFlag = new SqlParameter
+                {
+                    ParameterName = "@ActiveFlag",
+                    SqlDbType = SqlDbType.Bit,
+                    Value = User.ActiveFlag
+                };
+                SqlCmd.Parameters.Add(pActiveFlag);
+
+                SqlParameter ParRoleID = new SqlParameter
+                {
+                    ParameterName = "@RoleID",
+                    SqlDbType = SqlDbType.Int,
+                    Value = User.RoleID
+                };
+                SqlCmd.Parameters.Add(ParRoleID);
+
+                //EXEC Command
+                SqlCmd.ExecuteNonQuery();
+
+                rpta = true;
+
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            return rpta;
+        }
     }
 }

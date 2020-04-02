@@ -14,7 +14,7 @@
         }).done(function () { location.reload(); });
     }
     function Desactivate(UserID) {
-        var x = confirm("Esta seguro que quiere desactivar este banner???");
+        var x = confirm("Esta seguro que quiere deshabilitar este Usuario???");
         if (x) {
             $.ajax({
                 url: '@Url.Action("ChangeStatus")',
@@ -84,10 +84,10 @@
                                     }
                                 </td>
                                 <td class="text-center align-middle">
-                                    <a href="#" class="card-link" onclick="Details(@item.UserID)" title="Detalles"><i class="fas fa-user-circle fa-1x" style="vertical-align: middle;"></i></a>
+                                    <a href="#" class="card-link" onclick="Details(@item.UserID)" title="Detalles"><i class="fas fa-user-circle fa-1x" style="vertical-align: middle; color: green;"></i></a>
                                 </td>
                                 <td class="text-center align-middle">
-                                    <a href="#" class="card-link" onclick="Edit(@item.UserID)" title="Editar"><i class="fas fa-user-edit fa-1x" style="vertical-align: middle;"></i></a>
+                                    <a href="#" class="card-link" onclick="Edit(@item.UserID)" title="Editar"><i class="fas fa-user-edit fa-1x" style="vertical-align: middle; color: green;"></i></a>
                                 </td>
                              }
                         </tr>

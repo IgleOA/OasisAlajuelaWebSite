@@ -52,6 +52,28 @@ namespace OasisAlajuelaWebSite.Controllers
             }
         }
 
+        public ActionResult ChangeStatus(int id)
+        {
+            string InsertUser = User.Identity.GetUserName();
+
+            Users user = new Users()
+            {
+                UserID = id,
+                ActionType = "CHGST"
+            };
+
+            var r = UBL.Update(user, InsertUser);
+
+            if (!r)
+            {
+                ViewBag.Mensaje = "Ha ocurrido un error inesperado.";
+                return View("~/Views/Shared/Error.cshtml");
+            }
+            else
+            {
+                return this.RedirectToAction("Index");
+            }
+        }
 
     }
 }
