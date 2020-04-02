@@ -52,14 +52,11 @@
                     <tr class="align-middle">
                         <th class="py-2">@Html.DisplayNameFor(model => model.FirstOrDefault().FullName)</th>
                         <th class="py-2">@Html.DisplayNameFor(model => model.FirstOrDefault().UserName)</th>
-                        <th class="py-2">@Html.DisplayNameFor(model => model.FirstOrDefault().Email)</th>
                         <th class="py-2">@Html.DisplayNameFor(model => model.FirstOrDefault().RoleName)</th>
                         <th class="text-center py-2">@Html.DisplayNameFor(model => model.FirstOrDefault().ActiveFlag)</th>
-                        <th class="text-center py-2">@Html.DisplayNameFor(model => model.FirstOrDefault().CreationDate)</th>
-                        <th class="text-center py-2">@Html.DisplayNameFor(model => model.FirstOrDefault().LastActivityDate)</th>
-                        @if (ViewBag.WriteRight == true)
+                         @if (ViewBag.WriteRight == true)
                         {
-                            <th class="text-center py-2">Acción</th>
+                            <th class="text-center py-2" colspan="3">Acción</th>
                         }
                     </tr>
 
@@ -68,28 +65,31 @@
                         <tr>
                             <td class="align-middle">@Html.DisplayFor(modelItem => item.FullName)</td>
                             <td class="align-middle">@Html.DisplayFor(modelItem => item.UserName)</td>
-                            <td class="align-middle">@Html.DisplayFor(modelItem => item.Email)</td>
                             <td class="align-middle">@Html.DisplayFor(modelItem => item.RoleName)</td>
                            
                             @{
                                 var isActive = (item.ActiveFlag ? "Activo" : "Inactivo");
                             }
                             <td class="text-center align-middle">@Html.DisplayFor(modelItem => isActive)</td>
-                            <td class="text-center align-middle">@Html.DisplayFor(modelItem => item.CreationDate)</td>
-                            <td class="text-center align-middle">@Html.DisplayFor(modelItem => item.LastActivityDate)</td>
                             @if (ViewBag.WriteRight == true)
                             {
                                 <td class="text-center align-middle">
                                     @if (item.ActiveFlag == false)
                                     {
-                                        <a href="#" class="card-link" onclick="Activate(@item.UserID)" title="Habilitar"><i class="fas fa-check-circle fa-2x" style="vertical-align: middle; color:green;"></i></a>
+                                        <a href="#" class="card-link" onclick="Activate(@item.UserID)" title="Habilitar"><i class="fas fa-check-circle fa-1x" style="vertical-align: middle; color:green;"></i></a>
                                     }
                                     else
                                     {
-                                        <a href="#" class="card-link" onclick="Desactivate(@item.UserID)" title="Deshabilitar"><i class="fas fa-times-circle fa-2x" style="vertical-align: middle; color:red;"></i></a>
+                                        <a href="#" class="card-link" onclick="Desactivate(@item.UserID)" title="Deshabilitar"><i class="fas fa-times-circle fa-1x" style="vertical-align: middle; color:red;"></i></a>
                                     }
                                 </td>
-                            }
+                                <td class="text-center align-middle">
+                                    <a href="#" class="card-link" onclick="Details(@item.UserID)" title="Detalles"><i class="fas fa-user-circle fa-1x" style="vertical-align: middle;"></i></a>
+                                </td>
+                                <td class="text-center align-middle">
+                                    <a href="#" class="card-link" onclick="Edit(@item.UserID)" title="Editar"><i class="fas fa-user-edit fa-1x" style="vertical-align: middle;"></i></a>
+                                </td>
+                             }
                         </tr>
                     }
                 </tbody>
