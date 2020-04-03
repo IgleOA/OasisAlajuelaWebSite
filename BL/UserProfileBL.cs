@@ -11,5 +11,10 @@ namespace BL
         {
             return UDAL.Detail(userid);
         }
+
+        public bool Update(UserProfile UP, string insertuser)
+        {
+            return UDAL.Update(UP, insertuser);
+        }
     }
 }

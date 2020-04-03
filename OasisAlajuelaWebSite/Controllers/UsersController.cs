@@ -135,5 +135,46 @@ namespace OasisAlajuelaWebSite.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult UpdateContactInfo(UserProfile UP)
+        {
+            string insertuser = User.Identity.GetUserName();
+
+            UP.ActionType = "CONTACT";
+            UP.PhotoData = null;
+
+            var r = UPBL.Update(UP, insertuser);
+
+            if (!r)
+            {
+                ViewBag.Mensaje = "Ha ocurrido un error inesperado.";
+                return View("~/Views/Shared/Error.cshtml");
+            }
+            else
+            {
+                return RedirectToAction("Profile", new { id = UP.UserID });
+            }
+        }
+
+        [HttpPost]
+        public ActionResult UpdateSNInfo(UserProfile UP)
+        {
+            string insertuser = User.Identity.GetUserName();
+
+            UP.ActionType = "SOCIALNET";
+            UP.PhotoData = null;
+
+            var r = UPBL.Update(UP, insertuser);
+
+            if (!r)
+            {
+                ViewBag.Mensaje = "Ha ocurrido un error inesperado.";
+                return View("~/Views/Shared/Error.cshtml");
+            }
+            else
+            {
+                return RedirectToAction("Profile", new { id = UP.UserID });
+            }
+        }
     }
 }

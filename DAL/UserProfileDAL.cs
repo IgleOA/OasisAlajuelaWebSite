@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using Dapper;
 using ET;
 namespace DAL
 {
@@ -72,6 +73,44 @@ namespace DAL
             }
 
             return detail;
+        }
+
+        public bool Update(UserProfile UP, string InsertUser)
+        {
+            bool rpta = false;
+
+            try
+            {
+                DynamicParameters Parm = new DynamicParameters();
+                Parm.Add("@InsertUser", InsertUser);
+                Parm.Add("@UserID", UP.UserID);
+                Parm.Add("@ActionTYpe", UP.ActionType);
+                Parm.Add("@Photo", UP.PhotoData);
+                Parm.Add("@PhotoExt", UP.PhotoExt);
+                Parm.Add("@Phone", UP.Phone);
+                Parm.Add("@Mobile", UP.Mobile);
+                Parm.Add("@Country", UP.Country);
+                Parm.Add("@State", UP.State);
+                Parm.Add("@City", UP.City);
+                Parm.Add("@Facebook", UP.Facebook);
+                Parm.Add("@Twitter", UP.Twitter);
+                Parm.Add("@Snapchat", UP.Snapchat);
+                Parm.Add("@Instragram", UP.Instragram);
+                SqlCon.Open();
+
+                SqlCon.Execute("[adm].[uspUpdateUserProfile]", Parm, commandType: CommandType.StoredProcedure);
+
+                rpta = true;
+
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            return rpta;
         }
     }
 }

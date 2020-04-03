@@ -11,19 +11,15 @@ namespace ET
         [Key]
         public int UserID { get; set; }
 
-        [Required]
         [Display(Name ="Rol")]
         public int RoleID { get; set; }
 
-        [Required]
         [Display(Name = "Nombre Completo")]
         public string FullName { get; set; }
 
-        [Required]
         [Display(Name = "Usuario")]
         public string UserName { get; set; }
 
-        [Required]
         [Display(Name = "Correo Electrónico")]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
@@ -43,16 +39,13 @@ namespace ET
         public string RoleName { get; set; }
 
         [Display(Name = "Imagen")]
-        [Required]
         public byte[] PhotoData { get; set; }
 
-        [Required(ErrorMessage = "Por favor seleccione el archivo")]
         [DataType(DataType.Upload)]
         [AllowExtensions(Extensions = "png,jpg,jpeg,gif", ErrorMessage = "Por favor seleccione solo archivos soportados .png, .jpg, .jpeg, .gif")]
         [Display(Name = "Archivo")]
         public HttpPostedFileBase file { get; set; }
 
-        [Required]
         public string PhotoExt { get; set; }
 
         [Display(Name = "Teléfono")]
@@ -94,6 +87,7 @@ namespace ET
         [Display(Name = "Ciudad")]
         public string City { get; set; }
 
+        public string ActionType { get; set; }
         public class AllowExtensionsAttribute : ValidationAttribute
         {
             public string Extensions { get; set; } = "png,jpg,jpeg,gif";
