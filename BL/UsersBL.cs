@@ -47,5 +47,10 @@ namespace BL
         {
             return UDAL.Update(user, insertuser);
         }
+
+        public Users Details(int userid)
+        {
+            return UDAL.Details(userid);
+        }
     }
 }

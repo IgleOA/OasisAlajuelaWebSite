@@ -27,6 +27,11 @@
         var url = '@Url.Action("AddNew")';
         window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
     }
+    function Edit(UserID) {
+        var url = '@Url.Action("Edit", new { id = "userid" })';
+        url = url.replace("userid", UserID);
+        window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
+    }
 </script>
 
 <section class="hp-section">
@@ -112,7 +117,7 @@
                                     <a href='@Url.Action("Profile", new { id = item.UserID })' target="_blank" class="card-link" onclick="Details(@item.UserID)" title="Detalles"><i class="fas fa-user-circle fa-2x" style="vertical-align: middle; color: green;"></i></a>
                                 </td>
                                 <td class="text-center align-middle">
-                                    <a href="#" class="card-link" onclick="Edit(@item.UserID)" title="Editar"><i class="fas fa-user-edit fa-2x" style="vertical-align: middle; color: green;"></i></a>
+                                    <a href="#" class="card-link" onclick="Edit(@item.UserID)" title="Asignar nuevo rol"><i class="fas fa-user-edit fa-2x" style="vertical-align: middle; color: green;"></i></a>
                                 </td>
                             }
                         </tr>

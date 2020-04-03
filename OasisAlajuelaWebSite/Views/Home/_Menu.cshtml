@@ -11,7 +11,7 @@
         @Html.AntiForgeryToken()
         <ul class="links">
             <li>
-                <a href='@Url.Action("Details","Profile")' class="Menulinks align-middle" title="Perfil">
+                <a href='@Url.Action("Profile", "Users")' class="Menulinks align-middle" title="Perfil">
                     <i class="far fa-user"></i> Hola @User.Identity.GetUserName()!
                 </a>
             </li>

@@ -436,5 +436,48 @@ namespace DAL
             }
             return rpta;
         }
+
+        public Users Details(int UserID)
+        {
+            var Detail = new Users();
+
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[adm].[uspReadUsers]", SqlCon);
+                SqlCmd.CommandType = CommandType.StoredProcedure;
+
+                SqlParameter pUserID = new SqlParameter
+                {
+                    ParameterName = "@UserID",
+                    SqlDbType = SqlDbType.Int,
+                    Value = UserID
+                };
+                SqlCmd.Parameters.Add(pUserID);
+
+                using (var dr = SqlCmd.ExecuteReader())
+                {
+                    dr.Read();
+                    if (dr.HasRows)
+                    {
+                        Detail.UserID = Convert.ToInt32(dr["UserID"]);
+                        Detail.RoleID = Convert.ToInt32(dr["RoleID"]);
+                        Detail.FullName = dr["FullName"].ToString();
+                        Detail.UserName = dr["UserName"].ToString();
+                        Detail.Email = dr["Email"].ToString();
+                        Detail.ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]);
+                        Detail.CreationDate = Convert.ToDateTime(dr["CreationDate"]);
+                        Detail.RoleName = dr["RoleName"].ToString();
+                    }
+                }
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            return Detail;
+        }
     }
 }

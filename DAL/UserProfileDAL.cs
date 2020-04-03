@@ -81,35 +81,148 @@ namespace DAL
 
             try
             {
-                DynamicParameters Parm = new DynamicParameters();
-                Parm.Add("@InsertUser", InsertUser);
-                Parm.Add("@UserID", UP.UserID);
-                Parm.Add("@ActionTYpe", UP.ActionType);
-                Parm.Add("@Photo", UP.PhotoData);
-                Parm.Add("@PhotoExt", UP.PhotoExt);
-                Parm.Add("@Phone", UP.Phone);
-                Parm.Add("@Mobile", UP.Mobile);
-                Parm.Add("@Country", UP.Country);
-                Parm.Add("@State", UP.State);
-                Parm.Add("@City", UP.City);
-                Parm.Add("@Facebook", UP.Facebook);
-                Parm.Add("@Twitter", UP.Twitter);
-                Parm.Add("@Snapchat", UP.Snapchat);
-                Parm.Add("@Instragram", UP.Instragram);
                 SqlCon.Open();
+                var SqlCmd = new SqlCommand("[adm].[uspUpdateUserProfile]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
 
-                SqlCon.Execute("[adm].[uspUpdateUserProfile]", Parm, commandType: CommandType.StoredProcedure);
+                //Insert Parameters
+                SqlParameter pActionType = new SqlParameter
+                {
+                    ParameterName = "@ActionType",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 10,
+                    Value = UP.ActionType
+                };
+                SqlCmd.Parameters.Add(pActionType);
+
+                SqlParameter pInsertUser = new SqlParameter
+                {
+                    ParameterName = "@InsertUser",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 100,
+                    Value = InsertUser
+                };
+                SqlCmd.Parameters.Add(pInsertUser);
+
+                SqlParameter UserID = new SqlParameter
+                {
+                    ParameterName = "@UserID",
+                    SqlDbType = SqlDbType.Int,
+                    Value = UP.UserID
+                };
+                SqlCmd.Parameters.Add(UserID);
+
+                SqlParameter Photo = new SqlParameter
+                {
+                    ParameterName = "@Photo",
+                    SqlDbType = SqlDbType.VarBinary,
+                    Value = UP.PhotoData
+                };
+                SqlCmd.Parameters.Add(Photo);
+
+                SqlParameter pPhotoExt = new SqlParameter
+                {
+                    ParameterName = "@PhotoExt",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 10,
+                    Value = UP.PhotoExt
+                };
+                SqlCmd.Parameters.Add(pPhotoExt);
+
+                SqlParameter pPhone = new SqlParameter
+                {
+                    ParameterName = "@Phone",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 50,
+                    Value = UP.Phone
+                };
+                SqlCmd.Parameters.Add(pPhone);
+
+                SqlParameter pMobile = new SqlParameter
+                {
+                    ParameterName = "@Mobile",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 50,
+                    Value = UP.Mobile
+                };
+                SqlCmd.Parameters.Add(pMobile);
+
+                SqlParameter Country = new SqlParameter
+                {
+                    ParameterName = "@Country",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 100,
+                    Value = UP.Country
+                };
+                SqlCmd.Parameters.Add(Country);
+
+                SqlParameter State = new SqlParameter
+                {
+                    ParameterName = "@State",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 100,
+                    Value = UP.State
+                };
+                SqlCmd.Parameters.Add(State);
+
+                SqlParameter City = new SqlParameter
+                {
+                    ParameterName = "@City",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 100,
+                    Value = UP.City
+                };
+                SqlCmd.Parameters.Add(City);
+
+                SqlParameter Facebook = new SqlParameter
+                {
+                    ParameterName = "@Facebook",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 100,
+                    Value = UP.Facebook
+                };
+                SqlCmd.Parameters.Add(Facebook);
+
+                SqlParameter Twitter = new SqlParameter
+                {
+                    ParameterName = "@Twitter",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 100,
+                    Value = UP.Twitter
+                };
+                SqlCmd.Parameters.Add(Twitter);
+
+                SqlParameter Snapchat = new SqlParameter
+                {
+                    ParameterName = "@Snapchat",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 100,
+                    Value = UP.Snapchat
+                };
+                SqlCmd.Parameters.Add(Snapchat);
+
+                SqlParameter Instragram = new SqlParameter
+                {
+                    ParameterName = "@Instragram",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 100,
+                    Value = UP.Instragram
+                };
+                SqlCmd.Parameters.Add(Instragram);
+
+                //EXEC Command
+                SqlCmd.ExecuteNonQuery();
 
                 rpta = true;
 
                 if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
-
             }
             catch (Exception ex)
             {
                 throw;
             }
-
             return rpta;
         }
     }

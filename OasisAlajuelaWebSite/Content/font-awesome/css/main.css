@@ -4863,3 +4863,7 @@ body.is-mobile .banner > article {
     margin: 0 !important;
     padding: 0 15px 0 15px !important;
 }
+
+.fa-input {
+    font-family: FontAwesome, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}

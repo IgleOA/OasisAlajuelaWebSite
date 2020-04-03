@@ -1,0 +1,61 @@
+﻿@model ET.Users
+
+@{
+    ViewBag.Title = "Edit Rol";
+    Layout = "~/Views/Shared/_PupopLayout.cshtml";
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var flag = '@(Model.ActionType)';
+        if (flag == "UPDATE")
+        {
+            opener.location.reload();
+            window.close();
+        }
+    });
+</script>
+
+<div class="card bg-light">
+    <article class="card-body mx-auto" style="max-width: 400px;">
+        <h4 class="card-title mt-3 text-center font-weight-bold">@ViewBag.Title - @Model.FullName</h4>
+        @using (Html.BeginForm("Edit", "Users", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger m-0" })
+                @Html.HiddenFor(x => x.UserID)
+                @Html.HiddenFor(x => x.UserName)
+                @Html.HiddenFor(x => x.FullName)
+                @Html.HiddenFor(x => x.ActiveFlag)
+                @Html.HiddenFor(x => x.Email)
+                <div class="form-group">
+                    @Html.LabelFor(model => model.FullName, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                        @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10 d-flex justify-content-between">
+                        @Html.LabelFor(model => model.RoleID, htmlAttributes: new { @class = "control-label m-0", @style = "max-width: 100%;" })                        
+                    </div>
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.RoleID, new SelectList(Model.RolesList, "RoleID", "RoleName"), new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.RoleID, "", new { @class = "text-danger" })
+                    </div>
+                </div>                
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Guardar" class="btn btn-dark alt mt-0 mb-2" />
+                        <input type="button" value="Cancelar" class="btn btn-dark alt mt-0 mb-2" onclick="javascript: window.close();" />
+                    </div>
+                </div>
+            </div>
+        }
+    </article>
+</div>

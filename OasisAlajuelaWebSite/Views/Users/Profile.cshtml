@@ -5,12 +5,34 @@
     Layout = ViewBag.Layout;
 }
 
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var readURL = function (input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('.avatar').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+                document.getElementById('SaveOptions').style.display = 'block';
+            }
+        }
+        $(".file-upload").on('change', function () {
+            readURL(this);
+        });
+    });
+</script>
+
+
 <div class="hp-section">
     <div class="container">
         <div class="row mb-2">
             <div class="col-sm">
                 <h2 class="heading-section font-weight-bold my-2 p-0">Perfil - @Model.FullName</h2>
-            </div>            
+            </div>
         </div>
         <div class="row">
             <div class="col-sm-3">
@@ -18,14 +40,56 @@
 
                     @if (Model.PhotoData == null)
                     {
-                        <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="img-thumbnail" alt="avatar" />
+                        if (ViewBag.Write == true)
+                        {
+                            using (Html.BeginForm("UpdatePhoto", "Users", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                            {
+                                @Html.HiddenFor(model => model.UserID)
+                                <div class="profile-img">
+                                    <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-thumbnail w-100" alt="avatar" />
+                                    <div class="file btn btn-lg btn-primary w-100">
+                                        Cambiar Foto
+                                        <input id="file" type="file" name="file" class="file-upload">
+                                    </div>
+                                </div>
+                                <div id="SaveOptions" style="display:none;">
+                                    <input type="submit" value="&#xf00c;" class="fa-input btn btn-dark alt mb-2" style="margin-top:-10%; font-size: 2rem; color:forestgreen !important;" />
+                                    <input type="button" value="&#xf00d;" class="fa-input btn btn-dark alt mb-2" style="margin-top:-10%; font-size: 2rem; color:darkred !important;" onclick="javascript: location.reload();" />
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="img-thumbnail" alt="avatar" />
+                        }
                     }
                     else
                     {
                         var base64 = Convert.ToBase64String(Model.PhotoData, 0, Model.PhotoData.Length);
                         var imgSrc = string.Format("data:image/{0};base64,{1}", Model.PhotoExt, base64);
 
-                        <img src="@imgSrc" class="img-thumbnail" alt="avatar" />
+                        if (ViewBag.Write == true)
+                        {
+                            using (Html.BeginForm("UpdatePhoto", "Users", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                            {
+                                @Html.HiddenFor(model => model.UserID)
+                                <div class="profile-img">
+                                    <img src="@imgSrc" class="avatar img-thumbnail w-100" alt="avatar" />
+                                    <div class="file btn btn-lg btn-primary w-100">
+                                        Cambiar Foto
+                                        <input id="file" type="file" name="file" class="file-upload">
+                                    </div>
+                                </div>
+                                <div id="SaveOptions" style="display:none;">
+                                    <input type="submit" value="&#xf00c;" class="fa-input btn btn-dark alt mb-2" style="margin-top:-10%; font-size: 2rem; color:forestgreen !important;" />
+                                    <input type="button" value="&#xf00d;" class="fa-input btn btn-dark alt mb-2" style="margin-top:-10%; font-size: 2rem; color:darkred !important;" onclick="javascript: location.reload();" />
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <img src="@imgSrc" class="img-thumbnail" alt="avatar" />
+                        }
                     }
                 </div>
                 <div class="panel panel_wrapper">
@@ -49,61 +113,30 @@
                 </nav>
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="MainInfo" role="tabpanel" aria-labelledby="nav-maininfo-tab">
-                        @using (Html.BeginForm("UpdateMainInfo", "Users", FormMethod.Post, new { enctype = "multipart/form-data" }))
-                        {
-                            @Html.HiddenFor(model => model.UserID)
-                            @Html.HiddenFor(model => model.RoleID)
-
-                            <div class=" form-group">
-                                <div class="col-xs-6">
-                                    @Html.LabelFor(model => model.FullName)
-                                    @if (ViewBag.Write == true)
-                                    {
-                                        @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
-                                    }
-                                    else
-                                    {
-                                        @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
-                                    }
-                                </div>
+                        <div class=" form-group">
+                            <div class="col-xs-6">
+                                @Html.LabelFor(model => model.FullName)
+                                @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
                             </div>
-                            <div class=" form-group">
-                                <div class="col-xs-6">
-                                    @Html.LabelFor(model => model.UserName)
-                                    @if (ViewBag.Write == true)
-                                    {
-                                        @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
-                                    }
-                                    else
-                                    {
-                                        @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
-                                    }
-                                </div>
+                        </div>
+                        <div class=" form-group">
+                            <div class="col-xs-6">
+                                @Html.LabelFor(model => model.UserName)
+                                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
                             </div>
-                            <div class=" form-group">
-                                <div class="col-xs-6">
-                                    @Html.LabelFor(model => model.Email)
-                                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
-                                </div>
+                        </div>
+                        <div class=" form-group">
+                            <div class="col-xs-6">
+                                @Html.LabelFor(model => model.Email)
+                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
                             </div>
-                            <div class=" form-group">
-                                <div class="col-xs-6">
-                                    @Html.LabelFor(model => model.RoleName)
-                                    @Html.EditorFor(model => model.RoleName, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
-                                </div>
+                        </div>
+                        <div class=" form-group">
+                            <div class="col-xs-6">
+                                @Html.LabelFor(model => model.RoleName)
+                                @Html.EditorFor(model => model.RoleName, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
                             </div>
-                            if (ViewBag.Write == true)
-                            {
-                                <div class="form-group">
-                                    <div class="col-xs-6">
-                                        <input type="submit" value="Guardar" class="btn btn-dark alt mt-0 mb-2" />
-                                        <input type="button" value="Cancelar" class="btn btn-dark alt mt-0 mb-2" onclick="javascript: window.close();" />
-                                    </div>
-                                </div>
-                            }
-                        }
+                        </div>
                     </div>
                     <div class="tab-pane fade" id="ContactInfo" role="tabpanel" aria-labelledby="nav-contactinfo-tab">
                         @using (Html.BeginForm("UpdateContactInfo", "Users", FormMethod.Post, new { enctype = "multipart/form-data" }))
@@ -201,7 +234,9 @@
                             </div>
                             <div class=" form-group input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fab fa-facebook"></i></span>
+                                    <a href="@Model.Facebook" target="_blank" class="input-group-text text-decoration-none">
+                                        <i class="fab fa-facebook"></i>
+                                    </a>
                                 </div>
                                 @if (ViewBag.Write == true)
                                 {
@@ -220,7 +255,9 @@
                             </div>
                             <div class=" form-group input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fab fa-twitter"></i></span>
+                                    <a href="@Model.Twitter" target="_blank" class="input-group-text text-decoration-none">
+                                        <i class="fab fa-twitter"></i>
+                                    </a>
                                 </div>
                                 @if (ViewBag.Write == true)
                                 {
@@ -239,7 +276,9 @@
                             </div>
                             <div class=" form-group input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fab fa-snapchat"></i></span>
+                                    <a href="@Model.Snapchat" target="_blank" class="input-group-text text-decoration-none">
+                                        <i class="fab fa-snapchat"></i>
+                                    </a>
                                 </div>
                                 @if (ViewBag.Write == true)
                                 {
@@ -258,7 +297,9 @@
                             </div>
                             <div class=" form-group input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fab fa-instagram"></i></span>
+                                    <a href="@Model.Instragram" target="_blank" class="input-group-text text-decoration-none">
+                                        <i class="fab fa-instagram"></i>
+                                    </a>
                                 </div>
                                 @if (ViewBag.Write == true)
                                 {
@@ -280,9 +321,9 @@
                                 </div>
                             }
                         }
-                    </div>                        
+                    </div>
                 </div>
-            </div>            
+            </div>
         </div>
     </div>
 </div>
