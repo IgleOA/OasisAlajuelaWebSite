@@ -26,5 +26,6 @@ namespace ET
         [Display(Name = "Orden")]
         public int Order { get; set; }
 
+        public string ActionType { get; set; }
     }
 }

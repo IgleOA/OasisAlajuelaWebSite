@@ -13,43 +13,70 @@ namespace OasisAlajuelaWebSite.Controllers
     {
         private UpcommingEventsBL UBL = new UpcommingEventsBL();
         private MinistersBL MBL = new MinistersBL();
+        private RightsBL RRBL = new RightsBL();
+        private UsersBL USBL = new UsersBL();
 
-        public ActionResult Index(string id)
+        public ActionResult Index()
         {
-            ViewBag.Type = id;
+            List<UpcommingEvents> list = new List<UpcommingEvents>();
 
-            if (id == "Public")
+            if (Request.IsAuthenticated)
             {
-                ViewBag.Layout = "~/Views/Shared/_MainLayout.cshtml";
-                var list = (from u in UBL.List(DateTime.Now, false, true)
-                            select u).Take(10);
-                
-                return View(list.ToList());
-            }
-            else
-            {
-                if (Request.IsAuthenticated)
+                var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
+                if (validation.ReadRight == false)
                 {
-                    ViewBag.Layout = "~/Views/Shared/_AdminLayout.cshtml";
-                    var list = UBL.List(DateTime.Now, true, true);
-                    return View(list.ToList());
+                    ViewBag.Mensaje = "Usted no esta autorizado para ingresar a esta seccion, si necesita acceso contacte con un administrador.";
+                    return View("~/Views/Shared/Error.cshtml");
                 }
                 else
                 {
-                    return this.RedirectToAction("Login", "Account");
+                    var u = from us in USBL.List()
+                            where us.UserName == User.Identity.GetUserName()
+                            select us;
+                    int roleID = u.FirstOrDefault().RoleID;
+
+                    if (roleID == 2 || roleID == 3 || roleID == 4)
+                    {
+                        ViewBag.Layout = "~/Views/Shared/_AdminLayout.cshtml";
+                        ViewBag.Write = validation.WriteRight;
+                        list = UBL.List(DateTime.Now, true, true);
+                    }
+                    else
+                    {
+                        ViewBag.Layout = "~/Views/Shared/_MainLayout.cshtml";
+                        list = UBL.List(DateTime.Now, false, true);
+                    }
+                    ViewBag.Write = validation.WriteRight;
+
+                    return View(list.ToList());
                 }
+            }
+            else
+            {
+                list = UBL.List(DateTime.Now, false, true);
+                ViewBag.Layout = "~/Views/Shared/_MainLayout.cshtml";
+                return View(list.ToList());
             }
         }
 
         [Authorize]
         public ActionResult AddNew()
         {
-            UpcommingEvents Event = new UpcommingEvents()
+            var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
+            if (validation.ReadRight == false)
             {
-                MinisterList = MBL.List(true)
-            };
+                ViewBag.Mensaje = "Usted no esta autorizado para ingresar a esta seccion, si necesita acceso contacte con un administrador.";
+                return View("~/Views/Shared/Error.cshtml");
+            }
+            else
+            {
+                UpcommingEvents Event = new UpcommingEvents()
+                {
+                    MinisterList = MBL.List(true)
+                };
 
-            return View(Event);
+                return View(Event);
+            }
         }
 
         [HttpPost]
@@ -86,11 +113,20 @@ namespace OasisAlajuelaWebSite.Controllers
         [Authorize]
         public ActionResult Edit(int id)
         {
-            UpcommingEvents Event = UBL.Details(id);
+            var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
+            if (validation.ReadRight == false)
+            {
+                ViewBag.Mensaje = "Usted no esta autorizado para ingresar a esta seccion, si necesita acceso contacte con un administrador.";
+                return View("~/Views/Shared/Error.cshtml");
+            }
+            else
+            {
+                UpcommingEvents Event = UBL.Details(id);
 
-            Event.MinisterList = MBL.List(true);            
+                Event.MinisterList = MBL.List(true);
 
-            return View(Event);
+                return View(Event);
+            }
         }
 
         [HttpPost]

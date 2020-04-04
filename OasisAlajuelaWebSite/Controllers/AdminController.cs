@@ -11,17 +11,34 @@ namespace OasisAlajuelaWebSite.Controllers
     {
         private HomeBL HBL = new HomeBL();
         private BannersBL BBL = new BannersBL();
-
+        private RightsBL RRBL = new RightsBL();
         public ActionResult Index()
         {
-            return View();
+            var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
+            if (validation.ReadRight == false)
+            {
+                ViewBag.Mensaje = "Usted no esta autorizado para ingresar a esta seccion, si necesita acceso contacte con un administrador.";
+                return View("~/Views/Shared/Error.cshtml");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         public ActionResult HomePage()
         {
-            HomePage HP = HBL.Home();
-
-            return View(HP);
+            var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "HomePage");
+            if (validation.ReadRight == false)
+            {
+                ViewBag.Mensaje = "Usted no esta autorizado para ingresar a esta seccion, si necesita acceso contacte con un administrador.";
+                return View("~/Views/Shared/Error.cshtml");
+            }
+            else
+            {
+                HomePage HP = HBL.Home();
+                return View(HP);
+            }
         }
 
         [HttpPost]

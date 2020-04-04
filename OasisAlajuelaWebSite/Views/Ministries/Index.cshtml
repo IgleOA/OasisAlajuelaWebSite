@@ -2,10 +2,10 @@
 
 @{
     ViewBag.Title = "Ministerios";
-    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    Layout = ViewBag.Layout;
 }
 
-@if (ViewBag.Page == "Admin")
+@if (ViewBag.Write == true)
 {
     <script type="text/javascript">
         function AddNew() {

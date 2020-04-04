@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
 using ET;
+using Dapper;
 
 namespace DAL
 {
@@ -23,14 +24,16 @@ namespace DAL
                     CommandType = CommandType.StoredProcedure
                 };
 
-                SqlParameter parStatus = new SqlParameter
+                if (ActiveFlag == true)
                 {
-                    ParameterName = "@pActiveFlag",
-                    SqlDbType = SqlDbType.Bit,
-                    Value = ActiveFlag
-                };
-                SqlCmd.Parameters.Add(parStatus);
-
+                    SqlParameter parStatus = new SqlParameter
+                    {
+                        ParameterName = "@pActiveFlag",
+                        SqlDbType = SqlDbType.Bit,
+                        Value = ActiveFlag
+                    };
+                    SqlCmd.Parameters.Add(parStatus);
+                }
                 using (var dr = SqlCmd.ExecuteReader())
                 {
                     while (dr.Read())
@@ -55,6 +58,122 @@ namespace DAL
             }
 
             return List;
+        }
+
+        public bool Update(Services Service, string User)
+        {
+            bool rpta = false;
+
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[adm].[uspUpdateServices]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                //Insert Parameters
+                SqlParameter ParInsertUser = new SqlParameter
+                {
+                    ParameterName = "@User",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 50,
+                    Value = User
+                };
+                SqlCmd.Parameters.Add(ParInsertUser);
+
+                SqlParameter ParID = new SqlParameter
+                {
+                    ParameterName = "@ServiceID",
+                    SqlDbType = SqlDbType.Int,
+                    Value = Service.ServiceID
+                };
+                SqlCmd.Parameters.Add(ParID);
+
+                SqlParameter SVCIcon = new SqlParameter
+                {
+                    ParameterName = "@SVCIcon",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 50,
+                    Value = Service.ServiceIcon
+                };
+                SqlCmd.Parameters.Add(SVCIcon);
+
+                SqlParameter SVCName = new SqlParameter
+                {
+                    ParameterName = "@SVCName",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 50,
+                    Value = Service.ServiceName
+                };
+                SqlCmd.Parameters.Add(SVCName);
+
+                SqlParameter SVCDescription = new SqlParameter
+                {
+                    ParameterName = "@SVCDescription",
+                    SqlDbType = SqlDbType.VarChar,
+                    Value = Service.ServiceDescription
+                };
+                SqlCmd.Parameters.Add(SVCDescription);
+
+                SqlParameter SVCOrder = new SqlParameter
+                {
+                    ParameterName = "@SVCOrder",
+                    SqlDbType = SqlDbType.Int,
+                    Value = Service.Order
+                };
+                SqlCmd.Parameters.Add(SVCOrder);
+
+                SqlParameter ActiveFlag = new SqlParameter
+                {
+                    ParameterName = "@ActiveFlag",
+                    SqlDbType = SqlDbType.Bit,
+                    Value = Service.ActiveFlag
+                };
+                SqlCmd.Parameters.Add(ActiveFlag);
+
+                //EXEC Command
+                SqlCmd.ExecuteNonQuery();
+
+                rpta = true;
+
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            return rpta;
+        }
+
+        public bool AddNew(Services Service, string InserUser)
+        {
+            bool rpta = false;
+
+            try
+            {
+                DynamicParameters Parm = new DynamicParameters();
+                Parm.Add("@InsertUser", InserUser);
+                Parm.Add("@SVCIcon", Service.ServiceIcon);
+                Parm.Add("@SVCName", Service.ServiceName);
+                Parm.Add("@SVCDescription", Service.ServiceDescription);
+                Parm.Add("@SVCOrder", Service.Order);
+
+                SqlCon.Open();
+
+                SqlCon.Execute("[adm].[uspAddServices]", Parm, commandType: CommandType.StoredProcedure);
+
+                rpta = true;
+
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            return rpta;
         }
     }
 }

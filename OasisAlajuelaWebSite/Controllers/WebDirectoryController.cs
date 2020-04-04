@@ -53,6 +53,7 @@ namespace OasisAlajuelaWebSite.Controllers
             if(ModelState.IsValid)
             {
                 string InsertUser = User.Identity.GetUserName();
+                WD.AppID = 1;
                 var r = WBL.AddNew(WD, InsertUser);
                 if (!r)
                 {

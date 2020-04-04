@@ -67,7 +67,7 @@
                                     <p class="ml-1 mt-1 mb-1 mr-3 text-justify">@item.Description</p>
                                 }
                             </div>
-                            @if (ViewBag.Type != "Public")
+                            @if (ViewBag.Write == true)
                             {
                                 <div class="media-right h-100 m-auto">
                                     <div class="row">
@@ -83,10 +83,18 @@
                 </ul>
                 <hr />
             </div>
-            @if (ViewBag.Type != "Public")
+            @if (ViewBag.Write == true)
             {
-                <div>
-                    <a href="#" class="btn btn-default" onclick="AddNew()" title="Agregar un Nuevo Evento"><i class="far fa-calendar-plus fa-2x align-middle"></i></a>
+                <div class="panel-body mt-2">
+                    <div class="p-0">
+                        <div class="media services d-block text-justify">
+                            <div class="media-body p-0 m-0">
+                                <div class="d-flex justify-content-between">
+                                    <a href="#" onclick="AddNew()" title="Agregar nuevo Evento" class="btn btn-light" style="text-decoration: none;"><i class="far fa-calendar-plus fa-1x"></i> Agregar nuevo Evento</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             }
         </div>

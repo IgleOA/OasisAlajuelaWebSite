@@ -198,9 +198,18 @@ namespace OasisAlajuelaWebSite.Controllers
 
         public ActionResult Edit(int id)
         {
-            var u = UBL.Details(id);
-            u.RolesList = RBL.List();            
-            return View(u);
+            var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
+            if (validation.WriteRight == false)
+            {
+                ViewBag.Mensaje = "Usted no esta autorizado para ingresar a esta seccion, si necesita acceso contacte con un administrador.";
+                return View("~/Views/Shared/Error.cshtml");
+            }
+            else
+            {
+                var u = UBL.Details(id);
+                u.RolesList = RBL.List();
+                return View(u);
+            }
         }
 
         [HttpPost]
@@ -227,9 +236,18 @@ namespace OasisAlajuelaWebSite.Controllers
 
         public ActionResult AddNew()
         {
-            Users u = new Users();
-            u.RolesList = RBL.List();
-            return View(u);
+            var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
+            if (validation.WriteRight == false)
+            {
+                ViewBag.Mensaje = "Usted no esta autorizado para ingresar a esta seccion, si necesita acceso contacte con un administrador.";
+                return View("~/Views/Shared/Error.cshtml");
+            }
+            else
+            {
+                Users u = new Users();
+                u.RolesList = RBL.List();
+                return View(u);
+            }
         }
 
         [HttpPost]

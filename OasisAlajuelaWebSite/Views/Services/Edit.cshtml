@@ -1,0 +1,70 @@
+﻿@model ET.Services
+
+@{
+    ViewBag.Title = "Actualizar servicio";
+    Layout = "~/Views/Shared/_PupopLayout.cshtml";
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var flag = '@(Model.ActionType)';
+        if (flag == "UPDATE")
+        {
+            opener.location.reload();
+            window.close();
+        }
+    });
+</script>
+
+<div class="card bg-light">
+    <article class="card-body mx-auto w-100">
+        <h4 class="card-title mt-3 text-center font-weight-bold">@ViewBag.Title</h4>
+        @using (Html.BeginForm("Edit", "Services", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger m-0" })
+                @Html.HiddenFor(model => model.ServiceID)
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ServiceName, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ServiceName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ServiceName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ServiceDescription, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.ServiceDescription, 5, 1, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ServiceDescription, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ServiceIcon, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ServiceIcon, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ServiceIcon, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Order, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Order, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Order, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Guardar" class="btn btn-dark alt mt-0 mb-2" />
+                        <input type="button" value="Cancelar" class="btn btn-dark alt mt-0 mb-2" onclick="javascript: window.close();" />
+                    </div>
+                </div>
+            </div>
+        }
+    </article>
+</div>
+

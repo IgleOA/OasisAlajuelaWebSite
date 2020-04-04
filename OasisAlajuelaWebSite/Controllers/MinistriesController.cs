@@ -12,22 +12,38 @@ namespace OasisAlajuelaWebSite.Controllers
     public class MinistriesController : Controller
     {
         private MinistriesBL MBL = new MinistriesBL();
+        private RightsBL RRBL = new RightsBL();
+        private UsersBL UBL = new UsersBL();
         // GET: Ministries
-        public ActionResult Index(string id)
+        public ActionResult Index()
         {
             var list = MBL.List();
 
-            if (id == "Admin")
+            if (Request.IsAuthenticated)
             {
-                if (Request.IsAuthenticated)
+                var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
+                if (validation.ReadRight == false)
                 {
-                    ViewBag.Layout = "~/Views/Shared/_AdminLayout.cshtml";
-                    ViewBag.Page = "Admin";
-                    return View(list.ToList());
+                    ViewBag.Mensaje = "Usted no esta autorizado para ingresar a esta seccion, si necesita acceso contacte con un administrador.";
+                    return View("~/Views/Shared/Error.cshtml");
                 }
                 else
                 {
-                    return this.RedirectToAction("Login", "Account");
+                    var u = from us in UBL.List()
+                            where us.UserName == User.Identity.GetUserName()
+                            select us;
+                    int roleID = u.FirstOrDefault().RoleID;
+
+                    if (roleID == 2 || roleID == 3 || roleID == 4)
+                    {
+                        ViewBag.Layout = "~/Views/Shared/_AdminLayout.cshtml";                        
+                    }
+                    else
+                    {
+                        ViewBag.Layout = "~/Views/Shared/_MainLayout.cshtml";
+                    }
+                    ViewBag.Write = validation.WriteRight;
+                    return View(list.ToList());
                 }
             }
             else
@@ -36,6 +52,7 @@ namespace OasisAlajuelaWebSite.Controllers
                 ViewBag.Page = "Public";
                 return View(list.ToList());
             }
+            
         }
 
         public ActionResult _FooterMinistries()
@@ -48,9 +65,18 @@ namespace OasisAlajuelaWebSite.Controllers
         [Authorize]
         public ActionResult AddNew()
         {
-            Ministries Ministry = new Ministries();
+            var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
+            if (validation.WriteRight == false)
+            {
+                ViewBag.Mensaje = "Usted no esta autorizado para ingresar a esta seccion, si necesita acceso contacte con un administrador.";
+                return View("~/Views/Shared/Error.cshtml");
+            }
+            else
+            {
+                Ministries Ministry = new Ministries();
 
-            return View(Ministry);
+                return View(Ministry);
+            }
         }
 
         [HttpPost]
@@ -83,9 +109,18 @@ namespace OasisAlajuelaWebSite.Controllers
         [Authorize]
         public ActionResult Edit(int id)
         {
-            Ministries Event = MBL.Details(id);
-            
-            return View(Event);
+            var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
+            if (validation.WriteRight == false)
+            {
+                ViewBag.Mensaje = "Usted no esta autorizado para ingresar a esta seccion, si necesita acceso contacte con un administrador.";
+                return View("~/Views/Shared/Error.cshtml");
+            }
+            else
+            {
+                Ministries Event = MBL.Details(id);
+
+                return View(Event);
+            }
         }
 
         [HttpPost]
@@ -117,20 +152,29 @@ namespace OasisAlajuelaWebSite.Controllers
 
         public ActionResult Disable(int id)
         {
-            Ministries Event = MBL.Details(id);
-            Event.ActionType = "DISABLE";
-            string InsertUser = User.Identity.GetUserName();
-
-            var r = MBL.Update(Event, InsertUser);
-
-            if (!r)
+            var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
+            if (validation.WriteRight == false)
             {
-                ViewBag.Mensaje = "Ha ocurrido un error inesperado.";
+                ViewBag.Mensaje = "Usted no esta autorizado para ingresar a esta seccion, si necesita acceso contacte con un administrador.";
                 return View("~/Views/Shared/Error.cshtml");
             }
             else
             {
-                return this.RedirectToAction("Index", "Ministries", new { id = "Admin" });
+                Ministries Event = MBL.Details(id);
+                Event.ActionType = "DISABLE";
+                string InsertUser = User.Identity.GetUserName();
+
+                var r = MBL.Update(Event, InsertUser);
+
+                if (!r)
+                {
+                    ViewBag.Mensaje = "Ha ocurrido un error inesperado.";
+                    return View("~/Views/Shared/Error.cshtml");
+                }
+                else
+                {
+                    return this.RedirectToAction("Index", "Ministries", new { id = "Admin" });
+                }
             }
         }
     }

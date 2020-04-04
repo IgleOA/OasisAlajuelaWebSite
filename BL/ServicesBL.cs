@@ -12,5 +12,15 @@ namespace BL
         {
             return SDAL.List(activeflag);
         }
+
+        public bool AddNew(Services service, string insertuser)
+        {
+            return SDAL.AddNew(service, insertuser);
+        }
+
+        public bool Update(Services service, string insertuser)
+        {
+            return SDAL.Update(service, insertuser);
+        }
     }
 }
