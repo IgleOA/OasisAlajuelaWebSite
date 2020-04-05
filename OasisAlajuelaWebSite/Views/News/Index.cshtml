@@ -2,42 +2,130 @@
 
 @{
     ViewBag.Title = "Noticias";
-    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    Layout = ViewBag.Layout;
 }
 
-<section class="hp-section bg-light">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="text-center heading-section">
-                <h2 class="mb-4">@ViewBag.Title</h2>
-            </div>
-        </div>
-        <hr />
-        <div class="row d-flex mt-3">
-            @foreach (var item in Model)
-            {
-                var base64 = Convert.ToBase64String(item.BannerData, 0, item.BannerData.Length);
-                var imgSrc = string.Format("data:image/{0};base64,{1}", item.BannerExt, base64);
+@if (ViewBag.Write == true)
+{
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript">
+        function Desactivate(NewID) {
+            var x = confirm("Esta seguro que quiere eliminar esta noticia???");
+            if (x) {
+                $.ajax({
+                    url: '@Url.Action("ChangeStatus")',
+                    data: { id: NewID }
+                }).done(function () { alert('Hecho!!!'); location.reload(); });
+            }
+        }
+        function AddNew() {
+            var url = '@Url.Action("AddNew")';
+            window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
+        }
+        function Edit(NewID) {
+            var url = '@Url.Action("Edit", new { id = "newid" })';
+            url = url.replace("newid", NewID);
+            window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
+        }
+    </script>
 
-                <div class="col-lg-4 d-flex">
-                    <div class="blog-entry justify-content-end">
-                        <a class="block-20" style="background-image: url('@imgSrc')"></a>
-                        <div class="textBlog d-flex float-right d-block">
-                            <div class="topper text-center pt-4 px-3">
-                                <span class="dayBlog">@item.NewDay</span>
-                                <span class="mos">@item.NewMonth</span>
-                                <span class="yr">@item.NewYear</span>
-                            </div>
-                            <div class="desc p-4">
-                                <h3 class="heading mt-2">
-                                    <a class="font-weight-bolder">@item.Title</a>
-                                </h3>
-                                <p>@item.Description</p>
+    <section class="hp-section bg-light">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="text-center heading-section">
+                    <h2 class="mb-4">@ViewBag.Title</h2>
+                </div>
+            </div>
+            <hr />
+            <div class="row justify-content-start">
+                <div class="px-lg-4">
+                    <div class="media services d-block text-justify">
+                        <div class="media-body py-2 mt-3">
+                            <div class="d-flex justify-content-between">
+                                <a href="#" onclick="AddNew()" title="Agregar nueva Noticia" class="btn btn-light" style="text-decoration: none;"><i class="fas fa-plus-square fa-1x"></i> Agregar nueva Noticia</a>
+                                <a href='@Url.Action("History")' target="_blank" title="Ver Historial" class="btn btn-light" style="text-decoration: none;"><i class="fas fa-history fa-1x"></i> Ver Historial</a>
                             </div>
                         </div>
                     </div>
                 </div>
-            }
+            </div>
+            <div class="row d-flex mt-3">
+                @foreach (var item in Model)
+                {
+                    var base64 = Convert.ToBase64String(item.BannerData, 0, item.BannerData.Length);
+                    var imgSrc = string.Format("data:image/{0};base64,{1}", item.BannerExt, base64);
+                    var Editflag = "EditFlag" + item.NewID.ToString();
+
+                    <div class="col-lg-4 d-flex">
+                        <div class="blog-entry justify-content-end">
+                            <a class="block-20" style="background-image: url('@imgSrc')"></a>
+                            <div class="textBlog d-flex float-right d-block">
+                                <div class="topper text-center pt-4 px-3">
+                                    <span class="dayBlog">@item.NewDay</span>
+                                    <span class="mos">@item.NewMonth</span>
+                                    <span class="yr">@item.NewYear</span>
+                                </div>
+                                <div class="desc p-4">
+                                    <div class="row">
+                                        <h3 class="heading mt-2">
+                                            <a class="font-weight-bolder">@item.Title</a>
+                                        </h3>
+                                        <p>@item.Description</p>
+                                    </div>
+                                    <div class="row">
+                                        <div class="px-4 py-0">
+                                            <a href="#" class="btn btn-light px-3" onclick="Desactivate(@item.NewID)" title="Deshabilitar"><i id="@Editflag" class="fas fa-trash-alt fa-1x" style="vertical-align: middle;"></i> Eliminar</a>
+                                            <a href="#" class="btn btn-light px-3" onclick="Edit(@item.NewID)" title="Editar"><i class="far fa-edit fa-1x" style="vertical-align: middle;"></i> Editar</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
         </div>
-    </div>
-</section>
+    </section>
+}
+else
+{
+    <section class="hp-section bg-light">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="text-center heading-section">
+                    <h2 class="mb-4">@ViewBag.Title</h2>
+                </div>
+            </div>
+            <hr />
+           
+            <div class="row d-flex mt-3">
+                @foreach (var item in Model)
+                {
+                    var base64 = Convert.ToBase64String(item.BannerData, 0, item.BannerData.Length);
+                    var imgSrc = string.Format("data:image/{0};base64,{1}", item.BannerExt, base64);
+
+                    <div class="col-lg-4 d-flex">
+                        <div class="blog-entry justify-content-end">
+                            <a class="block-20" style="background-image: url('@imgSrc')"></a>
+                            <div class="textBlog d-flex float-right d-block">
+                                <div class="topper text-center pt-4 px-3">
+                                    <span class="dayBlog">@item.NewDay</span>
+                                    <span class="mos">@item.NewMonth</span>
+                                    <span class="yr">@item.NewYear</span>
+                                </div>
+                                <div class="desc p-4">
+                                    <div class="row">
+                                        <h3 class="heading mt-2">
+                                            <a class="font-weight-bolder">@item.Title</a>
+                                        </h3>
+                                        <p>@item.Description</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+}

@@ -33,6 +33,9 @@ namespace ET
         public string BannerExt { get; set; }
 
         [Required]
+        [Display(Name = "Fecha")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime InsertDate { get; set; }
 
         [Display(Name = "Status")]

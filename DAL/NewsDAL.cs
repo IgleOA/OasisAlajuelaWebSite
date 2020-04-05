@@ -12,7 +12,7 @@ namespace DAL
     {
         private SqlConnection SqlCon = new SqlConnection(ConfigurationManager.ConnectionStrings["DB_MAIN_CR_OA_Connection"].ToString());
 
-        public List<News> List()
+        public List<News> List(bool ActiveFlag)
         {
             List<News> List = new List<News>();
 
@@ -24,6 +24,16 @@ namespace DAL
                     CommandType = CommandType.StoredProcedure
                 };
 
+                if(ActiveFlag == true)
+                {
+                    SqlParameter pActiveFlag = new SqlParameter
+                    {
+                        ParameterName = "@ActiveFlag",
+                        SqlDbType = SqlDbType.Bit,
+                        Value = ActiveFlag
+                    };
+                    SqlCmd.Parameters.Add(pActiveFlag);
+                }
                 using (var dr = SqlCmd.ExecuteReader())
                 {
                     while (dr.Read())
@@ -36,6 +46,7 @@ namespace DAL
                             BannerData = (byte[])dr["BannerData"],
                             BannerExt = dr["BannerExt"].ToString(),
                             ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]),
+                            InsertDate = Convert.ToDateTime(dr["Date"]),
                             NewYear = dr["Year"].ToString(),
                             NewMonth = dr["Month"].ToString(),
                             NewDay = dr["Day"].ToString()
@@ -82,6 +93,140 @@ namespace DAL
             }
 
             return rpta;
+        }
+
+        public bool Update(News NewMS, string InsertUser)
+        {
+            bool rpta = false;
+
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[adm].[uspUpdateNew]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                //Insert Parameters
+                SqlParameter pNewID = new SqlParameter
+                {
+                    ParameterName = "@NewID",
+                    SqlDbType = SqlDbType.Int,
+                    Value = NewMS.NewID
+                };
+                SqlCmd.Parameters.Add(pNewID);
+
+                SqlParameter pInsertUser = new SqlParameter
+                {
+                    ParameterName = "@User",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 100,
+                    Value = InsertUser
+                };
+                SqlCmd.Parameters.Add(pInsertUser);
+
+                SqlParameter pInsertDate = new SqlParameter
+                {
+                    ParameterName = "@InsertDate",
+                    SqlDbType = SqlDbType.DateTime,
+                    Value = NewMS.InsertDate
+                };
+                SqlCmd.Parameters.Add(pInsertDate);
+
+                SqlParameter pTitle = new SqlParameter
+                {
+                    ParameterName = "@Title",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 50,
+                    Value = NewMS.Title
+                };
+                SqlCmd.Parameters.Add(pTitle);
+
+                SqlParameter pDescription = new SqlParameter
+                {
+                    ParameterName = "@Description",
+                    SqlDbType = SqlDbType.VarChar,
+                    Value = NewMS.Description
+                };
+                SqlCmd.Parameters.Add(pDescription);
+
+                SqlParameter Photo = new SqlParameter
+                {
+                    ParameterName = "@BannerData",
+                    SqlDbType = SqlDbType.VarBinary,
+                    Value = NewMS.BannerData
+                };
+                SqlCmd.Parameters.Add(Photo);
+
+                SqlParameter pPhotoExt = new SqlParameter
+                {
+                    ParameterName = "@BannerExt",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 10,
+                    Value = NewMS.BannerExt
+                };
+                SqlCmd.Parameters.Add(pPhotoExt);
+
+                //EXEC Command
+                SqlCmd.ExecuteNonQuery();
+
+                rpta = true;
+
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            return rpta;
+        }
+
+        public News Details(int NewID)
+        {
+            News details = new News();
+
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[config].[uspReadNews]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                SqlParameter pNewID = new SqlParameter
+                {
+                    ParameterName = "@NewID",
+                    SqlDbType = SqlDbType.Int,
+                    Value = NewID
+                };
+                SqlCmd.Parameters.Add(pNewID);
+                
+                using (var dr = SqlCmd.ExecuteReader())
+                {
+                    dr.Read();
+                    if(dr.HasRows)
+                    {
+                        details.NewID = Convert.ToInt32(dr["NewID"]);
+                        details.Title = dr["Title"].ToString();
+                        details.Description = dr["Description"].ToString();
+                        details.BannerData = (byte[])dr["BannerData"];
+                        details.BannerExt = dr["BannerExt"].ToString();
+                        details.ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]);
+                        details.InsertDate = Convert.ToDateTime(dr["Date"]);
+                        details.NewYear = dr["Year"].ToString();
+                        details.NewMonth = dr["Month"].ToString();
+                        details.NewDay = dr["Day"].ToString();
+                    }
+                }
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            return details;
         }
     }
 }

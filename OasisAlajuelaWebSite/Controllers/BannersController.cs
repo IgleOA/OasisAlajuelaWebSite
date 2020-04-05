@@ -74,6 +74,7 @@ namespace OasisAlajuelaWebSite.Controllers
         [Authorize]
         public ActionResult BannersChangeStatus(int id)
         {
+
             string InsertUser = User.Identity.GetUserName();
 
             var r = BBL.Update(id, InsertUser);
@@ -92,11 +93,20 @@ namespace OasisAlajuelaWebSite.Controllers
         [Authorize]
         public ActionResult AddNew()
         {
-            Banner NewBanner = new Banner();
+            var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
+            if (validation.ReadRight == false)
+            {
+                ViewBag.Mensaje = "Usted no esta autorizado para ingresar a esta seccion, si necesita acceso contacte con un administrador.";
+                return View("~/Views/Shared/Error.cshtml");
+            }
+            else
+            {
+                Banner NewBanner = new Banner();
 
-            NewBanner.LList = BLBL.List();
+                NewBanner.LList = BLBL.List();
 
-            return View(NewBanner);
+                return View(NewBanner);
+            }
         }
 
         [HttpPost]

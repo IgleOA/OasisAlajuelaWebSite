@@ -8,14 +8,24 @@ namespace BL
     {
         private NewsDAL NDAL = new NewsDAL();
 
-        public List<News> List()
+        public List<News> List(bool activeflag)
         {
-            return NDAL.List();
+            return NDAL.List(activeflag);
         }
 
         public bool AddNew(News ms, string insertuser)
         {
             return NDAL.AddNew(ms, insertuser);
+        }
+
+        public bool Update(News ms, string insertuser)
+        {
+            return NDAL.Update(ms, insertuser);
+        }
+
+        public News Details(int NewID)
+        {
+            return NDAL.Details(NewID);
         }
     }
 }
