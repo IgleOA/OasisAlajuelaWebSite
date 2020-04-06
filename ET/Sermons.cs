@@ -32,7 +32,7 @@ namespace ET
         [Required]
         [Display(Name = "Fecha")]
         [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy hh:mm tt}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime SermonDate { get; set; }
 
         [Required]
