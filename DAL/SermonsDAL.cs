@@ -131,7 +131,7 @@ namespace DAL
 
                 SqlParameter pSermonDate = new SqlParameter
                 {
-                    ParameterName = "@InsertDate",
+                    ParameterName = "@SermonDate",
                     SqlDbType = SqlDbType.DateTime,
                     Value = NewMS.SermonDate
                 };

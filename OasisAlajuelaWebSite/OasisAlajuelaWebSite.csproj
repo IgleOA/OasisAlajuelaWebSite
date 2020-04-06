@@ -2105,6 +2105,7 @@
     <Content Include="Content\font-awesome\fonts\fontawesome-webfont.woff" />
     <Content Include="Content\font-awesome\fonts\fontawesome-webfont.woff2" />
     <Content Include="Content\font-awesome\fonts\FontAwesome.otf" />
+    <Content Include="App_Data\YouTube.json" />
     <None Include="Properties\PublishProfiles\IgleOA - Web Deploy.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -2522,10 +2523,10 @@
     <Content Include="Views\News\Edit.cshtml" />
     <Content Include="Views\News\History.cshtml" />
     <Content Include="Views\Sermons\History.cshtml" />
+    <Content Include="Views\Sermons\Edit.cshtml" />
+    <Content Include="Views\Sermons\AddNew.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />

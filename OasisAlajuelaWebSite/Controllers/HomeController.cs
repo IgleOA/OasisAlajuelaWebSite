@@ -51,7 +51,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
         public ActionResult _Sermons()
         {
-            var data = (from d in SBL.List()
+            var data = (from d in SBL.List(true)
                        where d.ActiveFlag == true
                        orderby d.SermonDate descending
                        select d).Take(3);

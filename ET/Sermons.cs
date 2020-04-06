@@ -26,13 +26,13 @@ namespace ET
         [Display(Name = "Descripción")]
         public string Description { get; set; }
 
-        [Display(Name = "Descripción")]
+        [Display(Name = "Palabras Clave")]
         public string Tags { get; set; }
 
         [Required]
         [Display(Name = "Fecha")]
         [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime SermonDate { get; set; }
 
         [Required]
@@ -52,6 +52,11 @@ namespace ET
         [AllowExtensions(Extensions = "png,jpg,jpeg,gif", ErrorMessage = "Por favor seleccione solo archivos soportados .png, .jpg, .jpeg, .gif")]
         [Display(Name = "Banner")]
         public HttpPostedFileBase file { get; set; }
+
+        [Required(ErrorMessage = "Por favor seleccione un archivo")]
+        [DataType(DataType.Upload)]
+        [Display(Name = "Video")]
+        public HttpPostedFileBase fileVideo { get; set; }
 
         [Display(Name = "Status")]
         public bool ActiveFlag { get; set; }

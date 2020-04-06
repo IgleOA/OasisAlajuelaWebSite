@@ -122,7 +122,8 @@ namespace OasisAlajuelaWebSite.Controllers
             {
                 Sermons MS = new Sermons()
                 {
-                    MinisterList = MBL.List(true)
+                    MinisterList = MBL.List(true),
+                    SermonDate = DateTime.Today                    
                 };
                 return View(MS);
             }
@@ -144,18 +145,38 @@ namespace OasisAlajuelaWebSite.Controllers
 
             string InsertUser = User.Identity.GetUserName();
 
-            var r = SBL.AddNew(MS, InsertUser);
-
-            if (!r)
+            YouTubeVideo NewVideo = new YouTubeVideo()
             {
-                ViewBag.Mensaje = "Ha ocurrido un error inesperado.";
-                return View("~/Views/Shared/Error.cshtml");
+                Title = MS.Title,
+                Description = MS.Description,
+                Tags = MS.Tags,
+                VideoData = MS.fileVideo.InputStream
+            };
+
+            string ytID = YBL.Insert(NewVideo);
+
+            if (ytID != null)
+            {
+                MS.SermonURL = "https://youtu.be/" + ytID;
+
+                var r = SBL.AddNew(MS, InsertUser);
+
+                if (!r)
+                {
+                    ViewBag.Mensaje = "Ha ocurrido un error inesperado.";
+                    return View("~/Views/Shared/Error.cshtml");
+                }
+                else
+                {
+                    MS.ActionType = "CREATE";
+
+                    return View(MS);
+                }
             }
             else
             {
-                MS.ActionType = "CREATE";
-
-                return View(MS);
+                ViewBag.Mensaje = "Ha ocurrido un error inesperado.";
+                return View("~/Views/Shared/Error.cshtml");
             }
         }
 
@@ -167,7 +188,8 @@ namespace OasisAlajuelaWebSite.Controllers
 
             Sermons New = new Sermons()
             {
-                SermonID = id
+                SermonID = id,
+                SermonDate = DateTime.Today
             };
 
             var r = SBL.Update(New, InsertUser);
@@ -230,6 +252,7 @@ namespace OasisAlajuelaWebSite.Controllers
                     else
                     {
                         MS.ActionType = "UPDATE";
+                        MS.MinisterList = MBL.List(true);
                         return View(MS);
                     }
                 }
@@ -251,6 +274,7 @@ namespace OasisAlajuelaWebSite.Controllers
                 else
                 {
                     MS.ActionType = "UPDATE";
+                    MS.MinisterList = MBL.List(true);
                     return View(MS);
                 }
             }

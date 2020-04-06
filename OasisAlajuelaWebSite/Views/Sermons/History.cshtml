@@ -2,7 +2,7 @@
 @using PagedList.Mvc;
 
 @{
-    ViewBag.Title = "Predicas Historial";
+    ViewBag.Title = "Prédicas Historial";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
@@ -23,14 +23,10 @@
             }).done(function () { alert('Hecho!!!'); location.reload(); });
         }
     }
-    function AddNew() {
-        var url = '@Url.Action("AddNew")';
-        window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
-    }
     function Edit(NewID) {
             var url = '@Url.Action("Edit", new { id = "newid" })';
             url = url.replace("newid", NewID);
-            window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
+            window.open(url, '_blank' , 'left=100,top=100,width=1000,height=650,toolbar=1,resizable=0');
         }
 </script>
 <section class="hp-section">
@@ -75,9 +71,10 @@
                                 var text = imgSrc;
                             }
                             <td class="text-center align-middle"><img src="@imgSrc" class="zoom" title="@item.Title" /></td>
+                            <td class="text-center align-middle">@Html.DisplayFor(modelItem => item.Tags)</td>
                             @{
                                 var isActive = (item.ActiveFlag ? "Activo" : "Inactivo");
-                                var Editflag = "EditFlag" + item.NewID.ToString();
+                                var Editflag = "EditFlag" + item.SermonID.ToString();
                             }
                             <td class="text-center align-middle">@Html.DisplayFor(modelItem => isActive)</td>
                             <td class="text-center align-middle">
@@ -95,7 +92,7 @@
                                             });
                                         });
                                     </script>
-                                    <a href="#" class="card-link" onclick="Activate(@item.NewID)" title="Habilitar"><i id="@Editflag" class="fas fa-times-circle fa-2x DisactiveColor" style="vertical-align: middle;"></i></a>
+                                    <a href="#" class="card-link" onclick="Activate(@item.SermonID)" title="Habilitar"><i id="@Editflag" class="fas fa-times-circle fa-2x DisactiveColor" style="vertical-align: middle;"></i></a>
                                 }
                                 else
                                 {
@@ -110,11 +107,11 @@
                                             });
                                         });
                                     </script>
-                                    <a href="#" class="card-link" onclick="Desactivate(@item.NewID)" title="Deshabilitar"><i id="@Editflag" class="fas fa-check-circle fa-2x ActiveColor" style="vertical-align: middle;"></i></a>
+                                    <a href="#" class="card-link" onclick="Desactivate(@item.SermonID)" title="Deshabilitar"><i id="@Editflag" class="fas fa-check-circle fa-2x ActiveColor" style="vertical-align: middle;"></i></a>
                                 }
                             </td>
                             <td class="text-center align-middle">
-                                <a href="#" class="card-link" onclick="Edit(@item.NewID)" title="Editar"><i class="fas fa-edit fa-2x" style="vertical-align: middle; color:green;"></i></a>
+                                <a href="#" class="card-link" onclick="Edit(@item.SermonID)" title="Editar"><i class="fas fa-edit fa-2x" style="vertical-align: middle; color:green;"></i></a>
                             </td>
                         </tr>
                     }
@@ -132,7 +129,7 @@
                 <div class="media services d-block text-justify">
                     <div class="media-body p-0 m-0">
                         <div class="d-flex justify-content-between">
-                            <a href="#" onclick="AddNew()" title="Agregar nuevo Noticia" class="btn btn-light" style="text-decoration: none;"><i class="fas fa-plus-square fa-1x"></i> Agregar nueva Noticia</a>
+                            <a href='@Url.Action("AddNew")' target="_blank"  title="Agregar Prédica" class="btn btn-light" style="text-decoration: none;"><i class="fas fa-plus-square fa-1x"></i> Agregar Prédica</a>
                         </div>
                     </div>
                 </div>

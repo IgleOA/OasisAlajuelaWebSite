@@ -13,5 +13,10 @@ namespace BL
         {
             return YDAL.Youtubelist(maxresults);
         }
+
+        public string Insert(YouTubeVideo video)
+        {
+            return YDAL.Insert(video);
+        }
     }
 }
