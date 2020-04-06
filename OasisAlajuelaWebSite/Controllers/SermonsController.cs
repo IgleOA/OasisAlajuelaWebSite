@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using BL;
 using Microsoft.AspNet.Identity;
+using PagedList;
 
 namespace OasisAlajuelaWebSite.Controllers
 {
@@ -13,7 +15,7 @@ namespace OasisAlajuelaWebSite.Controllers
         private RightsBL RRBL = new RightsBL();
         private UsersBL USBL = new UsersBL();
 
-        public ActionResult Index(string id)
+        public ActionResult Index(string currentFilter, string searchString, int? page)
         {
             var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString());
             if (validation.ReadRight == false)
@@ -27,7 +29,8 @@ namespace OasisAlajuelaWebSite.Controllers
                 //           orderby d.PublishedAt descending
                 //           select d;
 
-                var data = SBL.List();
+                var list = from d in SBL.List()
+                           select d;
 
                 var u = from us in USBL.List()
                         where us.UserName == User.Identity.GetUserName()
@@ -44,8 +47,26 @@ namespace OasisAlajuelaWebSite.Controllers
                     ViewBag.Layout = "~/Views/Shared/_MainLayout.cshtml";                    
                 }
 
+                if (searchString != null)
+                {
+                    page = 1;
+                }
+                else
+                {
+                    searchString = currentFilter;
+                }
+
+                ViewBag.CurrentFilter = searchString;
                 ViewBag.Write = validation.WriteRight;
-                return View(data.ToList());
+
+                if (!String.IsNullOrEmpty(searchString))
+                {
+                    list = list.Where(b => b.Title.Contains(searchString) || b.Tags.Contains(searchString));
+                }
+                int pageSize = 2;
+                int pageNumber = (page ?? 1);
+                return View(list.ToPagedList(pageNumber, pageSize));
+
             }
         }
     }

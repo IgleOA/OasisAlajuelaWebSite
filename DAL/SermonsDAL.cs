@@ -37,8 +37,8 @@ namespace DAL
                             MinisterName = dr["MinisterName"].ToString(),
                             SermonDate = Convert.ToDateTime(dr["SermonDate"]),
                             SermonURL = dr["SermonURL"].ToString(),
-                            BackgroundImage = (byte[])dr["BackgroundImage"],
-                            BackgroundExt = dr["BackgroundExt"].ToString(),
+                            BannerData = (byte[])dr["BackgroundImage"],
+                            BannerExt = dr["BackgroundExt"].ToString(),
                             ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]),                            
                         };
                         List.Add(detail);

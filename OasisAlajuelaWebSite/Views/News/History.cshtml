@@ -1,6 +1,5 @@
 ﻿@model PagedList.IPagedList<ET.News>
 @using PagedList.Mvc;
-@using System.Globalization;
 
 @{
     ViewBag.Title = "Noticias Historial";
@@ -59,7 +58,7 @@
                         <th class="text-center py-2">@Html.DisplayNameFor(model => model.FirstOrDefault().Title)</th>
                         <th class="text-center py-2">@Html.DisplayNameFor(model => model.FirstOrDefault().Description)</th>
                         <th class="text-center py-2">@Html.DisplayNameFor(model => model.FirstOrDefault().file)</th>
-                        <th class="text-center py-2">@Html.DisplayNameFor(model => model.FirstOrDefault().Description)</th>
+                        <th class="text-center py-2">@Html.DisplayNameFor(model => model.FirstOrDefault().ActiveFlag)</th>
                         <th class="text-center py-2" colspan="2">Acción</th>
                     </tr>
 

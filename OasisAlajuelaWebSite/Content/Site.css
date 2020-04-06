@@ -566,3 +566,19 @@ span.yr, span.mos {
             top: 0;
         }
 
+.modalvideo {
+    width: 100% !important;
+    height: 600px !important;
+}
+
+@media (max-width: 980px) {
+    .modalvideo {
+        height:400px !important;
+    }
+}
+
+@media (max-width: 380px) {
+    .modalvideo {
+        height: 300px !important;
+    }
+}
