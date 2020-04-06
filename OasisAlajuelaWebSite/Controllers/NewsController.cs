@@ -7,6 +7,7 @@ using ET;
 using BL;
 using System.IO;
 using Microsoft.AspNet.Identity;
+using PagedList;
 
 namespace OasisAlajuelaWebSite.Controllers
 {
@@ -54,9 +55,11 @@ namespace OasisAlajuelaWebSite.Controllers
         }
 
         [Authorize]
-        public ActionResult History()
+        public ActionResult History(string currentFilter, string searchString, int? page)
         {
-            var list = NBL.List(false);
+            var list = from n in NBL.List(false)
+                       select n;
+
             var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
             if (validation.WriteRight == false)
             {
@@ -65,7 +68,24 @@ namespace OasisAlajuelaWebSite.Controllers
             }
             else
             {
-                return View(list);
+                if (searchString != null)
+                {
+                    page = 1;
+                }
+                else
+                {
+                    searchString = currentFilter;
+                }
+
+                ViewBag.CurrentFilter = searchString;
+
+                if (!String.IsNullOrEmpty(searchString))
+                {
+                    list = list.Where(b => b.Title.Contains(searchString) || b.Description.Contains(searchString));
+                }
+                int pageSize = 10;
+                int pageNumber = (page ?? 1);
+                return View(list.ToPagedList(pageNumber, pageSize));
             }
             
         }

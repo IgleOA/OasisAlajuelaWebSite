@@ -2520,6 +2520,7 @@
     <Content Include="Views\Services\AddNew.cshtml" />
     <Content Include="Views\Services\Edit.cshtml" />
     <Content Include="Views\News\Edit.cshtml" />
+    <Content Include="Views\News\History.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
