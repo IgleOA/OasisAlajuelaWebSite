@@ -2,6 +2,7 @@
 using ET;
 using DAL;
 using System;
+using System.Threading.Tasks;
 
 namespace BL
 {
@@ -14,9 +15,9 @@ namespace BL
             return YDAL.Youtubelist(maxresults);
         }
 
-        public string Insert(YouTubeVideo video)
+        public async Task<string> Insert(YouTubeVideo video)
         {
-            return YDAL.Insert(video);
+            return await YDAL.InsertAsync(video);
         }
     }
 }

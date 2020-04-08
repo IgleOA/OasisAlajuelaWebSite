@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using BL;
 using ET;
@@ -17,6 +18,8 @@ namespace OasisAlajuelaWebSite.Controllers
         private RightsBL RRBL = new RightsBL();
         private UsersBL USBL = new UsersBL();
         private MinistersBL MBL = new MinistersBL();
+
+        private String UploadedVideoId { get; set; }
 
         public ActionResult Index(string currentFilter, string searchString, int? page)
         {
@@ -131,7 +134,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddNew(Sermons MS)
+        public async Task<ActionResult> AddNew(Sermons MS)
         {
             String FileExt = Path.GetExtension(MS.file.FileName).ToUpper();
 
@@ -153,7 +156,7 @@ namespace OasisAlajuelaWebSite.Controllers
                 VideoData = MS.fileVideo.InputStream
             };
 
-            string ytID = YBL.Insert(NewVideo);
+            string ytID = await YBL.Insert(NewVideo);
 
             if (ytID != null)
             {
@@ -169,7 +172,7 @@ namespace OasisAlajuelaWebSite.Controllers
                 else
                 {
                     MS.ActionType = "CREATE";
-
+                    MS.MinisterList = MBL.List(true);
                     return View(MS);
                 }
             }
@@ -279,5 +282,7 @@ namespace OasisAlajuelaWebSite.Controllers
                 }
             }
         }
+
+        
     }
 }
