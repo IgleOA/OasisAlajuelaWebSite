@@ -9,6 +9,7 @@ using Google.Apis.YouTube.v3.Data;
 using Google.Apis.Auth.OAuth2;
 using System.Threading;
 using Google.Apis.Util.Store;
+using System.IO;
 
 namespace DAL
 {
@@ -51,7 +52,31 @@ namespace DAL
        
         public async Task<string> InsertAsync(YouTubeVideo YTVideo)
         {
-            var youtubeService = AuthenticateOauth();
+            //var youtubeService = AuthenticateOauth();
+
+
+            UserCredential credential;
+            var CSPath = System.Web.Hosting.HostingEnvironment.MapPath("~/Content/");
+            string[] scopes = new string[] { YouTubeService.Scope.Youtube,
+                                             YouTubeService.Scope.YoutubeForceSsl,
+                                             YouTubeService.Scope.Youtubepartner,
+                                             YouTubeService.Scope.YoutubepartnerChannelAudit,
+                                             YouTubeService.Scope.YoutubeReadonly,
+                                             YouTubeService.Scope.YoutubeUpload};
+
+            using (var stream = new FileStream(Path.Combine(CSPath, "client_secret.json"), FileMode.Open, FileAccess.Read))
+            {
+                credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
+                    GoogleClientSecrets.Load(stream).Secrets,
+                    scopes,
+                    "user",
+                    CancellationToken.None);
+            }
+            var youtubeService = new YouTubeService(new BaseClientService.Initializer()
+            {
+                HttpClientInitializer = credential,
+                ApplicationName = "WebsiteIgleOADev"
+            });
 
             var video = new Video();
             video.Snippet = new VideoSnippet();

@@ -27,6 +27,24 @@
             url = url.replace("newid", NewID);
             window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
         }
+        function Enable(BID) {
+            var x = confirm("Esta seguro que quiere que esta noticia APAREZCA en barra de anuncios???");
+            if (x) {
+                $.ajax({
+                    url: '@Url.Action("ChangeShow")',
+                    data: { id: BID }
+                }).done(function () { alert('Hecho!!!'); location.reload(); });
+            }
+        }
+        function Disable(BID) {
+            var x = confirm("Esta seguro que quiere que esta noticia NO APAREZCA en barra de anuncios???");
+            if (x) {
+                $.ajax({
+                    url: '@Url.Action("ChangeShow")',
+                    data: { id: BID }
+                }).done(function () { alert('Hecho!!!'); location.reload(); });
+            }
+        }
     </script>
 
     <section class="hp-section bg-light">
@@ -74,8 +92,38 @@
                                     </div>
                                     <div class="row">
                                         <div class="px-4 py-0">
-                                            <a href="#" class="btn btn-light px-3" onclick="Desactivate(@item.NewID)" title="Deshabilitar"><i id="@Editflag" class="fas fa-trash-alt fa-1x" style="vertical-align: middle;"></i> Eliminar</a>
-                                            <a href="#" class="btn btn-light px-3" onclick="Edit(@item.NewID)" title="Editar"><i class="far fa-edit fa-1x" style="vertical-align: middle;"></i> Editar</a>
+                                            <a href="#" class="btn btn-light px-3" onclick="Desactivate(@item.NewID)" title="Deshabilitar"><i class="fas fa-trash-alt fa-1x" style="vertical-align: middle;"></i></a>
+                                            <a href="#" class="btn btn-light px-3" onclick="Edit(@item.NewID)" title="Editar"><i class="far fa-edit fa-1x" style="vertical-align: middle;"></i></a>
+                                            @if (item.ShowFlag == false)
+                                            {
+                                                <script type="text/javascript">
+                                                    $(document).ready(function () {
+                                                        $("#@Editflag").hover(function () {
+                                                            $(this).removeClass('far fa-eye-slash fa-1x');
+                                                            $(this).addClass('far fa-eye fa-1x');
+                                                        }, function () {
+                                                            $(this).removeClass('far fa-eye fa-1x');
+                                                            $(this).addClass('far fa-eye-slash fa-1x');
+                                                        });
+                                                    });
+                                                </script>
+                                                <a href="#" class="btn btn-light px-3" onclick="Enable(@item.NewID)" title="Visible en la barra de Anuncios"><i id="@Editflag" class="far fa-eye-slash fa-1x" style="vertical-align: middle;"></i></a>
+                                            }
+                                            else
+                                            {
+                                                <script type="text/javascript">
+                                                    $(document).ready(function () {
+                                                        $("#@Editflag").hover(function () {
+                                                            $(this).removeClass('far fa-eye fa-1x');
+                                                            $(this).addClass('far fa-eye-slash fa-1x');
+                                                        }, function () {
+                                                            $(this).removeClass('far fa-eye-slash fa-1x');
+                                                            $(this).addClass('far fa-eye fa-1x');
+                                                        });
+                                                    });
+                                                </script>
+                                                <a href="#" class="btn btn-light px-3" onclick="Disable(@item.NewID)" title="Invisible en la barra de Anuncios"><i id="@Editflag" class="far fa-eye fa-1x" style="vertical-align: middle;"></i></a>
+                                            }
                                         </div>
                                     </div>
                                 </div>

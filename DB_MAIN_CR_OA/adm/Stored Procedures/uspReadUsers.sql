@@ -29,7 +29,7 @@ AS
 						,U.[ActiveFlag]
 						,U.[LastActivityDate]
 						,U.[CreationDate]
-						,R.[RoleName]
+						,[RoleName] = CASE WHEN R.[RoleID] = 1 THEN 'Usuario' ELSE R.[RoleName] END
 				FROM	[adm].[utbUsers] U
 						LEFT JOIN [adm].[utbRoles] R ON R.RoleID = U.[RoleID]
 				WHERE	U.[UserID] = ISNULL(@UserID,[UserID])

@@ -31,6 +31,7 @@ AS
 						,[Order]						
 				FROM	[adm].[utbWebDirectory]
 				WHERE	[ActiveFlag] = 1
+				ORDER BY [Order]
 			-- =======================================================
 
         END TRY

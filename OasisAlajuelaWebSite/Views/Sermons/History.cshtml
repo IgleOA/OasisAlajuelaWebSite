@@ -27,7 +27,13 @@
             var url = '@Url.Action("Edit", new { id = "newid" })';
             url = url.replace("newid", NewID);
             window.open(url, '_blank' , 'left=100,top=100,width=1000,height=650,toolbar=1,resizable=0');
-        }
+    }
+
+    function AddNew() {
+            var url = '@Url.Action("AddNew")';
+            window.open(url, '_blank' , 'left=100,top=100,width=1000,height=650,toolbar=1,resizable=0');
+    }
+
 </script>
 <section class="hp-section">
     <div class="container">
@@ -41,7 +47,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text w"><i class="fas fa-search"></i></span>
                     </div>
-                    @Html.TextBox("SearchString", null, new { @class = "form-control", @placeholder = "Buscar" })
+                    @Html.TextBox("SearchString", null, new { @class = "form-control", @placeholder = "Buscar Titulo o Tags" })
                 </div>
                 <input type="submit" value="Buscar" class="btn btn-dark alt mt-0 mb-2" style="height: 2.75rem !important;" />
             </div>
@@ -129,7 +135,7 @@
                 <div class="media services d-block text-justify">
                     <div class="media-body p-0 m-0">
                         <div class="d-flex justify-content-between">
-                            <a href='@Url.Action("AddNew")' target="_blank"  title="Agregar Prédica" class="btn btn-light" style="text-decoration: none;"><i class="fas fa-plus-square fa-1x"></i> Agregar Prédica</a>
+                            <a href='#'title="Agregar Prédica" class="btn btn-light" style="text-decoration: none;" onclick="AddNew()"><i class="fas fa-plus-square fa-1x"></i> Agregar Prédica</a>
                         </div>
                     </div>
                 </div>

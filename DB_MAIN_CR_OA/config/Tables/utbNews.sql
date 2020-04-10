@@ -4,6 +4,7 @@
     [Description]    VARCHAR (200)   NOT NULL,
     [BannerData]     VARBINARY (MAX) NOT NULL,
     [BannerExt]      VARCHAR (5)     NOT NULL,
+	[ShowFlag]		 BIT             CONSTRAINT [utbNewsDefaultShowFlagIsTrue] DEFAULT ((1)) NOT NULL,
     [ActiveFlag]     BIT             CONSTRAINT [utbNewsDefaultActiveFlagIsTrue] DEFAULT ((1)) NOT NULL,
     [InsertDate]     DATETIME        CONSTRAINT [utbNewsDefaultInsertDatesysdatetime] DEFAULT (sysdatetime()) NOT NULL,
     [InsertUser]     VARCHAR (100)   CONSTRAINT [utbNewsDefaultInsertUsersuser_sname] DEFAULT (suser_sname()) NOT NULL,
@@ -20,8 +21,8 @@ FOR INSERT,UPDATE
 AS
 	BEGIN
 		DECLARE @INSERTUPDATE VARCHAR(30)
-		DECLARE @StartValues	XML = (SELECT [NewID],[Title],[Description],[BannerExt],[ActiveFlag],[InsertDate],[InsertUser],[LastModifyDate],[LastModifyUser] FROM Deleted [Values] for xml AUTO, ELEMENTS XSINIL)
-		DECLARE @EndValues		XML = (SELECT [NewID],[Title],[Description],[BannerExt],[ActiveFlag],[InsertDate],[InsertUser],[LastModifyDate],[LastModifyUser] FROM Inserted [Values] for xml AUTO, ELEMENTS XSINIL)
+		DECLARE @StartValues	XML = (SELECT [NewID],[Title],[Description],[BannerExt],[ShowFlag],[ActiveFlag],[InsertDate],[InsertUser],[LastModifyDate],[LastModifyUser] FROM Deleted [Values] for xml AUTO, ELEMENTS XSINIL)
+		DECLARE @EndValues		XML = (SELECT [NewID],[Title],[Description],[BannerExt],[ShowFlag],[ActiveFlag],[InsertDate],[InsertUser],[LastModifyDate],[LastModifyUser] FROM Inserted [Values] for xml AUTO, ELEMENTS XSINIL)
 
 		CREATE TABLE #DBCC (EventType varchar(50), Parameters varchar(50), EventInfo nvarchar(max))
 

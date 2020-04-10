@@ -6,8 +6,8 @@
     <Name>DB_MAIN_CR_OA</Name>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
-    <ProjectGuid>{2955f508-bd4d-499b-9c75-0fc358f9cab6}</ProjectGuid>
-    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
+    <ProjectGuid>{6b1f4b4d-8b72-474d-a4db-a2040ff4c55e}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.SqlAzureDatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
@@ -79,6 +79,7 @@
     <Build Include="adm\Tables\utbLogActivities.sql" />
     <Build Include="config\Tables\utbHomePage.sql" />
     <Build Include="adm\Tables\utbRoles.sql" />
+    <Build Include="adm\Tables\utbUsersProfile.sql" />
     <Build Include="adm\Tables\utbUsers.sql" />
     <Build Include="config\Tables\utbWorships.sql" />
     <Build Include="config\Tables\utbServices.sql" />
@@ -103,16 +104,24 @@
     <Build Include="adm\Stored Procedures\uspWebDirectorybyUser.sql" />
     <Build Include="adm\Stored Procedures\uspReadUsers.sql" />
     <Build Include="adm\Stored Procedures\uspValidationRight.sql" />
+    <Build Include="adm\Stored Procedures\uspUpdateUser.sql" />
     <Build Include="adm\Stored Procedures\uspGenerateGUIDResetPassword.sql" />
     <Build Include="adm\Stored Procedures\uspValidateGUIDResetPassword.sql" />
     <Build Include="adm\Stored Procedures\uspResetPassword.sql" />
     <Build Include="adm\Stored Procedures\uspAddHomePage.sql" />
     <Build Include="adm\Stored Procedures\uspUpdateBanner.sql" />
     <Build Include="adm\Stored Procedures\uspAddBanner.sql" />
+    <Build Include="adm\Stored Procedures\uspReadUsersProfile.sql" />
     <Build Include="adm\Stored Procedures\uspAddUpcommingEvent.sql" />
     <Build Include="config\Stored Procedures\uspReadMinisters.sql" />
     <Build Include="config\Stored Procedures\uspReadUpcommingEvents.sql" />
+    <Build Include="adm\Stored Procedures\uspUpdateUserProfile.sql" />
     <Build Include="adm\Stored Procedures\uspUpdateUpcommingEvent.sql" />
+    <Build Include="adm\Stored Procedures\uspUpdateServices.sql" />
+    <Build Include="adm\Stored Procedures\uspAddServices.sql" />
+    <Build Include="adm\Stored Procedures\uspUpdateNew.sql" />
+    <Build Include="adm\Stored Procedures\uspAddSermon.sql" />
+    <Build Include="adm\Stored Procedures\uspUpdateSermon.sql" />
     <Build Include="config\Stored Procedures\uspReadServices.sql" />
     <Build Include="adm\Stored Procedures\uspAddNew.sql" />
     <Build Include="adm\Stored Procedures\uspAddMinistry.sql" />
@@ -121,5 +130,8 @@
     <Build Include="Security\adm.sql" />
     <Build Include="Security\config.sql" />
     <Build Include="Security\pub.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DB_MAIN_CR_OA.publish.xml" />
   </ItemGroup>
 </Project>

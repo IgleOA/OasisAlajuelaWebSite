@@ -122,7 +122,7 @@ namespace OasisAlajuelaWebSite.Controllers
             MS.InsertDate = DateTime.Now;
 
             string InsertUser = User.Identity.GetUserName();
-
+            
             var r = NBL.AddNew(MS, InsertUser);
 
             if (!r)
@@ -147,7 +147,34 @@ namespace OasisAlajuelaWebSite.Controllers
             News New = new News()
             {
                 NewID = id,
-                InsertDate = DateTime.Now
+                InsertDate = DateTime.Now,
+                ActionType = "CHGST"
+            };
+
+            var r = NBL.Update(New, InsertUser);
+
+            if (!r)
+            {
+                ViewBag.Mensaje = "Ha ocurrido un error inesperado.";
+                return View("~/Views/Shared/Error.cshtml");
+            }
+            else
+            {
+                return this.RedirectToAction("Index");
+            }
+        }
+
+        [Authorize]
+        public ActionResult ChangeShow(int id)
+        {
+
+            string InsertUser = User.Identity.GetUserName();
+
+            News New = new News()
+            {
+                NewID = id,
+                InsertDate = DateTime.Now,
+                ActionType = "CHGVIS"
             };
 
             var r = NBL.Update(New, InsertUser);

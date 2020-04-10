@@ -38,6 +38,9 @@ namespace ET
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime InsertDate { get; set; }
 
+        [Display(Name = "Visibilidad")]
+        public bool ShowFlag { get; set; }
+
         [Display(Name = "Status")]
         public bool ActiveFlag { get; set; }
 

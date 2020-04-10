@@ -69,6 +69,7 @@ AS
 								,[Month]			= DATENAME(MONTH,CONVERT(DATETIME,Y.[Date]) + CONVERT(DATETIME,W.[Schedule]))
 								,[Day]				= CONVERT(VARCHAR(2),DATEPART(DAY,CONVERT(DATETIME,Y.[Date]) + CONVERT(DATETIME,W.[Schedule])))
 								,[Time]				= CONVERT(VARCHAR(10),FORMAT((CONVERT(DATETIME,Y.[Date]) + CONVERT(DATETIME,W.[Schedule])), 'hh:mm tt','en-US'))
+						INTO	#MainData
 						FROM	(SELECT [Date] = DATEADD(DAY, rn - 1, @StartDate)
 								 FROM (	SELECT	TOP	
 												(DATEDIFF(DAY, @StartDate, @CutoffDate)) 
@@ -98,6 +99,10 @@ AS
 								AND IE.[ScheduledDate] >= @pDate
 
 						ORDER BY [ScheduledDate]
+
+						SELECT TOP 10 * FROM #MainData ORDER BY [ScheduledDate]
+
+						DROP TABLE #MainData
 					END
 			-- =======================================================
 

@@ -38,7 +38,16 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
                     <div class="col-md-10">
-                        @Html.TextAreaFor(model => model.Description, 5, 1, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.TextAreaFor(model => model.Description, 5, 1, new { @class = "form-control", @maxlength = 100 } )
+                        <span id="charsLeft">Máximo 100 carácteres. </span>
+                        <script type="text/javascript">
+                            $(function () {
+                                $("#Description").keyup(function () {
+                                    var charsLeft = $(this).attr("maxlength") - $(this).val().length;
+                                    $("#charsLeft").text("Quedan " + charsLeft + " carácteres.");
+                                });
+                            });
+                        </script>
                         @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                     </div>
                 </div>

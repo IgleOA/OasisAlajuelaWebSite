@@ -103,7 +103,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
                 if (!String.IsNullOrEmpty(searchString))
                 {
-                    list = list.Where(b => b.Title.Contains(searchString) || b.Description.Contains(searchString));
+                    list = list.Where(b => b.Title.Contains(searchString) || b.Tags.Contains(searchString));
                 }
                 int pageSize = 10;
                 int pageNumber = (page ?? 1);

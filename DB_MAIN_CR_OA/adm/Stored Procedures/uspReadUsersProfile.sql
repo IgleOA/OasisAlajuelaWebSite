@@ -1,6 +1,6 @@
 ﻿-- ======================================================================
--- Name: [config].[uspReadBanners]
--- Desc: Retorna los banner segun la locacion
+-- Name: [adm].[uspReadUsersProfile]
+-- Desc: Retorna el perfil de un usuario
 -- Auth: Jonathan Piedra johmstone@gmail.com
 -- Date: 3/13/2020
 -------------------------------------------------------------
@@ -10,9 +10,8 @@
 -- --	----		------		-----------------------------
 -- ======================================================================
 
-CREATE PROCEDURE [config].[uspReadBanners]
-	@pLocation	VARCHAR(100) = NULL,
-	@pActiveFlag BIT = NULL
+CREATE PROCEDURE [adm].[uspReadUsersProfile]
+	@UserID INT
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -22,23 +21,30 @@ AS
             DECLARE @lErrorState INT
 
             -- =======================================================
-				DECLARE @lLocationID INT = (SELECT [LocationID]
-										    FROM   [config].[utbBannersLocation]
-										    WHERE  [LocationName] = @pLocation)
-
-				SELECT	B.[BannerID]
-						,B.[BannerData]
-						,B.[BannerExt]
-						,B.[BannerName]
-						,B.[LocationID]
-						,[Location]		=	L.[LocationName]
-						,B.[ActiveFlag]
-						,[Slide]		= ROW_NUMBER() OVER(ORDER BY B.[BannerName]) - 1
-				FROM	[config].[utbBanners] B
-						LEFT JOIN [config].[utbBannersLocation] L ON L.[LocationID] = B.[LocationID]
-				WHERE	B.[LocationID] = ISNULL(@lLocationID,B.[LocationID])
-						AND B.[ActiveFlag]  = ISNULL(@pActiveFlag,B.[ActiveFlag])
-				ORDER BY L.[LocationName],B.[ActiveFlag] DESC
+				SELECT	U.[UserID]
+						,U.[RoleID]
+						,U.[FullName]
+						,U.[UserName]
+						,U.[Email]
+						,U.[ActiveFlag]
+						,[LastActivityDate]	= ISNULL(U.[LastActivityDate],U.[CreationDate])
+						,U.[CreationDate]
+						,[RoleName]			= CASE WHEN R.[RoleName] = 'Nuevo Usuario' THEN 'Usuario' ELSE R.[RoleName] END
+						,UP.[Photo]
+						,UP.[PhotoExt]
+						,UP.[Phone]
+						,UP.[Mobile]
+						,UP.[Facebook]
+						,UP.[Twitter]
+						,UP.[Snapchat]
+						,UP.[Instragram]
+						,UP.[Country]
+						,UP.[State]
+						,UP.[City]
+				FROM	[adm].[utbUsers] U
+						LEFT JOIN [adm].[utbRoles] R ON R.RoleID = U.[RoleID]
+						LEFT JOIN [adm].[utbUsersProfile] UP ON UP.[UserID] = U.[UserID]
+				WHERE	U.[UserID] = @UserID
 			-- =======================================================
 
         END TRY

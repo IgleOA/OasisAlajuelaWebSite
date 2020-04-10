@@ -11,6 +11,8 @@
 -- ======================================================================
 
 CREATE PROCEDURE [config].[uspReadSermons]
+	@ActiveFlag BIT = NULL,
+	@SermonID	INT = NULL
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -34,6 +36,8 @@ AS
 						,S.[ActiveFlag]
 				FROM	[config].[utbSermons] S
 						LEFT JOIN [config].[utbMinisters] M ON M.[MinisterID] = S.[MinisterID]
+				WHERE	S.[ActiveFlag] = ISNULL(@ActiveFlag,S.[ActiveFlag])
+						AND S.[SermonID] = ISNULL(@SermonID,S.[SermonID])
 				ORDER BY S.[SermonDate] DESC
 			-- =======================================================
 

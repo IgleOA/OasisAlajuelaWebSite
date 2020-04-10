@@ -45,6 +45,7 @@ namespace DAL
                             Description = dr["Description"].ToString(),
                             BannerData = (byte[])dr["BannerData"],
                             BannerExt = dr["BannerExt"].ToString(),
+                            ShowFlag = Convert.ToBoolean(dr["ShowFlag"]),
                             ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]),
                             InsertDate = Convert.ToDateTime(dr["Date"]),
                             NewYear = dr["Year"].ToString(),
@@ -125,6 +126,15 @@ namespace DAL
                 };
                 SqlCmd.Parameters.Add(pInsertUser);
 
+                SqlParameter pActionType = new SqlParameter
+                {
+                    ParameterName = "@ActionType",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 10,
+                    Value = NewMS.ActionType
+                };
+                SqlCmd.Parameters.Add(pActionType);
+
                 SqlParameter pInsertDate = new SqlParameter
                 {
                     ParameterName = "@InsertDate",
@@ -166,6 +176,14 @@ namespace DAL
                     Value = NewMS.BannerExt
                 };
                 SqlCmd.Parameters.Add(pPhotoExt);
+
+                SqlParameter ShowFlag = new SqlParameter
+                {
+                    ParameterName = "@ShowFlag",
+                    SqlDbType = SqlDbType.Bit,
+                    Value = NewMS.ShowFlag
+                };
+                SqlCmd.Parameters.Add(ShowFlag);
 
                 //EXEC Command
                 SqlCmd.ExecuteNonQuery();

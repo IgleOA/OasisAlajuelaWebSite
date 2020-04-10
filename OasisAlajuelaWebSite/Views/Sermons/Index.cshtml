@@ -25,6 +25,10 @@
             url = url.replace("newid", NewID);
             window.open(url, '_blank' , 'left=100,top=100,width=1000,height=650,toolbar=1,resizable=0');
         }
+        function AddNew() {
+            var url = '@Url.Action("AddNew")';
+            window.open(url, '_blank', 'left=100,top=100,width=1000,height=650,toolbar=1,resizable=0');
+        }
     </script>
     <section class="hp-section">
         <div class="container">
@@ -36,7 +40,7 @@
                     <div class="media services d-block text-justify">
                         <div class="media-body px-0 m-0">
                             <div class="d-flex justify-content-between">
-                                <a href='@Url.Action("AddNew")' target="_blank"  title="Agregar Prédica" class="btn btn-light" style="text-decoration: none;"><i class="fas fa-plus-square fa-1x"></i> Agregar Prédica</a>
+                                <a href='#' title="Agregar Prédica" class="btn btn-light" style="text-decoration: none;" onclick="AddNew()"><i class="fas fa-plus-square fa-1x"></i> Agregar Prédica</a>
                                 <a href='@Url.Action("History")' target="_blank" title="Ver Historial" class="btn btn-light" style="text-decoration: none;"><i class="fas fa-history fa-1x"></i> Ver Historial</a>
                             </div>
                         </div>

@@ -11,6 +11,8 @@
 -- ======================================================================
 
 CREATE PROCEDURE [config].[uspReadNews]
+	@ActiveFlag BIT = NULL,
+	@NewID INT = NULL
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -27,12 +29,14 @@ AS
 						,[BannerData]
 						,[BannerExt]
 						,[ActiveFlag]
-						,[Year]			= CONVERT(VARCHAR(4),YEAR([InsertDate]))
-						,[Month]		= DATENAME(MONTH,[InsertDate])
-						,[Day]			= CASE WHEN DATEPART(DAY,[InsertDate]) <10 THEN '0' + CONVERT(VARCHAR(1),DATEPART(DAY,[InsertDate]))
-											   ELSE CONVERT(VARCHAR(2),DATEPART(DAY,[InsertDate])) END
+						,[Date]			= CONVERT(DATE,ISNULL([LastModifyDate],[InsertDate]))
+						,[Year]			= CONVERT(VARCHAR(4),YEAR(ISNULL([LastModifyDate],[InsertDate])))
+						,[Month]		= DATENAME(MONTH,ISNULL([LastModifyDate],[InsertDate]))
+						,[Day]			= CASE WHEN DATEPART(DAY,ISNULL([LastModifyDate],[InsertDate])) <10 THEN '0' + CONVERT(VARCHAR(1),DATEPART(DAY,ISNULL([LastModifyDate],[InsertDate])))
+											   ELSE CONVERT(VARCHAR(2),DATEPART(DAY,ISNULL([LastModifyDate],[InsertDate]))) END
 				FROM	[config].[utbNews]
-				WHERE	[ActiveFlag] = 1
+				WHERE	[ActiveFlag] = ISNULL(@ActiveFlag,[ActiveFlag])
+						AND [NewID] = ISNULL(@NewID,[NewID])
 				ORDER BY [LastModifyUser] DESC, [InsertDate] DESC
 			-- =======================================================
 
