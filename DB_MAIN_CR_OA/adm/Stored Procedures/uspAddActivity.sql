@@ -1,6 +1,6 @@
 ﻿-- ======================================================================
--- Name: [adm].[uspUpdateSermon]
--- Desc: Se utiliza para actualizar la informacion de un sermon
+-- Name: [adm].[uspAddActivity]
+-- Desc: Se utiliza para agregar una de un usuario
 -- Auth: Jonathan Piedra johmstone@gmail.com
 -- Date: 03/27/2020
 -------------------------------------------------------------
@@ -10,17 +10,11 @@
 -- --	----		------		-----------------------------
 -- ======================================================================
 
-CREATE PROCEDURE [adm].[uspUpdateSermon]
+CREATE PROCEDURE [adm].[uspAddActivity]
 	@User			VARCHAR(50),	
-	@SermonID		INT,
-	@Title			VARCHAR(100) = NULL,
-	@Description	VARCHAR(MAX) = NULL,
-	@Tags			VARCHAR(MAX) = NULL,
-	@MinisterID		INT = NULL,
-	@BannerData		VARBINARY(MAX) = NULL,
-	@BannerExt		VARCHAR(10) = NULL,
-	@SermonDate		DATETIME = NULL,
-	@SermonURL		VARCHAR(500) = NULL	
+	@Controller		VARCHAR(50),
+	@Action			VARCHAR(50),
+	@ActivityDate	DATETIME
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -39,45 +33,17 @@ AS
                 END
 
             -- =======================================================
-				IF (@Title IS NULL)
-					BEGIN
-						DECLARE @Status BIT
-						SELECT	@Status = [ActiveFlag]
-						FROM	[config].[utbSermons]
-						WHERE	[SermonID] = @SermonID
+				DECLARE @UserID INT
+				SELECT	@UserID = [UserID]
+				FROM	[adm].[utbUsers]
+				WHERE	[UserName] = @User
 
-						IF(@Status = 1)
-							BEGIN
-								UPDATE	[config].[utbSermons] 
-								SET		[ActiveFlag] = 0
-										,[LastModifyDate] = GETDATE()
-										,[LastModifyUser] = @User
-								WHERE	[SermonID] = @SermonID
-							END
-						ELSE
-							BEGIN
-								UPDATE	[config].[utbSermons] 
-								SET		[ActiveFlag] = 1
-										,[LastModifyDate] = GETDATE()
-										,[LastModifyUser] = @User
-								WHERE	[SermonID] = @SermonID
-							END
-					END
-				ELSE
-					BEGIN
-						UPDATE	[config].[utbSermons] 
-						SET		 [Title]		= @Title
-								,[Description]	= @Description	
-								,[Tags]			= @Tags
-								,[MinisterID]	= @MinisterID
-								,[SermonDate]	= @SermonDate
-								,[BackgroundImage]	= @BannerData
-								,[BackgroundExt]	= REPLACE(@BannerExt,'.','')
-								,[ActiveFlag]		= 1
-								,[LastModifyDate]	= GETDATE()
-								,[LastModifyUser]	= @User
-						WHERE	[SermonID] = @SermonID
-					END
+				INSERT INTO [adm].[utbUsersActivities] ([UserID],[Controller],[Action],[ActivityDate])
+				VALUES (@UserID, @Controller, @Action, @ActivityDate)
+
+				UPDATE	[adm].[utbUsers]
+				SET		[LastActivityDate] = @ActivityDate
+				WHERE	[UserID] = @UserID		
 			-- =======================================================
 
         IF ( @@trancount > 0

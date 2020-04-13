@@ -22,6 +22,7 @@ namespace OasisAlajuelaWebSite.Controllers
             var list = NBL.List(true);
             if (Request.IsAuthenticated)
             {
+                USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
                 var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
                 if (validation.ReadRight == false)
                 {
@@ -59,7 +60,7 @@ namespace OasisAlajuelaWebSite.Controllers
         {
             var list = from n in NBL.List(false)
                        select n;
-
+            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
             var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
             if (validation.WriteRight == false)
             {
@@ -102,6 +103,7 @@ namespace OasisAlajuelaWebSite.Controllers
             else
             {
                 News MS = new News();
+                USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
                 return View(MS);
             }
         }
@@ -153,6 +155,8 @@ namespace OasisAlajuelaWebSite.Controllers
 
             var r = NBL.Update(New, InsertUser);
 
+            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
+
             if (!r)
             {
                 ViewBag.Mensaje = "Ha ocurrido un error inesperado.";
@@ -178,6 +182,7 @@ namespace OasisAlajuelaWebSite.Controllers
             };
 
             var r = NBL.Update(New, InsertUser);
+            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
 
             if (!r)
             {
@@ -202,7 +207,7 @@ namespace OasisAlajuelaWebSite.Controllers
             else
             {
                 News Event = NBL.Details(id);
-
+                USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
                 return View(Event);
             }
         }

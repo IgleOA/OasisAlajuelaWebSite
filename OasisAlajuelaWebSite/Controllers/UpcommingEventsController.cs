@@ -22,6 +22,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
             if (Request.IsAuthenticated)
             {
+                USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
                 var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
                 if (validation.ReadRight == false)
                 {
@@ -62,6 +63,7 @@ namespace OasisAlajuelaWebSite.Controllers
         [Authorize]
         public ActionResult AddNew()
         {
+            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
             var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
             if (validation.ReadRight == false)
             {
@@ -113,6 +115,7 @@ namespace OasisAlajuelaWebSite.Controllers
         [Authorize]
         public ActionResult Edit(int id)
         {
+            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
             var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
             if (validation.ReadRight == false)
             {
@@ -162,6 +165,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
         public ActionResult Disable(int id)
         {
+            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
             UpcommingEvents Event = UBL.Details(id);
             Event.ActionType = "DISABLE";
             string InsertUser = User.Identity.GetUserName();

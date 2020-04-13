@@ -4,7 +4,7 @@
     [Description]    VARCHAR (200)   NOT NULL,
     [BannerData]     VARBINARY (MAX) NOT NULL,
     [BannerExt]      VARCHAR (5)     NOT NULL,
-	[ShowFlag]		 BIT             CONSTRAINT [utbNewsDefaultShowFlagIsTrue] DEFAULT ((1)) NOT NULL,
+    [ShowFlag]       BIT             CONSTRAINT [utbNewsDefaultShowFlagIsTrue] DEFAULT ((1)) NOT NULL,
     [ActiveFlag]     BIT             CONSTRAINT [utbNewsDefaultActiveFlagIsTrue] DEFAULT ((1)) NOT NULL,
     [InsertDate]     DATETIME        CONSTRAINT [utbNewsDefaultInsertDatesysdatetime] DEFAULT (sysdatetime()) NOT NULL,
     [InsertUser]     VARCHAR (100)   CONSTRAINT [utbNewsDefaultInsertUsersuser_sname] DEFAULT (suser_sname()) NOT NULL,

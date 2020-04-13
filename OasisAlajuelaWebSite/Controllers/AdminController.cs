@@ -2,6 +2,7 @@
 using ET;
 using BL;
 using Microsoft.AspNet.Identity;
+using System;
 
 namespace OasisAlajuelaWebSite.Controllers
 {
@@ -12,6 +13,8 @@ namespace OasisAlajuelaWebSite.Controllers
         private HomeBL HBL = new HomeBL();
         private BannersBL BBL = new BannersBL();
         private RightsBL RRBL = new RightsBL();
+        private UsersBL UBL = new UsersBL();
+
         public ActionResult Index()
         {
             var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
@@ -22,6 +25,7 @@ namespace OasisAlajuelaWebSite.Controllers
             }
             else
             {
+                UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
                 return View();
             }
         }
@@ -36,6 +40,7 @@ namespace OasisAlajuelaWebSite.Controllers
             }
             else
             {
+                UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
                 HomePage HP = HBL.Home();
                 return View(HP);
             }

@@ -15,6 +15,7 @@ namespace OasisAlajuelaWebSite.Controllers
         private BannersBL BBL = new BannersBL();
         private BannersLocationBL BLBL = new BannersLocationBL();
         private RightsBL RRBL = new RightsBL();
+        private UsersBL UBL = new UsersBL();
 
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
@@ -26,6 +27,7 @@ namespace OasisAlajuelaWebSite.Controllers
             }
             else
             {
+                UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
                 ViewBag.CurrentSort = sortOrder;
                 ViewBag.LocationOrder = String.IsNullOrEmpty(sortOrder) ? "location_desc" : "";
                 ViewBag.StatusOrder = sortOrder == "Active" ? "Desactive" : "Active";
@@ -86,6 +88,7 @@ namespace OasisAlajuelaWebSite.Controllers
             }
             else
             {
+                UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
                 return this.RedirectToAction("Index", "Banners");
             }
         }
@@ -136,6 +139,7 @@ namespace OasisAlajuelaWebSite.Controllers
                 }
                 else
                 {
+                    UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
                     MS.ActionType = "CREATE";
                     MS.LList = BLBL.List();
                     return View(MS);

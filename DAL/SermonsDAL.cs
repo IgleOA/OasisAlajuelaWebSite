@@ -141,7 +141,7 @@ namespace DAL
                 {
                     ParameterName = "@Title",
                     SqlDbType = SqlDbType.VarChar,
-                    Size = 50,
+                    Size = 100,
                     Value = NewMS.Title
                 };
                 SqlCmd.Parameters.Add(pTitle);

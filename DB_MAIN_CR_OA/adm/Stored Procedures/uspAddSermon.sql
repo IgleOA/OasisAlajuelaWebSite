@@ -12,7 +12,7 @@
 
 CREATE PROCEDURE [adm].[uspAddSermon]
 	@InsertUser		VARCHAR(50),	
-	@Title			VARCHAR(30),
+	@Title			VARCHAR(100),
 	@Description	VARCHAR(MAX),
 	@Tags			VARCHAR(MAX),
 	@MinisterID		INT,

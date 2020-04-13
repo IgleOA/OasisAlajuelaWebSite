@@ -28,6 +28,7 @@ AS
 						,[Description]
 						,[BannerData]
 						,[BannerExt]
+						,[ShowFlag]
 						,[ActiveFlag]
 						,[Date]			= CONVERT(DATE,ISNULL([LastModifyDate],[InsertDate]))
 						,[Year]			= CONVERT(VARCHAR(4),YEAR(ISNULL([LastModifyDate],[InsertDate])))

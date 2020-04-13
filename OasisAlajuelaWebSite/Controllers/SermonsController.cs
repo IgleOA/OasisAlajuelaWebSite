@@ -23,6 +23,8 @@ namespace OasisAlajuelaWebSite.Controllers
 
         public ActionResult Index(string currentFilter, string searchString, int? page)
         {
+            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
+
             var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString());
             if (validation.ReadRight == false)
             {
@@ -79,6 +81,8 @@ namespace OasisAlajuelaWebSite.Controllers
         [Authorize]
         public ActionResult History(string currentFilter, string searchString, int? page)
         {
+            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
+
             var list = from n in SBL.List(false)
                        select n;
 
@@ -115,6 +119,7 @@ namespace OasisAlajuelaWebSite.Controllers
         [Authorize]
         public ActionResult AddNew()
         {
+            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
             var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
             if (validation.WriteRight == false)
             {
@@ -134,7 +139,8 @@ namespace OasisAlajuelaWebSite.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> AddNew(Sermons MS)
+        //public async Task<ActionResult> AddNew(Sermons MS)
+        public ActionResult AddNew(Sermons MS)
         {
             String FileExt = Path.GetExtension(MS.file.FileName).ToUpper();
 
@@ -148,19 +154,19 @@ namespace OasisAlajuelaWebSite.Controllers
 
             string InsertUser = User.Identity.GetUserName();
 
-            YouTubeVideo NewVideo = new YouTubeVideo()
-            {
-                Title = MS.Title,
-                Description = MS.Description,
-                Tags = MS.Tags,
-                VideoData = MS.fileVideo.InputStream
-            };
+            //YouTubeVideo NewVideo = new YouTubeVideo()
+            //{
+            //    Title = MS.Title,
+            //    Description = MS.Description,
+            //    Tags = MS.Tags,
+            //    VideoData = MS.fileVideo.InputStream
+            //};
 
-            string ytID = await YBL.Insert(NewVideo);
+            //string ytID = await YBL.Insert(NewVideo);
 
-            if (ytID != null)
-            {
-                MS.SermonURL = "https://youtu.be/" + ytID;
+            //if (ytID != null)
+            //{
+            //    MS.SermonURL = "https://youtu.be/" + ytID;
 
                 var r = SBL.AddNew(MS, InsertUser);
 
@@ -175,18 +181,18 @@ namespace OasisAlajuelaWebSite.Controllers
                     MS.MinisterList = MBL.List(true);
                     return View(MS);
                 }
-            }
-            else
-            {
-                ViewBag.Mensaje = "Ha ocurrido un error inesperado.";
-                return View("~/Views/Shared/Error.cshtml");
-            }
+            //}
+            //else
+            //{
+            //    ViewBag.Mensaje = "Ha ocurrido un error inesperado.";
+            //    return View("~/Views/Shared/Error.cshtml");
+            //}
         }
 
         [Authorize]
         public ActionResult ChangeStatus(int id)
         {
-
+            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
             string InsertUser = User.Identity.GetUserName();
 
             Sermons New = new Sermons()
@@ -211,6 +217,7 @@ namespace OasisAlajuelaWebSite.Controllers
         [Authorize]
         public ActionResult Edit(int id)
         {
+            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
             var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
             if (validation.ReadRight == false)
             {

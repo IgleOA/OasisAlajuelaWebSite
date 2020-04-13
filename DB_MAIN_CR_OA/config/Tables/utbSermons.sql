@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [config].[utbSermons] (
     [SermonID]        INT             IDENTITY (1, 1) NOT NULL,
-    [Title]           VARCHAR (50)    NOT NULL,
+    [Title]           VARCHAR (100)    NOT NULL,
     [Description]     VARCHAR (MAX)   NOT NULL,
     [Tags]            VARCHAR (MAX)   NULL,
     [MinisterID]      INT             NOT NULL,

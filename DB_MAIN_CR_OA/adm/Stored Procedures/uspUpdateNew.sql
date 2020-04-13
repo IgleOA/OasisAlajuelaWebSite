@@ -14,7 +14,9 @@ CREATE PROCEDURE [adm].[uspUpdateNew]
 	@User			VARCHAR(50),
 	@NewID			INT,
 	@InsertDate		DATETIME,
+	@ActionType		VARCHAR(10) = NULL,
 	@Title			VARCHAR(50) = NULL,
+	@ShowFlag		BIT = NULL,
 	@Description	VARCHAR(MAX) = NULL,
 	@BannerData		VARBINARY(MAX) = NULL,
 	@BannerExt		VARCHAR(10) = NULL	
@@ -36,7 +38,7 @@ AS
                 END
 
             -- =======================================================
-				IF (@Title IS NULL)
+				IF (@ActionType = 'CHGST')
 					BEGIN
 						DECLARE @Status BIT
 						SELECT	@Status = [ActiveFlag]
@@ -62,15 +64,42 @@ AS
 					END
 				ELSE
 					BEGIN
-						UPDATE	[config].[utbNews] 
-						SET		 [Title]		= @Title
-								,[Description]	= @Description	
-								,[BannerData]	= @BannerData
-								,[BannerExt]	= REPLACE(@BannerExt,'.','')
-								,[ActiveFlag]		= 1
-								,[LastModifyDate]	= @InsertDate
-								,[LastModifyUser]	= @User
-						WHERE	[NewID] = @NewID
+						IF (@ActionType = 'CHGVIS')
+							BEGIN
+								SELECT	@ShowFlag = [ShowFlag]
+								FROM	[config].[utbNews]
+								WHERE	[NewID] = @NewID
+
+								IF(@ShowFlag = 1)
+									BEGIN
+										UPDATE	[config].[utbNews] 
+										SET		[ShowFlag] = 0
+												,[LastModifyDate] = @InsertDate
+												,[LastModifyUser] = @User
+										WHERE	[NewID] = @NewID
+									END
+								ELSE
+									BEGIN
+										UPDATE	[config].[utbNews] 
+										SET		[ShowFlag] = 1
+												,[LastModifyDate] = @InsertDate
+												,[LastModifyUser] = @User
+										WHERE	[NewID] = @NewID
+									END
+							END
+						ELSE
+							BEGIN
+								UPDATE	[config].[utbNews] 
+								SET		 [Title]		= @Title
+										,[Description]	= @Description	
+										,[BannerData]	= @BannerData
+										,[BannerExt]	= REPLACE(@BannerExt,'.','')
+										,[ShowFlag]		= @ShowFlag
+										,[ActiveFlag]	= 1
+										,[LastModifyDate]	= @InsertDate
+										,[LastModifyUser]	= @User
+								WHERE	[NewID] = @NewID
+							END
 					END
 			-- =======================================================
 

@@ -36,7 +36,7 @@ namespace ET
         public DateTime SermonDate { get; set; }
 
         [Required]
-        [Display(Name = "Link")]
+        [Display(Name = "YouTube Link")]
         [DataType(DataType.Url)]
         public string SermonURL { get; set; }
 

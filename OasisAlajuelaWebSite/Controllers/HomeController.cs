@@ -20,12 +20,15 @@ namespace OasisAlajuelaWebSite.Controllers
         private NewsBL NBL = new NewsBL();
         private AboutPageBL ABL = new AboutPageBL();
         private WebDirectoryBL WBL = new WebDirectoryBL();
-
+        private UsersBL UsBL = new UsersBL();
         public ActionResult Index()
         {
             HomePage Home = HBL.Home();
+            if (Request.IsAuthenticated)
+            {
+                UsBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
+            }
             return View(Home);
-            
         }
 
         public ActionResult _Banners()
@@ -77,6 +80,10 @@ namespace OasisAlajuelaWebSite.Controllers
 
         public ActionResult About()
         {
+            if (Request.IsAuthenticated)
+            {
+                UsBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
+            }
             AboutPage Aboutpage = ABL.About();
 
             return View(Aboutpage);

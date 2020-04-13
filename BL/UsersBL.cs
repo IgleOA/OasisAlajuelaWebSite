@@ -1,6 +1,7 @@
 ﻿using ET;
 using DAL;
 using System.Collections.Generic;
+using System;
 
 namespace BL
 {
@@ -38,7 +39,7 @@ namespace BL
             return UDAL.ResetPassword(model);
         }
 
-        public List<Users> List ()
+        public List<Users> List()
         {
             return UDAL.List();
         }
@@ -51,6 +52,11 @@ namespace BL
         public Users Details(int userid)
         {
             return UDAL.Details(userid);
+        }
+
+        public bool InsertActivity(string UserName, string Controller, string Action, DateTime ActivityDate)
+        {
+            return UDAL.InsertActivity(UserName, Controller, Action, ActivityDate);
         }
     }
 }

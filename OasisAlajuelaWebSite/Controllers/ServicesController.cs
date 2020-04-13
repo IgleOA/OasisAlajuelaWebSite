@@ -4,6 +4,7 @@ using ET;
 using BL;
 using OasisAlajuelaWebSite.Models;
 using Microsoft.AspNet.Identity;
+using System;
 
 namespace OasisAlajuelaWebSite.Controllers
 {
@@ -12,8 +13,12 @@ namespace OasisAlajuelaWebSite.Controllers
     {
         private RightsBL RRBL = new RightsBL();
         private ServicesBL SBL = new ServicesBL();
+        private UsersBL UBL = new UsersBL();
+
         public ActionResult Index()
         {
+            UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
+
             var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
             if (validation.ReadRight == false)
             {
@@ -30,6 +35,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
         public ActionResult AddNew()
         {
+            UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
             var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
             if (validation.WriteRight == false)
             {
@@ -72,6 +78,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
         public ActionResult Edit(int id)
         {
+            UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
             var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
             if (validation.WriteRight == false)
             {
@@ -119,6 +126,8 @@ namespace OasisAlajuelaWebSite.Controllers
 
         public ActionResult ChangeStatus(int id)
         {
+            UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
+
             string InsertUser = User.Identity.GetUserName();
 
             Services SVC = new Services()

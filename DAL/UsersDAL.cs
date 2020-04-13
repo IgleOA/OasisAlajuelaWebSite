@@ -479,5 +479,69 @@ namespace DAL
 
             return Detail;
         }
+
+        public bool InsertActivity(string UserName, string Controller, string Action, DateTime ActivityDate)
+        {
+            bool rpta = false;
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[adm].[uspAddActivity]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                //Insert Parameters
+                SqlParameter ParInsertUser = new SqlParameter
+                {
+                    ParameterName = "@User",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 50,
+                    Value = UserName
+                };
+                SqlCmd.Parameters.Add(ParInsertUser);
+
+                SqlParameter pController = new SqlParameter
+                {
+                    ParameterName = "@Controller",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 50,
+                    Value = Controller
+                };
+                SqlCmd.Parameters.Add(pController);
+
+                SqlParameter ParAction = new SqlParameter
+                {
+                    ParameterName = "@Action",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 50,
+                    Value = Action
+                };
+                SqlCmd.Parameters.Add(ParAction);
+
+                
+
+                SqlParameter ParActivityDate = new SqlParameter
+                {
+                    ParameterName = "@ActivityDate",
+                    SqlDbType = SqlDbType.DateTime,
+                    Value = ActivityDate
+                };
+                SqlCmd.Parameters.Add(ParActivityDate);
+
+                //EXEC Command
+                SqlCmd.ExecuteNonQuery();
+
+                rpta = true;
+
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            return rpta;
+        }
     }
 }
