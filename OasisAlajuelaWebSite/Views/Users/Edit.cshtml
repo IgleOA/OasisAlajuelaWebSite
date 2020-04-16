@@ -45,7 +45,7 @@
                         @Html.LabelFor(model => model.RoleID, htmlAttributes: new { @class = "control-label m-0", @style = "max-width: 100%;" })                        
                     </div>
                     <div class="col-md-10">
-                        @Html.DropDownListFor(model => model.RoleID, new SelectList(Model.RolesList, "RoleID", "RoleName"), new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.DropDownListFor(model => model.RoleID, new SelectList(Model.RolesList, "RoleID", "RoleName"), new { @class = "form-control" } )
                         @Html.ValidationMessageFor(model => model.RoleID, "", new { @class = "text-danger" })
                     </div>
                 </div>                

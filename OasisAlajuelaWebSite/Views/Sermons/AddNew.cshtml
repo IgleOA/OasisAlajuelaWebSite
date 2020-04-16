@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Agregar Prédica";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    Layout = "~/Views/Shared/_PupopLayout.cshtml";
 }
 
 
@@ -58,7 +58,7 @@
                         <div class="form-group">
                             @Html.LabelFor(model => model.MinisterID, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
                             <div class="col">
-                                @Html.DropDownListFor(model => model.MinisterID, new SelectList(Model.MinisterList, "MinisterID", "FullName"), new { htmlAttributes = new { @class = "custom-select" } })
+                                @Html.DropDownListFor(model => model.MinisterID, new SelectList(Model.MinisterList, "MinisterID", "FullName"), new { @class = "custom-select" })
                                 @Html.ValidationMessageFor(model => model.MinisterID, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -137,7 +137,7 @@
                         <div class="form-group">
                             @Html.LabelFor(model => model.MinisterID, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
                             <div class="col">
-                                @Html.DropDownListFor(model => model.MinisterID, new SelectList(Model.MinisterList, "MinisterID", "FullName"), new { htmlAttributes = new { @class = "custom-select" } })
+                                @Html.DropDownListFor(model => model.MinisterID, new SelectList(Model.MinisterList, "MinisterID", "FullName"), new { @class = "custom-select" } )
                                 @Html.ValidationMessageFor(model => model.MinisterID, "", new { @class = "text-danger" })
                             </div>
                         </div>

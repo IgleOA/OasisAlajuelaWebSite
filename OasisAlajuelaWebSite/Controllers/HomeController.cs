@@ -95,5 +95,11 @@ namespace OasisAlajuelaWebSite.Controllers
 
             return View(menu.ToList());
         }
+
+        [HandleError]
+        public ActionResult Error()
+        {
+            return View();
+        }
     }
 }

@@ -1,0 +1,259 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Dapper;
+using ET;
+
+namespace DAL
+{
+    public class ResourcesDAL
+    {
+        private SqlConnection SqlCon = new SqlConnection(ConfigurationManager.ConnectionStrings["DB_MAIN_CR_OA_Connection"].ToString());
+
+        public bool AddNewResourceType(ResourceTypes RT, string InsertUser)
+        {
+            bool rpta = false;
+
+            try
+            {
+                DynamicParameters Parm = new DynamicParameters();
+                Parm.Add("@InsertUser", InsertUser);
+                Parm.Add("@TypeName", RT.TypeName);
+                Parm.Add("@TypeImage", RT.TypeImage);
+                Parm.Add("@TypeImageExt", RT.TypeImageExt);
+                Parm.Add("@Description", RT.Description);
+
+                SqlCon.Open();
+
+                SqlCon.Execute("[adm].[uspAddResourceType]", Parm, commandType: CommandType.StoredProcedure);
+
+                rpta = true;
+
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            return rpta;
+        }
+
+        public bool AddNewResource(Resources RT, string InsertUser)
+        {
+            bool rpta = false;
+
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[adm].[uspAddResource]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                //Insert Parameters
+                SqlParameter ParInsertUser = new SqlParameter
+                {
+                    ParameterName = "@InsertUser",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 50,
+                    Value = InsertUser
+                };
+                SqlCmd.Parameters.Add(ParInsertUser);
+
+                SqlParameter pResourceTypeID = new SqlParameter
+                {
+                    ParameterName = "@ResourceTypeID",
+                    SqlDbType = SqlDbType.Int,
+                    Value = RT.ResourceTypeID
+                };
+                SqlCmd.Parameters.Add(pResourceTypeID);
+
+                SqlParameter pDescription = new SqlParameter
+                {
+                    ParameterName = "@Description",
+                    SqlDbType = SqlDbType.VarChar,
+                    Value = RT.Description
+                };
+                SqlCmd.Parameters.Add(pDescription);
+
+                SqlParameter pFileType = new SqlParameter
+                {
+                    ParameterName = "@FileType",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 100,
+                    Value = RT.FileType
+                };
+                SqlCmd.Parameters.Add(pFileType);
+
+                SqlParameter pFileData = new SqlParameter
+                {
+                    ParameterName = "@FileData",
+                    SqlDbType = SqlDbType.VarBinary,
+                    Value = RT.FileData
+                };
+                SqlCmd.Parameters.Add(pFileData);
+
+                SqlParameter pFileExt = new SqlParameter
+                {
+                    ParameterName = "@FileExt",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 10,
+                    Value = RT.FileExt
+                };
+                SqlCmd.Parameters.Add(pFileExt);
+
+                SqlParameter pFileName = new SqlParameter
+                {
+                    ParameterName = "@FileName",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 500,
+                    Value = RT.FileName
+                };
+                SqlCmd.Parameters.Add(pFileName);
+
+                SqlParameter pFileURL = new SqlParameter
+                {
+                    ParameterName = "@FileURL",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 500,
+                    Value = RT.FileURL
+                };
+                SqlCmd.Parameters.Add(pFileURL);
+
+                //EXEC Command
+                SqlCmd.ExecuteNonQuery();
+
+                rpta = true;
+
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            return rpta;
+        }
+
+        public List<ResourceTypes> TypeList(Boolean ActiveFlag)
+        {
+            List<ResourceTypes> List = new List<ResourceTypes>();
+
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[config].[uspReadResourceTypes]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                if (ActiveFlag == true)
+                {
+                    SqlParameter pActiveFlag = new SqlParameter
+                    {
+                        ParameterName = "@ActiveFlag",
+                        SqlDbType = SqlDbType.Bit,
+                        Value = ActiveFlag
+                    };
+                    SqlCmd.Parameters.Add(pActiveFlag);
+                }
+                using (var dr = SqlCmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        var detail = new ResourceTypes
+                        {
+                            ResourceTypeID = Convert.ToInt32(dr["ResourceTypeID"]),
+                            TypeName = dr["TypeName"].ToString(),
+                            Description = dr["Description"].ToString(),
+                            TypeImage = (byte[])dr["TypeImage"],
+                            TypeImageExt = dr["TypeImageExt"].ToString(),
+                            ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"])
+                        };
+                        List.Add(detail);
+                    }
+                }
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            return List;
+        }
+
+        public List<Resources> ResourceList(int ResourceTypeID, Boolean ActiveFlag)
+        {
+            List<Resources> List = new List<Resources>();
+
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[config].[uspReadResources]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                SqlParameter pResourceTypeID = new SqlParameter
+                {
+                    ParameterName = "@ResourceTypeID",
+                    SqlDbType = SqlDbType.Int,
+                    Value = ResourceTypeID
+                };
+                SqlCmd.Parameters.Add(pResourceTypeID);
+
+                if (ActiveFlag == true)
+                {
+                    SqlParameter pActiveFlag = new SqlParameter
+                    {
+                        ParameterName = "@ActiveFlag",
+                        SqlDbType = SqlDbType.Bit,
+                        Value = ActiveFlag
+                    };
+                    SqlCmd.Parameters.Add(pActiveFlag);
+                }
+
+                using (var dr = SqlCmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        var detail = new Resources
+                        {
+                            ResourceID = Convert.ToInt32(dr["ResourceID"]),
+                            ResourceTypeID = Convert.ToInt32(dr["ResourceTypeID"]),
+                            TypeName = dr["TypeName"].ToString(),
+                            FileType = dr["FileType"].ToString(),
+                            FileExt = dr["FileExt"].ToString(),
+                            FileName = dr["FileName"].ToString(),
+                            FileURL = dr["FileURL"].ToString(),
+                            Description = dr["Description"].ToString(),
+                            ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"])
+                        };
+
+                        if(!Convert.IsDBNull(dr["FileData"]))
+                        {
+                            detail.FileData = (byte[])dr["FileData"];
+                        }
+                        List.Add(detail);
+                    }
+                }
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            return List;
+        }
+    }
+}

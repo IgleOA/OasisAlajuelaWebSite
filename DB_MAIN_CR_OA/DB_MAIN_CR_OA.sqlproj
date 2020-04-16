@@ -132,6 +132,12 @@
     <Build Include="Security\pub.sql" />
     <Build Include="adm\Tables\utbUsersActivities.sql" />
     <Build Include="adm\Stored Procedures\uspAddActivity.sql" />
+    <Build Include="config\Tables\utbResources.sql" />
+    <Build Include="config\Tables\utbResourceTypes.sql" />
+    <Build Include="adm\Stored Procedures\uspAddResource.sql" />
+    <Build Include="config\Stored Procedures\uspReadResourceTypes.sql" />
+    <Build Include="config\Stored Procedures\uspReadResources.sql" />
+    <Build Include="adm\Stored Procedures\uspAddResourceType.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DB_MAIN_CR_OA.publish.xml" />

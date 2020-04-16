@@ -356,6 +356,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MinistriesController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
+    <Compile Include="Controllers\ResourcesController.cs" />
     <Compile Include="Controllers\RightsController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SermonsController.cs" />
@@ -2008,6 +2009,7 @@
     <Content Include="Images\familiaPastoral.jpeg" />
     <Content Include="Images\fondo.png" />
     <Content Include="Images\FullyStar.png" />
+    <Content Include="Images\HolySpirit.jpg" />
     <Content Include="Images\Icon_Delete.png" />
     <Content Include="Images\Icon_Delete_View.png" />
     <Content Include="Images\Icon_Download.png" />
@@ -2481,6 +2483,10 @@
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="Views\Resources\AddNewResource.cshtml" />
+    <Content Include="Views\Resources\AddNewRT.cshtml" />
+    <Content Include="Views\Resources\Index.cshtml" />
+    <Content Include="Views\Resources\Type.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -2557,9 +2563,11 @@
     <Content Include="Views\Sermons\History.cshtml" />
     <Content Include="Views\Sermons\Edit.cshtml" />
     <Content Include="Views\Sermons\AddNew.cshtml" />
+    <Content Include="Views\Home\Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Error\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

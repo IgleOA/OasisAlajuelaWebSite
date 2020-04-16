@@ -38,7 +38,7 @@
 <section class="hp-section">
     <div class="container">
         <div class="row justify-content-start">
-            <h2 class="heading-section font-weight-bold my-2 p-0">@ViewBag.Title</h2>
+            <h2 class="heading-section font-weight-bold my-2 p-0">@ViewBag.Title.ToUpper()</h2>
         </div>
         @using (Html.BeginForm("History", "Sermons", FormMethod.Get))
         {

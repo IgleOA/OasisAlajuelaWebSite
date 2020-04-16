@@ -75,6 +75,7 @@
     <Compile Include="Ministers.cs" />
     <Compile Include="Ministries.cs" />
     <Compile Include="News.cs" />
+    <Compile Include="Resources.cs" />
     <Compile Include="Rights.cs" />
     <Compile Include="Roles.cs" />
     <Compile Include="Sermons.cs" />

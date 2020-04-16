@@ -46,26 +46,25 @@ namespace OasisAlajuelaWebSite.Controllers
                     {
                         FromEmail = "johmstone@gmail.com",
                         ToEmail = User.Email,
-                        SubjectEmail = "Oasis Alajuela - Registro satisfactorio",
-                        BodyEmail = "Gracias " + User.FullName + " por registrarse y por tener el sentir de hacerte parte de esta familia. Dios trae cosas grandes para esta casa y ahora seras parte de ellas. Bendiciones..."
+                        SubjectEmail = "Oasis Alajuela - Registro satisfactorio"                        
                     };
 
                     StringBuilder mailBody = new StringBuilder();
 
-                    mailBody.AppendFormat("<h1>Oasis Alajuela</h1>");
+                    mailBody.AppendFormat("<div><h1>Oasis Alajuela</h1>");
                     mailBody.AppendFormat("<br />");
                     mailBody.AppendFormat("<p>Gracias {0} por registrarse y por tener el sentir de hacerte parte de esta familia. Dios trae cosas grandes para esta casa y ahora seras parte de ellas.</p>", User.FullName);
                     mailBody.AppendFormat("<br />");
                     mailBody.AppendFormat("<p>Desde ya puedes ver el contenido completo de nuestro website http://igleoa.azurewebsites.net/ </p>");
                     mailBody.AppendFormat("<br />");
-                    mailBody.AppendFormat("<h3>Bendiciones....</h3>");
+                    mailBody.AppendFormat("<h3>Bendiciones....</h3></div>");
 
                     Email.BodyEmail = mailBody.ToString();
 
                     MailMessage mm = new MailMessage(Email.FromEmail, Email.ToEmail);
                     mm.Subject = Email.SubjectEmail;
                     mm.Body = Email.BodyEmail;
-                    mm.IsBodyHtml = false;
+                    mm.IsBodyHtml = true;
 
                     SmtpClient smtp = new SmtpClient();
                     smtp.Send(mm);

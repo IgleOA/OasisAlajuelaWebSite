@@ -47,7 +47,7 @@
                         <a href="#" onclick="Create();" title="Agregar Predicador"><i class="fas fa-user-plus"></i></a>
                     </div>
                     <div class="col-md-10">
-                        @Html.DropDownListFor(model => model.MinisterID, new SelectList(Model.MinisterList, "MinisterID", "FullName"), new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.DropDownListFor(model => model.MinisterID, new SelectList(Model.MinisterList, "MinisterID", "FullName"), new { @class = "form-control" } )
                         @Html.ValidationMessageFor(model => model.MinisterID, "", new { @class = "text-danger" })
                     </div>
                 </div>
