@@ -27,5 +27,10 @@ namespace BL
         {
             return RDAL.ResourceList(ResourceTypeID, ActiveFlag);
         }
+
+        public Resources ResourceDetails(int ResourceID)
+        {
+            return RDAL.ResourceDetails(ResourceID);
+        }
     }
 }

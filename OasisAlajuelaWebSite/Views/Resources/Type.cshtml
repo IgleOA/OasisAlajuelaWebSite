@@ -44,20 +44,174 @@
             @foreach (var item in Model)
             {
                 var modalname = "ModalCenter" + item.ResourceID.ToString();
+                var filetype = "video/" + item.FileExt;
 
                 switch (item.FileType)
                 {
                     case "URL":
-                        <p>video desde youtube</p>
+                        <hr class="mb-2" />
+                        <div class="row mb-2">
+                            <div class="justify-content-center my-auto services">
+                                <div class="icon d-flex justify-content-center mb-3">
+                                    <span class="align-self-center fas fa-link fa-4x" data-toggle="modal" data-target='#@modalname'></span>
+                                </div>
+                            </div>
+                            <div class="col pl-md-4 justify-content-start">
+                                <h3 class="mb-2">
+                                    <a class="font-weight-bold">@item.FileName</a>
+                                </h3>
+                                <p class="mb-2 justify-content-start">
+                                    @item.Description
+                                </p>
+                                <div class="mb-2 mt-2">
+                                    <div class="tagcloud">
+                                        <a>@item.FileType</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="@modalname">
+                            <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <iframe src="@item.FileURL" class="modalvideo" frameborder="0" allowfullscreen></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+                        <script src="~/Scripts/bootstrap.min.js"></script>
+                        <script type="text/javascript">
+                            $('#@modalname').on('hidden.bs.modal', function (e) {
+                                $("#@modalname iframe").attr("src", $("#@modalname iframe").attr("src"));
+                            });
+                        </script>
                         break;
                     case "Video":
-                        <p>Video</p>
+
+                        filetype = "video/" + item.FileExt;
+
+                        <hr class="mb-2" />
+                        <div class="row mb-2">
+                            <div class="justify-content-center my-auto services">
+                                <div class="icon d-flex justify-content-center mb-3">
+                                    <span class="align-self-center fas fa-video fa-4x" data-toggle="modal" data-target='#@modalname'></span>
+                                </div>
+                            </div>
+                            <div class="col pl-md-4 justify-content-start">
+                                <h3 class="mb-2">
+                                    <a class="font-weight-bold">@item.FileName</a>
+                                </h3>
+                                <p class="mb-2 justify-content-start">
+                                    @item.Description
+                                </p>
+                                <div class="mb-2 mt-2">
+                                    <div class="tagcloud">
+                                        <a>@item.FileType</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="@modalname">
+                            <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <video controls style="margin: 0 15px;">
+                                            <source src='@Url.Action("GetFile", new { id = item.ResourceID })' type=@filetype />
+                                        </video>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+                        <script src="~/Scripts/bootstrap.min.js"></script>
+                        <script type="text/javascript">
+                            $('#@modalname').on('hidden.bs.modal', function (e) {
+                                $(this).find('video')[0].pause();
+                            });
+                        </script>
                         break;
                     case "Audio":
-                        <p>audio</p>
+
+                        filetype = "audio/" + item.FileExt;
+
+                        <hr class="mb-2" />
+                        <div class="row mb-2">
+                            <div class="justify-content-center my-auto services">
+                                <div class="icon d-flex justify-content-center mb-3">
+                                    <span class="align-self-center fas fa-volume-up fa-4x" data-toggle="modal" data-target='#@modalname'></span>
+                                </div>
+                            </div>
+                            <div class="col pl-md-4 justify-content-start">
+                                <h3 class="mb-2">
+                                    <a class="font-weight-bold">@item.FileName</a>
+                                </h3>
+                                <p class="mb-2 justify-content-start">
+                                    @item.Description
+                                </p>
+                                <div class="mb-2 mt-2">
+                                    <div class="tagcloud">
+                                        <a>@item.FileType</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="@modalname">
+                            <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                                <div class="modal-content" style="background-color: azure !important;">
+                                    <div class="modal-body">
+                                        <div class="col pl-md-4 justify-content-start">
+                                            <h3 class="mb-2">
+                                                <a class="font-weight-bold">@item.FileName</a>
+                                            </h3>
+                                            <p class="mb-2 justify-content-start">
+                                                @item.Description
+                                            </p>
+                                            <div class="mb-2 mt-2">
+                                                <div class="tagcloud">
+                                                    <a>@item.FileType</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <audio controls>
+                                            <source src='@Url.Action("GetFile", new { id = item.ResourceID })' type=@filetype />
+                                        </audio>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+                        <script src="~/Scripts/bootstrap.min.js"></script>
+                        <script type="text/javascript">
+                            $('#@modalname').on('hidden.bs.modal', function (e) {
+                                $(this).find('audio')[0].pause();
+                            });
+                        </script>
                         break;
                     default:
-                        <p>documento</p>
+                        <hr class="mb-2" />
+                        <div class="row mb-2">
+                            <div class="justify-content-center my-auto services">
+                                <div class="icon d-flex justify-content-center mb-3">
+                                    <a href='@Url.Action("DownloadFile", new { id = item.ResourceID })' class="align-self-center">
+                                        <span class="align-self-center fas fa-file-download fa-4x"></span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col pl-md-4 justify-content-start">
+                                <h3 class="mb-2">
+                                    <a class="font-weight-bold">@item.FileName</a>
+                                </h3>
+                                <p class="mb-2 justify-content-start">
+                                    @item.Description
+                                </p>
+                                <div class="mb-2 mt-2">
+                                    <div class="tagcloud">
+                                        <a>@item.FileType</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         break;
                 }
             }

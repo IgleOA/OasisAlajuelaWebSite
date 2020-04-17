@@ -270,6 +270,25 @@ namespace OasisAlajuelaWebSite.Controllers
             }
         }
 
+        [HttpGet]
+        public FileResult DownLoadFile(int id)
+        {
+            var FileById = RBL.ResourceDetails(id);
+            var FileType = "application/" + FileById.FileExt;
+            var FileName = FileById.FileName.Replace(" ", "_") + "." + FileById.FileExt;
+
+            return File(FileById.FileData, FileType, FileName);
+        }
+
+        public ActionResult GetFile(int id)
+        {
+            var FileById = RBL.ResourceDetails(id);
+
+            string strFile = FileById.FileName.Replace(" ", "_") + "." + FileById.FileType;
+
+            return File(FileById.FileData, System.Net.Mime.MediaTypeNames.Application.Octet, strFile);
+        }
+
         public bool ValidationFormat(string FileType, string FileExt)
         {
             string Extensions = string.Empty;

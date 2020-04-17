@@ -239,10 +239,10 @@ namespace DAL
                             ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"])
                         };
 
-                        if(!Convert.IsDBNull(dr["FileData"]))
-                        {
-                            detail.FileData = (byte[])dr["FileData"];
-                        }
+                        //if(!Convert.IsDBNull(dr["FileData"]))
+                        //{
+                        //    detail.FileData = (byte[])dr["FileData"];
+                        //}
                         List.Add(detail);
                     }
                 }
@@ -254,6 +254,53 @@ namespace DAL
             }
 
             return List;
+        }
+
+        public Resources ResourceDetails(int ResourceID)
+        {
+            Resources details = new Resources();
+
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[config].[uspReadResources]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                SqlParameter pResourceID = new SqlParameter
+                {
+                    ParameterName = "@ResourceID",
+                    SqlDbType = SqlDbType.Int,
+                    Value = ResourceID
+                };
+                SqlCmd.Parameters.Add(pResourceID);
+
+                using (var dr = SqlCmd.ExecuteReader())
+                {
+                    dr.Read();
+                    if (dr.HasRows)
+                    {
+                        details.ResourceID = Convert.ToInt32(dr["ResourceID"]);
+                        details.ResourceTypeID = Convert.ToInt32(dr["ResourceTypeID"]);
+                        details.TypeName = dr["TypeName"].ToString();
+                        details.FileType = dr["FileType"].ToString();
+                        details.FileExt = dr["FileExt"].ToString();
+                        details.FileName = dr["FileName"].ToString();
+                        details.FileURL = dr["FileURL"].ToString();
+                        details.Description = dr["Description"].ToString();
+                        details.ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]);
+                        details.FileData = (byte[])dr["FileData"];
+                    }
+                }
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            return details;
         }
     }
 }
