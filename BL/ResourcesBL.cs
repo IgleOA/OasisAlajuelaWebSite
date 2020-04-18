@@ -32,5 +32,10 @@ namespace BL
         {
             return RDAL.ResourceDetails(ResourceID);
         }
+
+        public bool Update(Resources MS, string InsertUser)
+        {
+            return RDAL.Update(MS, InsertUser);
+        }
     }
 }

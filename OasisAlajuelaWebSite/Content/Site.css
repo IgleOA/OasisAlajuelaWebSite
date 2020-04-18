@@ -155,6 +155,20 @@ img > .d-block {
     color: #ff5656;
 }
 
+.servicesSmall .icon {
+    width: 80px;
+    height: 80px;
+    position: relative;
+    background: #ffe5e5;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    border-radius: 50%;
+}
+.servicesSmall .icon span {
+    color: #ff5656;
+}
+
 .sermons {
     margin-bottom: 4em;
 }

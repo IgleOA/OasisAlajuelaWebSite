@@ -290,7 +290,10 @@ namespace DAL
                         details.FileURL = dr["FileURL"].ToString();
                         details.Description = dr["Description"].ToString();
                         details.ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]);
-                        details.FileData = (byte[])dr["FileData"];
+                        if(!Convert.IsDBNull(dr["FileData"]))
+                        {
+                            details.FileData = (byte[])dr["FileData"];
+                        }
                     }
                 }
                 if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
@@ -301,6 +304,37 @@ namespace DAL
             }
 
             return details;
+        }
+
+        public bool Update(Resources RT, string InsertUser)
+        {
+            bool rpta = false;
+
+            try
+            {
+                DynamicParameters Parm = new DynamicParameters();
+                Parm.Add("@InsertUser", InsertUser);
+                Parm.Add("@ResourceID", RT.ResourceID);
+                Parm.Add("@ActionType", RT.ActionType);
+                Parm.Add("@ResourceTypeID", RT.ResourceTypeID);
+                Parm.Add("@FileName", RT.FileName);
+                Parm.Add("@Description", RT.Description);
+
+                SqlCon.Open();
+
+                SqlCon.Execute("[adm].[uspUpdateResource]", Parm, commandType: CommandType.StoredProcedure);
+
+                rpta = true;
+
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            return rpta;
         }
     }
 }

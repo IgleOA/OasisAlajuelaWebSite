@@ -138,6 +138,7 @@
     <Build Include="config\Stored Procedures\uspReadResourceTypes.sql" />
     <Build Include="config\Stored Procedures\uspReadResources.sql" />
     <Build Include="adm\Stored Procedures\uspAddResourceType.sql" />
+    <Build Include="adm\Stored Procedures\uspUpdateResource.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DB_MAIN_CR_OA.publish.xml" />

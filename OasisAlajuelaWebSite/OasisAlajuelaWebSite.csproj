@@ -2564,6 +2564,7 @@
     <Content Include="Views\Sermons\Edit.cshtml" />
     <Content Include="Views\Sermons\AddNew.cshtml" />
     <Content Include="Views\Home\Error.cshtml" />
+    <Content Include="Views\Resources\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

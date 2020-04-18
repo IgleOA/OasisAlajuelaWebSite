@@ -7,40 +7,43 @@
     Layout = ViewBag.Layout;
 }
     <script type="text/javascript">
-    function AddNew() {
+        function AddNew() {
             var url = '@Url.Action("AddNewResource", new { id = ViewBag.ResourceTypeID })';
             window.open(url, '_blank', 'left=100,top=100,width=1000,height=650,toolbar=1,resizable=0');
+        }
+        function Edit(NewID) {
+            var url = '@Url.Action("Edit", new { id = "newid" })';
+            url = url.replace("newid", NewID);
+            window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
+        }
+         function Disable(NewID) {
+            var x = confirm("Esta seguro que quiere eliminar este recurso???");
+            if (x) {
+                $.ajax({
+                    url: '@Url.Action("ChangeStatus")',
+                    data: { id: NewID }
+                }).done(function () { alert('Hecho!!!'); location.reload(); });
+            }
         }
     </script>
 
     <section class="hp-section">
         <div class="container">
             <div class="row justify-content-center border-bottom mb-2">
-                <h2 class="heading-section font-weight-bold my-2 p-0">@ViewBag.Title</h2>
+                <h2 class="heading-section font-weight-bold my-2 pl-2">@ViewBag.Title</h2>
             </div>
             @using (Html.BeginForm("Type", "Resources", FormMethod.Get))
             {
                 <div class="row justify-content-start">
-                    <div class="form-group input-group p-0 searchfield w-50">
+                    <div class="form-group input-group py-2 searchfield w-50">
                         <div class="input-group-prepend">
                             <span class="input-group-text w"><i class="fas fa-search"></i></span>
                         </div>
                         @Html.TextBox("SearchString", null, new { @class = "form-control", @placeholder = "Palabra clave" })
                     </div>
-                    <input type="submit" value="Buscar" class="btn btn-dark alt mt-0 mb-2" style="height: 2.75rem !important;" />
+                    <input type="submit" value="Buscar" class="btn btn-dark alt mt-0 my-2" style="height: 2.75rem !important;" />
                 </div>
             }
-            <div class="row justify-content-start">
-                <div class="px-0">
-                    <div class="media services d-block text-justify">
-                        <div class="media-body px-0 m-0">
-                            <div class="d-flex justify-content-between">
-                                <a href='#' title="Agregar Recurso" class="btn btn-light" style="text-decoration: none;" onclick="AddNew()"><i class="fas fa-plus-square fa-1x"></i> Agregar Recurso</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             @foreach (var item in Model)
             {
                 var modalname = "ModalCenter" + item.ResourceID.ToString();
@@ -51,9 +54,9 @@
                     case "URL":
                         <hr class="mb-2" />
                         <div class="row mb-2">
-                            <div class="justify-content-center my-auto services">
+                            <div class="justify-content-center my-auto servicesSmall">
                                 <div class="icon d-flex justify-content-center mb-3">
-                                    <span class="align-self-center fas fa-link fa-4x" data-toggle="modal" data-target='#@modalname'></span>
+                                    <span class="align-self-center fas fa-link fa-3x" data-toggle="modal" data-target='#@modalname'></span>
                                 </div>
                             </div>
                             <div class="col pl-md-4 justify-content-start">
@@ -66,6 +69,11 @@
                                 <div class="mb-2 mt-2">
                                     <div class="tagcloud">
                                         <a>@item.FileType</a>
+                                        @if (ViewBag.Write == true)
+                                        {
+                                            <a href="#" onclick='Edit(@item.ResourceID)' class="text-decoration-none"><span class="fas fa-pencil-alt fa-1x"></span> Editar</a>
+                                            <a href="#" onclick='Disable(@item.ResourceID)' class="text-decoration-none"><span class="far fa-times-circle fa-1x"></span> Eliminar</a>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -93,9 +101,9 @@
 
                         <hr class="mb-2" />
                         <div class="row mb-2">
-                            <div class="justify-content-center my-auto services">
+                            <div class="justify-content-center my-auto servicesSmall">
                                 <div class="icon d-flex justify-content-center mb-3">
-                                    <span class="align-self-center fas fa-video fa-4x" data-toggle="modal" data-target='#@modalname'></span>
+                                    <span class="align-self-center fas fa-video fa-3x" data-toggle="modal" data-target='#@modalname'></span>
                                 </div>
                             </div>
                             <div class="col pl-md-4 justify-content-start">
@@ -108,6 +116,11 @@
                                 <div class="mb-2 mt-2">
                                     <div class="tagcloud">
                                         <a>@item.FileType</a>
+                                        @if (ViewBag.Write == true)
+                                        {
+                                            <a href="#" onclick='Edit(@item.ResourceID)' class="text-decoration-none"><span class="fas fa-pencil-alt fa-1x"></span> Editar</a>
+                                            <a href="#" onclick='Disable(@item.ResourceID)' class="text-decoration-none"><span class="far fa-times-circle fa-1x"></span> Eliminar</a>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -137,9 +150,9 @@
 
                         <hr class="mb-2" />
                         <div class="row mb-2">
-                            <div class="justify-content-center my-auto services">
+                            <div class="justify-content-center my-auto servicesSmall">
                                 <div class="icon d-flex justify-content-center mb-3">
-                                    <span class="align-self-center fas fa-volume-up fa-4x" data-toggle="modal" data-target='#@modalname'></span>
+                                    <span class="align-self-center fas fa-volume-up fa-3x" data-toggle="modal" data-target='#@modalname'></span>
                                 </div>
                             </div>
                             <div class="col pl-md-4 justify-content-start">
@@ -152,6 +165,11 @@
                                 <div class="mb-2 mt-2">
                                     <div class="tagcloud">
                                         <a>@item.FileType</a>
+                                        @if (ViewBag.Write == true)
+                                        {
+                                            <a href="#" onclick='Edit(@item.ResourceID)' class="text-decoration-none"><span class="fas fa-pencil-alt fa-1x"></span> Editar</a>
+                                            <a href="#" onclick='Disable(@item.ResourceID)' class="text-decoration-none"><span class="far fa-times-circle fa-1x"></span> Eliminar</a>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -170,6 +188,11 @@
                                             <div class="mb-2 mt-2">
                                                 <div class="tagcloud">
                                                     <a>@item.FileType</a>
+                                                    @if (ViewBag.Write == true)
+                                                    {
+                                                        <a href="#" onclick='Edit(@item.ResourceID)' class="text-decoration-none"><span class="fas fa-pencil-alt fa-1x"></span> Editar</a>
+                                                        <a href="#" onclick='Disable(@item.ResourceID)' class="text-decoration-none"><span class="far fa-times-circle fa-1x"></span> Eliminar</a>
+                                                    }
                                                 </div>
                                             </div>
                                         </div>
@@ -191,10 +214,10 @@
                     default:
                         <hr class="mb-2" />
                         <div class="row mb-2">
-                            <div class="justify-content-center my-auto services">
+                            <div class="justify-content-center my-auto servicesSmall">
                                 <div class="icon d-flex justify-content-center mb-3">
                                     <a href='@Url.Action("DownloadFile", new { id = item.ResourceID })' class="align-self-center">
-                                        <span class="align-self-center fas fa-file-download fa-4x"></span>
+                                        <span class="align-self-center fas fa-file-download fa-3x"></span>
                                     </a>
                                 </div>
                             </div>
@@ -208,6 +231,11 @@
                                 <div class="mb-2 mt-2">
                                     <div class="tagcloud">
                                         <a>@item.FileType</a>
+                                        @if (ViewBag.Write == true)
+                                        {
+                                            <a href="#" onclick='Edit(@item.ResourceID)' class="text-decoration-none"><span class="fas fa-pencil-alt fa-1x"></span> Editar</a>
+                                            <a href="#" onclick='Disable(@item.ResourceID)' class="text-decoration-none"><span class="far fa-times-circle fa-1x"></span> Eliminar</a>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -221,6 +249,21 @@
                     @Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter }), new PagedListRenderOptions() { ContainerDivClasses = new string[] { "p-0" }, UlElementClasses = new string[] { "pagination m-0" } })
                 }
             </div>
+            <hr />
+            @if (ViewBag.Write == true)
+            {
+            <div class="row justify-content-start">
+                <div class="py-2">
+                    <div class="media services d-block text-justify">
+                        <div class="media-body px-0 m-0">
+                            <div class="d-flex justify-content-between">
+                                <a href='#' title="Agregar Recurso" class="btn btn-light" style="text-decoration: none;" onclick="AddNew()"><i class="fas fa-plus-square fa-1x"></i> Agregar Recurso</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
         </div>
     </section>
 

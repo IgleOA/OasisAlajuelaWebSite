@@ -284,9 +284,88 @@ namespace OasisAlajuelaWebSite.Controllers
         {
             var FileById = RBL.ResourceDetails(id);
 
-            string strFile = FileById.FileName.Replace(" ", "_") + "." + FileById.FileType;
+            string strFile = FileById.FileName.Replace(" ", "_") + "." + FileById.FileExt;
 
             return File(FileById.FileData, System.Net.Mime.MediaTypeNames.Application.Octet, strFile);
+        }
+
+        public ActionResult Edit(int id = 0)
+        {
+            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
+            var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
+            if (validation.WriteRight == false)
+            {
+                ViewBag.Mensaje = "Usted no esta autorizado para ingresar a esta seccion, si necesita acceso contacte con un administrador.";
+                return View("~/Views/Shared/Error.cshtml");
+            }
+            else
+            {
+                Resources MS = RBL.ResourceDetails(id);
+
+                MS.TypeList = RBL.TypeList(true);                
+
+                return View(MS);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(Resources MS)
+        {
+            if (MS.ResourceTypeID > 0 && MS.FileName.Length > 0 && MS.Description.Length > 0)
+            {
+                string InsertUser = User.Identity.GetUserName();
+
+                var r = RBL.Update(MS, InsertUser);
+
+                if (!r)
+                {
+                    ViewBag.Mensaje = "Ha ocurrido un error inesperado.";
+                    return View("~/Views/Shared/Error.cshtml");
+                }
+                else
+                {
+                    MS.ActionType = "UPDATE";
+                    MS.TypeList = RBL.TypeList(true);
+                    return View(MS);
+                }
+
+            }
+            else
+            {
+                MS.TypeList = RBL.TypeList(true);
+                this.ModelState.AddModelError(String.Empty, "El formato de archivo no concuerda con el tipo de archivo seleccionado o es un formato invalido.");
+                return View(MS);                
+            }
+        }
+
+        public ActionResult ChangeStatus(int id = 0)
+        {
+            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
+            var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
+            if (validation.WriteRight == false)
+            {
+                ViewBag.Mensaje = "Usted no esta autorizado para ingresar a esta seccion, si necesita acceso contacte con un administrador.";
+                return View("~/Views/Shared/Error.cshtml");
+            }
+            else
+            {
+                Resources MS = RBL.ResourceDetails(id);
+                MS.ActionType = "CHGST";
+                string InsertUser = User.Identity.GetUserName();
+
+                var r = RBL.Update(MS, InsertUser);
+
+                if (!r)
+                {
+                    ViewBag.Mensaje = "Ha ocurrido un error inesperado.";
+                    return View("~/Views/Shared/Error.cshtml");
+                }
+                else
+                {
+                    return this.RedirectToAction("Type", new { id = MS.ResourceTypeID });
+                }                
+            }
         }
 
         public bool ValidationFormat(string FileType, string FileExt)
