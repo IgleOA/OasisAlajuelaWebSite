@@ -25,6 +25,7 @@
         {
             @Html.AntiForgeryToken()
             @Html.HiddenFor(model => model.ResourceID)
+            @Html.HiddenFor(model => model.FileType)
             <div class="form-horizontal">
                 <hr />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger m-0" })
@@ -51,7 +52,17 @@
                                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                             </div>
                         </div>
-                    </div>                    
+                        @if (Model.FileURL.Length > 0)
+                        {
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FileURL, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
+                                <div class="col">
+                                    @Html.EditorFor(model => model.FileURL, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.FileURL, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        }
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-offset-2 col-md-10 mx-3">

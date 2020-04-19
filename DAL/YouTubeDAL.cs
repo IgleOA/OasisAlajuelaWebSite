@@ -15,7 +15,7 @@ namespace DAL
 {
     public class YouTubeDAL
     {
-        //private YouTubeService yt = new YouTubeService(new BaseClientService.Initializer() { ApiKey = "AIzaSyBqdmvtcDCB56cTfs3O2kbYLTZANZrm9ts" });
+        private YouTubeService yt = new YouTubeService(new BaseClientService.Initializer() { ApiKey = "AIzaSyBqdmvtcDCB56cTfs3O2kbYLTZANZrm9ts" });
 
         private String UploadedVideoId { get; set; }
 
@@ -49,7 +49,24 @@ namespace DAL
             return list;
         }
 
-       
+        public bool YoutubeVideoValidation(string YouTubeID)
+        {
+            bool result = false;
+
+            var ValidationRequest = yt.Videos.List("snippet");
+            ValidationRequest.Id = YouTubeID;
+            
+            var ListResponse = ValidationRequest.Execute();
+
+            
+            if(ListResponse.Items.Count > 0)
+            {
+                result = true;
+            }
+
+            return result;
+        }
+
         public async Task<string> InsertAsync(YouTubeVideo YTVideo)
         {
             //var youtubeService = AuthenticateOauth();

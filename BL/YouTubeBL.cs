@@ -19,5 +19,10 @@ namespace BL
         {
             return await YDAL.InsertAsync(video);
         }
+
+        public bool YoutubeVideoValidation(string YouTubeID)
+        {
+            return YDAL.YoutubeVideoValidation(YouTubeID);
+        }
     }
 }

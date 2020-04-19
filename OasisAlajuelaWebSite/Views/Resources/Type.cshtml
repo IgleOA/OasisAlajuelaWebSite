@@ -6,25 +6,28 @@
     ViewBag.Title = ViewBag.Resource;
     Layout = ViewBag.Layout;
 }
+
+@if (ViewBag.CountResults >= 1)
+{
     <script type="text/javascript">
-        function AddNew() {
-            var url = '@Url.Action("AddNewResource", new { id = ViewBag.ResourceTypeID })';
-            window.open(url, '_blank', 'left=100,top=100,width=1000,height=650,toolbar=1,resizable=0');
-        }
-        function Edit(NewID) {
-            var url = '@Url.Action("Edit", new { id = "newid" })';
-            url = url.replace("newid", NewID);
-            window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
-        }
-         function Disable(NewID) {
-            var x = confirm("Esta seguro que quiere eliminar este recurso???");
-            if (x) {
-                $.ajax({
-                    url: '@Url.Action("ChangeStatus")',
-                    data: { id: NewID }
-                }).done(function () { alert('Hecho!!!'); location.reload(); });
+            function AddNew() {
+                var url = '@Url.Action("AddNewResource", new { id = ViewBag.ResourceTypeID })';
+                window.open(url, '_blank', 'left=100,top=100,width=1000,height=650,toolbar=1,resizable=0');
             }
-        }
+            function Edit(NewID) {
+                var url = '@Url.Action("Edit", new { id = "newid" })';
+                url = url.replace("newid", NewID);
+                window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
+            }
+             function Disable(NewID) {
+                var x = confirm("Esta seguro que quiere eliminar este recurso???");
+                if (x) {
+                    $.ajax({
+                        url: '@Url.Action("ChangeStatus")',
+                        data: { id: NewID }
+                    }).done(function () { alert('Hecho!!!'); location.reload(); });
+                }
+            }
     </script>
 
     <section class="hp-section">
@@ -47,16 +50,15 @@
             @foreach (var item in Model)
             {
                 var modalname = "ModalCenter" + item.ResourceID.ToString();
-                var filetype = "video/" + item.FileExt;
 
                 switch (item.FileType)
                 {
-                    case "URL":
+                    case "Video":
                         <hr class="mb-2" />
                         <div class="row mb-2">
                             <div class="justify-content-center my-auto servicesSmall">
                                 <div class="icon d-flex justify-content-center mb-3">
-                                    <span class="align-self-center fas fa-link fa-3x" data-toggle="modal" data-target='#@modalname'></span>
+                                    <span class="align-self-center fab fa-youtube fa-3x" data-toggle="modal" data-target='#@modalname'></span>
                                 </div>
                             </div>
                             <div class="col pl-md-4 justify-content-start">
@@ -90,63 +92,14 @@
                         <script src="~/Scripts/jquery-3.4.1.min.js"></script>
                         <script src="~/Scripts/bootstrap.min.js"></script>
                         <script type="text/javascript">
-                            $('#@modalname').on('hidden.bs.modal', function (e) {
-                                $("#@modalname iframe").attr("src", $("#@modalname iframe").attr("src"));
-                            });
-                        </script>
-                        break;
-                    case "Video":
-
-                        filetype = "video/" + item.FileExt;
-
-                        <hr class="mb-2" />
-                        <div class="row mb-2">
-                            <div class="justify-content-center my-auto servicesSmall">
-                                <div class="icon d-flex justify-content-center mb-3">
-                                    <span class="align-self-center fas fa-video fa-3x" data-toggle="modal" data-target='#@modalname'></span>
-                                </div>
-                            </div>
-                            <div class="col pl-md-4 justify-content-start">
-                                <h3 class="mb-2">
-                                    <a class="font-weight-bold">@item.FileName</a>
-                                </h3>
-                                <p class="mb-2 justify-content-start">
-                                    @item.Description
-                                </p>
-                                <div class="mb-2 mt-2">
-                                    <div class="tagcloud">
-                                        <a>@item.FileType</a>
-                                        @if (ViewBag.Write == true)
-                                        {
-                                            <a href="#" onclick='Edit(@item.ResourceID)' class="text-decoration-none"><span class="fas fa-pencil-alt fa-1x"></span> Editar</a>
-                                            <a href="#" onclick='Disable(@item.ResourceID)' class="text-decoration-none"><span class="far fa-times-circle fa-1x"></span> Eliminar</a>
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal fade" id="@modalname">
-                            <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-body">
-                                        <video controls style="margin: 0 15px;">
-                                            <source src='@Url.Action("GetFile", new { id = item.ResourceID })' type=@filetype />
-                                        </video>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <script src="~/Scripts/jquery-3.4.1.min.js"></script>
-                        <script src="~/Scripts/bootstrap.min.js"></script>
-                        <script type="text/javascript">
-                            $('#@modalname').on('hidden.bs.modal', function (e) {
-                                $(this).find('video')[0].pause();
-                            });
+                                $('#@modalname').on('hidden.bs.modal', function (e) {
+                                    $("#@modalname iframe").attr("src", $("#@modalname iframe").attr("src"));
+                                });
                         </script>
                         break;
                     case "Audio":
-
-                        filetype = "audio/" + item.FileExt;
+                     
+                        var filetype = "audio/" + item.FileExt;
 
                         <hr class="mb-2" />
                         <div class="row mb-2">
@@ -206,9 +159,9 @@
                         <script src="~/Scripts/jquery-3.4.1.min.js"></script>
                         <script src="~/Scripts/bootstrap.min.js"></script>
                         <script type="text/javascript">
-                            $('#@modalname').on('hidden.bs.modal', function (e) {
-                                $(this).find('audio')[0].pause();
-                            });
+                                $('#@modalname').on('hidden.bs.modal', function (e) {
+                                    $(this).find('audio')[0].pause();
+                                });
                         </script>
                         break;
                     default:
@@ -252,18 +205,62 @@
             <hr />
             @if (ViewBag.Write == true)
             {
+                <div class="row justify-content-start">
+                    <div class="py-2">
+                        <div class="media services d-block text-justify">
+                            <div class="media-body px-0 m-0">
+                                <div class="d-flex justify-content-between">
+                                    <a href='#' title="Agregar Recurso" class="btn btn-light" style="text-decoration: none;" onclick="AddNew()"><i class="fas fa-plus-square fa-1x"></i> Agregar Recurso</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+}
+else
+{
+    <section class="hp-section">
+        <div class="container">
+            <div class="row justify-content-center border-bottom mb-2">
+                <h2 class="heading-section font-weight-bold my-2 pl-2">@ViewBag.Title</h2>
+            </div>
             <div class="row justify-content-start">
                 <div class="py-2">
                     <div class="media services d-block text-justify">
                         <div class="media-body px-0 m-0">
                             <div class="d-flex justify-content-between">
-                                <a href='#' title="Agregar Recurso" class="btn btn-light" style="text-decoration: none;" onclick="AddNew()"><i class="fas fa-plus-square fa-1x"></i> Agregar Recurso</a>
+                                <p class="mb-2 justify-content-start">
+                                    En este momento no hay recursos disponibles para esta categoria. Bendiciones...
+                                </p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            @if (ViewBag.Write == true)
+            {
+                <script type="text/javascript">
+                    function AddNew() {
+                        var url = '@Url.Action("AddNewResource", new { id = ViewBag.ResourceTypeID })';
+                        window.open(url, '_blank', 'left=100,top=100,width=1000,height=650,toolbar=1,resizable=0');
+                    }
+                </script>
+                <div class="row justify-content-start">
+                    <div class="py-2">
+                        <div class="media services d-block text-justify">
+                            <div class="media-body px-0 m-0">
+                                <div class="d-flex justify-content-between">
+                                    <a href='#' title="Agregar Recurso" class="btn btn-light" style="text-decoration: none;" onclick="AddNew()"><i class="fas fa-plus-square fa-1x"></i> Agregar Recurso</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             }
         </div>
     </section>
-
+}

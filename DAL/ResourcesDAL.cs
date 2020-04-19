@@ -318,7 +318,8 @@ namespace DAL
                 Parm.Add("@ActionType", RT.ActionType);
                 Parm.Add("@ResourceTypeID", RT.ResourceTypeID);
                 Parm.Add("@FileName", RT.FileName);
-                Parm.Add("@Description", RT.Description);
+                Parm.Add("@Description", RT.Description); 
+                Parm.Add("@FileURL", RT.FileURL);
 
                 SqlCon.Open();
 

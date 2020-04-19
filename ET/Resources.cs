@@ -55,7 +55,7 @@ namespace ET
         [Display(Name = "Nombre del Recurso")]
         public string FileName { get; set; }
 
-        [Display(Name = "URL del Recurso")]
+        [Display(Name = "YouTube Link")]
         public string FileURL { get; set; }
 
         [Required]
@@ -69,7 +69,7 @@ namespace ET
 
         public enum FileTypesList
         {
-            Video,Documento,Audio,URL
+            Video,Documento,Audio
         }
         public ResourceTypes TypeData { get; set; }
 

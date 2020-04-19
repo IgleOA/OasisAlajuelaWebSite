@@ -8,6 +8,7 @@ using PagedList;
 using System.IO;
 using System.Collections.Generic;
 using System.Net;
+using System.Web;
 
 namespace OasisAlajuelaWebSite.Controllers
 {
@@ -17,6 +18,7 @@ namespace OasisAlajuelaWebSite.Controllers
         private RightsBL RRBL = new RightsBL();
         private UsersBL USBL = new UsersBL();
         private ResourcesBL RBL = new ResourcesBL();
+        private YouTubeBL YBL = new YouTubeBL();
 
         public ActionResult Index()
         {
@@ -108,6 +110,7 @@ namespace OasisAlajuelaWebSite.Controllers
                 ViewBag.ResourceTypeID = TypeData.ResourceTypeID;
 
                 ViewBag.Write = validation.WriteRight;
+                ViewBag.CountResults = list.Count();
 
                 return View(list.ToPagedList(pageNumber, pageSize));
 
@@ -204,7 +207,7 @@ namespace OasisAlajuelaWebSite.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddNewResource(Resources MS)
         {
-            if (MS.FileType == "URL")
+            if (MS.FileType == "Video")
             {
                 var valURL = UrlIsValid(MS.FileURL);
 
@@ -215,7 +218,7 @@ namespace OasisAlajuelaWebSite.Controllers
                                select rd;
 
                     MS.TypeList = data.ToList();
-                    this.ModelState.AddModelError(String.Empty, "El URL proporcionado no existe o es incorrecto.");
+                    this.ModelState.AddModelError(String.Empty, "El video proporcionado no existe en YouTube o es incorrecto.");
                     return View(MS);
                 }
             }
@@ -316,6 +319,18 @@ namespace OasisAlajuelaWebSite.Controllers
             {
                 string InsertUser = User.Identity.GetUserName();
 
+                if (MS.FileType == "Video")
+                {
+                    var valURL = UrlIsValid(MS.FileURL);
+
+                    if (!valURL)
+                    {
+                        MS.TypeList = RBL.TypeList(true);
+                        this.ModelState.AddModelError(String.Empty, "El video proporcionado no existe en YouTube o es incorrecto.");
+                        return View(MS);
+                    }
+                }
+                 
                 var r = RBL.Update(MS, InsertUser);
 
                 if (!r)
@@ -329,12 +344,11 @@ namespace OasisAlajuelaWebSite.Controllers
                     MS.TypeList = RBL.TypeList(true);
                     return View(MS);
                 }
-
             }
             else
             {
                 MS.TypeList = RBL.TypeList(true);
-                this.ModelState.AddModelError(String.Empty, "El formato de archivo no concuerda con el tipo de archivo seleccionado o es un formato invalido.");
+                this.ModelState.AddModelError(String.Empty, "Todos los campos son obligatorios.");
                 return View(MS);                
             }
         }
@@ -373,12 +387,6 @@ namespace OasisAlajuelaWebSite.Controllers
             string Extensions = string.Empty;
             bool isValid = false;
 
-            if(FileType == "Video")
-            {
-                Extensions = "MP4,AVI,MOV,WMV";
-                List<string> allowedExtensions = Extensions.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
-                isValid = allowedExtensions.Any(x => FileExt.EndsWith(x));
-            }
             if(FileType == "Audio")
             {
                 Extensions = "MP3,AAC,OGG,WAV";
@@ -398,6 +406,24 @@ namespace OasisAlajuelaWebSite.Controllers
         public bool UrlIsValid(string url)
         {
             bool isValid = false;
+
+            var uri = new Uri(url);
+
+            // you can check host here => uri.Host <= "www.youtube.com"
+
+            var query = HttpUtility.ParseQueryString(uri.Query);
+
+            var videoId = string.Empty;
+
+            if (query.AllKeys.Contains("v"))
+            {
+                videoId = query["v"];
+            }
+            else
+            {
+                videoId = uri.Segments.Last();
+            }
+
             try
             {
                 HttpWebRequest request = HttpWebRequest.Create(url) as HttpWebRequest;
@@ -407,7 +433,10 @@ namespace OasisAlajuelaWebSite.Controllers
                 using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
                 {
                     int statusCode = (int)response.StatusCode;
-                    if (statusCode >= 100 && statusCode < 400) //Good requests
+
+                    var r = YBL.YoutubeVideoValidation(videoId); // Check validation from YouTube
+
+                    if (statusCode >= 100 && statusCode < 400 && r == true) //Good requests
                     {
                         isValid = true;
                     }
