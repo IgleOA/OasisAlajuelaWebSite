@@ -27,7 +27,7 @@
                     $('.avatar').attr('src', e.target.result);
                 }
                 reader.readAsDataURL(input.files[0]);
-                document.getElementById('SaveOptions').style.display = 'block';
+                document.getElementById('SaveOptions').style.display = 'inline-block';
             }
         }
         $(".file-upload").on('change', function () {
@@ -35,16 +35,15 @@
         });
     });
 
-    function UpdateImage() {
+    function UpdateBanner() {
         var VideoID = document.getElementById("SermonURL").value;
         $.ajax({
             type: "GET",
             url: '@Url.Action("YouTubeValidation")',
             data: { id: VideoID },
-
-            success: function (data) {
-                if (data.ActiveFlag == true) {
-                    $('.avatar').attr('src', data.BannerLink);
+            success: function (results) {
+                if (results.ActiveFlag == true) {
+                    $('.avatar').attr('src', results.BannerLink);
                     document.getElementById('SaveOptions').style.display = 'inline-block';
                 }
                 else {
@@ -107,8 +106,13 @@
                         <div class="form-group">
                             @Html.LabelFor(model => model.SermonURL, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
                             <div class="ml-3">
-                                @Html.TextBoxFor(model => model.SermonURL, new { @class = "form-control" , @onchange = "UpdateImage();" })
-                                @Html.ValidationMessageFor(model => model.SermonURL, "", new { @class = "text-danger" })
+                                <div class="input-group">
+                                    @Html.TextBoxFor(model => model.SermonURL, new { @class = "form-control", @onchange = "UpdateBanner();" })
+                                    @Html.ValidationMessageFor(model => model.SermonURL, "", new { @class = "text-danger" })
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-outline-secondary m-0" title="Buscar" onclick="UpdateBanner();"><span class="fas fa-search"></span></button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">

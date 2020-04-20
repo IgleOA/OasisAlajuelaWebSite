@@ -82,7 +82,7 @@ namespace DAL
                 YTVideo.BannerLink = ListResponse.Items[0].Snippet.Thumbnails.Maxres.Url;
                 YTVideo.ActiveFlag = true;
             }
-
+            
             return YTVideo;
         }
 

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -143,15 +145,24 @@ namespace OasisAlajuelaWebSite.Controllers
         //public async Task<ActionResult> AddNew(Sermons MS)
         public ActionResult AddNew(Sermons MS)
         {
-            String FileExt = Path.GetExtension(MS.file.FileName).ToUpper();
+            if (MS.file == null)
+            {
+                var Banner = ConvertURLtoBase(MS.SermonURL);
+                MS.BannerExt = Banner.BannerExt;
+                MS.BannerData = Banner.BannerData;
+            }
+            else
+            {
+                String FileExt = Path.GetExtension(MS.file.FileName).ToUpper();
 
-            MS.BannerExt = FileExt;
+                MS.BannerExt = FileExt;
 
-            Stream str = MS.file.InputStream;
-            BinaryReader Br = new BinaryReader(str);
-            Byte[] FileDet = Br.ReadBytes((Int32)str.Length);
+                Stream str = MS.file.InputStream;
+                BinaryReader Br = new BinaryReader(str);
+                Byte[] FileDet = Br.ReadBytes((Int32)str.Length);
 
-            MS.BannerData = FileDet;
+                MS.BannerData = FileDet;
+            }
 
             string InsertUser = User.Identity.GetUserName();
 
@@ -313,6 +324,72 @@ namespace OasisAlajuelaWebSite.Controllers
             var YouTubeVideo = YBL.YoutubeVideoValidation(videoId);
 
             return new JsonResult { Data = YouTubeVideo, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+        }
+
+        public YouTubeBanner ConvertURLtoBase(string YouTubeLink)
+        {
+            var uri = new Uri(YouTubeLink);
+
+            // you can check host here => uri.Host <= "www.youtube.com"
+
+            var query = HttpUtility.ParseQueryString(uri.Query);
+
+            var videoId = string.Empty;
+
+            if (query.AllKeys.Contains("v"))
+            {
+                videoId = query["v"];
+            }
+            else
+            {
+                videoId = uri.Segments.Last();
+            }
+
+            var YouTubeVideo = YBL.YoutubeVideoValidation(videoId);
+
+            //StringBuilder sb = new StringBuilder();
+
+            Stream stream = null;
+            //create a byte[] object. It serves as a buffer.
+            YouTubeBanner Banner = new YouTubeBanner();
+            try
+            {
+                //Create a new WebProxy object.
+                WebProxy myProxy = new WebProxy();
+                //create a HttpWebRequest object and initialize it by passing the colleague api url to a create method.
+                HttpWebRequest req = (HttpWebRequest)WebRequest.Create(YouTubeVideo.BannerLink);
+                //Create a HttpWebResponse object and initilize it
+                HttpWebResponse response = (HttpWebResponse)req.GetResponse();
+                //get the response stream
+                stream = response.GetResponseStream();
+
+                using (BinaryReader br = new BinaryReader(stream))
+                {
+                    //get the content length in integer
+                    int len = (int)(response.ContentLength);
+                    //Read bytes
+                    Banner.BannerData = (br.ReadBytes(len));
+                    //close the binary reader
+                    br.Close();
+                }
+                //close the stream object
+                stream.Close();
+                //close the response object 
+                response.Close();
+            }
+            catch (Exception exp)
+            {
+                //set the buffer to null
+                Banner.BannerData = null;
+            }
+            //return the buffer
+
+            //sb.Append(Convert.ToBase64String(buf, 0, buf.Length));
+
+            //var result =  string.Format(@"data:image/jpg;base64, {0}", sb.ToString());
+            Banner.BannerExt = Path.GetExtension(@YouTubeVideo.BannerLink.Split('?')[0]).ToUpper();
+
+            return Banner;
         }
     }
 }

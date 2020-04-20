@@ -31,4 +31,11 @@ namespace ET
 
         public bool ActiveFlag { get; set; }
     }
+
+    public class YouTubeBanner
+    {
+        public Byte[] BannerData { get; set; }
+
+        public string BannerExt { get; set; }
+    }
 }
