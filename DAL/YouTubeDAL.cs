@@ -49,22 +49,41 @@ namespace DAL
             return list;
         }
 
-        public bool YoutubeVideoValidation(string YouTubeID)
+        //public bool YoutubeVideoValidation(string YouTubeID)
+        //{
+        //    bool result = false;
+
+        //    var ValidationRequest = yt.Videos.List("snippet");
+        //    ValidationRequest.Id = YouTubeID;
+            
+        //    var ListResponse = ValidationRequest.Execute();
+
+            
+        //    if(ListResponse.Items.Count > 0)
+        //    {
+        //        result = true;
+        //    }
+
+        //    return result;
+        //}
+
+        public YouTubeVideo YoutubeVideoValidation(string YouTubeID)
         {
-            bool result = false;
+            YouTubeVideo YTVideo = new YouTubeVideo();
 
             var ValidationRequest = yt.Videos.List("snippet");
             ValidationRequest.Id = YouTubeID;
-            
+
             var ListResponse = ValidationRequest.Execute();
 
-            
-            if(ListResponse.Items.Count > 0)
+
+            if (ListResponse.Items.Count > 0)
             {
-                result = true;
+                YTVideo.BannerLink = ListResponse.Items[0].Snippet.Thumbnails.Maxres.Url;
+                YTVideo.ActiveFlag = true;
             }
 
-            return result;
+            return YTVideo;
         }
 
         public async Task<string> InsertAsync(YouTubeVideo YTVideo)

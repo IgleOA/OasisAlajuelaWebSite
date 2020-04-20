@@ -28,5 +28,7 @@ namespace ET
 
         [Required]
         public string VideoExt { get; set; }
+
+        public bool ActiveFlag { get; set; }
     }
 }

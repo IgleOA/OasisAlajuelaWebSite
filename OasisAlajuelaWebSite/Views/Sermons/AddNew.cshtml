@@ -34,86 +34,26 @@
             readURL(this);
         });
     });
+
+    function UpdateImage() {
+        var VideoID = document.getElementById("SermonURL").value;
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("YouTubeValidation")',
+            data: { id: VideoID },
+
+            success: function (data) {
+                if (data.ActiveFlag == true) {
+                    $('.avatar').attr('src', data.BannerLink);
+                    document.getElementById('SaveOptions').style.display = 'inline-block';
+                }
+                else {
+                    alert("El link ingresado no existe o es erroneo.");
+                }
+            }
+        });
+    }
 </script>
-
-@*<div class="card bg-light">
-    <article class="card-body mx-5" style="max-width: 80%;">
-        <h2 class="heading-section font-weight-bold m-0 p-0">@ViewBag.Title</h2>
-        @using (Html.BeginForm("AddNew", "Sermons", FormMethod.Post, new { enctype = "multipart/form-data" }))
-        {
-            @Html.AntiForgeryToken()
-
-            <div class="form-horizontal">
-                <hr />
-                @Html.ValidationSummary(true, "", new { @class = "text-danger m-0" })
-                <div class="row">
-                    <div class="col-md-7">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
-                            <div class="col">
-                                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.MinisterID, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
-                            <div class="col">
-                                @Html.DropDownListFor(model => model.MinisterID, new SelectList(Model.MinisterList, "MinisterID", "FullName"), new { @class = "custom-select" })
-                                @Html.ValidationMessageFor(model => model.MinisterID, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
-                            <div class="col">
-                                @Html.TextAreaFor(model => model.Description, 7, 1, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.Tags, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
-                            <div class="col">
-                                @Html.EditorFor(model => model.Tags, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.Tags, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-5">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.SermonDate, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.SermonDate, new { htmlAttributes = new { @class = "form-control", @style = "max-width: 200px;" } })
-                                @Html.ValidationMessageFor(model => model.SermonDate, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.fileVideo, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
-                            <div class="col-md-10">
-                                @Html.TextBoxFor(model => model.fileVideo, "", new { @type = "file", htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.fileVideo, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.file, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
-                            <div class="profile-img">
-                                <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-thumbnail w-75" alt="avatar" />
-                                <div class="file btn btn-lg btn-primary profile-img w-75">
-                                    Cambiar
-                                    <input id="file" type="file" name="file" class="file-upload">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-offset-2 col-md-10 mx-3">
-                        <input type="submit" value="Guardar" class="btn btn-dark alt mt-0 mb-2" />
-                        <input type="button" value="Cancelar" class="btn btn-dark alt mt-0 mb-2" onclick="javascript: window.close();" />
-                    </div>
-                </div>
-            </div>
-        }
-    </article>
-</div>*@
 
 <div class="card bg-light">
     <article class="card-body mx-5" style="max-width: 100%;">
@@ -167,7 +107,7 @@
                         <div class="form-group">
                             @Html.LabelFor(model => model.SermonURL, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
                             <div class="ml-3">
-                                @Html.TextBoxFor(model => model.SermonURL, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.TextBoxFor(model => model.SermonURL, new { @class = "form-control" , @onchange = "UpdateImage();" })
                                 @Html.ValidationMessageFor(model => model.SermonURL, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -175,7 +115,7 @@
                             @Html.LabelFor(model => model.file, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
                             <div class="profile-img">
                                 <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-thumbnail w-75" alt="avatar" />
-                                <div class="file btn btn-lg btn-primary profile-img w-75">
+                                <div id="SaveOptions" class="file btn btn-lg btn-primary profile-img w-75" style="display: none">
                                     Cambiar
                                     <input id="file" type="file" name="file" class="file-upload">
                                 </div>

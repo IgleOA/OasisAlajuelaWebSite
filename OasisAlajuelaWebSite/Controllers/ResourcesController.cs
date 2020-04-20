@@ -436,7 +436,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
                     var r = YBL.YoutubeVideoValidation(videoId); // Check validation from YouTube
 
-                    if (statusCode >= 100 && statusCode < 400 && r == true) //Good requests
+                    if (statusCode >= 100 && statusCode < 400 && r.ActiveFlag == true) //Good requests
                     {
                         isValid = true;
                     }

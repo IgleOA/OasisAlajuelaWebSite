@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 using BL;
 using ET;
@@ -290,6 +291,28 @@ namespace OasisAlajuelaWebSite.Controllers
             }
         }
 
-        
+        public JsonResult YouTubeValidation(string id)
+        {
+            var uri = new Uri(id);
+
+            // you can check host here => uri.Host <= "www.youtube.com"
+
+            var query = HttpUtility.ParseQueryString(uri.Query);
+
+            var videoId = string.Empty;
+
+            if (query.AllKeys.Contains("v"))
+            {
+                videoId = query["v"];
+            }
+            else
+            {
+                videoId = uri.Segments.Last();
+            }
+
+            var YouTubeVideo = YBL.YoutubeVideoValidation(videoId);
+
+            return new JsonResult { Data = YouTubeVideo, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+        }
     }
 }
