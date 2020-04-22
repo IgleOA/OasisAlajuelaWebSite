@@ -139,8 +139,11 @@
     <Build Include="config\Stored Procedures\uspReadResources.sql" />
     <Build Include="adm\Stored Procedures\uspAddResourceType.sql" />
     <Build Include="adm\Stored Procedures\uspUpdateResource.sql" />
+    <Build Include="adm\Stored Procedures\uspAddMinister.sql" />
+    <Build Include="adm\Stored Procedures\uspAddAboutPage.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DB_MAIN_CR_OA.publish.xml" />
+    <None Include="DB_MAIN_CR_OA_DEV.publish.xml" />
   </ItemGroup>
 </Project>

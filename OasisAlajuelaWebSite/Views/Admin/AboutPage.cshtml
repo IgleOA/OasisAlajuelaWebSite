@@ -1,0 +1,80 @@
+﻿@model ET.AboutPage
+
+@{
+    ViewBag.Title = "Editar - AboutPage";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<script src="~/Scripts/jquery-3.5.0.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var flag = '@(Model.ActionType)';
+
+        if (flag == "CREATE")
+        {
+            opener.location.reload();
+            window.close();
+        }
+    });
+</script>
+<script type="text/javascript">
+    function Validate() {
+        var x = confirm("Esta seguro que quiere desea guardar el nuevo AboutPage???");
+        if (x) {
+            alert("Gracias...");
+        }
+    }
+</script>
+
+@using (Html.BeginForm("AboutPage", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <section class="hp-section pt-0">
+        <div class="container">
+            <h4 class="card-title mt-3 mb-2 text-center font-weight-bold">@ViewBag.Title.ToUpper()</h4>
+            <hr />
+            <div class="form-group mt-2">
+                <h3 class="heading font-weight-bold">Historia</h3>
+                <div class="w-100">
+                    @Html.TextAreaFor(model => model.History, 5, 1, new { htmlAttributes = new { @class = "form-control", @style = "max-width: 100%;" } })
+                    @Html.ValidationMessageFor(model => model.History, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <h3 class="heading font-weight-bold">Mision</h3>
+                <div class="w-100">
+                    @Html.TextAreaFor(model => model.Mision, 3, 1, new { htmlAttributes = new { @class = "form-control", @style = "max-width: 100%;" } })
+                    @Html.ValidationMessageFor(model => model.Mision, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <h3 class="heading font-weight-bold">Vision</h3>
+                <div class="w-100">
+                    @Html.TextAreaFor(model => model.Vision, 3, 1, new { htmlAttributes = new { @class = "form-control", @style = "max-width: 100%;" } })
+                    @Html.ValidationMessageFor(model => model.Vision, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <h3 class="heading font-weight-bold">Pastores</h3>
+                <div class="w-100">
+                    @Html.EditorFor(model => model.Pastors)
+                    @Html.ValidationMessageFor(model => model.Pastors, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Guardar" class="btn btn-dark alt mt-0 mb-2" />
+                    <input type="button" value="Cancelar" class="btn btn-dark alt mt-0 mb-2" onclick="javascript: window.close();" />
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+@section Scripts
+{
+    <script src="~/Scripts/tinymce/tiny_mce.js"></script>
+    <script src="~/Scripts/tinymce/tinymce.min.js"></script>
+    <script src="~/Scripts/main.js"></script>
+}

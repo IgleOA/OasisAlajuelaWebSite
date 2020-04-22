@@ -6,6 +6,8 @@
 }
 <section class="hp-section">
     <div class="container">
+        <h4 class="card-title mt-3 mb-2 text-center font-weight-bold">@ViewBag.Title.ToUpper()</h4>
+        <hr />
         <div class="row">
             <div>
                 <div class="media block-6 services d-block text-justify">
@@ -43,7 +45,7 @@
                         <h3 class="heading font-weight-bold">Pastores</h3>
                         <div class="d-flex justify-content-center">
                             <div class="d-flex justify-content-center mb-3">
-                                <img src="~/Images/Pastores.jpg" class="w-50" style="height: auto; border-radius: 10px;"/>
+                                <img src="~/Images/Pastores.jpg" class="w-50" style="height: auto; border-radius: 10px;" />
                             </div>
                         </div>
                         <p>@Html.Raw(Model.Pastors)</p>

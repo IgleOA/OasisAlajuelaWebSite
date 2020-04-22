@@ -69,6 +69,7 @@ AS
 								,[Month]			= DATENAME(MONTH,CONVERT(DATETIME,Y.[Date]) + CONVERT(DATETIME,W.[Schedule]))
 								,[Day]				= CONVERT(VARCHAR(2),DATEPART(DAY,CONVERT(DATETIME,Y.[Date]) + CONVERT(DATETIME,W.[Schedule])))
 								,[Time]				= CONVERT(VARCHAR(10),FORMAT((CONVERT(DATETIME,Y.[Date]) + CONVERT(DATETIME,W.[Schedule])), 'hh:mm tt','en-US'))
+								,[Order]			= 2
 						INTO	#MainData
 						FROM	(SELECT [Date] = DATEADD(DAY, rn - 1, @StartDate)
 								 FROM (	SELECT	TOP	
@@ -93,6 +94,7 @@ AS
 								,[Day]				= CASE WHEN DATEPART(DAY,[ScheduledDate]) <10 THEN '0' + CONVERT(VARCHAR(1),DATEPART(DAY,[ScheduledDate]))
 														   ELSE CONVERT(VARCHAR(2),DATEPART(DAY,[ScheduledDate])) END
 								,[Time]				= CONVERT(VARCHAR(10),FORMAT(IE.[ScheduledDate], 'hh:mm tt','en-US'))
+								,[Order]			= 1
 						FROM	[config].[utbUpcomingEvents] IE
 								LEFT JOIN [config].[utbMinisters] M ON M.[MinisterID] = IE.[MinisterID]
 						WHERE	IE.[ActiveFlag] = 1
@@ -100,7 +102,7 @@ AS
 
 						ORDER BY [ScheduledDate]
 
-						SELECT TOP 10 * FROM #MainData ORDER BY [ScheduledDate]
+						SELECT TOP 10 * FROM #MainData ORDER BY [ScheduledDate], [Order]
 
 						DROP TABLE #MainData
 					END

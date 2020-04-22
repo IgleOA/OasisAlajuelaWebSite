@@ -18,6 +18,6 @@ namespace ET
         [Display(Name ="Status")]
         public bool ActiveFlag { get; set; }
 
-        public string ActionTye { get; set; }
+        public string ActionType { get; set; }
     }
 }

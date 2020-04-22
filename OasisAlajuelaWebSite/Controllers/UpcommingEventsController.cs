@@ -74,7 +74,8 @@ namespace OasisAlajuelaWebSite.Controllers
             {
                 UpcommingEvents Event = new UpcommingEvents()
                 {
-                    MinisterList = MBL.List(true)
+                    MinisterList = MBL.List(true),
+                    ScheduledDate = DateTime.Today
                 };
 
                 return View(Event);
@@ -127,7 +128,6 @@ namespace OasisAlajuelaWebSite.Controllers
                 UpcommingEvents Event = UBL.Details(id);
 
                 Event.MinisterList = MBL.List(true);
-
                 return View(Event);
             }
         }

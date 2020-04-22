@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [config].[utbMinisters] (
     [MinisterID]     INT           IDENTITY (1, 1) NOT NULL,
-    [Title]          VARCHAR (10)  NOT NULL,
+    [Title]          VARCHAR (50)  NOT NULL,
     [FullName]       VARCHAR (100) NOT NULL,
     [ActiveFlag]     BIT           CONSTRAINT [utbMinistersDefaultActiveFlagIsTrue] DEFAULT ((1)) NOT NULL,
     [InsertDate]     DATETIME      CONSTRAINT [utbMinistersDefaultInsertDatesysdatetime] DEFAULT (sysdatetime()) NOT NULL,

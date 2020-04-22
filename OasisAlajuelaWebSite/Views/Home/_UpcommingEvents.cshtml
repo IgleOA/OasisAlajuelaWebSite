@@ -21,7 +21,7 @@
                     @Model.Title - @Model.MinisterName
                 </h2>
             }
-            <p class="card-subtitle" style="color:white;">@Html.DisplayFor(x => x.ScheduledDate) CR</p>
+            <p class="card-subtitle" style="color:white;">@Model.ScheduledDate.ToString("MM/dd/yyyy") @Model.EventTime CR</p>
         </div>
         <div class="col-md-6 pl-md-5">
             <div id="timer" class="d-flex mb-3">

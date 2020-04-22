@@ -14,6 +14,7 @@ namespace OasisAlajuelaWebSite.Controllers
         private BannersBL BBL = new BannersBL();
         private RightsBL RRBL = new RightsBL();
         private UsersBL UBL = new UsersBL();
+        private AboutPageBL ABL = new AboutPageBL();
 
         public ActionResult Index()
         {
@@ -66,6 +67,42 @@ namespace OasisAlajuelaWebSite.Controllers
             }
         }
 
-        
+        public ActionResult AboutPage()
+        {
+            var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "HomePage");
+            if (validation.ReadRight == false)
+            {
+                ViewBag.Mensaje = "Usted no esta autorizado para ingresar a esta seccion, si necesita acceso contacte con un administrador.";
+                return View("~/Views/Shared/Error.cshtml");
+            }
+            else
+            {
+                UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
+                AboutPage HP = ABL.About();
+
+                return View(HP);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AboutPage(AboutPage HP)
+        {
+            string InsertUser = User.Identity.GetUserName();
+
+            var r = ABL.UpdateAboutPage(HP, InsertUser);
+
+            if (!r)
+            {
+                ViewBag.Mensaje = "Ha ocurrido un error inesperado en su solicitud, por favor intente nuevamente.";
+                return View("~/Views/Shared/Error.cshtml");
+            }
+            else
+            {
+                HP.ActionType = "CREATE";
+                return View(HP);
+            }
+        }
+
     }
 }

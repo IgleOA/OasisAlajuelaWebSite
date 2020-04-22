@@ -14,7 +14,7 @@ namespace ET
 
         [Required]
         [Display(Name = "Descripción")]
-        [AllowHtml]
+        [UIHint("tinymce_jquery_full"), AllowHtml]
         public string Description { get; set; }
 
         [Display(Name = "Enlace de Página (si aplica)")]

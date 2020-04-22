@@ -11,5 +11,10 @@ namespace BL
         {
             return ADAL.About();
         }
+
+        public bool UpdateAboutPage(AboutPage Details, string InsertUser)
+        {
+            return ADAL.UpdateAbout(Details, InsertUser);
+        }
     }
 }

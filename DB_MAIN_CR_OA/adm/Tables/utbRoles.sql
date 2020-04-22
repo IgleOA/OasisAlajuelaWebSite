@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [adm].[utbRoles] (
     [RoleID]          INT           IDENTITY (1, 1) NOT NULL,
-    [RoleName]        VARCHAR (50)  NOT NULL,
+    [RoleName]        VARCHAR (100)  NOT NULL,
     [RoleDescription] VARCHAR (MAX) NOT NULL,
     [ActiveFlag]      BIT           CONSTRAINT [utbRolesDefaultActiveFlagTrue] DEFAULT ((1)) NOT NULL,
     [CreationDate]    DATETIME      CONSTRAINT [utbRolesDefaultCreationDateSysDateTime] DEFAULT (sysdatetime()) NOT NULL,

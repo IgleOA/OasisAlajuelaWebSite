@@ -12,7 +12,7 @@
 
 CREATE PROCEDURE [adm].[uspAddRole]
 	@InsertUser		VARCHAR(50),
-	@RoleName			VARCHAR(50),
+	@RoleName			VARCHAR(100),
 	@RoleDescription	VARCHAR(MAX)
 AS 
     BEGIN

@@ -61,14 +61,14 @@ namespace DAL
                 {
                     ParameterName = "@RoleName",
                     SqlDbType = SqlDbType.VarChar,
-                    Size = 50,
+                    Size = 100,
                     Value = Detail.RoleName
                 };
                 SqlCmd.Parameters.Add(RoleName);
 
                 SqlParameter RoleDescription = new SqlParameter
                 {
-                    ParameterName = "@Action",
+                    ParameterName = "@RoleDescription",
                     SqlDbType = SqlDbType.VarChar,
                     Value = Detail.RoleDescription
                 };

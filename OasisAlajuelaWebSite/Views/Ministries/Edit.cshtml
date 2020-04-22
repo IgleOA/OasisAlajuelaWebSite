@@ -20,7 +20,7 @@
 
 <div class="card bg-light">
     <article class="card-body mx-5 justify-content-center">
-        <h4 class="card-title mt-3 text-center font-weight-bold">@ViewBag.Title</h4>
+        <h4 class="card-title mt-3 text-center font-weight-bold">@ViewBag.Title.ToUpper()</h4>
         @using (Html.BeginForm("Edit", "Ministries", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             @Html.AntiForgeryToken()
@@ -63,5 +63,6 @@
 @section Scripts
 {
     <script src="~/Scripts/tinymce/tiny_mce.js"></script>
+    <script src="~/Scripts/tinymce/tinymce.min.js"></script>
     <script src="~/Scripts/main.js"></script>
 }

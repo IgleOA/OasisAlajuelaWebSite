@@ -12,5 +12,10 @@ namespace BL
         {
             return MBL.List(activeflag);
         }
+
+        public bool AddNew(Ministers Detail, string InsertUser)
+        {
+            return MBL.AddNew(Detail, InsertUser);
+        }
     }
 }

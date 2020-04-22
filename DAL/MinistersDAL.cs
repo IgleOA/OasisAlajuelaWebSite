@@ -53,5 +53,58 @@ namespace DAL
 
             return List;
         }
+
+        public bool AddNew(Ministers Detail, string InsertUser)
+        {
+            bool rpta = false;
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[adm].[uspAddMinister]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                //Insert Parameters
+                SqlParameter Title = new SqlParameter
+                {
+                    ParameterName = "@Title",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 50,
+                    Value = Detail.Title
+                };
+                SqlCmd.Parameters.Add(Title);
+
+                SqlParameter pFullName = new SqlParameter
+                {
+                    ParameterName = "@FullName",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 100,
+                    Value = Detail.FullName
+                };
+                SqlCmd.Parameters.Add(pFullName);
+
+                SqlParameter ParInsertUser = new SqlParameter
+                {
+                    ParameterName = "@InsertUser",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 50,
+                    Value = InsertUser
+                };
+                SqlCmd.Parameters.Add(ParInsertUser);
+
+                //Exec Command
+                SqlCmd.ExecuteNonQuery();
+
+                rpta = true;
+
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            return rpta;
+        }
     }
 }

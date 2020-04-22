@@ -7,9 +7,13 @@
 
 <script type="text/javascript">
     function AddNew() {
-            var url = '@Url.Action("AddNewResource")';
-            window.open(url, '_blank', 'left=100,top=100,width=1000,height=650,toolbar=1,resizable=0');
-        }
+        var url = '@Url.Action("AddNewResource")';
+        window.open(url, '_blank', 'left=100,top=100,width=1000,height=650,toolbar=1,resizable=0');
+    }
+    function AddNewType() {
+        var url = '@Url.Action("AddNewRT")';
+        window.open(url, '_blank', 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
+    }
 </script>
 
 <section class="hp-section bg-light">
@@ -21,18 +25,22 @@
             </div>
         </div>
         <hr />
+        @if (ViewBag.Write == true)
+        {
         <div class="row justify-content-start">
             <div class="p-2 ml-4">
                 <div class="media services d-block text-justify">
                     <div class="media-body px-0 m-0">
                         <div class="d-flex justify-content-between">
-                            <a href='#' title="Agregar Recurso" class="btn btn-light" style="text-decoration: none;" onclick="AddNew()"><i class="fas fa-plus-square fa-1x"></i> Agregar Recurso</a>                            
+                            <a href='#' title="Agregar nuevo Tipo de Recurso" class="btn btn-light" style="text-decoration: none;" onclick="AddNewType()"><i class="fas fa-plus-square fa-1x"></i> Agregar nuevo Tipo de Recurso</a>
+                            <a href='#' title="Agregar Recurso" class="btn btn-light" style="text-decoration: none;" onclick="AddNew()"><i class="fas fa-plus-square fa-1x"></i> Agregar Recurso</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row mt-0 justify-content-center">
+        }
+        <div class="row mt-2 justify-content-center">
             @foreach (var item in Model)
             {
                 var base64 = Convert.ToBase64String(item.TypeImage, 0, item.TypeImage.Length);

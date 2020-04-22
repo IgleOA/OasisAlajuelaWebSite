@@ -42,7 +42,8 @@ namespace OasisAlajuelaWebSite.Controllers
             }
             else
             {
-                return View();
+                Roles role = new Roles();
+                return View(role);
             }
         }
 
