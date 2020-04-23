@@ -24,7 +24,7 @@
 </script>
 
 <div class="card bg-light">
-    <article class="card-body mx-auto" style="max-width: 400px;">
+    <article class="card-body">
         <h4 class="card-title mt-3 font-weight-bold">@ViewBag.Title del <span style="color: blue;">@Model.EventDay de @Model.EventMonth</span></h4>
         @using (Html.BeginForm("Edit", "UpcommingEvents", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
