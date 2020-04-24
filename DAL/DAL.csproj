@@ -114,6 +114,7 @@
     <Compile Include="AboutPageDAL.cs" />
     <Compile Include="BannersLocationDAL.cs" />
     <Compile Include="BannnersDAL.cs" />
+    <Compile Include="GroupsDAL.cs" />
     <Compile Include="HomeDAL.cs" />
     <Compile Include="MinistersDAL.cs" />
     <Compile Include="MinistriesDAL.cs" />

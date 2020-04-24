@@ -137,6 +137,25 @@
                                 @Html.EditorFor(model => model.RoleName, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
                             </div>
                         </div>
+                        <div class=" form-group">
+                            <div class="col-xs-6">
+                                @Html.Label("Involucrado en:")
+                                <div id="tagListName" class="tagcloud">
+                                </div>
+                                <script type="text/javascript">
+                                        var tags = "@ViewBag.Groups";
+                                        var array = tags.split(",");
+                                        array.forEach(InsertValue);
+
+                                    function InsertValue(item) {
+                                        if (item.length >= 1) {
+                                            var tagDiv = document.getElementById("tagListName");
+                                            tagDiv.innerHTML += "<a>" + item + "</a>";
+                                        }
+                                    }
+                                </script>
+                            </div>
+                        </div>
                     </div>
                     <div class="tab-pane fade" id="ContactInfo" role="tabpanel" aria-labelledby="nav-contactinfo-tab">
                         @using (Html.BeginForm("UpdateContactInfo", "Users", FormMethod.Post, new { enctype = "multipart/form-data" }))

@@ -47,7 +47,7 @@ namespace OasisAlajuelaWebSite.Controllers
                     ViewBag.Layout = "~/Views/Shared/_MainLayout.cshtml";
                 }
 
-                var data = RBL.TypeList(true);
+                var data = RBL.TypeList(User.Identity.GetUserName());
                 ViewBag.Write = validation.WriteRight;               
                 return View(data.ToList());
 
@@ -102,7 +102,7 @@ namespace OasisAlajuelaWebSite.Controllers
                 int pageSize = 10;
                 int pageNumber = (page ?? 1);
 
-                ResourceTypes TypeData = (from r in RBL.TypeList(true)
+                ResourceTypes TypeData = (from r in RBL.TypeList(User.Identity.GetUserName())
                                           where r.ResourceTypeID == id
                                           select r).FirstOrDefault();
 
@@ -131,6 +131,7 @@ namespace OasisAlajuelaWebSite.Controllers
             else
             {
                 ResourceTypes RT = new ResourceTypes();
+                RT.IsPublic = true;
                 return View(RT);
             }
         }
@@ -188,11 +189,11 @@ namespace OasisAlajuelaWebSite.Controllers
 
                 if(id == 0)
                 {
-                    MS.TypeList = RBL.TypeList(true);
+                    MS.TypeList = RBL.TypeList(User.Identity.GetUserName());
                 }
                 else
                 {
-                    var data = from r in RBL.TypeList(true)
+                    var data = from r in RBL.TypeList(User.Identity.GetUserName())
                                where r.ResourceTypeID == id
                                select r;
 
@@ -213,7 +214,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
                 if (!valURL)
                 {
-                    var data = from rd in RBL.TypeList(true)
+                    var data = from rd in RBL.TypeList(User.Identity.GetUserName())
                                where rd.ResourceTypeID == MS.ResourceTypeID
                                select rd;
 
@@ -232,7 +233,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
                 if (!valformat)
                 {
-                    var data = from rd in RBL.TypeList(true)
+                    var data = from rd in RBL.TypeList(User.Identity.GetUserName())
                                where rd.ResourceTypeID == MS.ResourceTypeID
                                select rd;
 
@@ -264,7 +265,7 @@ namespace OasisAlajuelaWebSite.Controllers
             {
                 MS.ActionType = "CREATE";
 
-                var data = from rd in RBL.TypeList(true)
+                var data = from rd in RBL.TypeList(User.Identity.GetUserName())
                            where rd.ResourceTypeID == MS.ResourceTypeID
                            select rd;
 
@@ -305,7 +306,7 @@ namespace OasisAlajuelaWebSite.Controllers
             {
                 Resources MS = RBL.ResourceDetails(id);
 
-                MS.TypeList = RBL.TypeList(true);                
+                MS.TypeList = RBL.TypeList(User.Identity.GetUserName());                
 
                 return View(MS);
             }
@@ -325,7 +326,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
                     if (!valURL)
                     {
-                        MS.TypeList = RBL.TypeList(true);
+                        MS.TypeList = RBL.TypeList(User.Identity.GetUserName());
                         this.ModelState.AddModelError(String.Empty, "El video proporcionado no existe en YouTube o es incorrecto.");
                         return View(MS);
                     }
@@ -341,13 +342,13 @@ namespace OasisAlajuelaWebSite.Controllers
                 else
                 {
                     MS.ActionType = "UPDATE";
-                    MS.TypeList = RBL.TypeList(true);
+                    MS.TypeList = RBL.TypeList(User.Identity.GetUserName());
                     return View(MS);
                 }
             }
             else
             {
-                MS.TypeList = RBL.TypeList(true);
+                MS.TypeList = RBL.TypeList(User.Identity.GetUserName());
                 this.ModelState.AddModelError(String.Empty, "Todos los campos son obligatorios.");
                 return View(MS);                
             }

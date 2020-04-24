@@ -21,11 +21,30 @@ namespace ET
 
         public string TypeImageExt { get; set; }
 
+        [Required]
+        [Display(Name = "Descripción")]
         public string Description { get; set; }
+
+        [Required]
+        [Display(Name = "Acceso")]
+        public bool IsPublic { get; set; }
 
         public bool ActiveFlag { get; set; }
 
         public string ActionType { get; set; }
+    }
+
+    public class ResourcesGroups
+    {
+        public int ResourceGroupID { get; set; }
+
+        public int ResourceTypeID { get; set; }
+
+        public int GroupID { get; set; }
+
+        public string GroupName { get; set; }
+        public List<Groups> GroupList { get; set; }
+
     }
 
     public class Resources

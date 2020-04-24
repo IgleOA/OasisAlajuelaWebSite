@@ -61,6 +61,20 @@ namespace ET
         }
     }
 
+    public class UsersGroups
+    {
+        public int UserGroupID { get; set; }
+
+        public int UserID { get; set; }
+
+        public int GroupID { get; set; }
+
+        public string GroupName { get; set; }
+
+        public List<Groups> GroupList { get; set; }
+        
+    }
+
     public class Login
     {
         [Required]

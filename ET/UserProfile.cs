@@ -87,6 +87,8 @@ namespace ET
         [Display(Name = "Ciudad")]
         public string City { get; set; }
 
+        public List<Groups> GroupList { get; set; }
+
         public string ActionType { get; set; }
         public class AllowExtensionsAttribute : ValidationAttribute
         {

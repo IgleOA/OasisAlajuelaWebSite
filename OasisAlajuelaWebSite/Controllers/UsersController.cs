@@ -18,6 +18,7 @@ namespace OasisAlajuelaWebSite.Controllers
         private RightsBL RRBL = new RightsBL();
         private UserProfileBL UPBL = new UserProfileBL();
         private RolesBL RBL = new RolesBL();
+        private GroupsBL GBL = new GroupsBL();
 
         public ActionResult Index(string currentFilter, string searchString, int? page)
         {
@@ -92,7 +93,17 @@ namespace OasisAlajuelaWebSite.Controllers
                            select d;
                 id = user.FirstOrDefault().UserID;
             }
-            var r = UPBL.Detail(id);
+            UserProfile r = UPBL.Detail(id);
+
+            r.GroupList = GBL.ListbyUser(id);
+
+            string groups = null;
+            foreach(var l in r.GroupList)
+            {
+                groups += l.GroupName + ",";
+            }
+
+            ViewBag.Groups = groups;
 
             if (r.LastActivityDate.ToString().Length == 0)
             {
@@ -102,7 +113,7 @@ namespace OasisAlajuelaWebSite.Controllers
             if (r.UserName == User.Identity.GetUserName())
             {
                 ViewBag.Layout = "~/Views/Shared/_MainLayout.cshtml";
-                ViewBag.Write = true;
+                ViewBag.Write = true;                
                 return View(r);
             }
             else

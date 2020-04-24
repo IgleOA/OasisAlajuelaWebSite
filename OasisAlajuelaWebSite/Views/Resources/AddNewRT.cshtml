@@ -50,14 +50,28 @@
                         @Html.ValidationMessageFor(model => model.TypeName, "", new { @class = "text-danger" })
                     </div>
                 </div>                
-                 <div class="form-group">
+                <div class="form-group">
                     @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
                     <div class="col-md-10">
                         @Html.TextAreaFor(model => model.Description, 5, 1, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                     </div>
                 </div> 
-                 <div class="form-group">
+                <div class="form-group">
+                        @Html.LabelFor(model => model.IsPublic, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @{
+                                var statuslist = new List<SelectListItem>
+                                {
+                                    new SelectListItem {Text="Público",Value="true"},
+                                    new SelectListItem {Text="Restringido",Value="false"}
+                                };
+                            }
+                            @Html.DropDownListFor(model => model.IsPublic, new SelectList(statuslist, "Value", "Text"), new { @class = "custom-select" })
+                            @Html.ValidationMessageFor(model => model.IsPublic, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                <div class="form-group">
                      @Html.LabelFor(model => model.file, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
                      <div class="profile-img">
                          <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-thumbnail w-75" alt="avatar" />
@@ -66,7 +80,7 @@
                              <input id="file" type="file" name="file" class="file-upload">
                          </div>
                      </div>
-                 </div>
+                </div>
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <input type="submit" value="Guardar" class="btn btn-dark alt mt-0 mb-2" />

@@ -141,6 +141,10 @@
     <Build Include="adm\Stored Procedures\uspUpdateResource.sql" />
     <Build Include="adm\Stored Procedures\uspAddMinister.sql" />
     <Build Include="adm\Stored Procedures\uspAddAboutPage.sql" />
+    <Build Include="config\Tables\utbGroups.sql" />
+    <Build Include="config\Tables\utbUsersGroups.sql" />
+    <Build Include="config\Tables\utbResourcesGroups.sql" />
+    <Build Include="config\Stored Procedures\uspReadGroups.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DB_MAIN_CR_OA.publish.xml" />

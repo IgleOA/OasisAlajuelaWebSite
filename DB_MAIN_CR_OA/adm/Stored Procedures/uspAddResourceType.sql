@@ -14,7 +14,8 @@ CREATE PROCEDURE [adm].[uspAddResourceType]
 	@TypeName		VARCHAR(500),
 	@Description	VARCHAR(MAX),	
 	@TypeImage		VARBINARY(MAX),
-	@TypeImageExt	VARCHAR(10)
+	@TypeImageExt	VARCHAR(10),
+	@IsPublic		BIT
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -33,8 +34,8 @@ AS
                 END
 
             -- =======================================================
-				INSERT INTO [config].[utbResourceTypes] ([TypeName],[TypeImage],[TypeImageExt],[Description],[InsertUser],[LastModifyUser])
-				VALUES (@TypeName,@TypeImage,REPLACE(@TypeImageExt,'.',''),@Description ,@InsertUser,@InsertUser)
+				INSERT INTO [config].[utbResourceTypes] ([TypeName],[TypeImage],[TypeImageExt],[Description],[IsPublic],[InsertUser],[LastModifyUser])
+				VALUES (@TypeName,@TypeImage,REPLACE(@TypeImageExt,'.',''),@Description,@IsPublic,@InsertUser,@InsertUser)
 			-- =======================================================
 
         IF ( @@trancount > 0

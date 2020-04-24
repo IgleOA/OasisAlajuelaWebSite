@@ -18,9 +18,9 @@ namespace BL
             return RDAL.AddNewResource(RT, InsertUser);
         }
 
-        public List<ResourceTypes> TypeList(bool ActiveFlag)
+        public List<ResourceTypes> TypeList(string UserName)
         {
-            return RDAL.TypeList(ActiveFlag);
+            return RDAL.TypeList(UserName);
         }
 
         public List<Resources> ResourceList(int ResourceTypeID, bool ActiveFlag)

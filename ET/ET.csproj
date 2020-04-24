@@ -71,6 +71,7 @@
     <Compile Include="Banner.cs" />
     <Compile Include="BannersLocation.cs" />
     <Compile Include="Emails.cs" />
+    <Compile Include="Groups.cs" />
     <Compile Include="HomePage.cs" />
     <Compile Include="Ministers.cs" />
     <Compile Include="Ministries.cs" />

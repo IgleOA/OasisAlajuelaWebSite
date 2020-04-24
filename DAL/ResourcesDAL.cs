@@ -27,6 +27,7 @@ namespace DAL
                 Parm.Add("@TypeImage", RT.TypeImage);
                 Parm.Add("@TypeImageExt", RT.TypeImageExt);
                 Parm.Add("@Description", RT.Description);
+                Parm.Add("@IsPublic", RT.IsPublic);
 
                 SqlCon.Open();
 
@@ -143,7 +144,7 @@ namespace DAL
             return rpta;
         }
 
-        public List<ResourceTypes> TypeList(Boolean ActiveFlag)
+        public List<ResourceTypes> TypeList(string UserName)
         {
             List<ResourceTypes> List = new List<ResourceTypes>();
 
@@ -155,16 +156,15 @@ namespace DAL
                     CommandType = CommandType.StoredProcedure
                 };
 
-                if (ActiveFlag == true)
+                SqlParameter pUserName = new SqlParameter
                 {
-                    SqlParameter pActiveFlag = new SqlParameter
-                    {
-                        ParameterName = "@ActiveFlag",
-                        SqlDbType = SqlDbType.Bit,
-                        Value = ActiveFlag
-                    };
-                    SqlCmd.Parameters.Add(pActiveFlag);
-                }
+                    ParameterName = "@UserName",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 100,
+                    Value = UserName
+                };
+                SqlCmd.Parameters.Add(pUserName);
+                
                 using (var dr = SqlCmd.ExecuteReader())
                 {
                     while (dr.Read())
@@ -176,7 +176,8 @@ namespace DAL
                             Description = dr["Description"].ToString(),
                             TypeImage = (byte[])dr["TypeImage"],
                             TypeImageExt = dr["TypeImageExt"].ToString(),
-                            ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"])
+                            ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]),
+                            IsPublic = Convert.ToBoolean(dr["IsPublic"])
                         };
                         List.Add(detail);
                     }
