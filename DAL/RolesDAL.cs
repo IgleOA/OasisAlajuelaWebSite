@@ -34,14 +34,13 @@ namespace DAL
                         };
                         List.Add(detail);
                     }
-                }
-                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+                }                
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
-
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return List;
         }
 
@@ -86,14 +85,13 @@ namespace DAL
                 //Exec Command
                 SqlCmd.ExecuteNonQuery();
 
-                rpta = true;
-
-                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+                rpta = true;                
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return rpta;
         }
     }

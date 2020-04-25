@@ -70,7 +70,6 @@ namespace OasisAlajuelaWebSite.Controllers
             {
                 return View(detail);
             }
-
         }
     }
 }

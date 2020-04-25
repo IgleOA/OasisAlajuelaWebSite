@@ -42,14 +42,13 @@ namespace DAL
                         Detail.SermonsTitle = dr["SermonsTitle"].ToString();
                         Detail.SermonsDescription = dr["SermonsDescription"].ToString();
                     }
-                }
-                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+                }                
             }
             catch(Exception ex)
             {
-                throw;
+                throw ex;
             }
-
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return Detail;
         }
 
@@ -129,13 +128,12 @@ namespace DAL
                 SqlCmd.ExecuteNonQuery();
 
                 rpta = true;
-
-                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return rpta;
         }
     }

@@ -23,6 +23,15 @@
             }).done(function () { alert('Hecho!!!'); location.reload(); });
         }
     }
+    function RemoveUG(userID,groupID) {
+        var x = confirm("Esta seguro que quiere desvincular a este usuario de esta area???");
+        if (x) {
+            $.ajax({
+                url: '@Url.Action("RemoveUG")',
+                data: { UserID: userID, GroupID: groupID }
+            }).done(function () { alert('Hecho!!!'); location.reload(); });
+        }
+    }
     function AddNew() {
         var url = '@Url.Action("AddNew")';
         window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
@@ -30,6 +39,11 @@
     function Edit(UserID) {
         var url = '@Url.Action("Edit", new { id = "userid" })';
         url = url.replace("userid", UserID);
+        window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
+    }
+    function AddNewUG(userid) {
+        var url = '@Url.Action("AddGroup", new { id = "UserID"})';
+        url = url.replace("UserID", userid);
         window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
     }
 </script>
@@ -61,65 +75,113 @@
                         <th class="text-center py-2 align-middle">@Html.DisplayNameFor(model => model.FirstOrDefault().ActiveFlag)</th>
                         @if (ViewBag.WriteRight == true)
                         {
-                            <th class="text-center py-2 align-middle" colspan="3">Acción</th>
+                            <th class="text-center py-2 align-middle">Acción</th>
                         }
                     </tr>
 
                     @foreach (var item in Model)
                     {
+                        var modalname = "ModalCenter" + item.UserID.ToString();
+
                         <tr>
                             <td class="align-middle">@Html.DisplayFor(modelItem => item.FullName)</td>
                             <td class="align-middle">@Html.DisplayFor(modelItem => item.UserName)</td>
                             <td class="align-middle">@Html.DisplayFor(modelItem => item.RoleName)</td>
-
                             @{
-                                var isActive = (item.ActiveFlag ? "Activo" : "Inactivo");
                                 var Editflag = "EditFlag" + item.UserID.ToString();
-
                             }
-                            <td class="text-center align-middle">@Html.DisplayFor(modelItem => isActive)</td>
+                            <td class="text-center align-middle">
+
+                                @if (item.ActiveFlag == false)
+                                {
+                                    <script type="text/javascript">
+                                                $(document).ready(function () {
+                                                    $("#@Editflag").hover(function () {
+                                                        $(this).removeClass('fas fa-times-circle fa-1x DisactiveColor');
+                                                        $(this).addClass('fas fa-check-circle fa-1x ActiveColor');
+                                                    }, function () {
+                                                        $(this).removeClass('fas fa-check-circle fa-1x ActiveColor');
+                                                        $(this).addClass('fas fa-times-circle fa-1x DisactiveColor');
+                                                    });
+                                                });
+                                    </script>
+                                    <a href="#" class="card-link m-1" onclick="Activate(@item.UserID)" title="Habilitar" style="color: #444444 !important;">
+                                        <i id="@Editflag" class="fas fa-times-circle fa-1x DisactiveColor" style="vertical-align: middle;"></i> Inactivo
+                                    </a>
+                                }
+                                else
+                                {
+                                    <script type="text/javascript">
+                                                $(document).ready(function () {
+                                                    $("#@Editflag").hover(function () {
+                                                        $(this).removeClass('fas fa-check-circle fa-1x ActiveColor');
+                                                        $(this).addClass('fas fa-times-circle fa-1x DisactiveColor');
+                                                    }, function () {
+                                                        $(this).removeClass('fas fa-times-circle fa-1x DisactiveColor');
+                                                        $(this).addClass('fas fa-check-circle fa-1x ActiveColor');
+                                                    });
+                                                });
+                                    </script>
+                                    <a href="#" class="card-link m-1" onclick="Desactivate(@item.UserID)" title="Deshabilitar" style="color: #444444 !important;">
+                                        <i id="@Editflag" class="fas fa-check-circle fa-1x ActiveColor" style="vertical-align: middle;"></i> Activo
+                                    </a>
+                                }
+                            
+                            </td>
                             @if (ViewBag.WriteRight == true)
                             {
                                 <td class="text-center align-middle">
-                                    @if (item.ActiveFlag == false)
-                                    {
-                                        <script type="text/javascript">
-                                            $(document).ready(function () {
-                                                $("#@Editflag").hover(function () {
-                                                    $(this).removeClass('fas fa-times-circle fa-2x DisactiveColor');
-                                                    $(this).addClass('fas fa-check-circle fa-2x ActiveColor');
-                                                }, function () {
-                                                    $(this).removeClass('fas fa-check-circle fa-2x ActiveColor');
-                                                    $(this).addClass('fas fa-times-circle fa-2x DisactiveColor');
-                                                });
-                                            });
-                                        </script>
-                                        <a href="#" class="card-link" onclick="Activate(@item.UserID)" title="Habilitar"><i id="@Editflag" class="fas fa-times-circle fa-2x DisactiveColor" style="vertical-align: middle;"></i></a>
-                                    }
-                                    else
-                                    {
-                                        <script type="text/javascript">
-                                            $(document).ready(function () {
-                                                $("#@Editflag").hover(function () {
-                                                    $(this).removeClass('fas fa-check-circle fa-2x ActiveColor');
-                                                    $(this).addClass('fas fa-times-circle fa-2x DisactiveColor');
-                                                }, function () {
-                                                    $(this).removeClass('fas fa-times-circle fa-2x DisactiveColor');
-                                                    $(this).addClass('fas fa-check-circle fa-2x ActiveColor');
-                                                });
-                                            });
-                                        </script>
-                                        <a href="#" class="card-link" onclick="Desactivate(@item.UserID)" title="Deshabilitar"><i id="@Editflag" class="fas fa-check-circle fa-2x ActiveColor" style="vertical-align: middle;"></i></a>
-                                    }
-                                </td>
-                                <td class="text-center align-middle">
-                                    <a href='@Url.Action("Profile", new { id = item.UserID })' target="_blank" class="card-link" onclick="Details(@item.UserID)" title="Detalles"><i class="fas fa-user-circle fa-2x" style="vertical-align: middle; color: green;"></i></a>
-                                </td>
-                                <td class="text-center align-middle">
-                                    <a href="#" class="card-link" onclick="Edit(@item.UserID)" title="Asignar nuevo rol"><i class="fas fa-user-edit fa-2x" style="vertical-align: middle; color: green;"></i></a>
+                                    <a href='@Url.Action("Profile", new { id = item.UserID })' target="_blank" class="card-link m-1" onclick="Details(@item.UserID)" title="Detalles">
+                                        <i class="fas fa-user-circle fa-1x mx-2" style="vertical-align: middle; color: #444444;"></i>
+                                    </a>                                
+                                    <a href="#" class="card-link m-0" onclick="Edit(@item.UserID)" title="Asignar nuevo rol">
+                                        <i class="fas fa-user-edit fa-1x mx-2" style="vertical-align: middle; color: #444444;"></i>
+                                    </a>                                
+                                    <a href="#" class="card-link m-0" title="Involucrados">
+                                        <span class="fas fa-users fa-1x mx-2" data-toggle="modal" data-target='#@modalname' style="vertical-align: middle; color: #444444;"></span>
+                                    </a>
+                                    <div class="modal fade" id="@modalname">
+                                        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-body">
+                                                    <div class="card bg-light">
+                                                        <article class="card-body">
+                                                            <h3 class="mt-3 mb-1">
+                                                                <i class="fa fa-tags"></i>
+                                                                Usuario:
+                                                                <span style="color:blue">@item.FullName</span>
+                                                            </h3>
+                                                            <hr />
+                                                            @if (item.GroupList.Count >= 1)
+                                                            {
+                                                                <div class="tagcloud mt-2">
+                                                                    @foreach (var r in item.GroupList)
+                                                                    {
+                                                                        <a href="#" class="text-decoration-none" style="font-size: 15px;" onclick="RemoveUG(@item.UserID,@r.GroupID)">@r.GroupName <i class="fas fa-times"></i></a>
+                                                                    }
+                                                                </div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <p class="my-2">Aún no esta involucrado en ninguna área.</p>
+                                                            }
+                                                            <hr />
+                                                            @if (ViewBag.WriteRight == true)
+                                                            {
+                                                                <div class="mt-2" style="inline-size: max-content;">
+                                                                    <a href='#' title="Agregar Area" class="btn btn-light" style="text-decoration: none;" onclick='AddNewUG(@item.UserID)'><i class="fas fa-plus-square fa-1x"></i> Agregar área</a>
+                                                                </div>
+                                                            }
+                                                        </article>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
                             }
                         </tr>
+
                     }
                 </tbody>
             </table>

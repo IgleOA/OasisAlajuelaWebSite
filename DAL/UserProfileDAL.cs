@@ -62,16 +62,14 @@ namespace DAL
                         {
                             detail.PhotoData = null;
                         }
-
                     }
-                }
-                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+                }                
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
-
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return detail;
         }
 
@@ -216,13 +214,12 @@ namespace DAL
                 SqlCmd.ExecuteNonQuery();
 
                 rpta = true;
-
-                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return rpta;
         }
     }

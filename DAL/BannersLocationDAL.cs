@@ -33,14 +33,13 @@ namespace DAL
                         };
                         List.Add(banner);
                     }
-                }
-                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+                }                
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
-
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return List;
         }
     }

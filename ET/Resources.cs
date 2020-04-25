@@ -32,6 +32,9 @@ namespace ET
         public bool ActiveFlag { get; set; }
 
         public string ActionType { get; set; }
+
+        public List<Groups> GroupList { get; set; }
+
     }
 
     public class ResourcesGroups
@@ -42,7 +45,8 @@ namespace ET
 
         public int GroupID { get; set; }
 
-        public string GroupName { get; set; }
+        public string TypeName { get; set; }
+
         public List<Groups> GroupList { get; set; }
 
     }

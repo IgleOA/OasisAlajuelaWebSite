@@ -31,6 +31,7 @@ AS
 						FROM	[config].[utbGroups] G
 						WHERE	G.[ActiveFlag] = 1
 								AND G.[GroupID] = ISNULL(@GroupID,G.[GroupID])
+						ORDER BY G.[GroupName]
 					END
 				ELSE
 					BEGIN
@@ -44,6 +45,7 @@ AS
 										LEFT JOIN [config].[utbUsersGroups] UG ON UG.[GroupID] = G.[GroupID] AND UG.[ActiveFlag] = 1
 								WHERE	G.[ActiveFlag] = 1
 										AND UG.[UserID] = @UserID									
+								ORDER BY G.[GroupName]
 							END
 						ELSE
 							BEGIN
@@ -55,6 +57,7 @@ AS
 										LEFT JOIN [config].[utbResourcesGroups] RG ON RG.[GroupID] = G.[GroupID] AND RG.[ActiveFlag] = 1
 								WHERE	G.[ActiveFlag] = 1
 										AND RG.[ResourceTypeID] = @ResourceTypeID
+								ORDER BY G.[GroupName]
 							END
 					END
 			-- =======================================================

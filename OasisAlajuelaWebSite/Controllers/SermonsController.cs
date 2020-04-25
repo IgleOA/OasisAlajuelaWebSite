@@ -380,6 +380,7 @@ namespace OasisAlajuelaWebSite.Controllers
             catch (Exception exp)
             {
                 //set the buffer to null
+                Console.Write(exp);
                 Banner.BannerData = null;
             }
             //return the buffer

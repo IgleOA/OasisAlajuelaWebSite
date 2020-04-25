@@ -55,6 +55,8 @@ namespace ET
 
         public Roles RolesData { get; set; }
 
+        public List<Groups> GroupList { get; set; }
+
         public Users()
         {
             RolesData = new Roles();
@@ -69,7 +71,7 @@ namespace ET
 
         public int GroupID { get; set; }
 
-        public string GroupName { get; set; }
+        public string FullName { get; set; }
 
         public List<Groups> GroupList { get; set; }
         

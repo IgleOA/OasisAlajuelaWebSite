@@ -5,7 +5,7 @@
 	[Description]		VARCHAR (MAX)   NULL,	
 	[TypeImage]			VARBINARY (MAX) NOT NULL,
     [TypeImageExt]		VARCHAR (10)    NOT NULL,
-	[IsPublic]			BIT				NOT NULL,
+	[IsPublic]			BIT				NULL,
     [ActiveFlag]		BIT             CONSTRAINT [utbResourceTypesDefaultActiveFlagTrue] DEFAULT ((1)) NOT NULL,
     [InsertDate]		DATETIME        CONSTRAINT [utbResourceTypesDefaultInsertDateSysDateTime] DEFAULT (sysdatetime()) NOT NULL,
     [InsertUser]		VARCHAR (100)   CONSTRAINT [utbResourceTypesDefaultInsertUserSuser_Sname] DEFAULT (suser_sname()) NOT NULL,

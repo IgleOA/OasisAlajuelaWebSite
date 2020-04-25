@@ -1,0 +1,207 @@
+﻿@model IEnumerable<ET.Groups>
+
+@{
+    ViewBag.Title = "Equipos de trabajo";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<script type="text/javascript">
+    function AddNew() {
+        var url = '@Url.Action("AddNew")';
+        window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
+    }
+    function Edit(GroupID) {
+        var url = '@Url.Action("Edit", new { id = "groupid"})';
+        url = url.replace("groupid", GroupID);
+        window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
+    }
+    function Remove(GroupID) {
+        var x = confirm("Esta seguro que quiere eliminar este equipo de trabajo???");
+        if (x) {
+            $.ajax({
+                url: '@Url.Action("Remove")',
+                data: { id: GroupID }
+            }).done(function () { alert('Hecho!!!'); location.reload(); });
+        }
+    }
+    function AddNewUG(GroupID) {
+        var url = '@Url.Action("AddNewUG", new { id = "groupid"})';
+        url = url.replace("groupid", GroupID);
+        window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
+    }
+    function RemoveUG(UGID) {
+        var x = confirm("Esta seguro que quiere eliminar este usuario de este equipo???");
+        if (x) {
+            $.ajax({
+                url: '@Url.Action("RemoveUG")',
+                data: { id: UGID }
+            }).done(function () { alert('Hecho!!!'); location.reload(); });
+        }
+    }
+    function AddNewRG(GroupID) {
+        var url = '@Url.Action("AddNewRG", new { id = "groupid"})';
+        url = url.replace("groupid", GroupID);
+        window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
+    }
+    function RemoveRG(RGID) {
+        var x = confirm("Esta seguro que quiere eliminar este recurso de este equipo???");
+        if (x) {
+            $.ajax({
+                url: '@Url.Action("RemoveRG")',
+                data: { id: RGID }
+            }).done(function () { alert('Hecho!!!'); location.reload(); });
+        }
+    }
+</script>
+<section class="hp-section">
+    <div class="container">
+        <div class="row justify-content-start">
+            <h2 class="heading-section font-weight-bold my-2 p-0">@ViewBag.Title</h2>
+        </div>
+        <div class="row justify-content-start">
+            <table class="table-responsive-xl align-content-center p-0">
+                <tbody>
+                    <tr class="align-middle">
+                        <th class="py-2">@Html.DisplayNameFor(model => model.GroupName)</th>
+                        <th class="py-2">@Html.DisplayNameFor(model => model.Description)</th>
+                        <th class="py-2">Involucrados</th>
+                        <th class="py-2">Recursos</th>
+                        @if (ViewBag.WriteRight == true)
+                        {
+                            <th class="py-2 text-center">Acción</th>
+                        }
+                    </tr>
+
+                    @foreach (var item in Model)
+                    {
+                        var modalUser = "ModalUser" + item.GroupID.ToString();
+                        var modalRT = "ModalRT" + item.GroupID.ToString();
+                        <tr>
+                            <td class="align-middle">@Html.DisplayFor(modelItem => item.GroupName)</td>
+                            <td class="align-middle">@Html.DisplayFor(modelItem => item.Description)</td>
+                            <td class="align-middle text-center">
+                                <a href="#" class="card-link m-0" title="Involucrados">
+                                    <span class="fas fa-users fa-2x mx-2" data-toggle="modal" data-target='#@modalUser' style="vertical-align: middle; color: #444444;"></span>
+                                </a>
+                                <div class="modal fade" id="@modalUser">
+                                    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <div class="card bg-light">
+                                                    <article class="card-body">
+                                                        <h3 class="mt-3 mb-1">
+                                                            <i class="fa fa-tags"></i>
+                                                            Equipo:
+                                                            <span style="color:blue">@item.GroupName</span>
+                                                        </h3>
+                                                        <hr />
+                                                        @if (item.UserList.Count >= 1)
+                                                        {
+                                                    <div class="tagcloud mt-2">
+                                                        @foreach (var r in item.UserList)
+                                                        {
+                                                            if (ViewBag.WriteRight == true)
+                                                            {
+                                                                <a href="#" class="text-decoration-none" style="font-size: 15px;" onclick="RemoveUG(@r.UserGroupID)">@r.FullName <i class="fas fa-times"></i></a>
+                                                            }
+                                                            else
+                                                            {
+                                                                <a href="#" class="text-decoration-none" style="font-size: 15px;">@r.FullName</a>
+                                                            }
+                                                        }
+                                                    </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <p class="my-2">Aún no hay involucrados en este equipo.</p>
+                                                        }
+                                                        <hr />
+                                                        @if (ViewBag.WriteRight == true)
+                                                        {
+                                                            <div class="mt-2" style="inline-size: max-content;">
+                                                                <a href='#' title="Agregar Involucrado" class="btn btn-light" style="text-decoration: none;" onclick='AddNewUG(@item.GroupID)'><i class="fas fa-plus-square fa-1x"></i> Agregar Involucrado</a>
+                                                            </div>
+                                                        }
+                                                    </article>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="align-middle text-center">
+                                <a href="#" class="card-link m-0" title="Recursos">
+                                    <span class="fas fa-swatchbook fa-2x mx-2" data-toggle="modal" data-target='#@modalRT' style="vertical-align: middle; color: #444444;"></span>
+                                </a>
+                                <div class="modal fade" id="@modalRT">
+                                    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <div class="card bg-light">
+                                                    <article class="card-body">
+                                                        <h3 class="mt-3 mb-1">
+                                                            <i class="fa fa-tags"></i>
+                                                            Equipo:
+                                                            <span style="color:blue">@item.GroupName</span>
+                                                        </h3>
+                                                        <hr />
+                                                        @if (item.RTypesList.Count >= 1)
+                                                        {
+                                                            <div class="tagcloud mt-2">
+                                                                @foreach (var r in item.RTypesList)
+                                                                {
+                                                                    <a href="#" class="text-decoration-none" style="font-size: 15px;" onclick="RemoveRG(@r.ResourceGroupID)">@r.TypeName <i class="fas fa-times"></i></a>
+                                                                }
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <p class="my-2">Aún no hay recursos asignados a este equipo.</p>
+                                                        }
+                                                        <hr />
+                                                        @if (ViewBag.WriteRight == true)
+                                                        {
+                                                            <div class="mt-2" style="inline-size: max-content;">
+                                                                <a href='#' title="Agregar Involucrado" class="btn btn-light" style="text-decoration: none;" onclick='AddNewRG(@item.GroupID)'><i class="fas fa-plus-square fa-1x"></i> Agregar Recurso</a>
+                                                            </div>
+                                                        }
+                                                    </article>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            @if(ViewBag.WriteRight == true)
+                            {
+                                <td class="align-middle text-center">
+                                    <a href="#" class="card-link m-0" onclick="Edit(@item.GroupID)" title="Editar">
+                                        <i class="far fa-edit fa-2x mx-2" style="vertical-align: middle; color: #444444;"></i>
+                                    </a>                                
+                                    <a href="#" class="card-link m-0" onclick="Remove(@item.GroupID)" title="Eliminar">
+                                        <i class="fas fa-times-circle fa-2x mx-2" style="vertical-align: middle; color: #444444;"></i>
+                                    </a> 
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        @if (ViewBag.WriteRight == true)
+        {
+            <div class="row">
+                <div class="p-0">
+                    <div class="media services d-block text-justify">
+                        <div class="media-body p-0 mt-0">
+                            <div class="d-flex justify-content-between">
+                                <a href="#" onclick="AddNew()" title="Agregar nuevo Equipo de trabajo" class="btn btn-light" style="text-decoration: none;"><i class="fas fa-plus-square fa-1x"></i> Agregar nuevo Equipo de trabajo</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+

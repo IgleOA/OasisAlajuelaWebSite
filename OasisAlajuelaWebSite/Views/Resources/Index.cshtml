@@ -14,6 +14,20 @@
         var url = '@Url.Action("AddNewRT")';
         window.open(url, '_blank', 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
     }
+    function AddNewRG(RTID) {
+        var url = '@Url.Action("AddGroup", new { id = "ResourceTypeID"})';
+        url = url.replace("ResourceTypeID", RTID);
+        window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
+    }
+    function RemoveRG(RTID,groupID) {
+        var x = confirm("Esta seguro que quiere desvincular a este grupo de este recurso???");
+        if (x) {
+            $.ajax({
+                url: '@Url.Action("RemoveURG")',
+                data: { ResourceTypeID: RTID, GroupID: groupID }
+            }).done(function () { alert('Hecho!!!'); location.reload(); });
+        }
+    }
 </script>
 
 <section class="hp-section bg-light">
@@ -52,13 +66,56 @@
                         <div class="textBlog d-flex float-right d-block" style="background-color: linen;">
                             <div class="desc px-2">
                                 <div class="row">
-                                    <h3 class="heading mt-2">
+                                    <h3 class="heading my-auto mt-2">
                                         <a class="font-weight-bolder">@item.TypeName</a>
                                     </h3>
-                                    <p class="mb-2">@item.Description</p>
+                                    <p class="my-auto mb-2">@item.Description</p>
                                 </div>
                             </div>
                         </div>
+                        @if (ViewBag.Write == true)
+                        {
+                            var modalRT = "ModalRT" + item.ResourceTypeID.ToString();
+
+                            <a href="#" class="card-link m-0" title="Equipos asignados" data-toggle="modal" data-target='#@modalRT'>
+                                <span class="fas fa-users fa-1x mx-2" style="vertical-align: middle; color: #444444;"></span> Equipos Asignados
+                            </a>
+                            <div class="modal fade" id="@modalRT">
+                                <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <div class="card bg-light">
+                                                <article class="card-body">
+                                                    <h3 class="mt-3 mb-1">
+                                                        <i class="fa fa-tags"></i>
+                                                        Recurso:
+                                                        <span style="color:blue">@item.TypeName</span>
+                                                    </h3>
+                                                    <hr />
+                                                    @if (item.GroupList.Count >= 1)
+                                                    {
+                                                        <div class="tagcloud mt-2 align-content-center">
+                                                            @foreach (var r in item.GroupList)
+                                                            {
+                                                                <a href="#" class="text-decoration-none" style="font-size: 15px;" onclick="RemoveRG(@item.ResourceTypeID,@r.GroupID)">@r.GroupName <i class="fas fa-times"></i></a>                                                                
+                                                            }
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <p class="my-2">Aún no hay equipos asignados a este equipo.</p>
+                                                    }
+                                                    <hr />
+                                                    <div class="mt-2" style="inline-size: max-content;">
+                                                            <a href='#' title="Agregar Involucrado" class="btn btn-light" style="text-decoration: none;" onclick='AddNewRG(@item.ResourceTypeID)'><i class="fas fa-plus-square fa-1x"></i> Agregar Equipo</a>
+                                                    </div>
+                                                </article>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
                     </div>
                 </div>
             }

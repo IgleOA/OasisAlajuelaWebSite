@@ -63,6 +63,7 @@ img > .d-block {
 .hp-section {
     padding: 2em 0;
     position: relative;
+    margin: 0 !important;
 }
 
 .hp-animate {

@@ -145,6 +145,14 @@
     <Build Include="config\Tables\utbUsersGroups.sql" />
     <Build Include="config\Tables\utbResourcesGroups.sql" />
     <Build Include="config\Stored Procedures\uspReadGroups.sql" />
+    <Build Include="adm\Stored Procedures\uspAddUserGroup.sql" />
+    <Build Include="adm\Stored Procedures\uspUpdateUserGroup.sql" />
+    <Build Include="config\Stored Procedures\uspReadResourcesGroups.sql" />
+    <Build Include="adm\Stored Procedures\uspAddResourceGroup.sql" />
+    <Build Include="adm\Stored Procedures\uspUpdateResourceGroup.sql" />
+    <Build Include="config\Stored Procedures\uspReadUsersGroups.sql" />
+    <Build Include="adm\Stored Procedures\uspUpdateGroup.sql" />
+    <Build Include="adm\Stored Procedures\uspAddGroup.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DB_MAIN_CR_OA.publish.xml" />

@@ -1871,14 +1871,14 @@ button,
     cursor: pointer;
     display: inline-block;
     font-weight: 300;
-    height: 2.85rem;
+    /*height: 2.85rem;*/
     line-height: 2.95rem;
     padding: 0 1.5rem;
     text-align: center;
     text-decoration: none;
     text-transform: uppercase;
     white-space: nowrap;
-    margin: 1rem 0 1rem 0;
+    /*margin: 1rem 0 1rem 0;*/
 }
 
     input[type="submit"].icon,

@@ -9,6 +9,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Net;
 using System.Web;
+using OasisAlajuelaWebSite.Models;
 
 namespace OasisAlajuelaWebSite.Controllers
 {
@@ -19,6 +20,7 @@ namespace OasisAlajuelaWebSite.Controllers
         private UsersBL USBL = new UsersBL();
         private ResourcesBL RBL = new ResourcesBL();
         private YouTubeBL YBL = new YouTubeBL();
+        private GroupsBL GBL = new GroupsBL();
 
         public ActionResult Index()
         {
@@ -445,10 +447,120 @@ namespace OasisAlajuelaWebSite.Controllers
             }
             catch (Exception ex)
             {
+                Console.Write(ex);
                 isValid = false;
             }
 
             return isValid;
+        }
+
+        public ActionResult AddGroup(int id)
+        {
+            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
+            MultiSelectNewRTG model = new MultiSelectNewRTG
+            {
+                ResourceTypeID = id,
+                SelectedMultiGroupId = new List<int>(),
+                SelectedGroupLst = new List<Groups>()
+            };
+
+            try
+            {
+                this.ViewBag.GroupList = this.GetGroupList(id);
+                this.ViewBag.RTID = id;
+                var data = from d in RBL.TypeList(string.Empty)
+                           where d.ResourceTypeID == id
+                           select d;
+                this.ViewBag.TypeName = data.FirstOrDefault().TypeName;
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex);
+            }
+
+            return this.View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddGroup(MultiSelectNewRTG model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    foreach (var item in model.SelectedMultiGroupId)
+                    {
+                        ResourcesGroups UG = new ResourcesGroups
+                        {
+                            ResourceTypeID = model.ResourceTypeID,
+                            GroupID = item
+                        };
+                        var r = GBL.AddRTGroup(UG, User.Identity.GetUserName());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex);
+            }
+
+            this.ViewBag.GroupList = this.GetGroupList(model.ResourceTypeID);
+            this.ViewBag.RTID = model.ResourceTypeID;
+            var data = from d in RBL.TypeList(string.Empty)
+                       where d.ResourceTypeID == model.ResourceTypeID
+                       select d;
+            this.ViewBag.TypeName = data.FirstOrDefault().TypeName;
+            model.ActionType = "CREATE";
+            return this.View(model);
+        }
+
+        public ActionResult RemoveURG(int ResourceTypeID, int GroupID)
+        {
+            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
+            string InsertUser = User.Identity.GetUserName();
+
+            ResourcesGroups UG = new ResourcesGroups()
+            {
+                ResourceTypeID = ResourceTypeID,
+                GroupID = GroupID
+            };
+
+            var r = GBL.RemoveRG(UG, InsertUser);
+
+            if (!r)
+            {
+                ViewBag.Mensaje = "Ha ocurrido un error inesperado.";
+                return View("~/Views/Shared/Error.cshtml");
+            }
+            else
+            {
+                return this.RedirectToAction("Index");
+            }
+        }
+
+        private IEnumerable<SelectListItem> GetGroupList(int id)
+        {
+            SelectList lstobj = null;
+
+            try
+            {
+                var data = from r in GBL.List()
+                           where !(from d in GBL.ListbyRT(id)
+                                   select d.GroupID).Contains(r.GroupID)
+                           select r;
+
+                //var list = this.GBL.List().Select(p => new SelectListItem { Value = p.GroupID.ToString(), Text = p.GroupName });
+                var list = data.Select(p => new SelectListItem { Value = p.GroupID.ToString(), Text = p.GroupName });
+
+                lstobj = new SelectList(list, "Value", "Text");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return lstobj;
         }
     }
 }

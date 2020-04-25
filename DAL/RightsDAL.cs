@@ -46,13 +46,12 @@ namespace DAL
                         List.Add(detail);
                     }
                 }
-                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
-
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return List;
         }
 
@@ -121,13 +120,12 @@ namespace DAL
                 SqlCmd.ExecuteNonQuery();
 
                 rpta = true;
-
-                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return rpta;
         }
 
@@ -176,14 +174,13 @@ namespace DAL
                         Detail.ReadRight = Convert.ToBoolean(dr["ReadRight"]);
                         Detail.WriteRight = Convert.ToBoolean(dr["WriteRight"]);
                     }
-                }
-                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+                }                
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
-
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return Detail;
         }
     }

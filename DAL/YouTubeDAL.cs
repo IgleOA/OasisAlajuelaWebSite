@@ -49,24 +49,6 @@ namespace DAL
             return list;
         }
 
-        //public bool YoutubeVideoValidation(string YouTubeID)
-        //{
-        //    bool result = false;
-
-        //    var ValidationRequest = yt.Videos.List("snippet");
-        //    ValidationRequest.Id = YouTubeID;
-            
-        //    var ListResponse = ValidationRequest.Execute();
-
-            
-        //    if(ListResponse.Items.Count > 0)
-        //    {
-        //        result = true;
-        //    }
-
-        //    return result;
-        //}
-
         public YouTubeVideo YoutubeVideoValidation(string YouTubeID)
         {
             YouTubeVideo YTVideo = new YouTubeVideo();

@@ -55,14 +55,13 @@ namespace DAL
                         };
                         List.Add(detail);
                     }
-                }
-                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+                }                
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
-
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return List;
         }
         public bool AddNew(Sermons NewMS, string InserUser)
@@ -87,15 +86,12 @@ namespace DAL
                 SqlCon.Execute("[adm].[uspAddSermon]", Parm, commandType: CommandType.StoredProcedure);
 
                 rpta = true;
-
-                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
-
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
-
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return rpta;
         }
 
@@ -191,13 +187,12 @@ namespace DAL
                 SqlCmd.ExecuteNonQuery();
 
                 rpta = true;
-
-                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return rpta;
         }
 
@@ -239,14 +234,12 @@ namespace DAL
                         details.MinisterName = dr["MinisterName"].ToString();
                     }
                 }
-                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
-
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
-
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return details;
         }
     }

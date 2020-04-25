@@ -14,6 +14,7 @@ namespace DAL
     public class ResourcesDAL
     {
         private SqlConnection SqlCon = new SqlConnection(ConfigurationManager.ConnectionStrings["DB_MAIN_CR_OA_Connection"].ToString());
+        private GroupsDAL GDAL = new GroupsDAL();
 
         public bool AddNewResourceType(ResourceTypes RT, string InsertUser)
         {
@@ -34,15 +35,12 @@ namespace DAL
                 SqlCon.Execute("[adm].[uspAddResourceType]", Parm, commandType: CommandType.StoredProcedure);
 
                 rpta = true;
-
-                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
-
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
-
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return rpta;
         }
 
@@ -132,15 +130,12 @@ namespace DAL
                 SqlCmd.ExecuteNonQuery();
 
                 rpta = true;
-
-                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
-
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
-
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return rpta;
         }
 
@@ -156,15 +151,17 @@ namespace DAL
                     CommandType = CommandType.StoredProcedure
                 };
 
-                SqlParameter pUserName = new SqlParameter
+                if (UserName.Length >= 1)
                 {
-                    ParameterName = "@UserName",
-                    SqlDbType = SqlDbType.VarChar,
-                    Size = 100,
-                    Value = UserName
-                };
-                SqlCmd.Parameters.Add(pUserName);
-                
+                    SqlParameter pUserName = new SqlParameter
+                    {
+                        ParameterName = "@UserName",
+                        SqlDbType = SqlDbType.VarChar,
+                        Size = 100,
+                        Value = UserName
+                    };
+                    SqlCmd.Parameters.Add(pUserName);
+                }
                 using (var dr = SqlCmd.ExecuteReader())
                 {
                     while (dr.Read())
@@ -181,14 +178,17 @@ namespace DAL
                         };
                         List.Add(detail);
                     }
+                }         
+                foreach(var item in List)
+                {
+                    item.GroupList = GDAL.ListbyRT(item.ResourceTypeID);
                 }
-                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
-
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return List;
         }
 
@@ -239,21 +239,15 @@ namespace DAL
                             Description = dr["Description"].ToString(),
                             ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"])
                         };
-
-                        //if(!Convert.IsDBNull(dr["FileData"]))
-                        //{
-                        //    detail.FileData = (byte[])dr["FileData"];
-                        //}
                         List.Add(detail);
                     }
-                }
-                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+                }                
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
-
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return List;
         }
 
@@ -296,14 +290,13 @@ namespace DAL
                             details.FileData = (byte[])dr["FileData"];
                         }
                     }
-                }
-                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+                }                
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
-
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return details;
         }
 
@@ -327,15 +320,12 @@ namespace DAL
                 SqlCon.Execute("[adm].[uspUpdateResource]", Parm, commandType: CommandType.StoredProcedure);
 
                 rpta = true;
-
-                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
-
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
-
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return rpta;
         }
     }

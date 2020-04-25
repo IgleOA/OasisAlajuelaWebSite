@@ -25,6 +25,14 @@ namespace OasisAlajuelaWebSite
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/bootstrap-select").Include(
+                                  "~/Scripts/bootstrap-select.js",
+                                  "~/Scripts/script-bootstrap-select.js"));
+
+            bundles.Add(new StyleBundle("~/Content/Bootstrap-Select/css").Include(
+                                 "~/Content/style/bootstrap-select.css",
+                                 "~/Content/style/bootstrap-select.min.css"));
         }
     }
 }

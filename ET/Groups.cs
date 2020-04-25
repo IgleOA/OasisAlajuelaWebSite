@@ -20,9 +20,9 @@ namespace ET
 
         public string ActionType { get; set; }
 
-        public List<Users> UserList { get; set; }
+        public List<UsersGroups> UserList { get; set; }
 
-        public List<ResourceTypes> RTypesList { get; set; }
+        public List<ResourcesGroups> RTypesList { get; set; }
     }
     
 }

@@ -8,6 +8,8 @@ using PagedList;
 using System.IO;
 using System.Text;
 using System.Net.Mail;
+using OasisAlajuelaWebSite.Models;
+using System.Collections.Generic;
 
 namespace OasisAlajuelaWebSite.Controllers
 {
@@ -347,6 +349,110 @@ namespace OasisAlajuelaWebSite.Controllers
 
             UUser.RolesList = RBL.List();
             return View(UUser);
+        }
+
+        public ActionResult AddGroup(int id)
+        {
+            MultiSelectDropDownViewModel model = new MultiSelectDropDownViewModel
+            {
+                UserID = id,
+                SelectedMultiGroupId = new List<int>(),
+                SelectedGroupLst = new List<Groups>()
+            };
+
+            try
+            { 
+                this.ViewBag.GroupList = this.GetGroupList(id);
+                this.ViewBag.UserID = id;
+                Users user = UBL.Details(id);
+                this.ViewBag.UserFullName = user.FullName;
+            }
+            catch(Exception ex)
+            {
+                Console.Write(ex);
+            }
+
+            return this.View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddGroup(MultiSelectDropDownViewModel model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    foreach (var item in model.SelectedMultiGroupId)
+                    {
+                        UsersGroups UG = new UsersGroups
+                        {
+                            UserID = model.UserID,
+                            GroupID = item
+                        };
+                        var r = GBL.AddUserGroup(UG, User.Identity.GetUserName());
+                    }                    
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex);
+            }
+            
+            this.ViewBag.GroupList = this.GetGroupList(model.UserID);
+            this.ViewBag.UserID = model.UserID;
+            Users user = UBL.Details(model.UserID);
+            this.ViewBag.UserFullName = user.FullName;
+            model.ActionType = "CREATE";
+            return this.View(model);
+        }
+
+        public ActionResult RemoveUG(int UserID, int GroupID)
+        {
+            UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
+            string InsertUser = User.Identity.GetUserName();
+
+            UsersGroups UG = new UsersGroups()
+            {
+                UserID = UserID,
+                GroupID = GroupID
+            };
+
+            var r = GBL.RemoveUG(UG, InsertUser);
+
+            if (!r)
+            {
+                ViewBag.Mensaje = "Ha ocurrido un error inesperado.";
+                return View("~/Views/Shared/Error.cshtml");
+            }
+            else
+            {
+                return this.RedirectToAction("Index");
+            }
+        }
+
+        private IEnumerable<SelectListItem> GetGroupList(int id)
+        {
+            SelectList lstobj = null;
+
+            try
+            {
+                var data = from r in GBL.List()
+                           where !(from d in GBL.ListbyUser(id)
+                                   select d.GroupID).Contains(r.GroupID)
+                           select r;
+
+                //var list = this.GBL.List().Select(p => new SelectListItem { Value = p.GroupID.ToString(), Text = p.GroupName });
+                var list = data.Select(p => new SelectListItem { Value = p.GroupID.ToString(), Text = p.GroupName });
+                
+                lstobj = new SelectList(list, "Value", "Text");
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+
+            return lstobj;
         }
     }
 }

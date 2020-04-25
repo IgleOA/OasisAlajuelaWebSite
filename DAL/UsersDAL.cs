@@ -9,6 +9,8 @@ namespace DAL
 {
     public class UsersDAL
     {
+        private GroupsDAL GDAL = new GroupsDAL();
+
         private SqlConnection SqlCon = new SqlConnection(ConfigurationManager.ConnectionStrings["DB_MAIN_CR_OA_Connection"].ToString());
 
         public bool CheckAvailability(string TxtValidate)
@@ -34,15 +36,12 @@ namespace DAL
                 SqlCmd.Parameters.Add(ParUserName);
 
                 rpta = Convert.ToBoolean(SqlCmd.ExecuteScalar());
-
-                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();                
-
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
-
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return rpta;
         }
                
@@ -114,14 +113,12 @@ namespace DAL
                 SqlCmd.ExecuteNonQuery();
 
                 rpta = true;
-
-                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
-
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return rpta;
         }
 
@@ -166,13 +163,12 @@ namespace DAL
                         LoginUser.UserName = dr["UserName"].ToString();
                     }
                 }
-
-                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();                
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return LoginUser;
         }
 
@@ -207,13 +203,13 @@ namespace DAL
                         code.UserID = Convert.ToInt32(dr["UserID"]);
                         code.FullName = dr["FullName"].ToString();
                     }
-                }
-                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();                
+                }  
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return code;
         }
 
@@ -240,13 +236,12 @@ namespace DAL
 
                 //EXEC Command
                 ValidCode = Convert.ToInt32(SqlCmd.ExecuteScalar());
-
-                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return ValidCode;
         }
 
@@ -282,14 +277,13 @@ namespace DAL
                 //EXEC Command
                 SqlCmd.ExecuteNonQuery();
 
-                rpta = true;
-
-                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+                rpta = true;                
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return rpta;
         }
 
@@ -332,12 +326,17 @@ namespace DAL
                     }
                 }
                 if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+
+                foreach (var item in List)
+                {
+                    item.GroupList = GDAL.ListbyUser(item.UserID);
+                }
             }
             catch (Exception ex)
             {
-                throw;
-            }
-
+                throw ex;
+            }            
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return List;
         }
 
@@ -426,14 +425,12 @@ namespace DAL
                 SqlCmd.ExecuteNonQuery();
 
                 rpta = true;
-
-                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
-
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return rpta;
         }
 
@@ -470,13 +467,12 @@ namespace DAL
                         Detail.RoleName = dr["RoleName"].ToString();
                     }
                 }
-                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
-
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return Detail;
         }
 
@@ -518,8 +514,7 @@ namespace DAL
                     Value = Action
                 };
                 SqlCmd.Parameters.Add(ParAction);
-
-                
+                               
 
                 SqlParameter ParActivityDate = new SqlParameter
                 {
@@ -533,14 +528,12 @@ namespace DAL
                 SqlCmd.ExecuteNonQuery();
 
                 rpta = true;
-
-                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
-
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return rpta;
         }
     }

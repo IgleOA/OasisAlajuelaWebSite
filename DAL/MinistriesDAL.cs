@@ -22,14 +22,6 @@ namespace DAL
                     CommandType = CommandType.StoredProcedure
                 };
 
-                //SqlParameter parStatus = new SqlParameter
-                //{
-                //    ParameterName = "@Ministry",
-                //    SqlDbType = SqlDbType.Bit,
-                //    Value = ActiveFlag
-                //};
-                //SqlCmd.Parameters.Add(parStatus);
-
                 using (var dr = SqlCmd.ExecuteReader())
                 {
                     while (dr.Read())
@@ -44,14 +36,13 @@ namespace DAL
                         };
                         List.Add(detail);
                     }
-                }
-                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+                }                
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
-
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return List;
         }
 
@@ -106,13 +97,12 @@ namespace DAL
                 SqlCmd.ExecuteNonQuery();
 
                 rpta = true;
-
-                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return rpta;
         }
 
@@ -147,14 +137,13 @@ namespace DAL
                         ET.Description = dr["Description"].ToString();
                         ET.ActionLink = dr["ActionLink"].ToString();
                     }
-                }
-                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+                }                
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
-
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return ET;
         }
 
@@ -225,13 +214,12 @@ namespace DAL
                 SqlCmd.ExecuteNonQuery();
 
                 rpta = true;
-
-                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return rpta;
         }
     }
