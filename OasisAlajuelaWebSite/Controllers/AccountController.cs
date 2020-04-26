@@ -6,6 +6,7 @@ using BL;
 using System.Web.Security;
 using OasisAlajuelaWebSite.Models;
 using System.Text;
+using System.IO;
 
 namespace OasisAlajuelaWebSite.Controllers
 { 
@@ -50,14 +51,17 @@ namespace OasisAlajuelaWebSite.Controllers
                     };
 
                     StringBuilder mailBody = new StringBuilder();
+                    var strg = ViewToStringRenderer.RenderViewToString(this.ControllerContext, "~/Views/Users/EmailConfirmation.cshtml", User);
 
-                    mailBody.AppendFormat("<div><h1>Oasis Alajuela</h1>");
-                    mailBody.AppendFormat("<br />");
-                    mailBody.AppendFormat("<p>Gracias {0} por registrarse y por tener el sentir de hacerte parte de esta familia. Dios trae cosas grandes para esta casa y ahora seras parte de ellas.</p>", User.FullName);
-                    mailBody.AppendFormat("<br />");
-                    mailBody.AppendFormat("<p>Desde ya puedes ver el contenido completo de nuestro website http://igleoa.azurewebsites.net/ </p>");
-                    mailBody.AppendFormat("<br />");
-                    mailBody.AppendFormat("<h3>Bendiciones....</h3></div>");
+                    mailBody.AppendFormat(strg);
+
+                    //mailBody.AppendFormat("<div><h1>Oasis Alajuela</h1>");
+                    //mailBody.AppendFormat("<br />");
+                    //mailBody.AppendFormat("<p>Gracias {0} por registrarse y por tener el sentir de hacerte parte de esta familia. Dios trae cosas grandes para esta casa y ahora seras parte de ellas.</p>", User.FullName);
+                    //mailBody.AppendFormat("<br />");
+                    //mailBody.AppendFormat("<p>Desde ya puedes ver el contenido completo de nuestro website http://igleoa.azurewebsites.net/ </p>");
+                    //mailBody.AppendFormat("<br />");
+                    //mailBody.AppendFormat("<h3>Bendiciones....</h3></div>");
 
                     Email.BodyEmail = mailBody.ToString();
 
@@ -96,6 +100,29 @@ namespace OasisAlajuelaWebSite.Controllers
             return View(User);
         }
 
+        public static class ViewToStringRenderer
+        {
+            public static string RenderViewToString<TModel>(ControllerContext controllerContext, string viewName, TModel model)
+            {
+                ViewEngineResult viewEngineResult = ViewEngines.Engines.FindView(controllerContext, viewName, null);
+                if (viewEngineResult.View == null)
+                {
+                    throw new Exception("Could not find the View file. Searched locations:\r\n" + viewEngineResult.SearchedLocations);
+                }
+                else
+                {
+                    IView view = viewEngineResult.View;
+
+                    using (var stringWriter = new StringWriter())
+                    {
+                        var viewContext = new ViewContext(controllerContext, view, new ViewDataDictionary<TModel>(model), new TempDataDictionary(), stringWriter);
+                        view.Render(viewContext, stringWriter);
+
+                        return stringWriter.ToString();
+                    }
+                }
+            }
+        }
         [AllowAnonymous]
         public ActionResult RegisterConfirmation(string FullName)
         {

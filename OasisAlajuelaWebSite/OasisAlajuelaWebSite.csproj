@@ -2823,6 +2823,7 @@
     <Content Include="Views\Groups\AddNewUG.cshtml" />
     <Content Include="Views\Groups\AddNewRG.cshtml" />
     <Content Include="Views\Resources\AddGroup.cshtml" />
+    <Content Include="Views\Users\EmailConfirmation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

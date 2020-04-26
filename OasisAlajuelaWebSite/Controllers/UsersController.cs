@@ -1,15 +1,15 @@
-﻿using System;
-using System.Web.Mvc;
+﻿using BL;
 using ET;
-using BL;
 using Microsoft.AspNet.Identity;
-using System.Linq;
-using PagedList;
-using System.IO;
-using System.Text;
-using System.Net.Mail;
 using OasisAlajuelaWebSite.Models;
+using PagedList;
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net.Mail;
+using System.Text;
+using System.Web.Mvc;
 
 namespace OasisAlajuelaWebSite.Controllers
 {
@@ -34,7 +34,7 @@ namespace OasisAlajuelaWebSite.Controllers
             else
             {
                 ViewBag.WriteRight = validation.WriteRight;
-                
+
                 if (searchString != null)
                 {
                     page = 1;
@@ -47,13 +47,13 @@ namespace OasisAlajuelaWebSite.Controllers
                 ViewBag.CurrentFilter = searchString;
 
                 var list = from b in UBL.List()
-                              select b;
+                           select b;
 
                 if (!String.IsNullOrEmpty(searchString))
                 {
                     list = list.Where(b => b.FullName.ToLower().Contains(searchString.ToLower()) | b.UserName.ToLower().Contains(searchString.ToLower()));
                 }
-                
+
                 int pageSize = 10;
                 int pageNumber = (page ?? 1);
                 return View(list.ToPagedList(pageNumber, pageSize));
@@ -100,7 +100,7 @@ namespace OasisAlajuelaWebSite.Controllers
             r.GroupList = GBL.ListbyUser(id);
 
             string groups = null;
-            foreach(var l in r.GroupList)
+            foreach (var l in r.GroupList)
             {
                 groups += l.GroupName + ",";
             }
@@ -115,12 +115,12 @@ namespace OasisAlajuelaWebSite.Controllers
             if (r.UserName == User.Identity.GetUserName())
             {
                 ViewBag.Layout = "~/Views/Shared/_MainLayout.cshtml";
-                ViewBag.Write = true;                
+                ViewBag.Write = true;
                 return View(r);
             }
             else
             {
-                var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(),"Index");
+                var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
                 if (validation.ReadRight == false)
                 {
                     ViewBag.Mensaje = "Usted no esta autorizado para ingresar a esta seccion, si necesita acceso contacte con un administrador.";
@@ -301,24 +301,28 @@ namespace OasisAlajuelaWebSite.Controllers
 
                     StringBuilder mailBody = new StringBuilder();
 
-                    mailBody.AppendFormat("<h1>Oasis Alajuela</h1>");
-                    mailBody.AppendFormat("<br />");
-                    mailBody.AppendFormat("<p>Gracias {0} por registrarse y por tener el sentir de hacerte parte de esta familia. Dios trae cosas grandes para esta casa y ahora seras parte de ellas.</p>", UUser.FullName);
-                    mailBody.AppendFormat("<br />");
-                    mailBody.AppendFormat("<p>Desde ya puedes ver el contenido completo de nuestro website http://igleoa.azurewebsites.net/ </p>");
-                    mailBody.AppendFormat("<br />");
-                    mailBody.AppendFormat("<p>Usuario: {0}</p>", UUser.UserName);
-                    mailBody.AppendFormat("<br />");
-                    mailBody.AppendFormat("<p>Contraseña: {0}</p>", UUser.Password);
-                    mailBody.AppendFormat("<br />");
-                    mailBody.AppendFormat("<h3>Bendiciones....</h3>");
+                    var strg =  ViewToStringRenderer.RenderViewToString(this.ControllerContext, "~/Views/Users/EmailConfirmation.cshtml", UUser);
+
+                    mailBody.AppendFormat(strg);
+
+                    //mailBody.AppendFormat("<h1>Oasis Alajuela</h1>");
+                    //mailBody.AppendFormat("<br />");
+                    //mailBody.AppendFormat("<p>Gracias {0} por registrarse y por tener el sentir de hacerte parte de esta familia. Dios trae cosas grandes para esta casa y ahora seras parte de ellas.</p>", UUser.FullName);
+                    //mailBody.AppendFormat("<br />");
+                    //mailBody.AppendFormat("<p>Desde ya puedes ver el contenido completo de nuestro website http://igleoa.azurewebsites.net/ </p>");
+                    //mailBody.AppendFormat("<br />");
+                    //mailBody.AppendFormat("<p>Usuario: {0}</p>", UUser.UserName);
+                    //mailBody.AppendFormat("<br />");
+                    //mailBody.AppendFormat("<p>Contraseña: {0}</p>", UUser.Password);
+                    //mailBody.AppendFormat("<br />");
+                    //mailBody.AppendFormat("<h3>Bendiciones....</h3>");
 
                     Email.BodyEmail = mailBody.ToString();
 
                     MailMessage mm = new MailMessage(Email.FromEmail, Email.ToEmail);
                     mm.Subject = Email.SubjectEmail;
                     mm.Body = Email.BodyEmail;
-                    mm.IsBodyHtml = false;
+                    mm.IsBodyHtml = true;
 
                     SmtpClient smtp = new SmtpClient();
                     smtp.Send(mm);
@@ -351,6 +355,35 @@ namespace OasisAlajuelaWebSite.Controllers
             return View(UUser);
         }
 
+        public ActionResult EmailConfirmation(Users UUser)
+        {
+            return View(UUser);
+        }
+
+        public static class ViewToStringRenderer
+        {
+            public static string RenderViewToString<TModel>(ControllerContext controllerContext, string viewName, TModel model)
+            {
+                ViewEngineResult viewEngineResult = ViewEngines.Engines.FindView(controllerContext, viewName, null);
+                if (viewEngineResult.View == null)
+                {
+                    throw new Exception("Could not find the View file. Searched locations:\r\n" + viewEngineResult.SearchedLocations);
+                }
+                else
+                {
+                    IView view = viewEngineResult.View;
+
+                    using (var stringWriter = new StringWriter())
+                    {
+                        var viewContext = new ViewContext(controllerContext, view, new ViewDataDictionary<TModel>(model), new TempDataDictionary(), stringWriter);
+                        view.Render(viewContext, stringWriter);
+
+                        return stringWriter.ToString();
+                    }
+                }
+            }
+        }
+
         public ActionResult AddGroup(int id)
         {
             MultiSelectDropDownViewModel model = new MultiSelectDropDownViewModel
@@ -361,13 +394,13 @@ namespace OasisAlajuelaWebSite.Controllers
             };
 
             try
-            { 
+            {
                 this.ViewBag.GroupList = this.GetGroupList(id);
                 this.ViewBag.UserID = id;
                 Users user = UBL.Details(id);
                 this.ViewBag.UserFullName = user.FullName;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.Write(ex);
             }
@@ -391,14 +424,14 @@ namespace OasisAlajuelaWebSite.Controllers
                             GroupID = item
                         };
                         var r = GBL.AddUserGroup(UG, User.Identity.GetUserName());
-                    }                    
+                    }
                 }
             }
             catch (Exception ex)
             {
                 Console.Write(ex);
             }
-            
+
             this.ViewBag.GroupList = this.GetGroupList(model.UserID);
             this.ViewBag.UserID = model.UserID;
             Users user = UBL.Details(model.UserID);
@@ -444,10 +477,10 @@ namespace OasisAlajuelaWebSite.Controllers
 
                 //var list = this.GBL.List().Select(p => new SelectListItem { Value = p.GroupID.ToString(), Text = p.GroupName });
                 var list = data.Select(p => new SelectListItem { Value = p.GroupID.ToString(), Text = p.GroupName });
-                
+
                 lstobj = new SelectList(list, "Value", "Text");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
