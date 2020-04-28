@@ -2016,6 +2016,8 @@
     <Content Include="Content\Site.css" />
     <Content Include="Images\AM.png" />
     <Content Include="Images\bg.jpg" />
+    <Content Include="Images\bg2.jpg" />
+    <Content Include="Images\bg3.jpg" />
     <Content Include="Images\bg_4.jpg" />
     <Content Include="Images\detail.jpg" />
     <Content Include="Images\Edit.png" />
@@ -2033,6 +2035,9 @@
     <Content Include="Images\Icon_Zoom.png" />
     <Content Include="Images\igleoa1.jpg" />
     <Content Include="Images\igleoa3.png" />
+    <Content Include="Images\LOGO PNG-FONDO AZUL.png" />
+    <Content Include="Images\LOGO PNG-FONDO BLANCO.png" />
+    <Content Include="Images\LOGO PNG-FONDO NEGRO.png" />
     <Content Include="Images\logo-OasisAlajuela-Black.png" />
     <Content Include="Images\logo-OasisAlajuela-White.png" />
     <Content Include="Images\Pastores.jpg" />
@@ -2734,7 +2739,6 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />
@@ -2824,6 +2828,8 @@
     <Content Include="Views\Groups\AddNewRG.cshtml" />
     <Content Include="Views\Resources\AddGroup.cshtml" />
     <Content Include="Views\Users\EmailConfirmation.cshtml" />
+    <Content Include="Views\Account\ForgotPasswordEmail.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

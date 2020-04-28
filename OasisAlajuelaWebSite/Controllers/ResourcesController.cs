@@ -172,6 +172,7 @@ namespace OasisAlajuelaWebSite.Controllers
             }
             else
             {
+                this.ModelState.AddModelError(String.Empty, "La imagen selecciona es de un formato invalido o no aceptado.");
                 return View(RT);
             }
         }

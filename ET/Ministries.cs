@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Web;
 using System.Web.Mvc;
 
 namespace ET
@@ -16,6 +17,14 @@ namespace ET
         [Display(Name = "Descripción")]
         [UIHint("tinymce_jquery_full"), AllowHtml]
         public string Description { get; set; }
+
+        public byte[] Image { get; set; }
+
+        [DataType(DataType.Upload)]
+        [Display(Name = "Imagen de Fondo")]
+        public HttpPostedFileBase file { get; set; }
+
+        public string ImageExt { get; set; }
 
         [Display(Name = "Enlace de Página (si aplica)")]
         public string ActionLink { get; set; }

@@ -31,6 +31,8 @@ namespace DAL
                             MinistryID = Convert.ToInt32(dr["MinistryID"]),
                             Name = dr["Name"].ToString(),
                             Description = dr["Description"].ToString(),
+                            Image = (byte[])dr["Image"],
+                            ImageExt = dr["ImageExt"].ToString(),
                             ActionLink = dr["ActionLink"].ToString(),
                             ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"])
                         };
@@ -74,6 +76,22 @@ namespace DAL
                     Value = Ministry.Description
                 };
                 SqlCmd.Parameters.Add(Description);
+
+                SqlParameter pImage = new SqlParameter
+                {
+                    ParameterName = "@Image",
+                    SqlDbType = SqlDbType.VarBinary,
+                    Value = Ministry.Image
+                };
+                SqlCmd.Parameters.Add(pImage);
+
+                SqlParameter pImageExt = new SqlParameter
+                {
+                    ParameterName = "@ImageExt",
+                    SqlDbType = SqlDbType.VarChar,
+                    Value = Ministry.ImageExt
+                };
+                SqlCmd.Parameters.Add(pImageExt);
 
                 SqlParameter Link = new SqlParameter
                 {
@@ -135,6 +153,8 @@ namespace DAL
                         ET.MinistryID = Convert.ToInt32(dr["MinistryID"]);
                         ET.Name = dr["Name"].ToString();
                         ET.Description = dr["Description"].ToString();
+                        ET.Image = (byte[])dr["Image"];
+                        ET.ImageExt = dr["ImageExt"].ToString();
                         ET.ActionLink = dr["ActionLink"].ToString();
                     }
                 }                
@@ -183,6 +203,22 @@ namespace DAL
                     Value = Event.Description
                 };
                 SqlCmd.Parameters.Add(Description);
+
+                SqlParameter pImage = new SqlParameter
+                {
+                    ParameterName = "@Image",
+                    SqlDbType = SqlDbType.VarBinary,
+                    Value = Event.Image
+                };
+                SqlCmd.Parameters.Add(pImage);
+
+                SqlParameter pImageExt = new SqlParameter
+                {
+                    ParameterName = "@ImageExt",
+                    SqlDbType = SqlDbType.VarChar,
+                    Value = Event.ImageExt
+                };
+                SqlCmd.Parameters.Add(pImageExt);
 
                 SqlParameter Actionlink = new SqlParameter
                 {

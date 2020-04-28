@@ -5,6 +5,7 @@ using ET;
 using BL;
 using OasisAlajuelaWebSite.Models;
 using Microsoft.AspNet.Identity;
+using System.IO;
 
 namespace OasisAlajuelaWebSite.Controllers
 { 
@@ -84,8 +85,18 @@ namespace OasisAlajuelaWebSite.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddNew(Ministries Min)
         {
-            if(ModelState.IsValid)
+            String FileExt = Path.GetExtension(Min.file.FileName).ToUpper();
+
+            Min.ImageExt = FileExt;
+
+            if (FileExt == ".PNG" || FileExt == ".JPG" || FileExt == ".JPEG")
             {
+                Stream str = Min.file.InputStream;
+                BinaryReader Br = new BinaryReader(str);
+                Byte[] FileDet = Br.ReadBytes((Int32)str.Length);
+
+                Min.Image = FileDet;
+
                 string InsertUser = User.Identity.GetUserName();
 
                 var r = MBL.AddNew(Min, InsertUser);
@@ -103,6 +114,7 @@ namespace OasisAlajuelaWebSite.Controllers
             }
             else
             {
+                this.ModelState.AddModelError(String.Empty, "La imagen selecciona es de un formato invalido o no aceptado.");
                 return View(Min);
             }
         }
@@ -126,13 +138,11 @@ namespace OasisAlajuelaWebSite.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Ministries Event)
+        public ActionResult Edit(Ministries Min)
         {
-            if (ModelState.IsValid)
+            if (Min.file == null)
             {
-                string InsertUser = User.Identity.GetUserName();
-
-                var r = MBL.Update(Event, InsertUser);
+                var r = MBL.Update(Min, User.Identity.GetUserName());
 
                 if (!r)
                 {
@@ -141,13 +151,44 @@ namespace OasisAlajuelaWebSite.Controllers
                 }
                 else
                 {
+                    Ministries Event = MBL.Details(Min.MinistryID);
                     Event.ActionType = "UPDATE";
                     return View(Event);
-                }
+                }                
             }
             else
             {
-                return View(Event);
+                String FileExt = Path.GetExtension(Min.file.FileName).ToUpper();
+
+                Min.ImageExt = FileExt;
+
+                if (FileExt == ".PNG" || FileExt == ".JPG" || FileExt == ".JPEG")
+                {
+                    Stream str = Min.file.InputStream;
+                    BinaryReader Br = new BinaryReader(str);
+                    Byte[] FileDet = Br.ReadBytes((Int32)str.Length);
+
+                    Min.Image = FileDet;
+
+                    var r = MBL.Update(Min, User.Identity.GetUserName());
+
+                    if (!r)
+                    {
+                        ViewBag.Mensaje = "Ha ocurrido un error inesperado.";
+                        return View("~/Views/Shared/Error.cshtml");
+                    }
+                    else
+                    {
+                        Ministries Event = MBL.Details(Min.MinistryID);
+                        Event.ActionType = "UPDATE";
+                        return View(Event);
+                    }
+                }
+                else
+                {
+                    this.ModelState.AddModelError(String.Empty, "La imagen selecciona es de un formato invalido o no aceptado.");
+                    return View(Min);
+                }
             }
         }
 

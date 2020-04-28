@@ -5,6 +5,7 @@ using OasisAlajuelaWebSite.Models;
 using PagedList;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net.Mail;
@@ -293,7 +294,7 @@ namespace OasisAlajuelaWebSite.Controllers
                 {
                     Emails Email = new Emails()
                     {
-                        FromEmail = "johmstone@gmail.com",
+                        FromEmail = ConfigurationManager.AppSettings["AdminEmail"].ToString(),
                         ToEmail = UUser.Email,
                         SubjectEmail = "Oasis Alajuela - Registro satisfactorio",
                         BodyEmail = "Gracias " + UUser.FullName + " por registrarse y por tener el sentir de hacerte parte de esta familia. Dios trae cosas grandes para esta casa y ahora seras parte de ellas. Bendiciones..."

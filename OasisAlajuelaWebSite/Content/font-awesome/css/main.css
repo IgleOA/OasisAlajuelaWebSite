@@ -2362,7 +2362,7 @@ ol {
     }
 
 ul {
-    list-style: disc;
+    /*list-style: disc;*/
     margin: 0 0 2rem 0;
     padding-left: 1rem;
 }
@@ -3074,9 +3074,9 @@ table {
         }
 
     .wrapper.style3 {
-        background-color: #000;
-        color: #bfbfbf;
-        background-image: url(../../../images/bg.jpg);
+        background-color: black;
+        color: black;
+        background-image: url(../../../images/bg2.jpg);
         background-size: cover;
         background-attachment: fixed;
         background-position: center;
@@ -3095,7 +3095,7 @@ table {
         }
 
         .wrapper.style3 h1, .wrapper.style3 h2, .wrapper.style3 h3, .wrapper.style3 h4, .wrapper.style3 h5, .wrapper.style3 h6 {
-            color: #ffffff;
+            /*color: #ffffff;*/
         }
 
         .wrapper.style3 blockquote {
@@ -3274,7 +3274,7 @@ table {
         }
 
         .wrapper.style3 header p {
-            color: #999999;
+            color: black;
         }
 
         .wrapper.style3 table tbody tr {
@@ -3324,7 +3324,8 @@ table {
                 left: 0;
                 width: 50%;
                 height: 1px;
-                background-color: rgba(255, 255, 255, 0.5);
+                /*background-color: rgba(255, 255, 255, 0.5);*/
+                background-color: black;
             }
 
         .wrapper.style3:before {
@@ -3338,7 +3339,7 @@ table {
             transition-delay: 1.25s;
             content: '';
             display: block;
-            background-color: rgba(0, 0, 0, 0.95);
+            /*background-color: rgba(0, 0, 0, 0.95);*/
             height: 100%;
             left: 0;
             opacity: 0.75;
@@ -3351,7 +3352,7 @@ table {
     .wrapper.style4 {
         background-color: #000;
         color: #bfbfbf;
-        background-image: url(../../../images/bg_4.jpg);
+        background-image: url(../../../images/bg3.jpg);
         background-size: cover;
         background-attachment: fixed;
         background-position: center;
@@ -3959,7 +3960,8 @@ body.subpage {
 }
 
 #header {
-    background: rgba(0, 0, 0, 0.975);
+    /*background: rgba(0, 0, 0, 0.975);*/
+    background: #0a3e77;
     color: #a6a6a6;
     cursor: default;
     height: 3.25em;
@@ -4126,7 +4128,8 @@ body.subpage {
     -ms-transition: -ms-transform 0.5s ease, box-shadow 0.5s ease, visibility 0.5s;
     transition: transform 0.5s ease, box-shadow 0.5s ease, visibility 0.5s;
     -webkit-overflow-scrolling: touch;
-    background: rgba(0, 0, 0, 0.95);
+    /*background: rgba(0, 0, 0, 0.95);*/
+    background: #0a3e77;
     box-shadow: none;
     color: #000;
     height: 100%;

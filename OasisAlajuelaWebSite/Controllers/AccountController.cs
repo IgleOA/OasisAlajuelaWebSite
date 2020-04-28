@@ -7,6 +7,7 @@ using System.Web.Security;
 using OasisAlajuelaWebSite.Models;
 using System.Text;
 using System.IO;
+using System.Configuration;
 
 namespace OasisAlajuelaWebSite.Controllers
 { 
@@ -45,7 +46,7 @@ namespace OasisAlajuelaWebSite.Controllers
                 {
                     Emails Email = new Emails()
                     {
-                        FromEmail = "johmstone@gmail.com",
+                        FromEmail = ConfigurationManager.AppSettings["AdminEmail"].ToString(),
                         ToEmail = User.Email,
                         SubjectEmail = "Oasis Alajuela - Registro satisfactorio"                        
                     };
@@ -54,14 +55,6 @@ namespace OasisAlajuelaWebSite.Controllers
                     var strg = ViewToStringRenderer.RenderViewToString(this.ControllerContext, "~/Views/Users/EmailConfirmation.cshtml", User);
 
                     mailBody.AppendFormat(strg);
-
-                    //mailBody.AppendFormat("<div><h1>Oasis Alajuela</h1>");
-                    //mailBody.AppendFormat("<br />");
-                    //mailBody.AppendFormat("<p>Gracias {0} por registrarse y por tener el sentir de hacerte parte de esta familia. Dios trae cosas grandes para esta casa y ahora seras parte de ellas.</p>", User.FullName);
-                    //mailBody.AppendFormat("<br />");
-                    //mailBody.AppendFormat("<p>Desde ya puedes ver el contenido completo de nuestro website http://igleoa.azurewebsites.net/ </p>");
-                    //mailBody.AppendFormat("<br />");
-                    //mailBody.AppendFormat("<h3>Bendiciones....</h3></div>");
 
                     Email.BodyEmail = mailBody.ToString();
 
@@ -200,6 +193,11 @@ namespace OasisAlajuelaWebSite.Controllers
             return View();
         }
 
+        public ActionResult ForgotPasswordEmail(AuthorizationCode model)
+        {
+            return View(model);
+        }
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -209,18 +207,24 @@ namespace OasisAlajuelaWebSite.Controllers
 
             if (Code.UserID >= 1)
             {
-                Emails Email = new Emails();
+                Emails Email = new Emails()
+                {
+                    FromEmail = ConfigurationManager.AppSettings["AdminEmail"].ToString(),
+                    ToEmail = model.Email,
+                    SubjectEmail = "Oasis Alajuela - Restablecer contraseña"
+                };
 
-                Email.FromEmail = "johmstone@gmail.com";
-                Email.ToEmail = model.Email;
-                Email.SubjectEmail = Code.FullName + " - Restablecer contraseña";
-                Email.BodyEmail = "Para restablecer su contraseña, utilice el siguiente link http://igleoa.azurewebsites.net/Account/ResetPassword?GUID=" + Code.GUID;
-                //Email.BodyEmail = "Para restablecer su contraseña, utilice el siguiente link http://localhost:61214/Account/ResetPassword?GUID=" + Code.GUID;
+                StringBuilder mailBody = new StringBuilder();
+                var strg = ViewToStringRenderer.RenderViewToString(this.ControllerContext, "~/Views/Account/ForgotPasswordEmail.cshtml", Code);
+
+                mailBody.AppendFormat(strg);
+
+                Email.BodyEmail = mailBody.ToString();
 
                 MailMessage mm = new MailMessage(Email.FromEmail, Email.ToEmail);
                 mm.Subject = Email.SubjectEmail;
                 mm.Body = Email.BodyEmail;
-                mm.IsBodyHtml = false;
+                mm.IsBodyHtml = true;
 
                 SmtpClient smtp = new SmtpClient();
                 smtp.Send(mm);
@@ -243,17 +247,24 @@ namespace OasisAlajuelaWebSite.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult ResetPassword(string GUID)
+        public ActionResult ResetPassword(string id)
         {
-            int validation = UBL.ValidateGUID(GUID);
+            int validation = UBL.ValidateGUID(id);
 
-            if (validation == 0 || GUID == null)
+            if (validation == 0 || id == null)
             {
-                return View("Este codigo de autorización es invalido o ya fue utilizado y esta obsoleto.");
+                ViewBag.Mensaje = "Este codigo de autorización es invalido o ya fue utilizado y esta obsoleto.";
+                return View("~/Views/Shared/Error.cshtml");
             }
+            else
+            {
+                ResetPasswordModel model = new ResetPasswordModel
+                {
+                    GUID = id
+                };
 
-            return View();
-
+                return View(model);
+            }
         }
 
         //

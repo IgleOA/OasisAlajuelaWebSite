@@ -29,32 +29,40 @@
     </script>
     <section class="hp-section">
         <div class="container">
-            <div class="row justify-content-center border-bottom mb-2">
+            <div class="row justify-content-center">
                 <h2 class="heading-section font-weight-bold my-2 p-0">@ViewBag.Title</h2>
             </div>
             @foreach (var item in Model)
             {
+                var base64 = Convert.ToBase64String(item.Image, 0, item.Image.Length);
+                var imgSrc = string.Format("data:image/{0};base64,{1}", item.ImageExt, base64);
+
                 <div class="row">
-                    <div class="p-0">
-                        <div class="media services d-block text-justify">
-                            <div class="media-body p-2 mt-3">
-                                <div class="d-flex justify-content-between">
-                                    <h3 class="font-weight-bold">
-                                        @item.Name
-                                    </h3>
-                                    <div>
-                                        <a href="#" onclick="Edit(@item.MinistryID)" title="Editar"><i class="fas fa-edit fa-1x"></i></a>
-                                        <a href="#" onclick="Disable(@item.MinistryID)" title="Borrar"><i class="fas fa-trash-alt fa-1x"></i></a>
+                    <table border="1" class="m-0">
+                        <tr>
+                            <td class="p-0 align-middle">
+                                <img src="@imgSrc" width="50" class="ml-2"/>
+                            </td>                        
+                            <td class="p-0">
+                                <div class="media-body p-2 mt-3 mr-2">
+                                    <div class="d-flex justify-content-between">
+                                        <h3 class="font-weight-bold">
+                                            @item.Name
+                                        </h3>
+                                        <div>
+                                            <a href="#" onclick="Edit(@item.MinistryID)" title="Editar"><i class="fas fa-edit fa-1x"></i></a>
+                                            <a href="#" onclick="Disable(@item.MinistryID)" title="Borrar"><i class="fas fa-trash-alt fa-1x"></i></a>
+                                        </div>
                                     </div>
-                                </div>
-                                <p class="m-0">@Html.Raw(item.Description)</p>
-                                @if (item.ActionLink.Length > 0)
-                                {
-                                    @Html.ActionLink("Ver más...", item.ActionLink, "Ministries", null, htmlAttributes: new { @class = "button alt" })
-                                }
-                            </div>
-                        </div>
-                    </div>
+                                    <p class="m-0">@Html.Raw(item.Description)</p>
+                                    @if (item.ActionLink.Length > 0)
+                                    {
+                                        @Html.ActionLink("Ver más...", item.ActionLink, "Ministries", null, htmlAttributes: new { @class = "button alt" })
+                                    }
+                                </div>                                
+                            </td>
+                        </tr>
+                    </table>                    
                 </div>
             }
             <div class="row">
@@ -73,28 +81,40 @@
 }
 else
 {
-    <section class="hp-section">
-        <div class="container">
-            <div class="row justify-content-center border-bottom mb-2">
-                <h2 class="heading-section font-weight-bold my-2 p-0">@ViewBag.Title</h2>
-            </div>
-            @foreach (var item in Model)
-            {
-                <div class="row">
-                    <div class="p-0">
-                        <div class="media services d-block text-justify">
-                            <div class="media-body p-2 mt-3">
-                                <h3 class="font-weight-bold">@item.Name</h3>
+<section class="hp-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <h2 class="heading-section font-weight-bold my-2 p-0">@ViewBag.Title</h2>
+        </div>
+        @foreach (var item in Model)
+        {
+            var base64 = Convert.ToBase64String(item.Image, 0, item.Image.Length);
+            var imgSrc = string.Format("data:image/{0};base64,{1}", item.ImageExt, base64);
+
+            <div class="row">
+                <table border="1" class="m-0">
+                    <tr>
+                        <td class="p-0 align-middle">
+                            <img src="@imgSrc" width="50" class="ml-2" />
+                        </td>
+                        <td class="p-0">
+                            <div class="media-body p-2 mt-3 mr-2">
+                                <div class="d-flex justify-content-between">
+                                    <h3 class="font-weight-bold">
+                                        @item.Name
+                                    </h3>
+                                </div>
                                 <p class="m-0">@Html.Raw(item.Description)</p>
                                 @if (item.ActionLink.Length > 0)
                                 {
                                     @Html.ActionLink("Ver más...", item.ActionLink, "Ministries", null, htmlAttributes: new { @class = "button alt" })
                                 }
                             </div>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-    </section>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+         }
+    </div>
+</section>
 }

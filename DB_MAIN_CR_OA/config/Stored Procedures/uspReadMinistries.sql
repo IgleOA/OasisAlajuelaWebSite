@@ -24,6 +24,8 @@ AS
 				SELECT	[MinistryID]
 						,[Name]
 						,[Description]
+						,[Image]
+						,[ImageExt]
 						,[ActionLink]
 						,[ActiveFlag]						
 				FROM	[config].[utbMinistries]
