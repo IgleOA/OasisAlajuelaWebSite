@@ -80,107 +80,24 @@
                             <td class="align-middle">@Html.DisplayFor(modelItem => item.GroupName)</td>
                             <td class="align-middle">@Html.DisplayFor(modelItem => item.Description)</td>
                             <td class="align-middle text-center">
-                                <a href="#" class="card-link m-0" title="Involucrados">
-                                    <span class="fas fa-users fa-2x mx-2" data-toggle="modal" data-target='#@modalUser' style="vertical-align: middle; color: #444444;"></span>
+                                <a href="#" class="card-link m-0" title="Involucrados" data-toggle="modal" data-target='#@modalUser'>
+                                    <span class="fas fa-users fa-2x mx-2" style="vertical-align: middle; color: #444444;"></span>
                                 </a>
-                                <div class="modal fade" id="@modalUser">
-                                    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-body">
-                                                <div class="card bg-light">
-                                                    <article class="card-body">
-                                                        <h3 class="mt-3 mb-1">
-                                                            <i class="fa fa-tags"></i>
-                                                            Equipo:
-                                                            <span style="color:blue">@item.GroupName</span>
-                                                        </h3>
-                                                        <hr />
-                                                        @if (item.UserList.Count >= 1)
-                                                        {
-                                                    <div class="tagcloud mt-2">
-                                                        @foreach (var r in item.UserList)
-                                                        {
-                                                            if (ViewBag.WriteRight == true)
-                                                            {
-                                                                <a href="#" class="text-decoration-none" style="font-size: 15px;" onclick="RemoveUG(@r.UserGroupID)">@r.FullName <i class="fas fa-times"></i></a>
-                                                            }
-                                                            else
-                                                            {
-                                                                <a href="#" class="text-decoration-none" style="font-size: 15px;">@r.FullName</a>
-                                                            }
-                                                        }
-                                                    </div>
-                                                        }
-                                                        else
-                                                        {
-                                                            <p class="my-2">Aún no hay involucrados en este equipo.</p>
-                                                        }
-                                                        <hr />
-                                                        @if (ViewBag.WriteRight == true)
-                                                        {
-                                                            <div class="mt-2" style="inline-size: max-content;">
-                                                                <a href='#' title="Agregar Involucrado" class="btn btn-light" style="text-decoration: none;" onclick='AddNewUG(@item.GroupID)'><i class="fas fa-plus-square fa-1x"></i> Agregar Involucrado</a>
-                                                            </div>
-                                                        }
-                                                    </article>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </td>
                             <td class="align-middle text-center">
-                                <a href="#" class="card-link m-0" title="Recursos">
-                                    <span class="fas fa-swatchbook fa-2x mx-2" data-toggle="modal" data-target='#@modalRT' style="vertical-align: middle; color: #444444;"></span>
+                                <a href="#" class="card-link m-0" title="Recursos" data-toggle="modal" data-target='#@modalRT'>
+                                    <span class="fas fa-swatchbook fa-2x mx-2" style="vertical-align: middle; color: #444444;"></span>
                                 </a>
-                                <div class="modal fade" id="@modalRT">
-                                    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-body">
-                                                <div class="card bg-light">
-                                                    <article class="card-body">
-                                                        <h3 class="mt-3 mb-1">
-                                                            <i class="fa fa-tags"></i>
-                                                            Equipo:
-                                                            <span style="color:blue">@item.GroupName</span>
-                                                        </h3>
-                                                        <hr />
-                                                        @if (item.RTypesList.Count >= 1)
-                                                        {
-                                                            <div class="tagcloud mt-2">
-                                                                @foreach (var r in item.RTypesList)
-                                                                {
-                                                                    <a href="#" class="text-decoration-none" style="font-size: 15px;" onclick="RemoveRG(@r.ResourceGroupID)">@r.TypeName <i class="fas fa-times"></i></a>
-                                                                }
-                                                            </div>
-                                                        }
-                                                        else
-                                                        {
-                                                            <p class="my-2">Aún no hay recursos asignados a este equipo.</p>
-                                                        }
-                                                        <hr />
-                                                        @if (ViewBag.WriteRight == true)
-                                                        {
-                                                            <div class="mt-2" style="inline-size: max-content;">
-                                                                <a href='#' title="Agregar Involucrado" class="btn btn-light" style="text-decoration: none;" onclick='AddNewRG(@item.GroupID)'><i class="fas fa-plus-square fa-1x"></i> Agregar Recurso</a>
-                                                            </div>
-                                                        }
-                                                    </article>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </td>
-                            @if(ViewBag.WriteRight == true)
+                            @if (ViewBag.WriteRight == true)
                             {
                                 <td class="align-middle text-center">
                                     <a href="#" class="card-link m-0" onclick="Edit(@item.GroupID)" title="Editar">
                                         <i class="far fa-edit fa-2x mx-2" style="vertical-align: middle; color: #444444;"></i>
-                                    </a>                                
+                                    </a>
                                     <a href="#" class="card-link m-0" onclick="Remove(@item.GroupID)" title="Eliminar">
                                         <i class="fas fa-times-circle fa-2x mx-2" style="vertical-align: middle; color: #444444;"></i>
-                                    </a> 
+                                    </a>
                                 </td>
                             }
                         </tr>
@@ -188,6 +105,95 @@
                 </tbody>
             </table>
         </div>
+        @foreach (var item in Model)
+        {
+            var modalUser = "ModalUser" + item.GroupID.ToString();
+            var modalRT = "ModalRT" + item.GroupID.ToString();
+
+            <div class="modal fade" id="@modalUser">
+                <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="card bg-light">
+                                <article class="card-body">
+                                    <h3 class="mt-3 mb-1">
+                                        <i class="fa fa-tags"></i>
+                                        Equipo:
+                                        <span style="color:blue">@item.GroupName</span>
+                                    </h3>
+                                    <hr />
+                                    @if (item.UserList.Count >= 1)
+                                    {
+                                        <div class="tagcloud mt-2">
+                                            @foreach (var r in item.UserList)
+                                            {
+                                                if (ViewBag.WriteRight == true)
+                                                {
+                                                    <a href="#" class="text-decoration-none" style="font-size: 15px;" onclick="RemoveUG(@r.UserGroupID)">@r.FullName <i class="fas fa-times"></i></a>
+                                                }
+                                                else
+                                                {
+                                                    <a href="#" class="text-decoration-none" style="font-size: 15px;">@r.FullName</a>
+                                                }
+                                            }
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <p class="my-2">Aún no hay involucrados en este equipo.</p>
+                                    }
+                                    <hr />
+                                    @if (ViewBag.WriteRight == true)
+                                    {
+                                        <div class="mt-2" style="inline-size: max-content;">
+                                            <a href='#' title="Agregar Involucrado" class="btn btn-light" style="text-decoration: none;" onclick='AddNewUG(@item.GroupID)'><i class="fas fa-plus-square fa-1x"></i> Agregar Involucrado</a>
+                                        </div>
+                                    }
+                                </article>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="@modalRT">
+                <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="card bg-light">
+                                <article class="card-body">
+                                    <h3 class="mt-3 mb-1">
+                                        <i class="fa fa-tags"></i>
+                                        Equipo:
+                                        <span style="color:blue">@item.GroupName</span>
+                                    </h3>
+                                    <hr />
+                                    @if (item.RTypesList.Count >= 1)
+                                    {
+                                        <div class="tagcloud mt-2">
+                                            @foreach (var r in item.RTypesList)
+                                            {
+                                                <a href="#" class="text-decoration-none" style="font-size: 15px;" onclick="RemoveRG(@r.ResourceGroupID)">@r.TypeName <i class="fas fa-times"></i></a>
+                                            }
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <p class="my-2">Aún no hay recursos asignados a este equipo.</p>
+                                    }
+                                    <hr />
+                                    @if (ViewBag.WriteRight == true)
+                                    {
+                                        <div class="mt-2" style="inline-size: max-content;">
+                                            <a href='#' title="Agregar Involucrado" class="btn btn-light" style="text-decoration: none;" onclick='AddNewRG(@item.GroupID)'><i class="fas fa-plus-square fa-1x"></i> Agregar Recurso</a>
+                                        </div>
+                                    }
+                                </article>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
         @if (ViewBag.WriteRight == true)
         {
             <div class="row">
