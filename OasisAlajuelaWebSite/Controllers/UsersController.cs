@@ -25,7 +25,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
         public ActionResult Index(string currentFilter, string searchString, int? page)
         {
-            UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
+            UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
             var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString());
             if (validation.ReadRight == false)
             {
@@ -63,7 +63,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
         public ActionResult ChangeStatus(int id)
         {
-            UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
+            UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
             string InsertUser = User.Identity.GetUserName();
 
             Users user = new Users()
@@ -87,7 +87,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
         public new ActionResult Profile(int id = 0)
         {
-            UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
+            UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
 
             if (id == 0)
             {
@@ -139,7 +139,7 @@ namespace OasisAlajuelaWebSite.Controllers
         [HttpPost]
         public ActionResult UpdateContactInfo(UserProfile UP)
         {
-            UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
+            UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
             string insertuser = User.Identity.GetUserName();
 
             UP.ActionType = "CONTACT";
@@ -161,7 +161,7 @@ namespace OasisAlajuelaWebSite.Controllers
         [HttpPost]
         public ActionResult UpdateSNInfo(UserProfile UP)
         {
-            UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
+            UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
             string insertuser = User.Identity.GetUserName();
 
             UP.ActionType = "SOCIALNET";
@@ -183,7 +183,7 @@ namespace OasisAlajuelaWebSite.Controllers
         [HttpPost]
         public ActionResult UpdatePhoto(UserProfile UP)
         {
-            UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
+            UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
             string insertuser = User.Identity.GetUserName();
 
             UP.PhotoExt = Path.GetExtension(UP.file.FileName).ToUpper();
@@ -219,7 +219,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
         public ActionResult Edit(int id)
         {
-            UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
+            UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
             var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
             if (validation.WriteRight == false)
             {
@@ -258,7 +258,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
         public ActionResult AddNew()
         {
-            UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
+            UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
             var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
             if (validation.WriteRight == false)
             {
@@ -443,7 +443,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
         public ActionResult RemoveUG(int UserID, int GroupID)
         {
-            UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
+            UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
             string InsertUser = User.Identity.GetUserName();
 
             UsersGroups UG = new UsersGroups()

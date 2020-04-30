@@ -2,8 +2,9 @@
 
 @{ Layout = null; }
 
+<script src="~/Scripts/jquery-3.5.0.min.js"></script>
 <div class="container p-0 justify-content-center">
-    <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
+    <div id="carouselExampleCaptions" class="carousel slide carousel-fade" data-ride="carousel">
         <div class="carousel-inner">
             @foreach (var item in Model)
             {
@@ -13,13 +14,13 @@
                 if (item.Slide == 0)
                 {
                     <div class="carousel-item active">
-                        <img src='@imgSrc' class="d-block" title="@item.BannerName" style="width: 100% !important; max-height: 500px !important; border-radius: 20px;">                        
+                        <img src='@imgSrc' class="d-block" title="@item.BannerName" style="width: 100% !important; max-height: 500px !important; border-radius: 20px;">
                     </div>
                 }
                 else
                 {
                     <div class="carousel-item">
-                        <img src='@imgSrc' class="d-block" title="@item.BannerName" style="width: 100% !important; max-height: 500px !important; border-radius: 20px;">                        
+                        <img src='@imgSrc' class="d-block" title="@item.BannerName" style="width: 100% !important; max-height: 500px !important; border-radius: 20px;">
                     </div>
                 }
             }
@@ -33,4 +34,5 @@
             <span class="sr-only">Next</span>
         </a>
     </div>
-</div> 
+</div>
+<script src="~/Scripts/popper.min.js"></script>

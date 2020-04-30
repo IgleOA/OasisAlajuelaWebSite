@@ -39,10 +39,10 @@
                 <ul class="media-list p-0 m-0">
                     @foreach (var item in Model)
                     {
-                        <li class="media py-2 px-0">
+                        <li class="media py-2 px-0 border-top border-bottom">
                             <div class="media-left">
                                 <div class="panel panel-danger text-center date">
-                                    <div class="panel-heading month">
+                                    <div class="panel-heading month p-0">
                                         <span class="panel-title strong">
                                             @item.EventMonth.Substring(0,3)
                                         </span>
@@ -59,12 +59,16 @@
                                 @if (item.MinisterName.Length > 0)
                                 {
                                     <p class="ml-1 mt-1 mb-1 mr-3 text-justify">
-                                        <b><em>@item.MinisterName</em></b> - @item.Description
+                                        <b>@item.MinisterName</b> - @if(@item.Description.Length > 0) { @item.Description } else { @item.Title }
                                     </p>
                                 }
                                 else
                                 {
-                                    <p class="ml-1 mt-1 mb-1 mr-3 text-justify">@item.Description</p>
+                                    <p class="ml-1 mt-1 mb-1 mr-3 text-justify">@if(@item.Description.Length > 0) { @item.Description } else { @item.Title }</p>
+                                }
+                                @if(item.Capacity > 0)
+                                {
+                                    <a href='@Url.Action("Index","Reservations", new { id = item.WorshipID })' target="_blank" title="Reservar" class="btn btn-light" style="text-decoration: none;"><i class="fas fa-sign-in-alt fa-1x"></i> Reservar su espacio</a>
                                 }
                             </div>
                             @if (ViewBag.Write == true)

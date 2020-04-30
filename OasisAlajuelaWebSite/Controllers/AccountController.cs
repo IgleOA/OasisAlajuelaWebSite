@@ -66,7 +66,7 @@ namespace OasisAlajuelaWebSite.Controllers
                     SmtpClient smtp = new SmtpClient();
                     smtp.Send(mm);
 
-                    UBL.InsertActivity(User.UserName, this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(),DateTime.Now);
+                    UBL.InsertActivity(User.UserName, this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(),DateTime.Now.AddHours(-6));
 
                     return this.RedirectToAction("RegisterConfirmation", "Account", new { FullName = User.FullName });
                 }
@@ -153,7 +153,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
             if (LoginUser.UserID >= 1)
             {
-                UBL.InsertActivity(LoginUser.UserName, this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
+                UBL.InsertActivity(LoginUser.UserName, this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
 
                 FormsAuthentication.SetAuthCookie(LoginUser.UserName, model.RememberMe);
                 if (this.Url.IsLocalUrl(ReturnUrl) && ReturnUrl.Length > 1 && ReturnUrl.StartsWith("/")

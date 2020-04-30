@@ -1,3 +1,3 @@
-﻿CREATE SCHEMA [pub]
+﻿CREATE SCHEMA [book]
     AUTHORIZATION [dbo];
 

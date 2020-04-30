@@ -1,15 +1,15 @@
-﻿CREATE TABLE [config].[utbUsersGroups](
-    [UserGroupID]	 INT           IDENTITY (1,1) NOT NULL,
-    [UserID]		 INT		   NOT NULL,
-    [GroupID]		 INT		   NOT NULL,
+﻿CREATE TABLE [config].[utbUsersGroups] (
+    [UserGroupID]    INT           IDENTITY (1, 1) NOT NULL,
+    [UserID]         INT           NOT NULL,
+    [GroupID]        INT           NOT NULL,
     [ActiveFlag]     BIT           CONSTRAINT [utbUsersGroupsDefaultActiveFlagIsTrue] DEFAULT ((1)) NOT NULL,
     [InsertDate]     DATETIME      CONSTRAINT [utbUsersGroupsDefaultInsertDatesysdatetime] DEFAULT (sysdatetime()) NOT NULL,
     [InsertUser]     VARCHAR (100) CONSTRAINT [utbUsersGroupsDefaultInsertUsersuser_sname] DEFAULT (suser_sname()) NOT NULL,
     [LastModifyDate] DATETIME      CONSTRAINT [utbUsersGroupsDefaultLastModifyDatesysdatetime] DEFAULT (sysdatetime()) NOT NULL,
     [LastModifyUser] VARCHAR (100) CONSTRAINT [utbUsersGroupsDefaultLastModifyUsersuser_sname] DEFAULT (suser_sname()) NOT NULL,
     CONSTRAINT [utbUserGroupID] PRIMARY KEY CLUSTERED ([UserGroupID] ASC),
-	CONSTRAINT [FK.adm.utbUsers.config.utbUsersGroups.UserID] FOREIGN KEY ([UserID]) REFERENCES [adm].[utbUsers] ([UserID]),
-	CONSTRAINT [FK.config.utbGroups.config.utbUsersGroups.GroupID] FOREIGN KEY ([GroupID]) REFERENCES [config].[utbGroups] ([GroupID])
+    CONSTRAINT [FK.adm.utbUsers.config.utbUsersGroups.UserID] FOREIGN KEY ([UserID]) REFERENCES [adm].[utbUsers] ([UserID]),
+    CONSTRAINT [FK.config.utbGroups.config.utbUsersGroups.GroupID] FOREIGN KEY ([GroupID]) REFERENCES [config].[utbGroups] ([GroupID])
 );
 
 

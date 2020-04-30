@@ -74,5 +74,3 @@ AS
 
     SET NOCOUNT OFF
     SET XACT_ABORT OFF
-
-

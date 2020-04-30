@@ -383,6 +383,16 @@ img > .d-block {
     width: 150px;
     
 }
+.zoom2x {
+    transition: transform .5s;
+}
+
+
+.zoom2x:hover {
+    -ms-transform: scale(3); /* IE 9 */
+    -webkit-transform: scale(3); /* Safari 3-8 */
+    transform: scale(3);
+}
 
 .zoom:hover {
         -ms-transform: scale(3); /* IE 9 */
@@ -608,4 +618,8 @@ span.yr, span.mos {
 
 .text-black {
     color: black !important;
+}
+
+.text-colorbase{
+    color: #0a3e77 !important;
 }

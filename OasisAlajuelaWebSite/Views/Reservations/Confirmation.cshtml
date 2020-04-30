@@ -1,0 +1,87 @@
+﻿@model IEnumerable<ET.Reservations>
+@{
+    ViewBag.Title = "Confirmación de Reserva";
+    Layout = ViewBag.Layout;
+}
+<script type="text/javascript">
+    function Remove(ID) {
+            var x = confirm("Esta seguro que quiere eliminar este campo de la reservación???");
+            if (x) {
+                $.ajax({
+                    url: '@Url.Action("Remove")',
+                    data: { id: ID }
+                }).done(function () { alert('Hecho!!!'); location.reload(); });
+            }
+        }
+</script>
+<div class="card bg-light">
+    <article class="card-body mx-auto" style="max-width: 500px;">
+        <h4 class="card-title mt-3 text-center font-weight-bold">@ViewBag.Title</h4>
+        
+        <div class="row justify-content-start border-top">
+            <table class="mt-3">
+                <thead>
+                    <tr>
+                        <td colspan="5" class="p-0 justify-content-start">
+                            <h1><span class="font-weight-bold">Código:</span> @Model.FirstOrDefault().GUID</h1>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" class="p-0 justify-content-start">
+                            <h1><span class="font-weight-bold">Realizada por:</span> @Model.FirstOrDefault().BookedByName</h1>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" class="p-0 justify-content-start">
+                            <h1><span class="font-weight-bold">A nombre de:</span> @Model.FirstOrDefault().BookedFor</h1>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" class="p-0 justify-content-start">
+                            <h1 class="font-weight-bold">Asientos reservados:</h1>
+                        </td>
+                    </tr>
+                    <tr class="font-weight-bolder ">
+                        <td class="p-0 text-center">Código</td>
+                        <td class="p-0 text-center">Bloque</td>
+                        <td class="p-0 text-center">Fila</td>
+                        <td class="p-0 text-center">Asiento</td>
+                        <td class="p-0 text-center"></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="p-0 text-center">@item.SeatID</td>
+                            <td class="p-0 text-center">@item.SeatID.Substring(0, 2)</td>
+                            <td class="p-0 text-center">@item.SeatID.Substring(2, 1)</td>
+                            @if (item.SeatID.Length >= 6)
+                            {
+                                <td class="p-0 text-center">@item.SeatID.Substring(4, 2)</td>
+                            }
+                            else
+                            {
+                                <td class="p-0 text-center">@item.SeatID.Substring(4, 1)</td>
+                            }
+                            <td class="p-0 text-center">
+                                <a href="#" title="Eliminar" onclick='Remove(@item.ReservationID)'><i class="fas fa-times-circle fa-1x text-colorbase"></i></a>
+                            </td>
+                        </tr>
+                    }
+                    <tr>
+                        <td colspan="5" class="p-0 justify-content-start">
+                            <p class="m-2" style="font-size: 10px;"><span class="font-weight-bolder">Nota:</span> 
+                            *Si en dicha confirmación no aparece alguno de los campos seleccionados, es porque dicho campo fue ocupado instantes antes de su solicitud. 
+                            **Este confirmación tambien fue enviada al correo de la persona que realizo la reservación.</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>          
+            
+        </div>
+        <div class="row justify-content-center">
+            <a href='@Url.Action("Index","Home")' class="btn btn-primary text-decoration-none p-2" title="Seguir navegando." style="background: #0a3e77;">Seguir Navegando</a>
+        </div>
+</article>
+</div>

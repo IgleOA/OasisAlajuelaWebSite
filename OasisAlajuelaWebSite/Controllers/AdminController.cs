@@ -26,7 +26,9 @@ namespace OasisAlajuelaWebSite.Controllers
             }
             else
             {
-                UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
+                UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+                ViewBag.DateTime = DateTime.Now.AddHours(-6);
+                ViewBag.DateTimeServer = DateTime.Now;
                 return View();
             }
         }
@@ -41,7 +43,7 @@ namespace OasisAlajuelaWebSite.Controllers
             }
             else
             {
-                UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
+                UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
                 HomePage HP = HBL.Home();
                 return View(HP);
             }
@@ -77,7 +79,7 @@ namespace OasisAlajuelaWebSite.Controllers
             }
             else
             {
-                UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
+                UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
                 AboutPage HP = ABL.About();
 
                 return View(HP);

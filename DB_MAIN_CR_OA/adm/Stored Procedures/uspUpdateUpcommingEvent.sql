@@ -17,7 +17,8 @@ CREATE PROCEDURE [adm].[uspUpdateUpcommingEvent]
 	@MinisterID		INT,
 	@Description	VARCHAR(MAX) = NULL,
 	@ScheduleDate	DATETIME,
-	@UpdateType		VARCHAR(10) = NULL
+	@UpdateType		VARCHAR(10) = NULL,
+	@Capacity		INT = NULL
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -36,24 +37,78 @@ AS
                 END
 
             -- =======================================================
+				DECLARE @WorshipID INT
+
+				SELECT	@WorshipID = [WorshipID]
+				FROM	[book].[utbWorships]
+				WHERE	[ActiveFlag] = 1
+						AND [ScheduledDate] =  (SELECT [ScheduledDate] 
+												FROM [config].[utbUpcomingEvents]
+												WHERE	[EventID] = @EventID)
+
 				IF(@UpdateType = 'DISABLE')
-					BEGIN
+					BEGIN						
 						UPDATE	[config].[utbUpcomingEvents]
 						SET		[ActiveFlag] =	0
 								,[LastModifyDate] = GETDATE()
 								,[LastModifyUser] = @InsertUser
 						WHERE	[EventID] = @EventID
+
+						UPDATE	[book].[utbWorships]
+						SET		[ActiveFlag] =	0
+								,[LastModifyDate] = GETDATE()
+								,[LastModifyUser] = @InsertUser
+						WHERE	[WorshipID] = @WorshipID
+						
 					END
 				ELSE
 					BEGIN
-						UPDATE	[config].[utbUpcomingEvents]
-						SET		[Title]	=	@Title
-								,[MinisterID] = @MinisterID
-								,[Description] = @Description
-								,[ScheduledDate] = @ScheduleDate
-								,[LastModifyDate] = GETDATE()
-								,[LastModifyUser] = @InsertUser
-						WHERE	[EventID] = @EventID
+						IF(@WorshipID >= 1)
+							BEGIN
+								UPDATE	[config].[utbUpcomingEvents]
+								SET		[Title]	=	@Title
+										,[MinisterID] = @MinisterID
+										,[Description] = @Description
+										,[ScheduledDate] = @ScheduleDate
+										,[LastModifyDate] = GETDATE()
+										,[LastModifyUser] = @InsertUser
+								WHERE	[EventID] = @EventID
+
+								IF(@Capacity > 0)
+									BEGIN
+										UPDATE	[book].[utbWorships]
+										SET		[ScheduledDate] = @ScheduleDate
+												,[Capacity] = @Capacity
+												,[LastModifyDate] = GETDATE()
+												,[LastModifyUser] = @InsertUser
+										WHERE	[WorshipID] = @WorshipID
+									END
+								ELSE
+									BEGIN
+										UPDATE	[book].[utbWorships]
+										SET		[ActiveFlag] =	0
+												,[LastModifyDate] = GETDATE()
+												,[LastModifyUser] = @InsertUser
+										WHERE	[WorshipID] = @WorshipID
+									END
+							END
+						ELSE
+							BEGIN
+								UPDATE	[config].[utbUpcomingEvents]
+								SET		[Title]	=	@Title
+										,[MinisterID] = @MinisterID
+										,[Description] = @Description
+										,[ScheduledDate] = @ScheduleDate
+										,[LastModifyDate] = GETDATE()
+										,[LastModifyUser] = @InsertUser
+								WHERE	[EventID] = @EventID
+
+								IF(@Capacity > 0)
+									BEGIN
+										INSERT INTO [book].[utbWorships] ([ScheduledDate],[Capacity],[InsertUser],[LastModifyUser])
+										VALUES (@ScheduleDate, @Capacity, @InsertUser, @InsertUser)
+									END
+							END
 					END
 			-- =======================================================
 

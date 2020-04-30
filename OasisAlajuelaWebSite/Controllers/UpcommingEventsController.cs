@@ -22,7 +22,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
             if (Request.IsAuthenticated)
             {
-                USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
+                USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
                 var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
                 if (validation.ReadRight == false)
                 {
@@ -40,12 +40,12 @@ namespace OasisAlajuelaWebSite.Controllers
                     {
                         ViewBag.Layout = "~/Views/Shared/_AdminLayout.cshtml";
                         ViewBag.Write = validation.WriteRight;
-                        list = UBL.List(DateTime.Now, true, true);
+                        list = UBL.List(DateTime.Now.AddHours(-6), true, true);
                     }
                     else
                     {
                         ViewBag.Layout = "~/Views/Shared/_MainLayout.cshtml";
-                        list = UBL.List(DateTime.Now, false, true);
+                        list = UBL.List(DateTime.Now.AddHours(-6), false, true);
                     }
                     ViewBag.Write = validation.WriteRight;
 
@@ -54,7 +54,7 @@ namespace OasisAlajuelaWebSite.Controllers
             }
             else
             {
-                list = UBL.List(DateTime.Now, false, true);
+                list = UBL.List(DateTime.Now.AddHours(-6), false, true);
                 ViewBag.Layout = "~/Views/Shared/_MainLayout.cshtml";
                 return View(list.ToList());
             }
@@ -63,7 +63,7 @@ namespace OasisAlajuelaWebSite.Controllers
         [Authorize]
         public ActionResult AddNew()
         {
-            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
+            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
             var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
             if (validation.ReadRight == false)
             {
@@ -75,7 +75,8 @@ namespace OasisAlajuelaWebSite.Controllers
                 UpcommingEvents Event = new UpcommingEvents()
                 {
                     MinisterList = MBL.List(true),
-                    ScheduledDate = DateTime.Today
+                    ScheduledDate = DateTime.Today,
+                    ReservationFlag = true
                 };
 
                 return View(Event);
@@ -116,7 +117,7 @@ namespace OasisAlajuelaWebSite.Controllers
         [Authorize]
         public ActionResult Edit(int id)
         {
-            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
+            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
             var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
             if (validation.ReadRight == false)
             {
@@ -128,6 +129,11 @@ namespace OasisAlajuelaWebSite.Controllers
                 UpcommingEvents Event = UBL.Details(id);
 
                 Event.MinisterList = MBL.List(true);
+                if(Event.Capacity > 0)
+                {
+                    Event.ReservationFlag = true;
+                }
+
                 return View(Event);
             }
         }
@@ -165,7 +171,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
         public ActionResult Disable(int id)
         {
-            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
+            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
             UpcommingEvents Event = UBL.Details(id);
             Event.ActionType = "DISABLE";
             string InsertUser = User.Identity.GetUserName();

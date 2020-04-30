@@ -26,7 +26,7 @@ namespace OasisAlajuelaWebSite.Controllers
             HomePage Home = HBL.Home();
             if (Request.IsAuthenticated)
             {
-                UsBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
+                UsBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
             }
             return View(Home);
         }
@@ -40,7 +40,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
         public ActionResult _UpcommingEvents()
         {
-            var lastEvent = UBL.List(DateTime.Now,false,true).Take(1).FirstOrDefault();
+            var lastEvent = UBL.List(DateTime.Now.AddHours(-6),false,true).Take(1).FirstOrDefault();
 
             return View(lastEvent);
         }
@@ -82,7 +82,7 @@ namespace OasisAlajuelaWebSite.Controllers
         {
             if (Request.IsAuthenticated)
             {
-                UsBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
+                UsBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
             }
             AboutPage Aboutpage = ABL.About();
 

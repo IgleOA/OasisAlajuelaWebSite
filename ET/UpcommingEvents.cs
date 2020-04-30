@@ -39,7 +39,7 @@ namespace ET
 
         [Display(Name ="Status")]
         public bool ActiveFlag { get; set; }
-        
+
         public List<Ministers> MinisterList { get; set; }
 
         public Ministers MinisterData { get; set; }
@@ -51,6 +51,19 @@ namespace ET
         public string EventDay { get; set; }
 
         public string EventTime { get; set; }
+
+        public int WorshipID { get; set; }
+
+        [Display(Name = "Requiere Reservación?")]
+        public bool ReservationFlag { get; set; }
+
+        [Display(Name = "Capacidad")]
+        public int? Capacity { get; set; }
+
+        public enum CapacityList
+        {
+            Total = 100, Media = 50, Cuarto = 25
+        }
 
         public UpcommingEvents ()
         {
@@ -64,7 +77,7 @@ namespace ET
                 bool isValid = true;
                 DateTime ScheduledDate = (DateTime)value;
 
-                if (ScheduledDate < DateTime.Now)
+                if (ScheduledDate < DateTime.Now.AddHours(-6))
                 {
                     isValid = false;
                 }

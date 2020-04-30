@@ -1,0 +1,252 @@
+{
+  "Auditorium": [
+    {
+      "block": "1A",
+      "details": [
+        {
+          "rowid": 1,
+          "Capacity": 7
+        },
+        {
+          "rowid": 2,
+          "Capacity": 8
+        },
+        {
+          "rowid": 3,
+          "Capacity": 9
+        },
+        {
+          "rowid": 4,
+          "Capacity": 10
+        },
+        {
+          "rowid": 5,
+          "Capacity": 11
+        },
+        {
+          "rowid": 6,
+          "Capacity": 12
+        }
+      ]
+    },
+    {
+      "block": "2A",
+      "details": [
+        {
+          "rowid": 1,
+          "Capacity": 11
+        },
+        {
+          "rowid": 2,
+          "Capacity": 11
+        },
+        {
+          "rowid": 3,
+          "Capacity": 11
+        },
+        {
+          "rowid": 4,
+          "Capacity": 11
+        },
+        {
+          "rowid": 5,
+          "Capacity": 11
+        },
+        {
+          "rowid": 6,
+          "Capacity": 11
+        }
+      ]
+    },
+    {
+      "block": "3A",
+      "details": [
+        {
+          "rowid": 1,
+          "Capacity": 11
+        },
+        {
+          "rowid": 2,
+          "Capacity": 11
+        },
+        {
+          "rowid": 3,
+          "Capacity": 11
+        },
+        {
+          "rowid": 4,
+          "Capacity": 11
+        },
+        {
+          "rowid": 5,
+          "Capacity": 11
+        },
+        {
+          "rowid": 6,
+          "Capacity": 11
+        }
+      ]
+    },
+    {
+      "block": "4A",
+      "details": [
+        {
+          "rowid": 1,
+          "Capacity": 7
+        },
+        {
+          "rowid": 2,
+          "Capacity": 8
+        },
+        {
+          "rowid": 3,
+          "Capacity": 9
+        },
+        {
+          "rowid": 4,
+          "Capacity": 10
+        },
+        {
+          "rowid": 5,
+          "Capacity": 11
+        },
+        {
+          "rowid": 6,
+          "Capacity": 12
+        }
+      ]
+    },
+    {
+      "block": "1B",
+      "details": [
+        {
+          "rowid": 1,
+          "Capacity": 6
+        },
+        {
+          "rowid": 2,
+          "Capacity": 7
+        },
+        {
+          "rowid": 3,
+          "Capacity": 8
+        },
+        {
+          "rowid": 4,
+          "Capacity": 9
+        },
+        {
+          "rowid": 5,
+          "Capacity": 10
+        },
+        {
+          "rowid": 6,
+          "Capacity": 11
+        },
+        {
+          "rowid": 7,
+          "Capacity": 12
+        }
+      ]
+    },
+    {
+      "block": "2B",
+      "details": [
+        {
+          "rowid": 1,
+          "Capacity": 10
+        },
+        {
+          "rowid": 2,
+          "Capacity": 10
+        },
+        {
+          "rowid": 3,
+          "Capacity": 10
+        },
+        {
+          "rowid": 4,
+          "Capacity": 10
+        },
+        {
+          "rowid": 5,
+          "Capacity": 10
+        },
+        {
+          "rowid": 6,
+          "Capacity": 10
+        },
+        {
+          "rowid": 7,
+          "Capacity": 10
+        }
+      ]
+    },
+    {
+      "block": "3B",
+      "details": [
+        {
+          "rowid": 1,
+          "Capacity": 10
+        },
+        {
+          "rowid": 2,
+          "Capacity": 10
+        },
+        {
+          "rowid": 3,
+          "Capacity": 10
+        },
+        {
+          "rowid": 4,
+          "Capacity": 10
+        },
+        {
+          "rowid": 5,
+          "Capacity": 10
+        },
+        {
+          "rowid": 6,
+          "Capacity": 10
+        },
+        {
+          "rowid": 7,
+          "Capacity": 10
+        }
+      ]
+    },
+    {
+      "block": "4B",
+      "details": [
+        {
+          "rowid": 1,
+          "Capacity": 12
+        },
+        {
+          "rowid": 2,
+          "Capacity": 13
+        },
+        {
+          "rowid": 3,
+          "Capacity": 14
+        },
+        {
+          "rowid": 4,
+          "Capacity": 15
+        },
+        {
+          "rowid": 5,
+          "Capacity": 16
+        },
+        {
+          "rowid": 6,
+          "Capacity": 17
+        },
+        {
+          "rowid": 7,
+          "Capacity": 18
+        }
+      ]
+    }
+  ]
+}

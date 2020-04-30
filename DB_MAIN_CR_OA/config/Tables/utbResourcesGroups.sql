@@ -1,15 +1,15 @@
-﻿CREATE TABLE [config].[utbResourcesGroups](
-    [ResourceGroupID]	INT           IDENTITY (1,1) NOT NULL,
-    [ResourceTypeID]	INT		      NOT NULL,
-    [GroupID]			INT			  NOT NULL,
-    [ActiveFlag]		BIT           CONSTRAINT [utbResourcesGroupsDefaultActiveFlagIsTrue] DEFAULT ((1)) NOT NULL,
-    [InsertDate]		DATETIME      CONSTRAINT [utbResourcesGroupsDefaultInsertDatesysdatetime] DEFAULT (sysdatetime()) NOT NULL,
-    [InsertUser]		VARCHAR (100) CONSTRAINT [utbResourcesGroupsDefaultInsertUsersuser_sname] DEFAULT (suser_sname()) NOT NULL,
-    [LastModifyDate]	DATETIME      CONSTRAINT [utbResourcesGroupsDefaultLastModifyDatesysdatetime] DEFAULT (sysdatetime()) NOT NULL,
-    [LastModifyUser]	VARCHAR (100) CONSTRAINT [utbResourcesGroupsDefaultLastModifyUsersuser_sname] DEFAULT (suser_sname()) NOT NULL,
+﻿CREATE TABLE [config].[utbResourcesGroups] (
+    [ResourceGroupID] INT           IDENTITY (1, 1) NOT NULL,
+    [ResourceTypeID]  INT           NOT NULL,
+    [GroupID]         INT           NOT NULL,
+    [ActiveFlag]      BIT           CONSTRAINT [utbResourcesGroupsDefaultActiveFlagIsTrue] DEFAULT ((1)) NOT NULL,
+    [InsertDate]      DATETIME      CONSTRAINT [utbResourcesGroupsDefaultInsertDatesysdatetime] DEFAULT (sysdatetime()) NOT NULL,
+    [InsertUser]      VARCHAR (100) CONSTRAINT [utbResourcesGroupsDefaultInsertUsersuser_sname] DEFAULT (suser_sname()) NOT NULL,
+    [LastModifyDate]  DATETIME      CONSTRAINT [utbResourcesGroupsDefaultLastModifyDatesysdatetime] DEFAULT (sysdatetime()) NOT NULL,
+    [LastModifyUser]  VARCHAR (100) CONSTRAINT [utbResourcesGroupsDefaultLastModifyUsersuser_sname] DEFAULT (suser_sname()) NOT NULL,
     CONSTRAINT [utbResourceGroupID] PRIMARY KEY CLUSTERED ([ResourceGroupID] ASC),
-	CONSTRAINT [FK.config.utbResourceTypes.config.utbResourcesGroups.ResourceTypeID] FOREIGN KEY ([ResourceTypeID]) REFERENCES [config].[utbResourceTypes] ([ResourceTypeID]),
-	CONSTRAINT [FK.config.utbGroups.config.utbResourcesGroups.GroupID] FOREIGN KEY ([GroupID]) REFERENCES [config].[utbGroups] ([GroupID])
+    CONSTRAINT [FK.config.utbGroups.config.utbResourcesGroups.GroupID] FOREIGN KEY ([GroupID]) REFERENCES [config].[utbGroups] ([GroupID]),
+    CONSTRAINT [FK.config.utbResourceTypes.config.utbResourcesGroups.ResourceTypeID] FOREIGN KEY ([ResourceTypeID]) REFERENCES [config].[utbResourceTypes] ([ResourceTypeID])
 );
 
 

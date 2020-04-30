@@ -35,12 +35,15 @@ AS
 								,IE.[ScheduledDate]
 								,[ScheduledTime]	= CONVERT(TIME,	IE.[ScheduledDate])
 								,IE.[ActiveFlag]
-								,[Month]			= DATENAME(MONTH,[ScheduledDate])
-								,[Day]				= CASE WHEN DATEPART(DAY,[ScheduledDate]) <10 THEN '0' + CONVERT(VARCHAR(1),DATEPART(DAY,[ScheduledDate]))
-														   ELSE CONVERT(VARCHAR(2),DATEPART(DAY,[ScheduledDate])) END
+								,[Month]			= DATENAME(MONTH,IE.[ScheduledDate])
+								,[Day]				= CASE WHEN DATEPART(DAY,IE.[ScheduledDate]) <10 THEN '0' + CONVERT(VARCHAR(1),DATEPART(DAY,IE.[ScheduledDate]))
+														   ELSE CONVERT(VARCHAR(2),DATEPART(DAY,IE.[ScheduledDate])) END
 								,[Time]				= CONVERT(VARCHAR(10),FORMAT(IE.[ScheduledDate], 'hh:mm tt','en-US'))
+								,[WorshipID]		= ISNULL(W.[WorshipID],0)
+								,[Capacity]			= ISNULL(W.[Capacity],0)
 						FROM	[config].[utbUpcomingEvents] IE
 								LEFT JOIN [config].[utbMinisters] M ON M.[MinisterID] = IE.[MinisterID]
+								LEFT JOIN [book].[utbWorships] W ON W.[ScheduledDate] = IE.[ScheduledDate] AND W.[ActiveFlag] = 1
 						WHERE	IE.[ActiveFlag] = ISNULL(@pActiveFlag,IE.[ActiveFlag])
 								AND IE.[EventID] = ISNULL(@pEventID,[EventID])
 								AND IE.[ScheduledDate] >= @pDate
@@ -69,6 +72,8 @@ AS
 								,[Month]			= DATENAME(MONTH,CONVERT(DATETIME,Y.[Date]) + CONVERT(DATETIME,W.[Schedule]))
 								,[Day]				= CONVERT(VARCHAR(2),DATEPART(DAY,CONVERT(DATETIME,Y.[Date]) + CONVERT(DATETIME,W.[Schedule])))
 								,[Time]				= CONVERT(VARCHAR(10),FORMAT((CONVERT(DATETIME,Y.[Date]) + CONVERT(DATETIME,W.[Schedule])), 'hh:mm tt','en-US'))
+								,[WorshipID]		= 0	
+								,[Capacity]			= 0
 								,[Order]			= 2
 						INTO	#MainData
 						FROM	(SELECT [Date] = DATEADD(DAY, rn - 1, @StartDate)
@@ -90,13 +95,16 @@ AS
 								,IE.[ScheduledDate]
 								,[ScheduledTime]	= CONVERT(TIME,	IE.[ScheduledDate])
 								,IE.[ActiveFlag]
-								,[Month]			= DATENAME(MONTH,[ScheduledDate])
-								,[Day]				= CASE WHEN DATEPART(DAY,[ScheduledDate]) <10 THEN '0' + CONVERT(VARCHAR(1),DATEPART(DAY,[ScheduledDate]))
-														   ELSE CONVERT(VARCHAR(2),DATEPART(DAY,[ScheduledDate])) END
+								,[Month]			= DATENAME(MONTH,IE.[ScheduledDate])
+								,[Day]				= CASE WHEN DATEPART(DAY,IE.[ScheduledDate]) <10 THEN '0' + CONVERT(VARCHAR(1),DATEPART(DAY,IE.[ScheduledDate]))
+														   ELSE CONVERT(VARCHAR(2),DATEPART(DAY,IE.[ScheduledDate])) END
 								,[Time]				= CONVERT(VARCHAR(10),FORMAT(IE.[ScheduledDate], 'hh:mm tt','en-US'))
+								,[WorshipID]		= ISNULL(W.[WorshipID],0)
+								,[Capacity]			= ISNULL(W.[Capacity],0)
 								,[Order]			= 1
 						FROM	[config].[utbUpcomingEvents] IE
 								LEFT JOIN [config].[utbMinisters] M ON M.[MinisterID] = IE.[MinisterID]
+								LEFT JOIN [book].[utbWorships] W ON W.[ScheduledDate] = IE.[ScheduledDate] AND W.[ActiveFlag] = 1
 						WHERE	IE.[ActiveFlag] = 1
 								AND IE.[ScheduledDate] >= @pDate
 
@@ -119,4 +127,4 @@ AS
         END CATCH
     END
     SET NOCOUNT OFF
-	SELECT FORMAT(GETDATE(), 'hh:mm tt','en-US')
+	

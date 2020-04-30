@@ -16,7 +16,7 @@ namespace OasisAlajuelaWebSite.Controllers
         private UsersBL UBL = new UsersBL();
         public ActionResult AddNew()
         {
-            UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now);
+            UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
             Ministers Detail = new Ministers();
             return View(Detail);
         }

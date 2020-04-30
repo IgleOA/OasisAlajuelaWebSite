@@ -1,5 +1,5 @@
-﻿CREATE TABLE [config].[utbGroups](
-    [GroupID]		 INT           IDENTITY (1,1) NOT NULL,
+﻿CREATE TABLE [config].[utbGroups] (
+    [GroupID]        INT           IDENTITY (1, 1) NOT NULL,
     [GroupName]      VARCHAR (100) NOT NULL,
     [Description]    VARCHAR (MAX) NOT NULL,
     [ActiveFlag]     BIT           CONSTRAINT [utbGroupsDefaultActiveFlagIsTrue] DEFAULT ((1)) NOT NULL,

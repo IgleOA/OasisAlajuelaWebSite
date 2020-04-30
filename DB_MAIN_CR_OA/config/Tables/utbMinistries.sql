@@ -1,15 +1,15 @@
 ﻿CREATE TABLE [config].[utbMinistries] (
-    [MinistryID]     INT				IDENTITY (1, 1) NOT NULL,
-    [Name]           VARCHAR (50)		NOT NULL,
-    [Description]    VARCHAR (MAX)		NOT NULL,
-	[Image]		 VARBINARY (MAX)	NULL,
-    [ImageExt]	 VARCHAR (10)		NULL,
-    [ActionLink]     VARCHAR (50)  NULL,
-    [ActiveFlag]     BIT           CONSTRAINT [utbMinistriesDefaultActiveFlagIsTrue] DEFAULT ((1)) NOT NULL,
-    [InsertDate]     DATETIME      CONSTRAINT [utbMinistriesDefaultInsertDatesysdatetime] DEFAULT (sysdatetime()) NOT NULL,
-    [InsertUser]     VARCHAR (100) CONSTRAINT [utbMinistriesDefaultInsertUsersuser_sname] DEFAULT (suser_sname()) NOT NULL,
-    [LastModifyDate] DATETIME      CONSTRAINT [utbMinistriesDefaultLastModifyDatesysdatetime] DEFAULT (sysdatetime()) NOT NULL,
-    [LastModifyUser] VARCHAR (100) CONSTRAINT [utbMinistriesDefaultLastModifyUsersuser_sname] DEFAULT (suser_sname()) NOT NULL,
+    [MinistryID]     INT             IDENTITY (1, 1) NOT NULL,
+    [Name]           VARCHAR (50)    NOT NULL,
+    [Description]    VARCHAR (MAX)   NOT NULL,
+    [Image]          VARBINARY (MAX) NULL,
+    [ImageExt]       VARCHAR (10)    NULL,
+    [ActionLink]     VARCHAR (50)    NULL,
+    [ActiveFlag]     BIT             CONSTRAINT [utbMinistriesDefaultActiveFlagIsTrue] DEFAULT ((1)) NOT NULL,
+    [InsertDate]     DATETIME        CONSTRAINT [utbMinistriesDefaultInsertDatesysdatetime] DEFAULT (sysdatetime()) NOT NULL,
+    [InsertUser]     VARCHAR (100)   CONSTRAINT [utbMinistriesDefaultInsertUsersuser_sname] DEFAULT (suser_sname()) NOT NULL,
+    [LastModifyDate] DATETIME        CONSTRAINT [utbMinistriesDefaultLastModifyDatesysdatetime] DEFAULT (sysdatetime()) NOT NULL,
+    [LastModifyUser] VARCHAR (100)   CONSTRAINT [utbMinistriesDefaultLastModifyUsersuser_sname] DEFAULT (suser_sname()) NOT NULL,
     CONSTRAINT [utbMinistryID] PRIMARY KEY CLUSTERED ([MinistryID] ASC)
 );
 

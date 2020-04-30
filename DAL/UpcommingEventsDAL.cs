@@ -63,8 +63,11 @@ namespace DAL
                             ActiveFlag = Convert.ToBoolean(dr["ACtiveFlag"]),
                             EventMonth = dr["Month"].ToString(),
                             EventDay = dr["Day"].ToString(),
-                            EventTime = dr["Time"].ToString()
+                            EventTime = dr["Time"].ToString(),
+                            WorshipID = Convert.ToInt32(dr["WorshipID"]),
+                            Capacity = Convert.ToInt32(dr["Capacity"])
                         };
+
                         List.Add(detail);
                     }
                 }                
@@ -122,6 +125,16 @@ namespace DAL
                 };
                 SqlCmd.Parameters.Add(ScheduleDate);
 
+                if (Event.Capacity > 0)
+                {
+                    SqlParameter pCapacity = new SqlParameter
+                    {
+                        ParameterName = "@Capacity",
+                        SqlDbType = SqlDbType.Int,
+                        Value = Event.Capacity
+                    };
+                    SqlCmd.Parameters.Add(pCapacity);
+                }
                 SqlParameter ParInsertUser = new SqlParameter
                 {
                     ParameterName = "@InsertUser",
@@ -161,7 +174,7 @@ namespace DAL
                 {
                     ParameterName = "@pDate",
                     SqlDbType = SqlDbType.DateTime,
-                    Value = DateTime.Now
+                    Value = DateTime.Now.AddHours(-6)
                 };
                 SqlCmd.Parameters.Add(parDate);
 
@@ -197,6 +210,7 @@ namespace DAL
                         ET.EventMonth = dr["Month"].ToString();
                         ET.EventDay = dr["Day"].ToString();
                         ET.EventTime = dr["Time"].ToString();
+                        ET.Capacity = Convert.ToInt32(dr["Capacity"]);
                     }
                 }
             }
@@ -260,6 +274,17 @@ namespace DAL
                     Value = Event.ScheduledDate
                 };
                 SqlCmd.Parameters.Add(ScheduleDate);
+
+                if (Event.Capacity > 0)
+                {
+                    SqlParameter pCapacity = new SqlParameter
+                    {
+                        ParameterName = "@Capacity",
+                        SqlDbType = SqlDbType.Int,
+                        Value = Event.Capacity
+                    };
+                    SqlCmd.Parameters.Add(pCapacity);
+                }
 
                 SqlParameter ParInsertUser = new SqlParameter
                 {

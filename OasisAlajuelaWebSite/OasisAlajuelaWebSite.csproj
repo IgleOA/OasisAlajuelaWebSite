@@ -367,6 +367,7 @@
     <Compile Include="Controllers\MinistersController.cs" />
     <Compile Include="Controllers\MinistriesController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
+    <Compile Include="Controllers\ReservationsController.cs" />
     <Compile Include="Controllers\ResourcesController.cs" />
     <Compile Include="Controllers\RightsController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
@@ -379,6 +380,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AllowSameSiteAttribute.cs" />
+    <Compile Include="Models\AuditoriumModel.cs" />
     <Compile Include="Models\MultiSelectDropDownViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -2002,7 +2004,9 @@
     <Content Include="Content\font-awesome\webfonts\fa-brands-400.svg" />
     <Content Include="Content\font-awesome\webfonts\fa-regular-400.svg" />
     <Content Include="Content\font-awesome\webfonts\fa-solid-900.svg" />
+    <Content Include="Content\jquery.seat-charts.css" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\Reservations.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\flaticon\backup.txt" />
     <Content Include="fonts\flaticon\font\flaticon.css" />
@@ -2018,6 +2022,7 @@
     <Content Include="Images\bg.jpg" />
     <Content Include="Images\bg2.jpg" />
     <Content Include="Images\bg3.jpg" />
+    <Content Include="Images\bg4.jpg" />
     <Content Include="Images\bg_4.jpg" />
     <Content Include="Images\detail.jpg" />
     <Content Include="Images\Edit.png" />
@@ -2242,6 +2247,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\bootstrap-select.css.map" />
+    <Content Include="App_Data\AuditoriumLayout.json" />
     <None Include="Properties\PublishProfiles\IgleOA - Web Deploy.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -2830,10 +2836,11 @@
     <Content Include="Views\Users\EmailConfirmation.cshtml" />
     <Content Include="Views\Account\ForgotPasswordEmail.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Reservations\Confirmation.cshtml" />
+    <Content Include="Views\Reservations\Index.cshtml" />
+    <Content Include="Views\Reservations\EmailConfirmation.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

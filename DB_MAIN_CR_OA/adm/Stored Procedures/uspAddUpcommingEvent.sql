@@ -15,7 +15,8 @@ CREATE PROCEDURE [adm].[uspAddUpcommingEvent]
 	@Title			VARCHAR(50),
 	@MinisterID		INT,
 	@Description	VARCHAR(MAX) = NULL,
-	@ScheduleDate	DATETIME
+	@ScheduleDate	DATETIME,
+	@Capacity		INT = NULL
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -34,8 +35,20 @@ AS
                 END
 
             -- =======================================================
-				INSERT INTO [config].[utbUpcomingEvents]([Title],[MinisterID],[Description],[ScheduledDate],[InsertUser],[LastModifyUser])
-				VALUES (@Title, @MinisterID, @Description, @ScheduleDate, @InsertUser, @InsertUser)
+				IF (@Capacity IS NULL)
+					BEGIN
+						INSERT INTO [config].[utbUpcomingEvents]([Title],[MinisterID],[Description],[ScheduledDate],[InsertUser],[LastModifyUser])
+						VALUES (@Title, @MinisterID, @Description, @ScheduleDate, @InsertUser, @InsertUser)
+					END
+				ELSE
+					BEGIN
+						INSERT INTO [config].[utbUpcomingEvents]([Title],[MinisterID],[Description],[ScheduledDate],[InsertUser],[LastModifyUser])
+						VALUES (@Title, @MinisterID, @Description, @ScheduleDate, @InsertUser, @InsertUser)
+
+						INSERT INTO [book].[utbWorships] ([ScheduledDate],[Capacity],[InsertUser],[LastModifyUser])
+						VALUES (@ScheduleDate, @Capacity, @InsertUser, @InsertUser)
+					END
+				
 			-- =======================================================
 
         IF ( @@trancount > 0

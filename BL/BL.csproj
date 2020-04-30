@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AboutPageBL.cs" />
+    <Compile Include="AuditoriumLayoutBL.cs" />
     <Compile Include="BannersBL.cs" />
     <Compile Include="BannersLocationBL.cs" />
     <Compile Include="GroupsBL.cs" />
@@ -54,6 +55,7 @@
     <Compile Include="MinistriesBL.cs" />
     <Compile Include="NewsBL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReservationsBL.cs" />
     <Compile Include="ResourcesBL.cs" />
     <Compile Include="RightsBL.cs" />
     <Compile Include="RolesBL.cs" />
@@ -63,6 +65,7 @@
     <Compile Include="UserProfileBL.cs" />
     <Compile Include="UsersBL.cs" />
     <Compile Include="WebDirectoryBL.cs" />
+    <Compile Include="WorshipsBL.cs" />
     <Compile Include="YouTubeBL.cs" />
   </ItemGroup>
   <ItemGroup>

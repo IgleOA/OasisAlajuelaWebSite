@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AboutPage.cs" />
+    <Compile Include="AuditoriumLayout.cs" />
     <Compile Include="Banner.cs" />
     <Compile Include="BannersLocation.cs" />
     <Compile Include="Emails.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="Ministers.cs" />
     <Compile Include="Ministries.cs" />
     <Compile Include="News.cs" />
+    <Compile Include="Reservations.cs" />
     <Compile Include="Resources.cs" />
     <Compile Include="Rights.cs" />
     <Compile Include="Roles.cs" />
@@ -86,6 +88,7 @@
     <Compile Include="UserProfile.cs" />
     <Compile Include="Users.cs" />
     <Compile Include="WebDirectory.cs" />
+    <Compile Include="Worships.cs" />
     <Compile Include="YouTubeVideo.cs" />
   </ItemGroup>
   <ItemGroup>
