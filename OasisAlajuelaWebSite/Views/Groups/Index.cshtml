@@ -68,7 +68,7 @@
                         <th class="py-2 text-center">Recursos</th>
                         @if (ViewBag.WriteRight == true)
                         {
-                            <th class="py-2 text-center">Acción</th>
+                            <th colspan="2" class="py-2 text-center">Acción</th>
                         }
                     </tr>
 
@@ -91,10 +91,12 @@
                             </td>
                             @if (ViewBag.WriteRight == true)
                             {
-                                <td class="align-middle text-center">
+                                <td class="align-middle text-center px-0">
                                     <a href="#" class="card-link m-0" onclick="Edit(@item.GroupID)" title="Editar">
                                         <i class="far fa-edit fa-2x mx-2" style="vertical-align: middle; color: #444444;"></i>
-                                    </a>
+                                    </a>                                    
+                                </td>
+                                <td class="align-middle text-center px-0">
                                     <a href="#" class="card-link m-0" onclick="Remove(@item.GroupID)" title="Eliminar">
                                         <i class="fas fa-times-circle fa-2x mx-2" style="vertical-align: middle; color: #444444;"></i>
                                     </a>
