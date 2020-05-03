@@ -171,6 +171,8 @@
     <Build Include="Security\config.sql" />
     <Build Include="book\Stored Procedures\uspReadReservation.sql" />
     <Build Include="book\Stored Procedures\uspUpdateReservation.sql" />
+    <Build Include="book\Stored Procedures\uspReadReservationsByUser.sql" />
+    <Build Include="book\Stored Procedures\uspReadMainInfoReservationsbyUser.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DB_MAIN_CR_OA_DEV.publish.xml" />

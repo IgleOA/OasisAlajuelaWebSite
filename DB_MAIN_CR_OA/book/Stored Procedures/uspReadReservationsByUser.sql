@@ -1,6 +1,6 @@
 ﻿-- ======================================================================
--- Name: [book].[uspReadReservation]
--- Desc: Retorna los detalles de una reserva
+-- Name: [book].[uspReadReservationsByUser]
+-- Desc: Retorna las reservaciones hechas por un determinado usuario
 -- Auth: Jonathan Piedra johmstone@gmail.com
 -- Date: 3/13/2020
 -------------------------------------------------------------
@@ -10,8 +10,9 @@
 -- --	----		------		-----------------------------
 -- ======================================================================
 
-CREATE PROCEDURE [book].[uspReadReservation]
-	@GUID VARCHAR(MAX)
+CREATE PROCEDURE [book].[uspReadReservationsByUser]
+	@UserID		INT,
+	@WorshipID	INT = NULL
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -20,7 +21,7 @@ AS
             DECLARE @lErrorSeverity INT
             DECLARE @lErrorState INT
 
-            -- =======================================================
+            -- =======================================================		
 				SELECT	R.[ReservationID]
 						,R.[GUID]
 						,R.[WorshipID]
@@ -36,8 +37,10 @@ AS
 						LEFT JOIN [adm].[utbUsers] U ON U.[UserID] = R.[BookedBy]
 						LEFT JOIN [book].[utbWorships] W ON W.[WorshipID] = R.[WorshipID]
 						INNER JOIN [config].[utbUpcomingEvents] UCP ON UCP.[ScheduledDate] = W.[ScheduledDate] AND UCP.[ActiveFlag] = 1
-				WHERE	R.[GUID] = @GUID
-						AND R.[ActiveFlag] = 1
+				WHERE	R.[BookedBy] = @UserID
+						AND R.[WorshipID] = ISNULL(@WorshipID, R.[WorshipID])
+						AND R.[ActiveFlag] = 1			
+				ORDER BY UCP.[ScheduledDate], R.[WorshipID], R.[InsertDate], R.[BookedFor]
 			-- =======================================================
 
         END TRY

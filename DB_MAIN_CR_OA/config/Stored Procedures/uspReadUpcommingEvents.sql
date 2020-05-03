@@ -47,6 +47,7 @@ AS
 						WHERE	IE.[ActiveFlag] = ISNULL(@pActiveFlag,IE.[ActiveFlag])
 								AND IE.[EventID] = ISNULL(@pEventID,[EventID])
 								AND IE.[ScheduledDate] >= @pDate
+						ORDER BY IE.[ScheduledDate]
 					END
 				ELSE
 					BEGIN

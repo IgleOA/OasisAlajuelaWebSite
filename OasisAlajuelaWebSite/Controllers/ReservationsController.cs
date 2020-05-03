@@ -1,17 +1,15 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using OasisAlajuelaWebSite.Models;
 using ET;
 using BL;
 using Microsoft.AspNet.Identity;
 using System.Configuration;
 using System.Text;
 using System.Net.Mail;
+using shortid;
 
 namespace OasisAlajuelaWebSite.Controllers
 {
@@ -23,11 +21,32 @@ namespace OasisAlajuelaWebSite.Controllers
         private UsersBL UBL = new UsersBL();
         private ReservationsBL RBL = new ReservationsBL();
         private RightsBL RRBL = new RightsBL();
+        private UserProfileBL UPBL = new UserProfileBL();
 
         // GET: Reservations
-        public ActionResult Index(int id)
+        public ActionResult Index()
+        {
+            UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+
+            Users user = UBL.List().Where(x => x.UserName == User.Identity.GetUserName()).FirstOrDefault();
+
+            List<ReservationLevel1> Reservations = RBL.ReservationsMainInfo(0, user.UserID);
+            if (user.RoleName.Contains("Admin"))
+            {
+                ViewBag.Layout = "~/Views/Shared/_AdminLayout.cshtml";                
+            }
+            else
+            {
+                ViewBag.Layout = "~/Views/Shared/_MainLayout.cshtml";
+            }
+
+            return View(Reservations);
+        }
+
+
+        public ActionResult CheckOut(int id)
         {        
-           UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+            UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
             var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
             if (validation.ReadRight == false)
             {
@@ -36,12 +55,10 @@ namespace OasisAlajuelaWebSite.Controllers
             }
             else
             {
-                var u = from us in UBL.List()
-                        where us.UserName == User.Identity.GetUserName()
-                        select us;
-                int roleID = u.FirstOrDefault().RoleID;
+                Users user = UBL.List().Where(x => x.UserName == User.Identity.GetUserName()).FirstOrDefault();
 
-                if (roleID == 2 || roleID == 3 || roleID == 4)
+                ////if (user.RoleName.Contains("Admin"))
+                if (user.RoleName.Contains("Admin"))
                 {
                     ViewBag.Layout = "~/Views/Shared/_AdminLayout.cshtml";
                 }
@@ -51,7 +68,7 @@ namespace OasisAlajuelaWebSite.Controllers
                 }
                 ViewBag.Write = validation.WriteRight;
 
-                Worships Model = WBL.Details(id);
+                Worships Model = WBL.Details(id,user.UserID);
 
                 Model.Layout = ABL.Layout(id);
 
@@ -63,20 +80,79 @@ namespace OasisAlajuelaWebSite.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CheckOut(Worships Model)
         {
-            Users user = UBL.List().Where(x => x.UserName == User.Identity.GetUserName()).FirstOrDefault();
-
-            Reservations Reservation = new Reservations()
+            if (ModelState.IsValid)
             {
-                GUID = Guid.NewGuid().ToString().ToUpper(),
-                WorshipID = Model.WorshipID,
-                BookedBy = user.UserID,
-                BookedFor = (string.IsNullOrEmpty(Model.ReservedFor)) ? user.FullName : Model.ReservedFor,
-                SeatsReserved = Model.SeatsReserved
-            };
+                Users user = UBL.List().Where(x => x.UserName == User.Identity.GetUserName()).FirstOrDefault();
 
-            Reservation.Details = RBL.AddReservation(Reservation, User.Identity.GetUserName());
-            
-            return RedirectToAction("Confirmation","Reservations", new { id = Reservation.GUID });
+                Reservations Reservation = new Reservations()
+                {
+                    //GUID = Guid.NewGuid().ToString().ToUpper(),
+                    //GUID = Regex.Replace(Convert.ToBase64String(Guid.NewGuid().ToByteArray()), "[/+=]", ""),
+                    GUID = ShortId.Generate(true, false, 12),
+                    WorshipID = Model.WorshipID,
+                    BookedBy = user.UserID,
+                    BookedFor = (string.IsNullOrEmpty(Model.ReservedFor)) ? user.FullName : Model.ReservedFor,
+                    SeatsReserved = Model.SeatsReserved
+                };
+
+                Reservation.Details = RBL.AddReservation(Reservation, User.Identity.GetUserName());
+
+                List<Reservations> Reservations = RBL.ReservationsFullInfo(Model.WorshipID, user.UserID);
+
+                if(Reservations.Count >= 20 && !user.RoleName.Contains("Admin"))
+                {
+                    #region Email
+                    Emails Email = new Emails()
+                    {
+                        FromEmail = ConfigurationManager.AppSettings["AdminEmail"].ToString(),
+                        ToEmail = ConfigurationManager.AppSettings["ValidationsEmail"].ToString(),
+                        SubjectEmail = "Oasis Alajuela - Confirmación de Reservas - " + user.FullName
+                    };
+
+                    StringBuilder mailBody = new StringBuilder();
+
+                    UserProfile UserModel = UPBL.Detail(user.UserID);
+
+                    UserModel.ReservationsList = Reservations;
+
+                    var strg = ViewToStringRenderer.RenderViewToString(this.ControllerContext, "~/Views/Reservations/ValidationEmail.cshtml", UserModel);
+
+                    mailBody.AppendFormat(strg);
+
+                    Email.BodyEmail = mailBody.ToString();
+
+                    MailMessage mm = new MailMessage(Email.FromEmail, Email.ToEmail);
+                    mm.Subject = Email.SubjectEmail;
+                    mm.Body = Email.BodyEmail;
+                    mm.IsBodyHtml = true;
+
+                    SmtpClient smtp = new SmtpClient();
+                    smtp.Send(mm);
+                    #endregion
+                }
+
+                return RedirectToAction("Confirmation", "Reservations", new { id = Reservation.GUID });
+            }
+            else
+            {
+                Users user = UBL.List().Where(x => x.UserName == User.Identity.GetUserName()).FirstOrDefault();
+
+                if (user.RoleName.Contains("Admin"))
+                {
+                    ViewBag.Layout = "~/Views/Shared/_AdminLayout.cshtml";
+                }
+                else
+                {
+                    ViewBag.Layout = "~/Views/Shared/_MainLayout.cshtml";
+                }
+                //ViewBag.Write = validation.WriteRight;
+                Worships Model2 = WBL.Details(Model.WorshipID, user.UserID);
+
+                Model.MaxToReserve = Model2.MaxToReserve;
+
+                Model.Layout = ABL.Layout(Model.WorshipID);
+                return View(Model);
+            }
         }
 
         
@@ -86,10 +162,10 @@ namespace OasisAlajuelaWebSite.Controllers
 
             List<Reservations> data = RBL.Details(id);
 
-
             Users user = UBL.List().Where(x => x.UserName == User.Identity.GetUserName()).FirstOrDefault();
 
-            // Email 
+
+            #region Email
             Emails Email = new Emails()
             {
                 FromEmail = ConfigurationManager.AppSettings["AdminEmail"].ToString(),
@@ -111,12 +187,13 @@ namespace OasisAlajuelaWebSite.Controllers
             mm.IsBodyHtml = true;
 
             SmtpClient smtp = new SmtpClient();
-            smtp.Send(mm);
-            // Email
+            smtp.Send(mm); 
+            #endregion
+
 
             int roleID = user.RoleID;
 
-            if (roleID == 2 || roleID == 3 || roleID == 4)
+            if (user.RoleName.Contains("Admin"))
             {
                 ViewBag.Layout = "~/Views/Shared/_AdminLayout.cshtml";
             }
@@ -135,14 +212,39 @@ namespace OasisAlajuelaWebSite.Controllers
             
             string r = RBL.Remove(id, InsertUser);
 
-            return this.RedirectToAction("Confirmation", new { id = r });
+            return JavaScript("<script>alert(\"Hecho!!!\")</script>");
             
         }
+
+        public ActionResult RemoveGUID(string id)
+        {
+            UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+            string InsertUser = User.Identity.GetUserName();
+
+            var r = RBL.RemoveGUID(id, InsertUser);
+
+            if (!r)
+            {
+                ViewBag.Mensaje = "Ha ocurrido un error inesperado.";
+                return View("~/Views/Shared/Error.cshtml");
+            }
+            else
+            {
+                return JavaScript("<script>alert(\"Hecho!!!\")</script>");
+            }
+
+        }
+
         public ActionResult EmailConfirmation(string id)
         {
             var data = RBL.Details(id);
 
             return View(data.ToList());
+        }
+
+        public ActionResult ValidationEmail(UserProfile id)
+        {
+            return View(id);
         }
 
         public static class ViewToStringRenderer

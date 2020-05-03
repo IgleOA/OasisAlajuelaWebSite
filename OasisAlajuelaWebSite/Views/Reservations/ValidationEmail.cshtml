@@ -1,0 +1,166 @@
+﻿@model ET.UserProfile
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Email confirmation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+</head>
+<body style="margin: 0; padding: 0;">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+            <td style="padding: 10px 0 10px 0;">
+                <table align="center" border="1" cellpadding="0" cellspacing="0" width="600" style="border-collapse: collapse; font-family: Poppins, sans-serif;">
+                    <tr>
+                        <td align="center" style="padding: 0;">
+                            <img src="https://scontent.fsyq3-1.fna.fbcdn.net/v/t1.0-9/88316101_500755240619416_1528612511715164160_n.png?_nc_cat=105&amp;_nc_sid=e3f864&amp;_nc_ohc=o9Ir3IHN3SoAX_Gms9A&amp;_nc_ht=scontent.fsyq3-1.fna&amp;oh=304f519682ca6802af18ae0e090d5caf&amp;oe=5ECB613B" alt="Creating Email Magic" width="600" height="250" style="display: block;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#ffffff" style="padding: 20px 30px 20px 30px;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <td>
+                                        <h3>Confirmación de Reservas - @Model.FullName</h3>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        El usuario @Model.FullName ha excedido la cuota de reservas para un mismo evento de 20 espacios, como parte de nuestro control interno y evitar falsas reservaciones,
+                                        por favor confirmar con el usuario directamente si realmente necesita estas reservas o si fue un error en su reservación.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <br />
+                                        @{ 
+                                            var phone = "No hay número registrado aún.";
+                                            var cell  = "No hay número registrado aún.";
+                                            var direction  = "No hay dirección registrada aún.";
+
+                                            if(Model.Phone.Length > 0)
+                                            {
+                                                phone = Model.Phone;
+                                            }
+                                            if(Model.Mobile.Length > 0)
+                                            {
+                                                cell = Model.Mobile;
+                                            }
+                                            if(Model.Country.Length > 0 || Model.State.Length > 0 || Model.City.Length > 0)
+                                            {
+                                                direction = Model.Country + "," + Model.State + "," + Model.City;
+                                            }
+                                        }
+                                        Nombre de Usuario: <strong>@Model.UserName</strong><br />
+                                        Nombre completo: <strong>@Model.FullName</strong><br />
+                                        Email: <strong>@Model.Email</strong><br />
+                                        Teléfono: <strong>@phone</strong><br />
+                                        Celular: <strong>@cell</strong><br />
+                                        Dirección: <strong>@direction</strong><br />
+                                        <br />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="center">
+                                        <table class="mt-3">
+                                            <thead>
+                                                <tr>
+                                                    <td colspan="4" class="p-0 justify-content-start font-weight-bold" style="font-weight: bold">
+                                                        Asientos reservados:
+                                                    </td>
+                                                </tr>
+                                                <tr class="font-weight-bolder ">
+                                                    <td class="p-0 text-center" align="center" style="font-weight: bold">Fecha</td>
+                                                    <td class="p-0 text-center" align="center" style="font-weight: bold">Reservación</td>                                                    
+                                                    <td class="p-0 text-center" align="center" style="font-weight: bold">Código Espacio</td>
+                                                    <td class="p-0 text-center" align="center" style="font-weight: bold">Bloque</td>
+                                                    <td class="p-0 text-center" align="center" style="font-weight: bold">Fila</td>
+                                                    <td class="p-0 text-center" align="center" style="font-weight: bold">Asiento</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model.ReservationsList)
+                                                {
+                                                    <tr>
+                                                        <td class="p-0 text-center" align="center">@item.ReservationDate.ToString("dd/MM/yyyy hh:mm tt")</td>
+                                                        <td class="p-0 text-center" align="center">@item.GUID</td>                                                        
+                                                        <td class="p-0 text-center" align="center">@item.SeatID</td>
+                                                        <td class="p-0 text-center" align="center">@item.SeatID.Substring(0, 2)</td>
+                                                        <td class="p-0 text-center" align="center">@item.SeatID.Substring(2, 1)</td>
+                                                        @if (item.SeatID.Length >= 6)
+                                                        {
+                                                            <td class="p-0 text-center" align="center">@item.SeatID.Substring(4, 2)</td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td class="p-0 text-center" align="center">@item.SeatID.Substring(4, 1)</td>
+                                                        }
+                                                    </tr>
+                                                }                                                
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>Si el usuario no puede ser contactado por ningun medio, por favor realice la eliminación de dichas reservas a su criterio. Bendiciones...</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 30px 10px 30px 10px; background-color:wheat;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <td width="60%">
+                                        <p>
+                                            <strong>Oasis Alajuela</strong> &copy;
+                                            <script>document.write(new Date().getFullYear());</script>
+                                            Derechos reservados
+                                        </p>
+                                    </td>
+                                    <td align="center">
+                                        <table style="padding: 0;">
+                                            <tr>
+                                                <td style="padding: 0 5px 0 5px;">
+                                                    <a href="https://twitter.com/oasisalajuela" target="_blank" title="Twitter">
+                                                        <img src="https://cdn3.iconfinder.com/data/icons/picons-social/57/43-twitter-512.png" width="40" />
+                                                    </a>
+                                                </td>
+                                                <td style="padding: 0 5px 0 5px;">
+                                                    <a href="https://www.facebook.com/OasisAlajuela/" target="_blank" title="Facebook">
+                                                        <img src="https://cdn3.iconfinder.com/data/icons/free-social-icons/67/facebook_circle_black-512.png" width="40" />
+                                                    </a>
+                                                </td>
+                                                <td style="padding: 0 5px 0 5px;">
+                                                    <a href="https://www.instagram.com/aes_oasis/" target="_blank" title="Instagram">
+                                                        <img src="https://cdn4.iconfinder.com/data/icons/picons-social/57/38-instagram-3-512.png" width="40" />
+                                                    </a>
+                                                </td>
+                                                <td style="padding: 0 5px 0 5px;">
+                                                    <a href="https://www.youtube.com/channel/UCsWIb3EobSzS-pNrPXvq7_A" target="_blank" title="YouTube">
+                                                        <img src="https://cdn1.iconfinder.com/data/icons/andriod-app-logo/32/icon_youtube-512.png" width="40" />
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

@@ -89,6 +89,8 @@ namespace ET
 
         public List<Groups> GroupList { get; set; }
 
+        public List<Reservations> ReservationsList { get; set; }
+
         public string ActionType { get; set; }
         public class AllowExtensionsAttribute : ValidationAttribute
         {

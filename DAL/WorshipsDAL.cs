@@ -10,7 +10,7 @@ namespace DAL
     {
         private SqlConnection SqlCon = new SqlConnection(ConfigurationManager.ConnectionStrings["DB_MAIN_CR_OA_Connection"].ToString());
         
-        public Worships Details(int WorshipID)
+        public Worships Details(int WorshipID, int UserID)
         {
             Worships details = new Worships();
 
@@ -30,6 +30,14 @@ namespace DAL
                 };
                 SqlCmd.Parameters.Add(pWorshipID);
 
+                SqlParameter pUserID = new SqlParameter
+                {
+                    ParameterName = "@UserID",
+                    SqlDbType = SqlDbType.Int,
+                    Value = UserID
+                };
+                SqlCmd.Parameters.Add(pUserID);
+
                 using (var dr = SqlCmd.ExecuteReader())
                 {
                     dr.Read();
@@ -41,6 +49,7 @@ namespace DAL
                         details.Available = Convert.ToInt32(dr["Available"]);
                         details.Unavailable = Convert.ToInt32(dr["Unavailable"]);
                         details.Booked = Convert.ToInt32(dr["Booked"]);
+                        details.MaxToReserve = Convert.ToInt32(dr["MaxToReserve"]);
                     }
                 }
             }

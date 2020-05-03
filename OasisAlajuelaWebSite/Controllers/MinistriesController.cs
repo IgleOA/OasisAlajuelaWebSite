@@ -31,12 +31,9 @@ namespace OasisAlajuelaWebSite.Controllers
                 }
                 else
                 {
-                    var u = from us in UBL.List()
-                            where us.UserName == User.Identity.GetUserName()
-                            select us;
-                    int roleID = u.FirstOrDefault().RoleID;
+                    Users user = UBL.List().Where(x => x.UserName == User.Identity.GetUserName()).FirstOrDefault();
 
-                    if (roleID == 2 || roleID == 3 || roleID == 4)
+                    if (user.RoleName.Contains("Admin"))
                     {
                         ViewBag.Layout = "~/Views/Shared/_AdminLayout.cshtml";                        
                     }

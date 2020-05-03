@@ -10,8 +10,9 @@
 -- --	----		------		-----------------------------
 -- ======================================================================
 CREATE PROCEDURE [book].[uspUpdateReservation]
-	@ReservationID	INT,
-	@InsertUser		VARCHAR(100)
+	@InsertUser		VARCHAR(100),
+	@ReservationID	INT = NULL,
+	@GUID			VARCHAR(MAX) = NULL
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -30,15 +31,26 @@ AS
                 END
 
             -- =======================================================
-				UPDATE	[book].[utbReservations] 
-				SET		[ActiveFlag] = 0
-						,[LastModifyDate] = GETDATE()
-						,[LastModifyUser] = @InsertUser
-				WHERE	[ReservationID] = @ReservationID
+				IF(@GUID IS NOT NULL)
+					BEGIN
+						UPDATE	[book].[utbReservations] 
+						SET		[ActiveFlag] = 0
+								,[LastModifyDate] = GETDATE()
+								,[LastModifyUser] = @InsertUser
+						WHERE	[GUID] = @GUID
+					END
+				ELSE
+					BEGIN
+						UPDATE	[book].[utbReservations] 
+						SET		[ActiveFlag] = 0
+								,[LastModifyDate] = GETDATE()
+								,[LastModifyUser] = @InsertUser
+						WHERE	[ReservationID] = @ReservationID
 
-				SELECT	[GUID]
-				FROM	[book].[utbReservations] 
-				WHERE	[ReservationID] = @ReservationID
+						SELECT	[GUID]
+						FROM	[book].[utbReservations] 
+						WHERE	[ReservationID] = @ReservationID
+					END
 			-- =======================================================
 
         IF ( @@trancount > 0

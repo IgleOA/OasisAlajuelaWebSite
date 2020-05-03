@@ -68,7 +68,7 @@
                                 }
                                 @if(item.Capacity > 0)
                                 {
-                                    <a href='@Url.Action("Index","Reservations", new { id = item.WorshipID })' target="_blank" title="Reservar" class="btn btn-light" style="text-decoration: none;"><i class="fas fa-sign-in-alt fa-1x"></i> Reservar su espacio</a>
+                                    <a href='@Url.Action("CheckOut","Reservations", new { id = item.WorshipID })' target="_blank" title="Reservar" class="btn btn-light" style="text-decoration: none;"><i class="fas fa-sign-in-alt fa-1x"></i> Reservar su espacio</a>
                                 }
                             </div>
                             @if (ViewBag.Write == true)

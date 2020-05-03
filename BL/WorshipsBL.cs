@@ -12,9 +12,9 @@ namespace BL
     {
         private WorshipsDAL WDAL = new WorshipsDAL();
 
-        public Worships Details(int WorhsipID)
+        public Worships Details(int WorhsipID, int UserID)
         {
-            return WDAL.Details(WorhsipID);
+            return WDAL.Details(WorhsipID, UserID);
         }
     }
 }

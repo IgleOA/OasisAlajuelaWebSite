@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace ET
 {
@@ -21,6 +18,12 @@ namespace ET
         public int Booked { get; set; }
 
         public string SeatsReserved { get; set; }
+
+        [Required]
+        [Range(1,10, ErrorMessage ="Tienes que elegir al menos uno y como máximo 10 espaciones simultaneamente. Si necesita más de 10 espaciones, por favor realice las reservaciones en tractos de 10 espacios a la vez.")]
+        public int SeatsNbrReserved { get; set; }
+
+        public int MaxToReserve { get; set; }
 
         public string ReservedFor { get; set; }
 

@@ -57,6 +57,8 @@ namespace ET
 
         public List<Groups> GroupList { get; set; }
 
+        public  List<Reservations> ReservationsList { get; set; } 
+
         public Users()
         {
             RolesData = new Roles();

@@ -26,5 +26,20 @@ namespace BL
         {
             return RDAL.Remove(ReservationID, InsertUser);
         }
+
+        public bool RemoveGUID(string GUID, string InsertUser)
+        {
+            return RDAL.RemoveGUID(GUID, InsertUser);
+        }
+
+        public List<Reservations> ReservationsFullInfo(int WorshipID, int UserID)
+        {
+            return RDAL.ReservationsFullInfo(WorshipID, UserID);
+        }
+
+        public List<ReservationLevel1> ReservationsMainInfo(int WorshipID, int UserID)
+        {
+            return RDAL.ReservationsMainInfo(WorshipID, UserID);
+        }
     }
 }

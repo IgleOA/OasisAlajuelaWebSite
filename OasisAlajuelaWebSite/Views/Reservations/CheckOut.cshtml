@@ -1,0 +1,727 @@
+﻿@model ET.Worships
+@using System.Globalization;
+
+@{
+    ViewBag.Title = "Sistema de Reservación";
+    Layout = ViewBag.Layout;
+}
+
+<link href="~/Content/jquery.seat-charts.css" rel="stylesheet" />
+<link href="~/Content/Reservations.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-3.5.0.js"></script>
+<script type="text/javascript">
+    function Reserve(obj) {
+        if (document.getElementById(obj.id).classList.contains('available')) {
+            var txt = document.getElementById('SeatsReserved').value;
+            var txtselect = document.getElementById('CountSelected').textContent;
+            var SeatNbr = document.getElementById('SeatsNbrReserved').value;
+            if (SeatNbr < (@Model.MaxToReserve)) {
+                if (txt.length > 0) {
+                    txt += "," + obj.id;
+                }
+                else {
+                    txt += obj.id;
+                }
+                var count = parseInt(txtselect);
+                count = count + 1;
+                document.getElementById('CountSelected').textContent = count;
+                document.getElementById('SeatsReserved').value = txt;
+                document.getElementById('SeatsNbrReserved').value = count;
+                document.getElementById(obj.id).classList.remove('available');
+                document.getElementById(obj.id).classList.add('selected');
+            }
+            else {
+                if (@Model.MaxToReserve < 10) {
+                    alert('Ha execido la cantidad máxima de espacios a reservar para un mismo evento, si necesita mas espacios contacte directamente al Departamento de Logística.');
+                }
+                else {
+                    alert('Ha execido la cantidad máxima de espacios a reservar simultaneamente. Si necesita más de 10 espacios, por favor realice la reserva en tractos de 10 espacios a la vez.');
+                }
+            }
+        }
+        else {
+            var txt = document.getElementById('SeatsReserved').value;
+            var txtselect = document.getElementById('CountSelected').textContent;
+            var seat = "," + obj.id;
+            var seat2 = obj.id + ",";
+            txt = txt.replace(seat, "").replace(seat2, "").replace(obj.id, "");
+            var count = parseInt(txtselect);
+            count = count - 1;
+            document.getElementById('CountSelected').textContent = count;
+            document.getElementById('SeatsReserved').value = txt;
+            document.getElementById('SeatsNbrReserved').value = count;
+            document.getElementById(obj.id).classList.remove('selected');
+            document.getElementById(obj.id).classList.add('available');
+        }
+
+    }
+
+</script>
+@if (ViewBag.Write == true)
+{
+    <div class="hp-section">
+        <div class="container w-100 justify-content-center" style="margin-bottom: 100px;">
+            <div class="row justify-content-center">
+                <h2 class="heading-section font-weight-bold my-2 p-0">@ViewBag.Title</h2>
+            </div>
+            <hr />
+            <div class=" row justify-content-center">
+                <table class="table-responsive w-100">
+                    <tbody>
+                        <tr class="bg-transparent border-0">
+                            <td></td>
+                            <td colspan="2" class="align-middle text-center">
+                                <table class="m-0">
+                                    <tr>
+                                        <td class="text-center" style="width:250px;">
+                                            <h2 class="m-0 text-colorbase">Servicio</h2>
+                                            <h1 class="text-capitalize">@Model.ScheduledDate.ToString("dddd, dd MMMM yyyy", new CultureInfo("es-US"))</h1>
+                                        </td>
+                                        <td style="background-color:#0a3e77; width:250px;">
+                                            <h2 class="mx-0 my-2 text-white text-uppercase">Tarima Principal</h2>
+                                        </td>
+                                        <td style="width:250px;">
+                                            <h2 class="m-0 text-colorbase">Hora</h2>
+                                            <h1>@Model.ScheduledDate.ToString("h:mm tt") CR</h1>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr class="bg-transparent border-0">
+                            <td class="px-2" style="transform: rotate(35deg) translate(50px,-125px);">
+                                <div class="Position1 p-2">
+                                    @foreach (var row in Model.Layout.Blocks[0].RowData)
+                                    {
+                                        <div class="seatCharts-row">
+                                            <div class="seatCharts-cell seatCharts-space">@row.Label</div>
+                                            @foreach (var seat in row.SeatsData)
+                                            {
+                                                if (seat.Reserved == true)
+                                                {
+                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved">@seat.Label</div>
+                                                }
+                                                else
+                                                {
+                                                    if (seat.Booked >= 1)
+                                                    {
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked" title="@seat.BookedFor">@seat.Label</div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell available" onclick='Reserve(this)'>@seat.Label</div>
+                                                    }
+                                                }
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            </td>
+                            <td class="px-2">
+                                <div class="Position2 p-2">
+                                    @foreach (var row in Model.Layout.Blocks[1].RowData)
+                                    {
+                                        <div class="seatCharts-row">
+                                            <div class="seatCharts-cell seatCharts-space">@row.Label</div>
+                                            @foreach (var seat in row.SeatsData)
+                                            {
+                                                if (seat.Reserved == true)
+                                                {
+                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved">@seat.Label</div>
+                                                }
+                                                else
+                                                {
+                                                    if (seat.Booked >= 1)
+                                                    {
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked" title="@seat.BookedFor">@seat.Label</div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell available" onclick='Reserve(this)'>@seat.Label</div>
+                                                    }
+                                                }
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            </td>
+                            <td class="px-2">
+                                <div class="Position3 p-2">
+                                    @foreach (var row in Model.Layout.Blocks[2].RowData)
+                                    {
+                                        <div class="seatCharts-row">
+                                            <div class="seatCharts-cell seatCharts-space">@row.Label</div>
+                                            @foreach (var seat in row.SeatsData)
+                                            {
+                                                if (seat.Reserved == true)
+                                                {
+                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved">@seat.Label</div>
+                                                }
+                                                else
+                                                {
+                                                    if (seat.Booked >= 1)
+                                                    {
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked" title="@seat.BookedFor">@seat.Label</div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell available" onclick='Reserve(this)'>@seat.Label</div>
+                                                    }
+                                                }
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            </td>
+                            <td class="px-2" style="transform: rotate(-35deg) translate(-210px, -175px);">
+                                <div class="Position4 p-2">
+                                    @foreach (var row in Model.Layout.Blocks[3].RowData)
+                                    {
+                                        <div class="seatCharts-row">
+                                            <div class="seatCharts-cell seatCharts-space float-right">@row.Label</div>
+                                            @foreach (var seat in row.SeatsData)
+                                            {
+                                                if (seat.Reserved == true)
+                                                {
+                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved float-right">@seat.Label</div>
+                                                }
+                                                else
+                                                {
+                                                    if (seat.Booked >= 1)
+                                                    {
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked float-right" title="@seat.BookedFor">@seat.Label</div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell available float-right" onclick='Reserve(this)'>@seat.Label</div>
+                                                    }
+                                                }
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="bg-transparent border-0">
+                            <td class="px-2" style="transform: rotate(35deg) translate(130px,-60px);">
+                                <div class="Position1 p-2">
+                                    @foreach (var row in Model.Layout.Blocks[4].RowData)
+                                    {
+                                        <div class="seatCharts-row">
+                                            <div class="seatCharts-cell seatCharts-space">@row.Label</div>
+                                            @foreach (var seat in row.SeatsData)
+                                            {
+                                                if (seat.Reserved == true)
+                                                {
+                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved">@seat.Label</div>
+                                                }
+                                                else
+                                                {
+                                                    if (seat.Booked >= 1)
+                                                    {
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked" title="@seat.BookedFor">@seat.Label</div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell available" onclick='Reserve(this)'>@seat.Label</div>
+                                                    }
+                                                }
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            </td>
+                            <td class="px-2">
+                                <div class="Position2 p-2">
+                                    @foreach (var row in Model.Layout.Blocks[5].RowData)
+                                    {
+                                        <div class="seatCharts-row">
+                                            <div class="seatCharts-cell seatCharts-space">@row.Label</div>
+                                            @foreach (var seat in row.SeatsData)
+                                            {
+                                                if (seat.Reserved == true)
+                                                {
+                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved">@seat.Label</div>
+                                                }
+                                                else
+                                                {
+                                                    if (seat.Booked >= 1)
+                                                    {
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked" title="@seat.BookedFor">@seat.Label</div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell available" onclick='Reserve(this)'>@seat.Label</div>
+                                                    }
+                                                }
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            </td>
+                            <td class="px-2">
+                                <div class="Position3 p-2">
+                                    @foreach (var row in Model.Layout.Blocks[6].RowData)
+                                    {
+                                        <div class="seatCharts-row">
+                                            <div class="seatCharts-cell seatCharts-space">@row.Label</div>
+                                            @foreach (var seat in row.SeatsData)
+                                            {
+                                                if (seat.Reserved == true)
+                                                {
+                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved">@seat.Label</div>
+                                                }
+                                                else
+                                                {
+                                                    if (seat.Booked >= 1)
+                                                    {
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked" title="@seat.BookedFor">@seat.Label</div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell available" onclick='Reserve(this)'>@seat.Label</div>
+                                                    }
+                                                }
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            </td>
+                            <td class="px-2" style="transform: rotate(-35deg) translate(-95px, -110px);">
+                                <div class="Position4 p-2">
+                                    @foreach (var row in Model.Layout.Blocks[7].RowData)
+                                    {
+                                        <div class="seatCharts-row">
+                                            <div class="seatCharts-cell seatCharts-space float-right">@row.Label</div>
+                                            @foreach (var seat in row.SeatsData)
+                                            {
+                                                if (seat.Label == 5)
+                                                {
+                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-space seatCharts-cell available float-right"></div>
+                                                }
+                                                else
+                                                {
+                                                    if (seat.Label < 5)
+                                                    {
+                                                        if (seat.Reserved == true)
+                                                        {
+                                                            <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved float-right">@seat.Label</div>
+                                                        }
+                                                        else
+                                                        {
+                                                            if (seat.Booked >= 1)
+                                                            {
+                                                                <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked float-right" title="@seat.BookedFor">@seat.Label</div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell available float-right" onclick='Reserve(this)'>@seat.Label</div>
+                                                            }
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        if (seat.Reserved == true)
+                                                        {
+                                                            <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved float-right">@(seat.Label - 1)</div>
+                                                        }
+                                                        else
+                                                        {
+                                                            if (seat.Booked >= 1)
+                                                            {
+                                                                <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked float-right" title="@seat.BookedFor">@(seat.Label - 1)</div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell available float-right" onclick='Reserve(this)'>@(seat.Label - 1)</div>
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                        </div>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="bg-transparent border-0">
+                            <td></td>
+                            <td colspan="2" class="text-center">
+                                <div>
+                                    <table>
+                                        <tr>
+                                            <td><p class="text-white m-0 px-2" style="background-color: lightgray; border-radius: 5px;">Inhabilitado - <span>@Model.Unavailable</span></p></td>
+                                            <td><p class="text-white m-0 px-2" style="background-color: darkseagreen; border-radius: 5px;">Disponible - <span>@Model.Available</span></p></td>
+                                            <td><p class="text-white m-0 px-2" style="background-color: red; border-radius: 5px;">Seleccionado - <span id="CountSelected">0</span></p></td>
+                                            <td><p class="text-white m-0 px-2" style="background-color: #0a3e77; border-radius: 5px;">Reservado - <span>@Model.Booked</span></p></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                @using (Html.BeginForm("CheckOut", "Reservations", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    @Html.HiddenFor(model => model.WorshipID)
+
+                                    <div class="input-group mb-3 w-75 mx-auto">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-default">Reservado para</span>
+                                        </div>
+                                        <input id="ReservedFor" name="ReservedFor" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                        <p class="my-auto mx-2"> Si aplica</p>
+                                    </div>
+
+                                    <div class="input-group mb-3 w-75 mx-auto">
+                                        @Html.EditorFor(model => model.SeatsReserved, new { htmlAttributes = new { @style = "display: none;" } })
+
+                                        @Html.EditorFor(model => model.SeatsNbrReserved, new { htmlAttributes = new { @style = "display: none;" } })
+                                        @Html.ValidationMessageFor(model => model.SeatsNbrReserved, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <div class="form-group">
+                                        <input type="submit" class="btnReserve" value="Reservar" />
+                                    </div>
+                                }
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="hp-section">
+        <div class="container w-100 justify-content-center" style="margin-bottom: 100px;">
+            <div class="row justify-content-center">
+                <h2 class="heading-section font-weight-bold my-2 p-0">@ViewBag.Title</h2>
+            </div>
+            <hr />
+            <div class=" row justify-content-center">
+                <table class="table-responsive w-100">
+                    <tbody>
+                        <tr class="bg-transparent border-0">
+                            <td></td>
+                            <td colspan="2" class="align-middle text-center">
+                                <table class="m-0">
+                                    <tr>
+                                        <td class="text-center" style="width:250px;">
+                                            <h2 class="m-0 text-colorbase">Servicio</h2>
+                                            <h1 class="text-capitalize">@Model.ScheduledDate.ToString("dddd, dd MMMM yyyy", new CultureInfo("es-US"))</h1>
+                                        </td>
+                                        <td style="background-color:#0a3e77; width:250px;">
+                                            <h2 class="mx-0 my-2 text-white text-uppercase">Tarima Principal</h2>
+                                        </td>
+                                        <td style="width:250px;">
+                                            <h2 class="m-0 text-colorbase">Hora</h2>
+                                            <h1>@Model.ScheduledDate.ToString("h:mm tt") CR</h1>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr class="bg-transparent border-0">
+                            <td class="px-2" style="transform: rotate(35deg) translate(50px,-125px);">
+                                <div class="Position1 p-2">
+                                    @foreach (var row in Model.Layout.Blocks[0].RowData)
+                                    {
+                                        <div class="seatCharts-row">
+                                            <div class="seatCharts-cell seatCharts-space">@row.Label</div>
+                                            @foreach (var seat in row.SeatsData)
+                                            {
+                                                if (seat.Reserved == true)
+                                                {
+                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved">@seat.Label</div>
+                                                }
+                                                else
+                                                {
+                                                    if (seat.Booked >= 1)
+                                                    {
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked">@seat.Label</div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell available" onclick='Reserve(this)'>@seat.Label</div>
+                                                    }
+                                                }
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            </td>
+                            <td class="px-2">
+                                <div class="Position2 p-2">
+                                    @foreach (var row in Model.Layout.Blocks[1].RowData)
+                                    {
+                                        <div class="seatCharts-row">
+                                            <div class="seatCharts-cell seatCharts-space">@row.Label</div>
+                                            @foreach (var seat in row.SeatsData)
+                                            {
+                                                if (seat.Reserved == true)
+                                                {
+                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved">@seat.Label</div>
+                                                }
+                                                else
+                                                {
+                                                    if (seat.Booked >= 1)
+                                                    {
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked">@seat.Label</div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell available" onclick='Reserve(this)'>@seat.Label</div>
+                                                    }
+                                                }
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            </td>
+                            <td class="px-2">
+                                <div class="Position3 p-2">
+                                    @foreach (var row in Model.Layout.Blocks[2].RowData)
+                                    {
+                                        <div class="seatCharts-row">
+                                            <div class="seatCharts-cell seatCharts-space">@row.Label</div>
+                                            @foreach (var seat in row.SeatsData)
+                                            {
+                                                if (seat.Reserved == true)
+                                                {
+                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved">@seat.Label</div>
+                                                }
+                                                else
+                                                {
+                                                    if (seat.Booked >= 1)
+                                                    {
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked">@seat.Label</div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell available" onclick='Reserve(this)'>@seat.Label</div>
+                                                    }
+                                                }
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            </td>
+                            <td class="px-2" style="transform: rotate(-35deg) translate(-210px, -175px);">
+                                <div class="Position4 p-2">
+                                    @foreach (var row in Model.Layout.Blocks[3].RowData)
+                                    {
+                                        <div class="seatCharts-row">
+                                            <div class="seatCharts-cell seatCharts-space float-right">@row.Label</div>
+                                            @foreach (var seat in row.SeatsData)
+                                            {
+                                                if (seat.Reserved == true)
+                                                {
+                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved float-right">@seat.Label</div>
+                                                }
+                                                else
+                                                {
+                                                    if (seat.Booked >= 1)
+                                                    {
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked float-right">@seat.Label</div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell available float-right" onclick='Reserve(this)'>@seat.Label</div>
+                                                    }
+                                                }
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="bg-transparent border-0">
+                            <td class="px-2" style="transform: rotate(35deg) translate(130px,-60px);">
+                                <div class="Position1 p-2">
+                                    @foreach (var row in Model.Layout.Blocks[4].RowData)
+                                    {
+                                        <div class="seatCharts-row">
+                                            <div class="seatCharts-cell seatCharts-space">@row.Label</div>
+                                            @foreach (var seat in row.SeatsData)
+                                            {
+                                                if (seat.Reserved == true)
+                                                {
+                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved">@seat.Label</div>
+                                                }
+                                                else
+                                                {
+                                                    if (seat.Booked >= 1)
+                                                    {
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked">@seat.Label</div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell available" onclick='Reserve(this)'>@seat.Label</div>
+                                                    }
+                                                }
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            </td>
+                            <td class="px-2">
+                                <div class="Position2 p-2">
+                                    @foreach (var row in Model.Layout.Blocks[5].RowData)
+                                    {
+                                        <div class="seatCharts-row">
+                                            <div class="seatCharts-cell seatCharts-space">@row.Label</div>
+                                            @foreach (var seat in row.SeatsData)
+                                            {
+                                                if (seat.Reserved == true)
+                                                {
+                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved">@seat.Label</div>
+                                                }
+                                                else
+                                                {
+                                                    if (seat.Booked >= 1)
+                                                    {
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked">@seat.Label</div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell available" onclick='Reserve(this)'>@seat.Label</div>
+                                                    }
+                                                }
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            </td>
+                            <td class="px-2">
+                                <div class="Position3 p-2">
+                                    @foreach (var row in Model.Layout.Blocks[6].RowData)
+                                    {
+                                        <div class="seatCharts-row">
+                                            <div class="seatCharts-cell seatCharts-space">@row.Label</div>
+                                            @foreach (var seat in row.SeatsData)
+                                            {
+                                                if (seat.Reserved == true)
+                                                {
+                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved">@seat.Label</div>
+                                                }
+                                                else
+                                                {
+                                                    if (seat.Booked >= 1)
+                                                    {
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked">@seat.Label</div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell available" onclick='Reserve(this)'>@seat.Label</div>
+                                                    }
+                                                }
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            </td>
+                            <td class="px-2" style="transform: rotate(-35deg) translate(-95px, -110px);">
+                                <div class="Position4 p-2">
+                                    @foreach (var row in Model.Layout.Blocks[7].RowData)
+                                    {
+                                        <div class="seatCharts-row">
+                                            <div class="seatCharts-cell seatCharts-space float-right">@row.Label</div>
+                                            @foreach (var seat in row.SeatsData)
+                                            {
+                                                if (seat.Label == 5)
+                                                {
+                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-space seatCharts-cell available float-right"></div>
+                                                }
+                                                else
+                                                {
+                                                    if (seat.Label < 5)
+                                                    {
+                                                        if (seat.Reserved == true)
+                                                        {
+                                                            <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved float-right">@seat.Label</div>
+                                                        }
+                                                        else
+                                                        {
+                                                            if (seat.Booked >= 1)
+                                                            {
+                                                                <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked float-right">@seat.Label</div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell available float-right" onclick='Reserve(this)'>@seat.Label</div>
+                                                            }
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        if (seat.Reserved == true)
+                                                        {
+                                                            <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved float-right">@(seat.Label - 1)</div>
+                                                        }
+                                                        else
+                                                        {
+                                                            if (seat.Booked >= 1)
+                                                            {
+                                                                <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked float-right">@(seat.Label - 1)</div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell available float-right" onclick='Reserve(this)'>@(seat.Label - 1)</div>
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                        </div>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="bg-transparent border-0">
+                            <td></td>
+                            <td colspan="2" class="text-center">
+                                <div>
+                                    <table>
+                                        <tr>
+                                            <td><p class="text-white m-0 px-2" style="background-color: lightgray; border-radius: 5px;">Inhabilitado - <span>@Model.Unavailable</span></p></td>
+                                            <td><p class="text-white m-0 px-2" style="background-color: darkseagreen; border-radius: 5px;">Disponible - <span>@Model.Available</span></p></td>
+                                            <td><p class="text-white m-0 px-2" style="background-color: red; border-radius: 5px;">Seleccionado - <span id="CountSelected">0</span></p></td>
+                                            <td><p class="text-white m-0 px-2" style="background-color: #0a3e77; border-radius: 5px;">Reservado - <span>@Model.Booked</span></p></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                @using (Html.BeginForm("CheckOut", "Reservations", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    @Html.HiddenFor(model => model.WorshipID)
+
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger m-0" })
+
+                                    <div class="input-group mb-3 w-75 mx-auto">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-default">Reservado para</span>
+                                        </div>
+                                        <input id="ReservedFor" name="ReservedFor" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                        <p class="my-auto mx-2"> Si aplica</p>
+                                    </div>
+                                    <div class="input-group mb-3 w-75 mx-auto">
+                                        @Html.EditorFor(model => model.SeatsReserved, new { htmlAttributes = new { @style = "display: none;" } })
+                                        
+                                        @Html.EditorFor(model => model.SeatsNbrReserved, new { htmlAttributes = new { @style = "display: none;" } })
+                                        @Html.ValidationMessageFor(model => model.SeatsNbrReserved, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="submit" class="btnReserve" value="Reservar" />
+                                    </div>
+                                }
+</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}

@@ -83,11 +83,14 @@ namespace DAL
                             ReservationID = Convert.ToInt32(dr["ReservationID"]),
                             GUID = dr["GUID"].ToString(),
                             WorshipID = Convert.ToInt32(dr["WorshipID"]),
+                            Title = dr["Title"].ToString(),
+                            ScheduledDate = Convert.ToDateTime(dr["ScheduledDate"]),
                             SeatID = dr["SeatID"].ToString(),
                             BookedBy = Convert.ToInt32(dr["BookedBy"]),
                             BookedByName = dr["BookedByName"].ToString(),
                             BookedFor = dr["BookedFor"].ToString(),
-
+                            ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]),
+                            ReservationDate = Convert.ToDateTime(dr["ReservationDate"])
                         };
                         list.Add(detail);
                     }
@@ -142,6 +145,174 @@ namespace DAL
             }
             if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return ValidCode;
+        }
+
+        public bool RemoveGUID(string GUID, string InsertUser)
+        {
+            bool rpta = false;
+
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[book].[uspUpdateReservation]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                //Insert Parameters
+                SqlParameter ParGUID = new SqlParameter
+                {
+                    ParameterName = "@GUID",
+                    SqlDbType = SqlDbType.VarChar,
+                    Value = GUID
+                };
+                SqlCmd.Parameters.Add(ParGUID);
+
+                SqlParameter pInsertUser = new SqlParameter
+                {
+                    ParameterName = "@InsertUser",
+                    SqlDbType = SqlDbType.VarChar,
+                    Value = InsertUser
+                };
+                SqlCmd.Parameters.Add(pInsertUser);
+
+                //EXEC Command
+                rpta = Convert.ToBoolean(SqlCmd.ExecuteScalar());
+
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            return rpta;
+        }
+
+        public List<Reservations> ReservationsFullInfo (int WorshipID, int UserID)
+        {
+            List<Reservations> list = new List<Reservations>();
+
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[book].[uspReadReservationsByUser]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                SqlParameter pUserID = new SqlParameter
+                {
+                    ParameterName = "@UserID",
+                    SqlDbType = SqlDbType.Int,
+                    Value = UserID
+                };
+                SqlCmd.Parameters.Add(pUserID);
+
+                if(WorshipID > 0)
+                {
+                    SqlParameter pWorshipID = new SqlParameter
+                    {
+                        ParameterName = "@WorshipID",
+                        SqlDbType = SqlDbType.Int,
+                        Value = WorshipID
+                    };
+                    SqlCmd.Parameters.Add(pWorshipID);
+                }
+
+                using (var dr = SqlCmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        var detail = new Reservations
+                        {
+                            ReservationID = Convert.ToInt32(dr["ReservationID"]),
+                            GUID = dr["GUID"].ToString(),
+                            WorshipID = Convert.ToInt32(dr["WorshipID"]),
+                            Title = dr["Title"].ToString(),
+                            ScheduledDate = Convert.ToDateTime(dr["ScheduledDate"]),
+                            SeatID = dr["SeatID"].ToString(),
+                            BookedBy = Convert.ToInt32(dr["BookedBy"]),
+                            BookedByName = dr["BookedByName"].ToString(),
+                            BookedFor = dr["BookedFor"].ToString(),
+                            ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]),
+                            ReservationDate = Convert.ToDateTime(dr["ReservationDate"])
+                        };
+                        list.Add(detail);
+                    }
+                }
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            return list;
+        }
+
+        public List<ReservationLevel1> ReservationsMainInfo(int WorshipID, int UserID)
+        {
+            List<ReservationLevel1> list = new List<ReservationLevel1>();
+
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[book].[uspReadMainInfoReservationsbyUser]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                SqlParameter pUserID = new SqlParameter
+                {
+                    ParameterName = "@UserID",
+                    SqlDbType = SqlDbType.Int,
+                    Value = UserID
+                };
+                SqlCmd.Parameters.Add(pUserID);
+
+                if (WorshipID > 0)
+                {
+                    SqlParameter pWorshipID = new SqlParameter
+                    {
+                        ParameterName = "@WorshipID",
+                        SqlDbType = SqlDbType.Int,
+                        Value = WorshipID
+                    };
+                    SqlCmd.Parameters.Add(pWorshipID);
+                }
+
+                using (var dr = SqlCmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        var detail = new ReservationLevel1
+                        {
+                            GUID = dr["GUID"].ToString(),
+                            WorshipID = Convert.ToInt32(dr["WorshipID"]),
+                            Title = dr["Title"].ToString(),
+                            ScheduledDate = Convert.ToDateTime(dr["ScheduledDate"]),
+                            ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]),
+                            ReservationDate = Convert.ToDateTime(dr["ReservationDate"])
+                        };
+                        list.Add(detail);
+                    }
+                }
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+
+                foreach(var item in list)
+                {
+                    item.Details = Details(item.GUID);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            return list;
         }
     }
 }
