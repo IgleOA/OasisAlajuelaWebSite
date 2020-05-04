@@ -10,6 +10,7 @@ using System.Configuration;
 using System.Text;
 using System.Net.Mail;
 using shortid;
+using PagedList;
 
 namespace OasisAlajuelaWebSite.Controllers
 {
@@ -43,6 +44,34 @@ namespace OasisAlajuelaWebSite.Controllers
             return View(Reservations);
         }
 
+        public ActionResult Master(string currentFilter, string searchString, int? page)
+        {
+            UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+
+            var Reservations = from r in RBL.ReservationsMaster()
+                               select r;
+
+            //return View(Reservations);
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = searchString;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                Reservations = Reservations.Where(b => b.BookedByName.Contains(searchString) || b.Title.Contains(searchString) || b.GUID.Contains(searchString) || b.BookedFor.Contains(searchString));
+            }
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+            return View(Reservations.ToPagedList(pageNumber, pageSize));
+        }
 
         public ActionResult CheckOut(int id)
         {        
@@ -155,7 +184,14 @@ namespace OasisAlajuelaWebSite.Controllers
             }
         }
 
-        
+        public ActionResult _PreviousReservations(int id)
+        {
+            Users user = UBL.List().Where(x => x.UserName == User.Identity.GetUserName()).FirstOrDefault();
+
+            List<ReservationLevel1> Reservations = RBL.ReservationsMainInfo(id, user.UserID);
+            
+            return View(Reservations);
+        }
 
         public ActionResult Confirmation(string id)
         {

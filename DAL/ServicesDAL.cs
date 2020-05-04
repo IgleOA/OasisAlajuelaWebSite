@@ -94,7 +94,7 @@ namespace DAL
                     ParameterName = "@SVCIcon",
                     SqlDbType = SqlDbType.VarChar,
                     Size = 50,
-                    Value = Service.ServiceIcon
+                    Value = Service.ServiceIcon.Trim()
                 };
                 SqlCmd.Parameters.Add(SVCIcon);
 
@@ -103,7 +103,7 @@ namespace DAL
                     ParameterName = "@SVCName",
                     SqlDbType = SqlDbType.VarChar,
                     Size = 50,
-                    Value = Service.ServiceName
+                    Value = Service.ServiceName.Trim()
                 };
                 SqlCmd.Parameters.Add(SVCName);
 
@@ -111,7 +111,7 @@ namespace DAL
                 {
                     ParameterName = "@SVCDescription",
                     SqlDbType = SqlDbType.VarChar,
-                    Value = Service.ServiceDescription
+                    Value = Service.ServiceDescription.Trim()
                 };
                 SqlCmd.Parameters.Add(SVCDescription);
 
@@ -152,9 +152,9 @@ namespace DAL
             {
                 DynamicParameters Parm = new DynamicParameters();
                 Parm.Add("@InsertUser", InserUser);
-                Parm.Add("@SVCIcon", Service.ServiceIcon);
-                Parm.Add("@SVCName", Service.ServiceName);
-                Parm.Add("@SVCDescription", Service.ServiceDescription);
+                Parm.Add("@SVCIcon", Service.ServiceIcon.Trim());
+                Parm.Add("@SVCName", Service.ServiceName.Trim());
+                Parm.Add("@SVCDescription", Service.ServiceDescription.Trim());
                 Parm.Add("@SVCOrder", Service.Order);
 
                 SqlCon.Open();

@@ -120,7 +120,7 @@ namespace DAL
                 Parm.Add("@InsertUser", InserUser);
                 Parm.Add("@Banner", NewBanner.BannerData);
                 Parm.Add("@BannerExt", NewBanner.BannerExt);
-                Parm.Add("@BannerName", NewBanner.BannerName);
+                Parm.Add("@BannerName", NewBanner.BannerName.Trim());
                 Parm.Add("@LocationID", NewBanner.LocationID);
 
                 SqlCon.Open();

@@ -383,7 +383,7 @@ namespace DAL
                     ParameterName = "@FullName",
                     SqlDbType = SqlDbType.VarChar,
                     Size = 50,
-                    Value = User.FullName
+                    Value = User.FullName.Trim()
                 };
                 SqlCmd.Parameters.Add(ParFullName);
 
@@ -392,7 +392,7 @@ namespace DAL
                     ParameterName = "@UserName",
                     SqlDbType = SqlDbType.VarChar,
                     Size = 50,
-                    Value = User.UserName           
+                    Value = User.UserName.Trim()           
                 };
                 SqlCmd.Parameters.Add(ParUserName);
 
@@ -400,7 +400,7 @@ namespace DAL
                 {
                     ParameterName = "@Email",
                     SqlDbType = SqlDbType.VarChar,
-                    Value = User.Email
+                    Value = User.Email.Trim()
                 };
                 SqlCmd.Parameters.Add(ParEmail);
 

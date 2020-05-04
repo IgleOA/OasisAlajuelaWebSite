@@ -25,9 +25,9 @@ namespace DAL
                 //Insert Parameters
                 SqlCmd.Parameters.AddWithValue("@GUID", Reservation.GUID);
                 SqlCmd.Parameters.AddWithValue("@WorshipID", Reservation.WorshipID);
-                SqlCmd.Parameters.AddWithValue("@Seatlist", Reservation.SeatsReserved);
+                SqlCmd.Parameters.AddWithValue("@Seatlist", Reservation.SeatsReserved.Trim());
                 SqlCmd.Parameters.AddWithValue("@BookedBy", Reservation.BookedBy);
-                SqlCmd.Parameters.AddWithValue("@BookedFor", Reservation.BookedFor);
+                SqlCmd.Parameters.AddWithValue("@BookedFor", Reservation.BookedFor.Trim());
                 SqlCmd.Parameters.AddWithValue("@InsertUser", InsertUser);
 
                 //Exec Command
@@ -302,6 +302,52 @@ namespace DAL
                 if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
 
                 foreach(var item in list)
+                {
+                    item.Details = Details(item.GUID);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            return list;
+        }
+
+        public List<ReservationLevel1> ReservationsMaster()
+        {
+            List<ReservationLevel1> list = new List<ReservationLevel1>();
+
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[book].[uspReadMainInfoReservationsbyUser]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                using (var dr = SqlCmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        var detail = new ReservationLevel1
+                        {
+                            GUID = dr["GUID"].ToString(),
+                            WorshipID = Convert.ToInt32(dr["WorshipID"]),
+                            Title = dr["Title"].ToString(),
+                            ScheduledDate = Convert.ToDateTime(dr["ScheduledDate"]),
+                            ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]),
+                            ReservationDate = Convert.ToDateTime(dr["ReservationDate"]),
+                            BookedByName = dr["BookedByName"].ToString(),
+                            BookedFor = dr["BookedFor"].ToString(),
+                        };
+                        list.Add(detail);
+                    }
+                }
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+
+                foreach (var item in list)
                 {
                     item.Details = Details(item.GUID);
                 }

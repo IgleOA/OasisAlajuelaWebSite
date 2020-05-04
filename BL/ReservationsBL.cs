@@ -41,5 +41,10 @@ namespace BL
         {
             return RDAL.ReservationsMainInfo(WorshipID, UserID);
         }
+
+        public List<ReservationLevel1> ReservationsMaster()
+        {
+            return RDAL.ReservationsMaster();
+        }
     }
 }

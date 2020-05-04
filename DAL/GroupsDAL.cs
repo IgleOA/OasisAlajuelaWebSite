@@ -324,7 +324,7 @@ namespace DAL
                     ParameterName = "@GroupName",
                     SqlDbType = SqlDbType.VarChar,
                     Size = 100,
-                    Value = UG.GroupName
+                    Value = UG.GroupName.Trim()
                 };
                 SqlCmd.Parameters.Add(pName);
 
@@ -332,7 +332,7 @@ namespace DAL
                 {
                     ParameterName = "@Description",
                     SqlDbType = SqlDbType.VarChar,
-                    Value = UG.Description
+                    Value = UG.Description.Trim()
                 };
                 SqlCmd.Parameters.Add(pDescription);
 
@@ -383,7 +383,7 @@ namespace DAL
                     ParameterName = "@GroupName",
                     SqlDbType = SqlDbType.VarChar,
                     Size = 100,
-                    Value = UG.GroupName
+                    Value = UG.GroupName.Trim()
                 };
                 SqlCmd.Parameters.Add(pName);
 
@@ -391,7 +391,7 @@ namespace DAL
                 {
                     ParameterName = "@Description",
                     SqlDbType = SqlDbType.VarChar,
-                    Value = UG.Description
+                    Value = UG.Description.Trim()
                 };
                 SqlCmd.Parameters.Add(pDescription);
 

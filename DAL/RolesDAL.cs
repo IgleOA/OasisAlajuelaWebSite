@@ -61,7 +61,7 @@ namespace DAL
                     ParameterName = "@RoleName",
                     SqlDbType = SqlDbType.VarChar,
                     Size = 100,
-                    Value = Detail.RoleName
+                    Value = Detail.RoleName.Trim()
                 };
                 SqlCmd.Parameters.Add(RoleName);
 
@@ -69,7 +69,7 @@ namespace DAL
                 {
                     ParameterName = "@RoleDescription",
                     SqlDbType = SqlDbType.VarChar,
-                    Value = Detail.RoleDescription
+                    Value = Detail.RoleDescription.Trim()
                 };
                 SqlCmd.Parameters.Add(RoleDescription);
 

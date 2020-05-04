@@ -69,6 +69,12 @@ namespace ET
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy h:mm tt}", ApplyFormatInEditMode = true)]
         public DateTime ReservationDate { get; set; }
 
+        [Display(Name = "Reservado Por")]
+        public string BookedByName { get; set; }
+
+        [Display(Name = "Reservado Para")]
+        public string BookedFor { get; set; }
+
         public List<Reservations> Details { get; set; }
 
     }

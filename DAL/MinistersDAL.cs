@@ -70,7 +70,7 @@ namespace DAL
                     ParameterName = "@Title",
                     SqlDbType = SqlDbType.VarChar,
                     Size = 50,
-                    Value = Detail.Title
+                    Value = Detail.Title.Trim()
                 };
                 SqlCmd.Parameters.Add(Title);
 
@@ -79,7 +79,7 @@ namespace DAL
                     ParameterName = "@FullName",
                     SqlDbType = SqlDbType.VarChar,
                     Size = 100,
-                    Value = Detail.FullName
+                    Value = Detail.FullName.Trim()
                 };
                 SqlCmd.Parameters.Add(pFullName);
 

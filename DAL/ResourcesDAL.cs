@@ -24,10 +24,10 @@ namespace DAL
             {
                 DynamicParameters Parm = new DynamicParameters();
                 Parm.Add("@InsertUser", InsertUser);
-                Parm.Add("@TypeName", RT.TypeName);
+                Parm.Add("@TypeName", RT.TypeName.Trim());
                 Parm.Add("@TypeImage", RT.TypeImage);
                 Parm.Add("@TypeImageExt", RT.TypeImageExt);
-                Parm.Add("@Description", RT.Description);
+                Parm.Add("@Description", RT.Description.Trim());
                 Parm.Add("@IsPublic", RT.IsPublic);
 
                 SqlCon.Open();
@@ -78,7 +78,7 @@ namespace DAL
                 {
                     ParameterName = "@Description",
                     SqlDbType = SqlDbType.VarChar,
-                    Value = RT.Description
+                    Value = RT.Description.Trim()
                 };
                 SqlCmd.Parameters.Add(pDescription);
 
@@ -113,7 +113,7 @@ namespace DAL
                     ParameterName = "@FileName",
                     SqlDbType = SqlDbType.VarChar,
                     Size = 500,
-                    Value = RT.FileName
+                    Value = RT.FileName.Trim()
                 };
                 SqlCmd.Parameters.Add(pFileName);
 
@@ -122,7 +122,7 @@ namespace DAL
                     ParameterName = "@FileURL",
                     SqlDbType = SqlDbType.VarChar,
                     Size = 500,
-                    Value = RT.FileURL
+                    Value = RT.FileURL.Trim()
                 };
                 SqlCmd.Parameters.Add(pFileURL);
 
@@ -311,9 +311,9 @@ namespace DAL
                 Parm.Add("@ResourceID", RT.ResourceID);
                 Parm.Add("@ActionType", RT.ActionType);
                 Parm.Add("@ResourceTypeID", RT.ResourceTypeID);
-                Parm.Add("@FileName", RT.FileName);
-                Parm.Add("@Description", RT.Description); 
-                Parm.Add("@FileURL", RT.FileURL);
+                Parm.Add("@FileName", RT.FileName.Trim());
+                Parm.Add("@Description", RT.Description.Trim()); 
+                Parm.Add("@FileURL", RT.FileURL.Trim());
 
                 SqlCon.Open();
 

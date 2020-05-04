@@ -66,21 +66,21 @@
             </div>
             <hr />
             <div class=" row justify-content-center">
-                <table class="table-responsive w-100">
+                <table class="table-responsive w-100 mb-0" style="max-width: 1850px;">
                     <tbody>
-                        <tr class="bg-transparent border-0">
+                        <tr class="bg-transparent border-0" style="height: 150px;">
                             <td></td>
                             <td colspan="2" class="align-middle text-center">
                                 <table class="m-0">
                                     <tr>
-                                        <td class="text-center" style="width:250px;">
+                                        <td class="align-middle text-center" style="width:250px;">
                                             <h2 class="m-0 text-colorbase">Servicio</h2>
                                             <h1 class="text-capitalize">@Model.ScheduledDate.ToString("dddd, dd MMMM yyyy", new CultureInfo("es-US"))</h1>
                                         </td>
-                                        <td style="background-color:#0a3e77; width:250px;">
-                                            <h2 class="mx-0 my-2 text-white text-uppercase">Tarima Principal</h2>
+                                        <td class="align-middle" style="background-color:#0a3e77; width:250px;">
+                                            <h2 class="mx-0 text-white text-uppercase">Tarima Principal</h2>
                                         </td>
-                                        <td style="width:250px;">
+                                        <td class="align-middle" style="width:250px;">
                                             <h2 class="m-0 text-colorbase">Hora</h2>
                                             <h1>@Model.ScheduledDate.ToString("h:mm tt") CR</h1>
                                         </td>
@@ -388,6 +388,9 @@
                     </tbody>
                 </table>
             </div>
+            @{
+                Html.RenderAction("_PreviousReservations");
+            }            
         </div>
     </div>
 }
@@ -400,9 +403,9 @@ else
             </div>
             <hr />
             <div class=" row justify-content-center">
-                <table class="table-responsive w-100">
+                <table class="table-responsive w-100 mb-0" style="max-width: 1950px;">
                     <tbody>
-                        <tr class="bg-transparent border-0">
+                        <tr class="bg-transparent border-0" style="height: 150px;">
                             <td></td>
                             <td colspan="2" class="align-middle text-center">
                                 <table class="m-0">
@@ -411,7 +414,7 @@ else
                                             <h2 class="m-0 text-colorbase">Servicio</h2>
                                             <h1 class="text-capitalize">@Model.ScheduledDate.ToString("dddd, dd MMMM yyyy", new CultureInfo("es-US"))</h1>
                                         </td>
-                                        <td style="background-color:#0a3e77; width:250px;">
+                                        <td class="align-middle" style="background-color:#0a3e77; width:250px;">
                                             <h2 class="mx-0 my-2 text-white text-uppercase">Tarima Principal</h2>
                                         </td>
                                         <td style="width:250px;">
@@ -721,6 +724,11 @@ else
                         </tr>
                     </tbody>
                 </table>
+            </div>
+            <div class="row justify-content-center table-responsive">
+                @{
+                    Html.RenderAction("_PreviousReservations");
+                }
             </div>
         </div>
     </div>

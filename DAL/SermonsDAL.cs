@@ -72,13 +72,13 @@ namespace DAL
             {
                 DynamicParameters Parm = new DynamicParameters();
                 Parm.Add("@InsertUser", InserUser);
-                Parm.Add("@Title", NewMS.Title);
-                Parm.Add("@Description", NewMS.Description);
+                Parm.Add("@Title", NewMS.Title.Trim());
+                Parm.Add("@Description", NewMS.Description.Trim());
                 Parm.Add("@BannerData", NewMS.BannerData);
                 Parm.Add("@BannerExt", NewMS.BannerExt);
-                Parm.Add("@Tags", NewMS.Tags);
+                Parm.Add("@Tags", NewMS.Tags.Trim());
                 Parm.Add("@SermonDate", NewMS.SermonDate);
-                Parm.Add("@SermonURL", NewMS.SermonURL);
+                Parm.Add("@SermonURL", NewMS.SermonURL.Trim());
                 Parm.Add("@MinisterID", NewMS.MinisterID);
 
                 SqlCon.Open();
@@ -138,7 +138,7 @@ namespace DAL
                     ParameterName = "@Title",
                     SqlDbType = SqlDbType.VarChar,
                     Size = 100,
-                    Value = NewMS.Title
+                    Value = NewMS.Title.Trim()
                 };
                 SqlCmd.Parameters.Add(pTitle);
 
@@ -146,7 +146,7 @@ namespace DAL
                 {
                     ParameterName = "@Description",
                     SqlDbType = SqlDbType.VarChar,
-                    Value = NewMS.Description
+                    Value = NewMS.Description.Trim()
                 };
                 SqlCmd.Parameters.Add(pDescription);
 
@@ -179,7 +179,7 @@ namespace DAL
                 {
                     ParameterName = "@Tags",
                     SqlDbType = SqlDbType.VarChar,
-                    Value = NewMS.Tags
+                    Value = NewMS.Tags.Trim()
                 };
                 SqlCmd.Parameters.Add(pTags);
 

@@ -2844,6 +2844,8 @@
     <Content Include="Views\Reservations\EmailConfirmation.cshtml" />
     <Content Include="Views\Reservations\ValidationEmail.cshtml" />
     <Content Include="Views\Reservations\Index.cshtml" />
+    <Content Include="Views\Reservations\_PreviousReservations.cshtml" />
+    <Content Include="Views\Reservations\Master.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

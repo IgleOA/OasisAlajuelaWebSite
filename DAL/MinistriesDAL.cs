@@ -65,7 +65,7 @@ namespace DAL
                     ParameterName = "@Name",
                     SqlDbType = SqlDbType.VarChar,
                     Size = 50,
-                    Value = Ministry.Name
+                    Value = Ministry.Name.Trim()
                 };
                 SqlCmd.Parameters.Add(Title);
 
@@ -73,7 +73,7 @@ namespace DAL
                 {
                     ParameterName = "@Description",
                     SqlDbType = SqlDbType.VarChar,
-                    Value = Ministry.Description
+                    Value = Ministry.Description.Trim()
                 };
                 SqlCmd.Parameters.Add(Description);
 
@@ -192,7 +192,7 @@ namespace DAL
                     ParameterName = "@Name",
                     SqlDbType = SqlDbType.VarChar,
                     Size = 50,
-                    Value = Event.Name
+                    Value = Event.Name.Trim()
                 };
                 SqlCmd.Parameters.Add(Name);
 
@@ -200,7 +200,7 @@ namespace DAL
                 {
                     ParameterName = "@Description",
                     SqlDbType = SqlDbType.VarChar,
-                    Value = Event.Description
+                    Value = Event.Description.Trim()
                 };
                 SqlCmd.Parameters.Add(Description);
 
@@ -224,7 +224,7 @@ namespace DAL
                 {
                     ParameterName = "@ActionLink",
                     SqlDbType = SqlDbType.VarChar,
-                    Value = Event.ActionLink
+                    Value = Event.ActionLink.Trim()
                 };
                 SqlCmd.Parameters.Add(Actionlink);
 

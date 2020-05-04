@@ -72,8 +72,8 @@ namespace DAL
             {
                 DynamicParameters Parm = new DynamicParameters();
                 Parm.Add("@InsertUser", InserUser);
-                Parm.Add("@Title", NewMS.Title);
-                Parm.Add("@Description", NewMS.Description);
+                Parm.Add("@Title", NewMS.Title.Trim());
+                Parm.Add("@Description", NewMS.Description.Trim());
                 Parm.Add("@BannerData", NewMS.BannerData);
                 Parm.Add("@BannerExt", NewMS.BannerExt);
                 Parm.Add("@InsertDate", NewMS.InsertDate);
@@ -144,7 +144,7 @@ namespace DAL
                     ParameterName = "@Title",
                     SqlDbType = SqlDbType.VarChar,
                     Size = 50,
-                    Value = NewMS.Title
+                    Value = NewMS.Title.Trim()
                 };
                 SqlCmd.Parameters.Add(pTitle);
 
@@ -152,7 +152,7 @@ namespace DAL
                 {
                     ParameterName = "@Description",
                     SqlDbType = SqlDbType.VarChar,
-                    Value = NewMS.Description
+                    Value = NewMS.Description.Trim()
                 };
                 SqlCmd.Parameters.Add(pDescription);
 

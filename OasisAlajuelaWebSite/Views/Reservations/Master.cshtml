@@ -1,0 +1,168 @@
+﻿@model PagedList.IPagedList<ET.ReservationLevel1>
+@using PagedList.Mvc;
+@using System.Globalization;
+
+@{
+    ViewBag.Title = "Reservaciones - Master";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<script type="text/javascript">
+    function Remove(ID) {
+        var x = confirm("Esta seguro que quiere eliminar este campo de la reservación???");
+        if (x) {
+            $.ajax({
+                url: '@Url.Action("Remove")',
+                data: { id: ID }
+            }).done(function () { alert('Hecho!!!'); location.reload(); });
+        }
+    }
+    function RemoveGUID(GUID) {
+        var x = confirm("Esta seguro que quiere eliminar esta reservación???");
+        if (x) {
+            $.ajax({
+                url: '@Url.Action("RemoveGUID")',
+                data: { id: GUID }
+            }).done(function () { alert('Hecho!!!'); location.reload(); });
+        }
+    }
+</script>
+<section class="hp-section">
+    <div class="container">
+        <div class="row justify-content-center border-bottom">
+            <h2 class="heading-section font-weight-bold my-2 p-0">@ViewBag.Title.ToUpper()</h2>
+        </div>
+
+        @if (Model.Count() >= 1)
+        {
+            using (Html.BeginForm("Master", "Reservations", FormMethod.Get))
+            {
+                <div class="row justify-content-start">
+                    <div class="form-group input-group py-2 px-0 m-0 searchfield w-50">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-search"></i></span>
+                        </div>
+                        @Html.TextBox("SearchString", null, new { @class = "form-control", @placeholder = "Buscar Reservado/Evento/Código" })
+                    </div>
+
+                    <input type="submit" value="Buscar" class="btn btn-dark alt mt-2 mb-2" style="height: 2.75rem !important;" />
+                </div>
+            }
+            <div class="row justify-content-start">
+                <table class="table-responsive-xl align-content-center p-0 mb-2">
+                    <tbody>
+                        <tr class="align-middle">
+                            <th class="py-2 align-middle">@Html.DisplayNameFor(model => model.FirstOrDefault().BookedByName)</th>
+                            <th class="py-2 text-center align-middle">@Html.DisplayNameFor(model => model.FirstOrDefault().ScheduledDate)</th>
+                            <th class="py-2 align-middle">@Html.DisplayNameFor(model => model.FirstOrDefault().Title)</th>
+                            <th class="py-2 text-center align-middle">@Html.DisplayNameFor(model => model.FirstOrDefault().GUID)</th>
+                            <th class="py-2 text-center align-middle">@Html.DisplayNameFor(model => model.FirstOrDefault().ReservationDate)</th>
+                            <th class="py-2 align-middle">@Html.DisplayNameFor(model => model.FirstOrDefault().BookedFor)</th>
+                            <th class="py-2 text-center align-middle"></th>
+                        </tr>
+                        @foreach (var item in Model)
+                        {
+                            var modalName = "m" + item.GUID;
+                            <tr>
+                                <td class="align-middle py-1">@Html.DisplayFor(modelItem => item.BookedByName)</td>
+                                <td class="text-center align-middle py-1">@Html.DisplayFor(modelItem => item.ScheduledDate)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                                <td class="text-center align-middle py-1">
+                                    <a href="#" class="m-0" title="Detalles" data-toggle="modal" data-target='#@modalName'>
+                                        @item.GUID
+                                    </a>
+                                </td>
+                                <td class="text-center align-middle py-1">@Html.DisplayFor(modelItem => item.ReservationDate)</td>
+                                <td class="align-middle py-1">@Html.DisplayFor(modelItem => item.BookedFor)</td>
+                                <td class="text-center align-middle py-1">
+                                    <a href="#" title="Eliminar" onclick='RemoveGUID("@item.GUID")'><i class="fas fa-times-circle fa-2x"></i></a>
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="row justify-content-start">
+                @if (Model.PageCount > 1)
+                {
+                    @Html.PagedListPager(Model, page => Url.Action("Master", new { page, currentFilter = ViewBag.CurrentFilter }), new PagedListRenderOptions() { ContainerDivClasses = new string[] { "p-0" }, UlElementClasses = new string[] { "pagination m-0" } })
+                }
+            </div>
+        }
+        else
+        {
+            <div class="row justify-content-start">
+                <p class="my-2">Aún no has realizado ninguna reservación.</p>
+
+            </div>
+        }
+        @foreach (var item in Model)
+        {
+            var modalName = "m" + item.GUID;
+
+            <div class="modal fade" id="@modalName">
+                <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="card bg-light">
+                                <article class="card-body">
+                                    <h3 class="mt-3 mb-1">
+                                        <i class="fa fa-tags"></i>
+                                        Reservación: <span style="color:blue; font-weight: bolder;">@item.GUID</span>
+                                    </h3>
+                                    <hr />
+                                    <div class="my-2">
+                                        <table class="my-0 table-responsive-" align="center">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center align-middle py-1">@Html.DisplayNameFor(model => model.FirstOrDefault().Details.FirstOrDefault().SeatID)</th>
+                                                    <th class="text-center align-middle py-1">Bloque</th>
+                                                    <th class="text-center align-middle py-1">Fila</th>
+                                                    <th class="text-center align-middle py-1">Asiento</th>
+                                                    @if (item.ActiveFlag == true)
+                                                    {
+                                                        <th class="text-center align-middle py-1"></th>
+                                                    }
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var r in item.Details)
+                                                {
+                                                    <tr>
+                                                        <td class="p-0 text-center align-middle">@Html.DisplayFor(modelr => r.SeatID)</td>
+                                                        <td class="p-0 text-center align-middle">@r.SeatID.Substring(0, 2)</td>
+                                                        <td class="p-0 text-center align-middle">@r.SeatID.Substring(2, 1)</td>
+                                                        @if (r.SeatID.Length >= 6)
+                                                        {
+                                                            <td class="p-0 text-center align-middle">@r.SeatID.Substring(4, 2)</td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td class="p-0 text-center align-middle">@r.SeatID.Substring(4, 1)</td>
+                                                        }
+                                                        @if (item.ActiveFlag == true)
+                                                        {
+                                                            <td class="p-0 text-center align-middle">
+                                                                <a href="#" title="Eliminar" onclick='Remove(@r.ReservationID)'><i class="fas fa-times-circle fa-1x text-colorbase"></i></a>
+                                                            </td>
+                                                        }
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="my-2">
+                                        <p class="p-0 m-0">Reservado para: <span class="font-weight-bold">@item.Details.FirstOrDefault().BookedFor</span></p>
+                                        <p class="p-0 m-0">Evento: <span class="font-weight-bold">@item.Title</span></p>
+                                        <p class="p-0 m-0">Fecha del Evento: <span class="font-weight-bold text-capitalize">@item.ScheduledDate.ToString("dddd, dd MMMM yyyy", new CultureInfo("es-US")) - @item.ScheduledDate.ToString("h:mm tt")</span></p>
+                                    </div>
+                                </article>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>
