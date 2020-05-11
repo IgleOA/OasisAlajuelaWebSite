@@ -224,7 +224,7 @@ namespace DAL
                 {
                     ParameterName = "@ActionLink",
                     SqlDbType = SqlDbType.VarChar,
-                    Value = Event.ActionLink.Trim()
+                    Value = Event.ActionLink
                 };
                 SqlCmd.Parameters.Add(Actionlink);
 
