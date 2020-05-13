@@ -39,11 +39,23 @@ AS
 								,[Day]				= CASE WHEN DATEPART(DAY,IE.[ScheduledDate]) <10 THEN '0' + CONVERT(VARCHAR(1),DATEPART(DAY,IE.[ScheduledDate]))
 														   ELSE CONVERT(VARCHAR(2),DATEPART(DAY,IE.[ScheduledDate])) END
 								,[Time]				= CONVERT(VARCHAR(10),FORMAT(IE.[ScheduledDate], 'hh:mm tt','en-US'))
-								,[WorshipID]		= ISNULL(W.[WorshipID],0)
-								,[Capacity]			= ISNULL(W.[Capacity],0)
+								,IE.[ReservationFlag]	
+								,[Capacity]			= ISNULL(IE.[Capacity],0)
+								,[SocialDistance]	= ISNULL(IE.[SocialDistance],0)
+								,[Available]		= A.[Available] - B.[Booked]
 						FROM	[config].[utbUpcomingEvents] IE
 								LEFT JOIN [config].[utbMinisters] M ON M.[MinisterID] = IE.[MinisterID]
-								LEFT JOIN [book].[utbWorships] W ON W.[ScheduledDate] = IE.[ScheduledDate] AND W.[ActiveFlag] = 1
+
+								OUTER APPLY (SELECT [Available] = CASE WHEN IE.[Capacity] > 0 THEN IE.[Capacity]
+																	   ELSE COUNT(S.[SeatID]) END
+													,[Total] = COUNT(S.[SeatID])
+											 FROM	[book].[utbAuditoriumSeats] S) A
+						
+								OUTER APPLY (SELECT [Booked] = COUNT(R.[ReservationID])
+											 FROM	[book].[utbReservations] R
+											 WHERE	R.[EventID] = IE.[EventID]
+													AND R.[ActiveFlag] = 1) B
+
 						WHERE	IE.[ActiveFlag] = ISNULL(@pActiveFlag,IE.[ActiveFlag])
 								AND IE.[EventID] = ISNULL(@pEventID,[EventID])
 								AND IE.[ScheduledDate] >= @pDate
@@ -73,8 +85,10 @@ AS
 								,[Month]			= DATENAME(MONTH,CONVERT(DATETIME,Y.[Date]) + CONVERT(DATETIME,W.[Schedule]))
 								,[Day]				= CONVERT(VARCHAR(2),DATEPART(DAY,CONVERT(DATETIME,Y.[Date]) + CONVERT(DATETIME,W.[Schedule])))
 								,[Time]				= CONVERT(VARCHAR(10),FORMAT((CONVERT(DATETIME,Y.[Date]) + CONVERT(DATETIME,W.[Schedule])), 'hh:mm tt','en-US'))
-								,[WorshipID]		= 0	
+								,[ReservationFlag]	= 0
 								,[Capacity]			= 0
+								,[SocialDistance]	= 0
+								,[Available]		= 0
 								,[Order]			= 2
 						INTO	#MainData
 						FROM	(SELECT [Date] = DATEADD(DAY, rn - 1, @StartDate)
@@ -100,12 +114,22 @@ AS
 								,[Day]				= CASE WHEN DATEPART(DAY,IE.[ScheduledDate]) <10 THEN '0' + CONVERT(VARCHAR(1),DATEPART(DAY,IE.[ScheduledDate]))
 														   ELSE CONVERT(VARCHAR(2),DATEPART(DAY,IE.[ScheduledDate])) END
 								,[Time]				= CONVERT(VARCHAR(10),FORMAT(IE.[ScheduledDate], 'hh:mm tt','en-US'))
-								,[WorshipID]		= ISNULL(W.[WorshipID],0)
-								,[Capacity]			= ISNULL(W.[Capacity],0)
+								,IE.[ReservationFlag]	
+								,[Capacity]			= ISNULL(IE.[Capacity],0)
+								,[SocialDistance]	= ISNULL(IE.[SocialDistance],0)
+								,[Available]		= A.[Available] - B.[Booked]
 								,[Order]			= 1
 						FROM	[config].[utbUpcomingEvents] IE
 								LEFT JOIN [config].[utbMinisters] M ON M.[MinisterID] = IE.[MinisterID]
-								LEFT JOIN [book].[utbWorships] W ON W.[ScheduledDate] = IE.[ScheduledDate] AND W.[ActiveFlag] = 1
+								OUTER APPLY (SELECT [Available] = CASE WHEN IE.[Capacity] > 0 THEN IE.[Capacity]
+																	   ELSE COUNT(S.[SeatID]) END
+													,[Total] = COUNT(S.[SeatID])
+											 FROM	[book].[utbAuditoriumSeats] S) A
+						
+								OUTER APPLY (SELECT [Booked] = COUNT(R.[ReservationID])
+											 FROM	[book].[utbReservations] R
+											 WHERE	R.[EventID] = IE.[EventID]
+													AND R.[ActiveFlag] = 1) B
 						WHERE	IE.[ActiveFlag] = 1
 								AND IE.[ScheduledDate] >= @pDate
 

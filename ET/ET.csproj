@@ -88,7 +88,7 @@
     <Compile Include="UserProfile.cs" />
     <Compile Include="Users.cs" />
     <Compile Include="WebDirectory.cs" />
-    <Compile Include="Worships.cs" />
+    <Compile Include="ReservationEventDetail.cs" />
     <Compile Include="YouTubeVideo.cs" />
   </ItemGroup>
   <ItemGroup>

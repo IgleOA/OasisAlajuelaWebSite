@@ -15,6 +15,9 @@
             opener.location.reload();
             window.close();
         }
+
+        Reservation();
+        UpdateCM();
     });
 
     function Create() {
@@ -23,16 +26,64 @@
     }
     function Reservation() {
         var flag = document.getElementById("ReservationFlag");
-        var DIV = document.getElementById("CapacityDiv");
+        var CDIV = document.getElementById("CapacityDiv");
+        var DDIV = document.getElementById("DistanceDiv");
         
         if (flag.value == "true") {
-            DIV.style.display = "block";
+            CDIV.style.display = "block";
+            DDIV.style.display = "block";
         }
         else {
-            DIV.style.display = "none";
-            document.getElementById("Capacity").value = null;
+            CDIV.style.display = "none";
+            DDIV.style.display = "none";
+            document.getElementById("CapacityDiv").value = null;
+            document.getElementById("DistanceDiv").value = null;
+        }
+    }
+    function ValidateCM() {
+        var SD = document.getElementById("SocialDistance");
+        var Cap = document.getElementById("Capacity");
+        var CM = "554";
+        switch (SD.value) {
+            case "1":
+                CM = "280";
+                break;
+            case "2":
+                CM = "150";
+                break;
+            case "3":
+                CM = "100";
+                break;
+            default:
+                CM = "554";
         }
 
+        if (Cap.value > CM) {
+            alert('El cupo máximo seleccionado excede el capacidad máxima estimada.');
+            document.getElementById("btnSubmit").disabled = true;
+        }
+        else {
+            document.getElementById("btnSubmit").disabled = false;
+        }
+    }
+
+    function UpdateCM() {
+        var SD = document.getElementById("SocialDistance");
+        var CM = document.getElementById("Capacity");
+        switch (SD.value) {
+            case "1":
+                CM.value = "280";
+                break;
+            case "2":
+                CM.value = "150";
+                break;
+            case "3":
+                CM.value = "100";
+                break;
+            default:
+                CM.value = "554";
+        };
+        document.getElementById("btnSubmit").disabled = false;
     }
 </script>
 
@@ -92,45 +143,40 @@
                             ReservationRequire.Add(new SelectListItem() { Text = "Si", Value = "true" });
                             ReservationRequire.Add(new SelectListItem() { Text = "No", Value = "false" });
                         }
-                        @Html.DropDownListFor(model => model.ReservationFlag, ReservationRequire, new { @class = "custom-select", style = "max-width: 70px;", @onchange = "Reservation()" })
+                        @Html.DropDownListFor(model => model.ReservationFlag, ReservationRequire, new { @class = "custom-select" , style = "max-width: 70px;", @onchange = "Reservation()" })
                         @Html.ValidationMessageFor(model => model.ReservationFlag, "", new { @class = "text-danger" })
+                    </div>               
+                </div>
+                 <div id="DistanceDiv" class="form-group" style="display: none;">
+                    <div class="input-group m-3 w-100">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text font-weight-bold" id="inputGroup-sizing-default">Distanciamiento</span>
+                        </div>
+                        @{
+                            List<SelectListItem> DistanceOptions = new List<SelectListItem>();
+                            DistanceOptions.Add(new SelectListItem() { Text = "No es necesario", Value = "0" });
+                            DistanceOptions.Add(new SelectListItem() { Text = "1 Silla - C.M: aprox. 280 espacios", Value = "1" });
+                            DistanceOptions.Add(new SelectListItem() { Text = "2 Sillas - C.M: aprox. 150 espacios", Value = "2" });
+                            DistanceOptions.Add(new SelectListItem() { Text = "3 Sillas - C.M: aprox. 100 espacios", Value = "3" });
+                        }
+                        @Html.DropDownListFor(model => model.SocialDistance, DistanceOptions, new { @class = "custom-select" , style = "margin-right: 2rem;", @onchange = "UpdateCM()" })
+                        @Html.ValidationMessageFor(model => model.SocialDistance, "", new { @class = "text-danger" })
+                    </div>               
+                </div>
+                <div id="CapacityDiv" class="form-group" style="display: none;">
+                    <div class="input-group m-3 w-100">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text font-weight-bold" id="inputGroup-sizing-default">Cupo máximo</span>
+                        </div>
+                        @Html.EditorFor(model => model.Capacity, new { htmlAttributes = new { @class = "form-control", @style = "max-width: 163px;", placeholder = "Si aplica", @onchange = "ValidateCM()" } })
+                        @Html.ValidationMessageFor(model => model.Capacity, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                 @{
-                    List<SelectListItem> Capacities = new List<SelectListItem>();
-                    Capacities.Add(new SelectListItem() { Text = "Total - 100%", Value = "100" });
-                    Capacities.Add(new SelectListItem() { Text = "Media - 50%", Value = "50" });
-                    Capacities.Add(new SelectListItem() { Text = "Parcial - 25%", Value = "25" });
-                }
-                @if (Model.Capacity > 0)
-                {
-                    <div id="CapacityDiv" class="form-group" style="display: block;">
-                        <div class="col-md-10 d-flex justify-content-between">
-                            @Html.LabelFor(model => model.Capacity, htmlAttributes: new { @class = "control-label m-0" })
-                        </div>
-                        <div class="col-md-10">
-                           
-                            @Html.DropDownListFor(model => model.Capacity, Capacities, new { @class = "custom-select" })
-                            @Html.ValidationMessageFor(model => model.Capacity, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                }
-                else
-                {
-                    <div id="CapacityDiv" class="form-group" style="display: none;">
-                        <div class="col-md-10 d-flex justify-content-between">
-                            @Html.LabelFor(model => model.Capacity, htmlAttributes: new { @class = "control-label m-0" })
-                        </div>
-                        <div class="col-md-10">
-                            @Html.DropDownListFor(model => model.Capacity, Capacities, new { @class = "custom-select" })
-                            @Html.ValidationMessageFor(model => model.Capacity, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                }
+               
                 <div class="form-group">
                     @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
                     <div class="col-md-10">
-                        @Html.TextAreaFor(model => model.Description, 5, 1, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.TextAreaFor(model => model.Description, 3, 1, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                     </div>
                 </div>

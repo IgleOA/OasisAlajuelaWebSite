@@ -7,9 +7,9 @@ namespace BL
     {
         private AuditoriumLayoutDAL ADAL = new AuditoriumLayoutDAL();
 
-        public AuditoriumLayout Layout(int WorshipID)
+        public AuditoriumLayout Layout(int EventID)
         {
-            return ADAL.Layout(WorshipID);
+            return ADAL.Layout(EventID);
         }
     }
 }

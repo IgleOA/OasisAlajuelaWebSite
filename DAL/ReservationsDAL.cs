@@ -24,7 +24,7 @@ namespace DAL
 
                 //Insert Parameters
                 SqlCmd.Parameters.AddWithValue("@GUID", Reservation.GUID);
-                SqlCmd.Parameters.AddWithValue("@WorshipID", Reservation.WorshipID);
+                SqlCmd.Parameters.AddWithValue("@EventID", Reservation.EventID);
                 SqlCmd.Parameters.AddWithValue("@Seatlist", Reservation.SeatsReserved.Trim());
                 SqlCmd.Parameters.AddWithValue("@BookedBy", Reservation.BookedBy);
                 SqlCmd.Parameters.AddWithValue("@BookedFor", Reservation.BookedFor.Trim());
@@ -82,7 +82,7 @@ namespace DAL
                         {
                             ReservationID = Convert.ToInt32(dr["ReservationID"]),
                             GUID = dr["GUID"].ToString(),
-                            WorshipID = Convert.ToInt32(dr["WorshipID"]),
+                            EventID = Convert.ToInt32(dr["EventID"]),
                             Title = dr["Title"].ToString(),
                             ScheduledDate = Convert.ToDateTime(dr["ScheduledDate"]),
                             SeatID = dr["SeatID"].ToString(),
@@ -189,7 +189,7 @@ namespace DAL
             return rpta;
         }
 
-        public List<Reservations> ReservationsFullInfo (int WorshipID, int UserID)
+        public List<Reservations> ReservationsFullInfo (int EventID, int UserID)
         {
             List<Reservations> list = new List<Reservations>();
 
@@ -209,15 +209,15 @@ namespace DAL
                 };
                 SqlCmd.Parameters.Add(pUserID);
 
-                if(WorshipID > 0)
+                if(EventID > 0)
                 {
-                    SqlParameter pWorshipID = new SqlParameter
+                    SqlParameter pEventID = new SqlParameter
                     {
-                        ParameterName = "@WorshipID",
+                        ParameterName = "@EventID",
                         SqlDbType = SqlDbType.Int,
-                        Value = WorshipID
+                        Value = EventID
                     };
-                    SqlCmd.Parameters.Add(pWorshipID);
+                    SqlCmd.Parameters.Add(pEventID);
                 }
 
                 using (var dr = SqlCmd.ExecuteReader())
@@ -228,7 +228,7 @@ namespace DAL
                         {
                             ReservationID = Convert.ToInt32(dr["ReservationID"]),
                             GUID = dr["GUID"].ToString(),
-                            WorshipID = Convert.ToInt32(dr["WorshipID"]),
+                            EventID = Convert.ToInt32(dr["EventID"]),
                             Title = dr["Title"].ToString(),
                             ScheduledDate = Convert.ToDateTime(dr["ScheduledDate"]),
                             SeatID = dr["SeatID"].ToString(),
@@ -252,7 +252,7 @@ namespace DAL
             return list;
         }
 
-        public List<ReservationLevel1> ReservationsMainInfo(int WorshipID, int UserID)
+        public List<ReservationLevel1> ReservationsMainInfo(int EventID, int UserID)
         {
             List<ReservationLevel1> list = new List<ReservationLevel1>();
 
@@ -272,15 +272,15 @@ namespace DAL
                 };
                 SqlCmd.Parameters.Add(pUserID);
 
-                if (WorshipID > 0)
+                if (EventID > 0)
                 {
-                    SqlParameter pWorshipID = new SqlParameter
+                    SqlParameter pEventID = new SqlParameter
                     {
-                        ParameterName = "@WorshipID",
+                        ParameterName = "@EventID",
                         SqlDbType = SqlDbType.Int,
-                        Value = WorshipID
+                        Value = EventID
                     };
-                    SqlCmd.Parameters.Add(pWorshipID);
+                    SqlCmd.Parameters.Add(pEventID);
                 }
 
                 using (var dr = SqlCmd.ExecuteReader())
@@ -290,7 +290,7 @@ namespace DAL
                         var detail = new ReservationLevel1
                         {
                             GUID = dr["GUID"].ToString(),
-                            WorshipID = Convert.ToInt32(dr["WorshipID"]),
+                            EventID = Convert.ToInt32(dr["EventID"]),
                             Title = dr["Title"].ToString(),
                             ScheduledDate = Convert.ToDateTime(dr["ScheduledDate"]),
                             ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]),
@@ -334,7 +334,7 @@ namespace DAL
                         var detail = new ReservationLevel1
                         {
                             GUID = dr["GUID"].ToString(),
-                            WorshipID = Convert.ToInt32(dr["WorshipID"]),
+                            EventID = Convert.ToInt32(dr["EventID"]),
                             Title = dr["Title"].ToString(),
                             ScheduledDate = Convert.ToDateTime(dr["ScheduledDate"]),
                             ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]),

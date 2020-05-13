@@ -59,16 +59,29 @@
                                 @if (item.MinisterName.Length > 0)
                                 {
                                     <p class="ml-1 mt-1 mb-1 mr-3 text-justify">
-                                        <b>@item.MinisterName</b> - @if(@item.Description.Length > 0) { @item.Description } else { @item.Title }
+                                        <b>@item.MinisterName</b> - @if (@item.Description.Length > 0)
+                                        {@item.Description }
+                                    else
+                                    { @item.Title}
                                     </p>
                                 }
                                 else
                                 {
-                                    <p class="ml-1 mt-1 mb-1 mr-3 text-justify">@if(@item.Description.Length > 0) { @item.Description } else { @item.Title }</p>
+                                    <p class="ml-1 mt-1 mb-1 mr-3 text-justify">@if (@item.Description.Length > 0)
+                                    {@item.Description }
+                                else
+                                { @item.Title}</p>
                                 }
-                                @if(item.Capacity > 0)
+                                @if (item.ReservationFlag == true)
                                 {
-                                    <a href='@Url.Action("CheckOut","Reservations", new { id = item.WorshipID })' target="_blank" title="Reservar" class="btn btn-light" style="text-decoration: none;"><i class="fas fa-sign-in-alt fa-1x"></i> Reservar su espacio</a>
+                                    if (item.Available > 0)
+                                    {
+                                        <a href='@Url.Action("CheckOut", "Reservations", new { id = item.EventID })' target="_blank" title="Reservar" class="btn btn-light" style="text-decoration: none;"><i class="fas fa-sign-in-alt fa-1x"></i> Reservar su espacio</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="btn btn-light" style="text-decoration: none; background-color: red;">Cupos Agotados</a>
+                                    }
                                 }
                             </div>
                             @if (ViewBag.Write == true)

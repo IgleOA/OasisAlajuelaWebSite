@@ -12,7 +12,7 @@
 
 CREATE PROCEDURE [book].[uspReadReservationsByUser]
 	@UserID		INT,
-	@WorshipID	INT = NULL
+	@EventID	INT = NULL
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -24,23 +24,22 @@ AS
             -- =======================================================		
 				SELECT	R.[ReservationID]
 						,R.[GUID]
-						,R.[WorshipID]
-						,UCP.[Title]
-						,UCP.[ScheduledDate]
+						,R.[EventID]
+						,W.[Title]
+						,W.[ScheduledDate]
 						,R.[SeatID]
 						,R.[BookedBy]
 						,[BookedByName]		= U.[FullName]
 						,R.[BookedFor]
-						,[ActiveFlag]		= CASE WHEN UCP.[ScheduledDate] < DATEADD(HOUR,-6,GETDATE()) THEN 0 ELSE 1 END
+						,[ActiveFlag]		= CASE WHEN W.[ScheduledDate] < DATEADD(HOUR,-6,GETDATE()) THEN 0 ELSE 1 END
 						,[ReservationDate]	= DATEADD(HOUR,-6,R.[InsertDate])
 				FROM	[book].[utbReservations] R
 						LEFT JOIN [adm].[utbUsers] U ON U.[UserID] = R.[BookedBy]
-						LEFT JOIN [book].[utbWorships] W ON W.[WorshipID] = R.[WorshipID]
-						INNER JOIN [config].[utbUpcomingEvents] UCP ON UCP.[ScheduledDate] = W.[ScheduledDate] AND UCP.[ActiveFlag] = 1
+						INNER JOIN [config].[utbUpcomingEvents] W ON W.[EventID] = R.[EventID] AND W.[ActiveFlag] = 1
 				WHERE	R.[BookedBy] = @UserID
-						AND R.[WorshipID] = ISNULL(@WorshipID, R.[WorshipID])
+						AND R.[EventID] = ISNULL(@EventID, R.[EventID])
 						AND R.[ActiveFlag] = 1			
-				ORDER BY UCP.[ScheduledDate], R.[WorshipID], R.[InsertDate], R.[BookedFor]
+				ORDER BY W.[ScheduledDate], R.[EventID], R.[InsertDate], R.[BookedFor]
 			-- =======================================================
 
         END TRY

@@ -131,7 +131,7 @@
     <Compile Include="UserProfileDAL.cs" />
     <Compile Include="UsersDAL.cs" />
     <Compile Include="WebDirectoryDAL.cs" />
-    <Compile Include="WorshipsDAL.cs" />
+    <Compile Include="ReservationEventDetailDAL.cs" />
     <Compile Include="YouTubeDAL.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -18,7 +18,7 @@ namespace OasisAlajuelaWebSite.Controllers
     public class ReservationsController : Controller
     {
         private AuditoriumLayoutBL ABL = new AuditoriumLayoutBL();
-        private WorshipsBL WBL = new WorshipsBL();
+        private ReservationEventDetailBL WBL = new ReservationEventDetailBL();
         private UsersBL UBL = new UsersBL();
         private ReservationsBL RBL = new ReservationsBL();
         private RightsBL RRBL = new RightsBL();
@@ -97,7 +97,7 @@ namespace OasisAlajuelaWebSite.Controllers
                 }
                 ViewBag.Write = validation.WriteRight;
 
-                Worships Model = WBL.Details(id,user.UserID);
+                ReservationEventDetail Model = WBL.Details(id,user.UserID);
 
                 Model.Layout = ABL.Layout(id);
 
@@ -107,7 +107,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CheckOut(Worships Model)
+        public ActionResult CheckOut(ReservationEventDetail Model)
         {
             if (ModelState.IsValid)
             {
@@ -118,7 +118,7 @@ namespace OasisAlajuelaWebSite.Controllers
                     //GUID = Guid.NewGuid().ToString().ToUpper(),
                     //GUID = Regex.Replace(Convert.ToBase64String(Guid.NewGuid().ToByteArray()), "[/+=]", ""),
                     GUID = ShortId.Generate(true, false, 12),
-                    WorshipID = Model.WorshipID,
+                    EventID = Model.EventID,
                     BookedBy = user.UserID,
                     BookedFor = (string.IsNullOrEmpty(Model.ReservedFor)) ? user.FullName : Model.ReservedFor,
                     SeatsReserved = Model.SeatsReserved
@@ -126,7 +126,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
                 Reservation.Details = RBL.AddReservation(Reservation, User.Identity.GetUserName());
 
-                List<Reservations> Reservations = RBL.ReservationsFullInfo(Model.WorshipID, user.UserID);
+                List<Reservations> Reservations = RBL.ReservationsFullInfo(Model.EventID, user.UserID);
 
                 if(Reservations.Count >= 20 && !user.RoleName.Contains("Admin"))
                 {
@@ -175,11 +175,11 @@ namespace OasisAlajuelaWebSite.Controllers
                     ViewBag.Layout = "~/Views/Shared/_MainLayout.cshtml";
                 }
                 //ViewBag.Write = validation.WriteRight;
-                Worships Model2 = WBL.Details(Model.WorshipID, user.UserID);
+                ReservationEventDetail Model2 = WBL.Details(Model.EventID, user.UserID);
 
                 Model.MaxToReserve = Model2.MaxToReserve;
 
-                Model.Layout = ABL.Layout(Model.WorshipID);
+                Model.Layout = ABL.Layout(Model.EventID);
                 return View(Model);
             }
         }

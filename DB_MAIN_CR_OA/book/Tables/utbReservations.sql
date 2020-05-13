@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [book].[utbReservations] (
     [ReservationID]  INT           IDENTITY (1, 1) NOT NULL,
     [GUID]           VARCHAR (MAX) NOT NULL,
-    [WorshipID]      INT           NOT NULL,
+    [EventID]		 INT           NOT NULL,
     [SeatID]         VARCHAR (10)  NOT NULL,
     [BookedBy]       INT           NOT NULL,
     [BookedFor]      VARCHAR (100) NOT NULL,
@@ -13,6 +13,6 @@
     CONSTRAINT [utbReservationID] PRIMARY KEY CLUSTERED ([ReservationID] ASC),
     CONSTRAINT [FK.adm.utbUsers.book.utbReservations.BookedBy] FOREIGN KEY ([BookedBy]) REFERENCES [adm].[utbUsers] ([UserID]),
     CONSTRAINT [FK.book.utbAuditoriumSeats.book.utbReservations.RowID] FOREIGN KEY ([SeatID]) REFERENCES [book].[utbAuditoriumSeats] ([SeatID]),
-    CONSTRAINT [FK.book.utbWorships.book.utbReservations.WorshipID] FOREIGN KEY ([WorshipID]) REFERENCES [book].[utbWorships] ([WorshipID])
+    CONSTRAINT [FK.config.utbUpcomingEvents.book.utbReservations.EventID] FOREIGN KEY ([EventID]) REFERENCES [config].[utbUpcomingEvents] ([EventID])
 );
 

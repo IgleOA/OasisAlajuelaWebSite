@@ -70,6 +70,7 @@
     <Folder Include="adm\Stored Procedures\" />
     <Folder Include="config\Stored Procedures\" />
     <Folder Include="book\Stored Procedures\" />
+    <Folder Include="book\Functions" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="config\Tables\utbMinistries.sql" />
@@ -89,7 +90,6 @@
     <Build Include="adm\Tables\utbRoles.sql" />
     <Build Include="config\Tables\utbResources.sql" />
     <Build Include="config\Tables\utbBannersLocation.sql" />
-    <Build Include="book\Tables\utbWorships.sql" />
     <Build Include="config\Tables\utbResourcesGroups.sql" />
     <Build Include="config\Tables\utbNews.sql" />
     <Build Include="config\Tables\utbResourceTypes.sql" />
@@ -148,7 +148,7 @@
     <Build Include="book\Stored Procedures\uspReadAuditoriumLayout.sql" />
     <Build Include="book\Stored Procedures\uspReadAuditoriumRows.sql" />
     <Build Include="book\Stored Procedures\uspReadAuditoriumSeats.sql" />
-    <Build Include="book\Stored Procedures\uspReadWorships.sql" />
+    <Build Include="book\Stored Procedures\uspReadReservationEventDetails.sql" />
     <Build Include="book\Stored Procedures\uspAddReservation.sql" />
     <Build Include="config\Stored Procedures\uspReadGroups.sql" />
     <Build Include="adm\Stored Procedures\uspAddBanner.sql" />
@@ -173,8 +173,10 @@
     <Build Include="book\Stored Procedures\uspUpdateReservation.sql" />
     <Build Include="book\Stored Procedures\uspReadReservationsByUser.sql" />
     <Build Include="book\Stored Procedures\uspReadMainInfoReservationsbyUser.sql" />
+    <Build Include="book\Functions\ufnCheckSeatAvailability.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DB_MAIN_CR_OA_DEV.publish.xml" />
+    <None Include="DB_MAIN_CR_OA_PROD.publish.xml" />
   </ItemGroup>
 </Project>

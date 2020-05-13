@@ -11,12 +11,14 @@
 -- ======================================================================
 
 CREATE PROCEDURE [adm].[uspAddUpcommingEvent]
-	@InsertUser		VARCHAR(50),
-	@Title			VARCHAR(50),
-	@MinisterID		INT,
-	@Description	VARCHAR(MAX) = NULL,
-	@ScheduleDate	DATETIME,
-	@Capacity		INT = NULL
+	@InsertUser			VARCHAR(50),
+	@Title				VARCHAR(50),
+	@MinisterID			INT,
+	@Description		VARCHAR(MAX) = NULL,
+	@ScheduleDate		DATETIME,
+	@ReservationFlag	BIT,
+	@Capacity			INT = NULL,
+	@SocialDistance		INT = NULL
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -35,20 +37,8 @@ AS
                 END
 
             -- =======================================================
-				IF (@Capacity IS NULL)
-					BEGIN
-						INSERT INTO [config].[utbUpcomingEvents]([Title],[MinisterID],[Description],[ScheduledDate],[InsertUser],[LastModifyUser])
-						VALUES (@Title, @MinisterID, @Description, @ScheduleDate, @InsertUser, @InsertUser)
-					END
-				ELSE
-					BEGIN
-						INSERT INTO [config].[utbUpcomingEvents]([Title],[MinisterID],[Description],[ScheduledDate],[InsertUser],[LastModifyUser])
-						VALUES (@Title, @MinisterID, @Description, @ScheduleDate, @InsertUser, @InsertUser)
-
-						INSERT INTO [book].[utbWorships] ([ScheduledDate],[Capacity],[InsertUser],[LastModifyUser])
-						VALUES (@ScheduleDate, @Capacity, @InsertUser, @InsertUser)
-					END
-				
+				INSERT INTO [config].[utbUpcomingEvents]([Title],[MinisterID],[Description],[ScheduledDate],[ReservationFlag],[Capacity],[SocialDistance],[InsertUser],[LastModifyUser])
+				VALUES (@Title, @MinisterID, @Description, @ScheduleDate, @ReservationFlag, @Capacity, @SocialDistance, @InsertUser, @InsertUser)				
 			-- =======================================================
 
         IF ( @@trancount > 0

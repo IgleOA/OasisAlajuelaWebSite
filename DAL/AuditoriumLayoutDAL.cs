@@ -11,7 +11,7 @@ namespace DAL
     {
         private SqlConnection SqlCon = new SqlConnection(ConfigurationManager.ConnectionStrings["DB_MAIN_CR_OA_Connection"].ToString());
 
-        public AuditoriumLayout Layout(int WorshipID)
+        public AuditoriumLayout Layout(int EventID)
         {
             List<Block> blocks = new List<Block>();
 
@@ -38,7 +38,7 @@ namespace DAL
 
                 foreach(var block in blocks)
                 {
-                    block.RowData = RowDetails(block.BlockID, WorshipID);
+                    block.RowData = RowDetails(block.BlockID, EventID);
                 }
             }
             catch (Exception ex)
@@ -55,7 +55,7 @@ namespace DAL
             return layout;
         }
 
-        private List<Row> RowDetails(string BlockID, int WorshipID)
+        private List<Row> RowDetails(string BlockID, int EventID)
         {
             List<Row> list = new List<Row>();
 
@@ -93,7 +93,7 @@ namespace DAL
 
                 foreach (var d in list)
                 {
-                    d.SeatsData = SeatDetails(d.RowID, WorshipID);
+                    d.SeatsData = SeatDetails(d.RowID, EventID);
                 }
             }
             catch (Exception ex)
@@ -105,7 +105,7 @@ namespace DAL
             return list;
         }
 
-        private List<Seats> SeatDetails(string RowID, int WorshipID)
+        private List<Seats> SeatDetails(string RowID, int EventID)
         {
             List<Seats> list = new List<Seats>();
 
@@ -125,13 +125,13 @@ namespace DAL
                 };
                 SqlCmd.Parameters.Add(pRowID);
 
-                SqlParameter pWorshipID = new SqlParameter
+                SqlParameter pEventID = new SqlParameter
                 {
-                    ParameterName = "@WorshipID",
+                    ParameterName = "@EventID",
                     SqlDbType = SqlDbType.Int,
-                    Value = WorshipID
+                    Value = EventID
                 };
-                SqlCmd.Parameters.Add(pWorshipID);
+                SqlCmd.Parameters.Add(pEventID);
 
                 using (var dr = SqlCmd.ExecuteReader())
                 {

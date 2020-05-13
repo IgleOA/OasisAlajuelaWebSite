@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ET
 {
-    public class Worships
+    public class ReservationEventDetail
     {
-        public int WorshipID { get; set; }
+        public int EventID { get; set; }
 
         public DateTime ScheduledDate { get; set; }
 
@@ -29,7 +29,7 @@ namespace ET
 
         public AuditoriumLayout Layout { get; set; }
 
-        public Worships()
+        public ReservationEventDetail()
         {
             Layout = new AuditoriumLayout();
         }
