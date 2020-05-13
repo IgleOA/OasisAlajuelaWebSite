@@ -785,6 +785,30 @@ else
             @{
                 Html.RenderAction("_PreviousReservations");
             }
+            <div class="modal fade" id="ModalMessage">
+                <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="card bg-light">
+                                <article class="card-body">
+                                    <h3 class="my-1"><i class="fa fa-tags"></i> Aspectos Básicos</h3>
+                                    <hr />
+                                    <div class="my-2">
+                                        <ol class="m-0">
+                                            <li><strong>Por favor</strong> realizar la reservación bajo el concepto de <strong>Búrbujas Sociales</strong> - Grupo de personas que conviven juntos, lo que normalmente llamamos como <strong>Familias</strong>.</li>
+                                            <li><strong>Por favor EVITAR</strong> dejar espacios entre sillas, por favor seleccionar las sillas como bloques de sillas.</li>
+                                            <li>Cantidad máxima de asientos a reservar por reserva: <strong>10 espacios.</strong></li>
+                                            <li>Cantidad máxima de asientos a reservar por evento: <strong>30 espacios.</strong></li>
+                                        </ol>
+                                    </div>
+                                    <hr />
+                                    <button type="button" class="btn btn-secondary my-2 float-right" data-dismiss="modal">Cerrar</button>
+                                </article>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 }
