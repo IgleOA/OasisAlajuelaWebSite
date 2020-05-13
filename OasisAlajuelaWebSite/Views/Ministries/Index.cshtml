@@ -4,7 +4,12 @@
     ViewBag.Title = "Ministerios";
     Layout = ViewBag.Layout;
 }
-
+<style>
+    p {
+        margin-bottom: 1rem;
+        margin-top: 0;
+    }
+</style>
 @if (ViewBag.Write == true)
 {
     <script type="text/javascript">
@@ -46,7 +51,7 @@
                             <td class="p-0">
                                 <div class="media-body p-2 mt-3 mr-2">
                                     <div class="d-flex justify-content-between">
-                                        <h3 class="font-weight-bold">
+                                        <h3 class="font-weight-bold mt-0 mb-1">
                                             @item.Name
                                         </h3>
                                         <div>
@@ -100,7 +105,7 @@ else
                         <td class="p-0">
                             <div class="media-body p-2 mt-3 mr-2">
                                 <div class="d-flex justify-content-between">
-                                    <h3 class="font-weight-bold">
+                                    <h3 class="font-weight-bold mt-0 mb-1">
                                         @item.Name
                                     </h3>
                                 </div>
