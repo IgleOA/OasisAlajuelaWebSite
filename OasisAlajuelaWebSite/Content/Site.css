@@ -505,6 +505,23 @@ img > .d-block {
     width: 100px;
     background: #ebe3da;
 }
+
+@media (max-width: 767.98px) {
+    .topper {
+        width: 75px;    
+    }
+}
+@media (max-width: 500px) {
+    .topper {
+        width: 55px;
+    }
+}
+@media (max-width: 375px) {
+    .topper {
+        width: 35px;
+    }
+}
+
 .blog-entry .textBlog {
     position: relative;
     background: #fff;

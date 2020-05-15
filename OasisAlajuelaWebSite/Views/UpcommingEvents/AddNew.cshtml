@@ -55,7 +55,7 @@
                 CM = "554";
         }
 
-        if (Cap.value > CM) {
+        if (parseInt(Cap.value) > parseInt(CM)) {
             alert('El cupo máximo seleccionado excede el capacidad máxima estimada.');
             document.getElementById("btnSubmit").disabled = true;
         }
