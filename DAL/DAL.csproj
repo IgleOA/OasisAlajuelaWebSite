@@ -117,6 +117,7 @@
     <Compile Include="BannnersDAL.cs" />
     <Compile Include="GroupsDAL.cs" />
     <Compile Include="HomeDAL.cs" />
+    <Compile Include="LeadershipDAL.cs" />
     <Compile Include="MinistersDAL.cs" />
     <Compile Include="MinistriesDAL.cs" />
     <Compile Include="NewsDAL.cs" />

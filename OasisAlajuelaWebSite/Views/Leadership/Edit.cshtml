@@ -1,0 +1,114 @@
+﻿@model ET.Leadership
+
+@{
+    ViewBag.Title = "Editar Lider";
+    Layout = "~/Views/Shared/_PupopLayout.cshtml";
+}
+
+<script src="~/Scripts/jquery-3.5.0.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var flag = '@(Model.ActionType)';
+        if (flag == "UPDATE")
+        {
+            opener.location.reload();
+            window.close();
+        }
+        var readURL = function (input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('.avatar').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $(".file-upload").on('change', function () {
+            readURL(this);
+        });
+    });
+</script>
+
+<div class="card bg-light">
+    <article class="card-body">
+        <h4 class="card-title mt-3 text-center font-weight-bold">@ViewBag.Title</h4>
+        @using (Html.BeginForm("Edit", "Leadership", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger m-0" })
+                @Html.HiddenFor(model => model.LeaderID)
+                <div class="form-group">
+                    @Html.LabelFor(model => model.FullName, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
+                    <div class="col w-100">
+                        @Html.TextAreaFor(model => model.Description, 5, 1, new { @class = "form-control", @maxlength = 200 })
+                        <span id="charsLeft">Máximo 200 carácteres. </span>
+                        <script type="text/javascript">
+                            $(function () {
+                                $("#Description").keyup(function () {
+                                    var charsLeft = $(this).attr("maxlength") - $(this).val().length;
+                                    $("#charsLeft").text("Quedan " + charsLeft + " carácteres.");
+                                });
+                            });
+                        </script>
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.file, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
+                    <div class="profile-img">
+                        @{ 
+                            var base64 = Convert.ToBase64String(Model.Image, 0, Model.Image.Length);
+                            var imgSrc = string.Format("data:image/{0};base64,{1}", Model.ImageExt, base64);
+                        }
+                        <img src="@imgSrc" class="avatar img-thumbnail w-75" alt="avatar" />
+                        <div class="file btn btn-lg btn-primary profile-img w-75">
+                            Seleccionar Foto
+                            <input id="file" type="file" name="file" class="file-upload">
+                        </div>
+                        <p>La imagen debe ser en los formatos PNG, JPG y JPEG.</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Order, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Order, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Order, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ActionLink, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ActionLink, new { htmlAttributes = new { @class = "form-control", placeholder = "Si aplica" } })
+                        @Html.ValidationMessageFor(model => model.ActionLink, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Guardar" class="btn btn-dark alt mt-0 mb-2" />
+                        <input type="button" value="Cancelar" class="btn btn-dark alt mt-0 mb-2" onclick="javascript: window.close();" />
+                    </div>
+                </div>
+            </div>
+        }
+    </article>
+</div>
+
+
+@section Scripts
+{
+    <script src="~/Scripts/tinymce/tiny_mce.js"></script>
+    <script src="~/Scripts/tinymce/tinymce.min.js"></script>
+    <script src="~/Scripts/main.js"></script>
+}

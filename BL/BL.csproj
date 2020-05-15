@@ -51,6 +51,7 @@
     <Compile Include="BannersLocationBL.cs" />
     <Compile Include="GroupsBL.cs" />
     <Compile Include="HomeBL.cs" />
+    <Compile Include="LeadershipBL.cs" />
     <Compile Include="MinistersBL.cs" />
     <Compile Include="MinistriesBL.cs" />
     <Compile Include="NewsBL.cs" />
