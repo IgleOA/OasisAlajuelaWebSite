@@ -14,7 +14,7 @@ namespace OasisAlajuelaWebSite.Controllers
     [AllowSameSite]
     public class LeadershipController : Controller
     {
-        LeadershipBL LBL = new LeadershipBL();
+        private LeadershipBL LBL = new LeadershipBL();
         private RightsBL RRBL = new RightsBL();
         private UsersBL UBL = new UsersBL();
 

@@ -2854,6 +2854,7 @@
     <Content Include="Views\Leadership\_FooterLeadership.cshtml" />
     <Content Include="Views\Leadership\Gerardo_Montero.cshtml" />
     <Content Include="Views\Leadership\Alicia_Guillen.cshtml" />
+    <Content Include="Views\Home\History.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
