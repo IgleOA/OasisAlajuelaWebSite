@@ -55,8 +55,13 @@
         <div class="row justify-content-center text-black mt-3">
             <div class="col-md-4">
                 <h3 class="footer-heading mb-4 text-black font-weight-bolder">Sobre Nosotros</h3>
+                <ul class="list-unstyled m-0">
+                    @{
+                        Html.RenderAction("_FooterLeadership", "Leadership");
+                    }
+                </ul>
                 <p class="m-0">Si quieres saber mas sobre nuestra comunidad de fe, ingresa y se parte de esta linda familia.</p>
-                @Html.ActionLink("Ver más...", "About", "Home", null, htmlAttributes: new { @class = "text-black" })
+                @Html.ActionLink("Ver más...", "History", "Home", null, htmlAttributes: new { @class = "text-black" })
             </div>
             <div class="col-md-4">
                 <h3 class="footer-heading mb-4 text-black font-weight-bolder">Ministerios</h3>
@@ -82,9 +87,7 @@
         <div class="row justify-content-center mt-3">
             <div class="col-md-12 text-center text-black">
                 <p>
-                    Oasis Alajuela &copy;
-                    <script>document.write(new Date().getFullYear());</script>
-                    Derechos reservados
+                    Oasis Alajuela &copy; @DateTime.Now.Year Derechos reservados
                 </p>
             </div>
         </div>

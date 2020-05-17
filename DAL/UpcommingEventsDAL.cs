@@ -60,12 +60,14 @@ namespace DAL
                             Description = dr["Description"].ToString(),
                             ScheduledDate = Convert.ToDateTime(dr["ScheduledDate"]),
                             ScheduledTime = (TimeSpan)dr["ScheduledTime"],
-                            ActiveFlag = Convert.ToBoolean(dr["ACtiveFlag"]),
+                            ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]),
                             EventMonth = dr["Month"].ToString(),
                             EventDay = dr["Day"].ToString(),
                             EventTime = dr["Time"].ToString(),
-                            WorshipID = Convert.ToInt32(dr["WorshipID"]),
-                            Capacity = Convert.ToInt32(dr["Capacity"])
+                            ReservationFlag = Convert.ToBoolean(dr["ReservationFlag"]),
+                            Capacity = Convert.ToInt32(dr["Capacity"]),
+                            SocialDistance = Convert.ToInt32(dr["SocialDistance"]),
+                            Available = Convert.ToInt32(dr["Available"])
                         };
 
                         List.Add(detail);
@@ -125,7 +127,15 @@ namespace DAL
                 };
                 SqlCmd.Parameters.Add(ScheduleDate);
 
-                if (Event.Capacity > 0)
+                SqlParameter pRF = new SqlParameter
+                {
+                    ParameterName = "@ReservationFlag",
+                    SqlDbType = SqlDbType.Bit,
+                    Value = Event.ReservationFlag
+                };
+                SqlCmd.Parameters.Add(pRF);
+
+                if (Event.ReservationFlag == true)
                 {
                     SqlParameter pCapacity = new SqlParameter
                     {
@@ -134,7 +144,16 @@ namespace DAL
                         Value = Event.Capacity
                     };
                     SqlCmd.Parameters.Add(pCapacity);
+
+                    SqlParameter pDistance = new SqlParameter
+                    {
+                        ParameterName = "@SocialDistance",
+                        SqlDbType = SqlDbType.Int,
+                        Value = Event.SocialDistance
+                    };
+                    SqlCmd.Parameters.Add(pDistance);
                 }
+
                 SqlParameter ParInsertUser = new SqlParameter
                 {
                     ParameterName = "@InsertUser",
@@ -206,11 +225,14 @@ namespace DAL
                         ET.Description = dr["Description"].ToString();
                         ET.ScheduledDate = Convert.ToDateTime(dr["ScheduledDate"]);
                         ET.ScheduledTime = (TimeSpan)dr["ScheduledTime"];
-                        ET.ActiveFlag = Convert.ToBoolean(dr["ACtiveFlag"]);
+                        ET.ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]);
                         ET.EventMonth = dr["Month"].ToString();
                         ET.EventDay = dr["Day"].ToString();
                         ET.EventTime = dr["Time"].ToString();
+                        ET.ReservationFlag = Convert.ToBoolean(dr["ReservationFlag"]);
                         ET.Capacity = Convert.ToInt32(dr["Capacity"]);
+                        ET.SocialDistance = Convert.ToInt32(dr["SocialDistance"]);
+                        ET.Available = Convert.ToInt32(dr["Available"]);
                     }
                 }
             }
@@ -263,7 +285,7 @@ namespace DAL
                 {
                     ParameterName = "@Description",
                     SqlDbType = SqlDbType.VarChar,
-                    Value = Event.Description.Trim()
+                    Value = Event.Description
                 };
                 SqlCmd.Parameters.Add(Description);
 
@@ -275,7 +297,15 @@ namespace DAL
                 };
                 SqlCmd.Parameters.Add(ScheduleDate);
 
-                if (Event.Capacity > 0)
+                SqlParameter pRF = new SqlParameter
+                {
+                    ParameterName = "@ReservationFlag",
+                    SqlDbType = SqlDbType.Bit,
+                    Value = Event.ReservationFlag
+                };
+                SqlCmd.Parameters.Add(pRF);
+
+                if (Event.ReservationFlag == true)
                 {
                     SqlParameter pCapacity = new SqlParameter
                     {
@@ -284,6 +314,14 @@ namespace DAL
                         Value = Event.Capacity
                     };
                     SqlCmd.Parameters.Add(pCapacity);
+
+                    SqlParameter pDistance = new SqlParameter
+                    {
+                        ParameterName = "@SocialDistance",
+                        SqlDbType = SqlDbType.Int,
+                        Value = Event.SocialDistance
+                    };
+                    SqlCmd.Parameters.Add(pDistance);
                 }
 
                 SqlParameter ParInsertUser = new SqlParameter

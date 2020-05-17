@@ -1,5 +1,5 @@
 ﻿-- ======================================================================
--- Name: [book].[uspReadWorships]
+-- Name: [book].[uspReadReservationEventDetails]
 -- Desc: Retorna La informacion basica de un servicio para la reservación
 -- Auth: Jonathan Piedra johmstone@gmail.com
 -- Date: 3/13/2020
@@ -10,8 +10,8 @@
 -- --	----		------		-----------------------------
 -- ======================================================================
 
-CREATE PROCEDURE [book].[uspReadWorships]
-	@WorshipID	INT,
+CREATE PROCEDURE [book].[uspReadReservationEventDetails]
+	@EventID	INT,
 	@UserID		INT
 AS 
     BEGIN
@@ -30,7 +30,7 @@ AS
 				WHERE	U.[UserID] = @UserID
 						AND R.[RoleName] LIKE 'Admin%'
 
-				SELECT	W.[WorshipID]
+				SELECT	W.[EventID]
 						,W.[Capacity]
 						,W.[ScheduledDate]
 						,[Available]	= A.[Available] - B.[Booked]
@@ -40,26 +40,26 @@ AS
 											   WHEN (30 - BBU.[Booked]) >= 10 THEN 10
 											   ELSE 30 - BBU.[Booked] END
 
-				FROM	[book].[utbWorships] W
-						OUTER APPLY (SELECT [Available] = CASE WHEN W.[Capacity] = 25 THEN SUM(IIF(S.[25Pct]=1,1,0))
-															   WHEN W.[Capacity] = 50 THEN SUM(IIF(S.[50Pct]=1,1,0))
+				FROM	[config].[utbUpcomingEvents] W
+						OUTER APPLY (SELECT [Available] = CASE WHEN W.[Capacity] > 0 THEN W.[Capacity]
 															   ELSE COUNT(S.[SeatID]) END
 											,[Total] = COUNT(S.[SeatID])
 									 FROM	[book].[utbAuditoriumSeats] S) A
 						
 						OUTER APPLY (SELECT [Booked] = COUNT(R.[ReservationID])
 									 FROM	[book].[utbReservations] R
-									 WHERE	R.[WorshipID] = W.[WorshipID]
+									 WHERE	R.[EventID] = W.[EventID]
 											AND R.[ActiveFlag] = 1) B
 
 						OUTER APPLY (SELECT [Booked] = COUNT(R.[ReservationID])
 									 FROM	[book].[utbReservations] R
-									 WHERE	R.[WorshipID] = W.[WorshipID]
+									 WHERE	R.[EventID] = W.[EventID]
 											AND R.[BookedBy] = @UserID
 											AND R.[ActiveFlag] = 1) BBU
 
-				WHERE	W.[WorshipID] = @WorshipID
+				WHERE	W.[EventID] = @EventID
 						AND W.[ActiveFlag] = 1
+						AND W.[ReservationFlag] = 1
 				ORDER BY W.ScheduledDate					
 			-- =======================================================
 

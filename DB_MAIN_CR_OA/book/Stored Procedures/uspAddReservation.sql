@@ -11,7 +11,7 @@
 -- ======================================================================
 CREATE PROCEDURE [book].[uspAddReservation]
 	@GUID		VARCHAR(MAX),
-	@WorshipID	INT,
+	@EventID	INT,
 	@Seatlist	VARCHAR(MAX),
 	@BookedBy	INT,
 	@BookedFor	VARCHAR(100),
@@ -35,7 +35,7 @@ AS
 
             -- =======================================================
 				DECLARE @pGUID			VARCHAR(MAX),
-						@pWorshipID		INT,
+						@pEventID		INT,
 						@pSeatID		VARCHAR(10),
 						@pBookedBy		INT,
 						@pBookedFor		VARCHAR(100),
@@ -47,7 +47,7 @@ AS
 				FROM	[SplitValues] (@Seatlist)
 			
 				SELECT	[GUID]			= @GUID
-						,[WorshipID]	= @WorshipID
+						,[EventID]		= @EventID
 						,[SeatID]		
 						,[BookedBy]		= @BookedBy
 						,[BookedFor]	= @BookedFor
@@ -57,7 +57,7 @@ AS
 
 				DECLARE ActionProcess CURSOR FOR
 				SELECT	[GUID]
-						,[WorshipID]
+						,[EventID]
 						,[SeatID]		
 						,[BookedBy]
 						,[BookedFor]
@@ -65,24 +65,24 @@ AS
 				FROM	#CursorData
 
 				OPEN ActionProcess
-				FETCH NEXT FROM ActionProcess INTO @pGUID, @pWorshipID, @pSeatID, @pBookedBy, @pBookedFor,@pInsertUser
+				FETCH NEXT FROM ActionProcess INTO @pGUID, @pEventID, @pSeatID, @pBookedBy, @pBookedFor,@pInsertUser
 
 				WHILE @@FETCH_STATUS = 0
 					BEGIN
 						IF NOT EXISTS ( SELECT *
 										FROM	[book].[utbReservations] 
-										WHERE	[WorshipID] = @pWorshipID
+										WHERE	[EventID] = @pEventID
 												AND [SeatID] = @pSeatID
 												AND [ActiveFlag] = 1)
 							BEGIN
-								INSERT INTO [book].[utbReservations] ([GUID],[WorshipID],[SeatID],[BookedBy],[BookedFor],[InsertUser],[LastModifyUser])
-								VALUES (@pGUID, @pWorshipID, @pSeatID, @pBookedBy, @pBookedFor,@pInsertUser, @pInsertUser)
+								INSERT INTO [book].[utbReservations] ([GUID],[EventID],[SeatID],[BookedBy],[BookedFor],[InsertUser],[LastModifyUser])
+								VALUES (@pGUID, @pEventID, @pSeatID, @pBookedBy, @pBookedFor,@pInsertUser, @pInsertUser)
 
 								UPDATE	#Results
 								SET		[IsValid] = 1
 								WHERE	[SeatID] = @pSeatID
 							END
-						FETCH NEXT FROM ActionProcess INTO @pGUID, @pWorshipID, @pSeatID, @pBookedBy, @pBookedFor,@pInsertUser
+						FETCH NEXT FROM ActionProcess INTO @pGUID, @pEventID, @pSeatID, @pBookedBy, @pBookedFor,@pInsertUser
 					END
 
 					CLOSE ActionProcess

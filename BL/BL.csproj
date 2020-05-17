@@ -51,6 +51,7 @@
     <Compile Include="BannersLocationBL.cs" />
     <Compile Include="GroupsBL.cs" />
     <Compile Include="HomeBL.cs" />
+    <Compile Include="LeadershipBL.cs" />
     <Compile Include="MinistersBL.cs" />
     <Compile Include="MinistriesBL.cs" />
     <Compile Include="NewsBL.cs" />
@@ -65,7 +66,7 @@
     <Compile Include="UserProfileBL.cs" />
     <Compile Include="UsersBL.cs" />
     <Compile Include="WebDirectoryBL.cs" />
-    <Compile Include="WorshipsBL.cs" />
+    <Compile Include="ReservationEventDetailBL.cs" />
     <Compile Include="YouTubeBL.cs" />
   </ItemGroup>
   <ItemGroup>

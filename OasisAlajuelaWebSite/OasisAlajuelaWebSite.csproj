@@ -367,6 +367,7 @@
     <Compile Include="Controllers\BannersController.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LeadershipController.cs" />
     <Compile Include="Controllers\MinistersController.cs" />
     <Compile Include="Controllers\MinistriesController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
@@ -394,6 +395,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\animate.css" />
+    <Content Include="Content\animate.min.css" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-reboot.css" />
@@ -2846,6 +2848,13 @@
     <Content Include="Views\Reservations\Index.cshtml" />
     <Content Include="Views\Reservations\_PreviousReservations.cshtml" />
     <Content Include="Views\Reservations\Master.cshtml" />
+    <Content Include="Views\Leadership\Index.cshtml" />
+    <Content Include="Views\Leadership\AddNew.cshtml" />
+    <Content Include="Views\Leadership\Edit.cshtml" />
+    <Content Include="Views\Leadership\_FooterLeadership.cshtml" />
+    <Content Include="Views\Leadership\Gerardo_Montero.cshtml" />
+    <Content Include="Views\Leadership\Alicia_Guillen.cshtml" />
+    <Content Include="Views\Home\History.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -13,7 +13,7 @@ namespace ET
 
         public string GUID { get; set; }
                 
-        public int WorshipID { get; set; }
+        public int EventID { get; set; }
 
         public string Title { get; set; }
 
@@ -51,7 +51,7 @@ namespace ET
         [Display(Name = "Código de Reservación")]
         public string GUID { get; set; }
 
-        public int WorshipID { get; set; }
+        public int EventID { get; set; }
 
         [Display(Name = "Evento")]
         public string Title { get; set; }
@@ -65,8 +65,8 @@ namespace ET
         public bool ActiveFlag { get; set; }
 
         [Display(Name = "Fecha de Reservación")]
-        [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy h:mm tt}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime ReservationDate { get; set; }
 
         [Display(Name = "Reservado Por")]

@@ -6,29 +6,29 @@ using ET;
 
 namespace DAL
 {
-    public class WorshipsDAL
+    public class ReservationEventDetailDAL
     {
         private SqlConnection SqlCon = new SqlConnection(ConfigurationManager.ConnectionStrings["DB_MAIN_CR_OA_Connection"].ToString());
         
-        public Worships Details(int WorshipID, int UserID)
+        public ReservationEventDetail Details(int EventID, int UserID)
         {
-            Worships details = new Worships();
+            ReservationEventDetail details = new ReservationEventDetail();
 
             try
             {
                 SqlCon.Open();
-                var SqlCmd = new SqlCommand("[book].[uspReadWorships]", SqlCon)
+                var SqlCmd = new SqlCommand("[book].[uspReadReservationEventDetails]", SqlCon)
                 {
                     CommandType = CommandType.StoredProcedure
                 };
 
-                SqlParameter pWorshipID = new SqlParameter
+                SqlParameter pEventID = new SqlParameter
                 {
-                    ParameterName = "@WorshipID",
+                    ParameterName = "@EventID",
                     SqlDbType = SqlDbType.Int,
-                    Value = WorshipID
+                    Value = EventID
                 };
-                SqlCmd.Parameters.Add(pWorshipID);
+                SqlCmd.Parameters.Add(pEventID);
 
                 SqlParameter pUserID = new SqlParameter
                 {
@@ -43,7 +43,7 @@ namespace DAL
                     dr.Read();
                     if (dr.HasRows)
                     {
-                        details.WorshipID = Convert.ToInt32(dr["WorshipID"]);
+                        details.EventID = Convert.ToInt32(dr["EventID"]);
                         details.ScheduledDate = Convert.ToDateTime(dr["ScheduledDate"]);
                         details.Capacity = Convert.ToInt32(dr["Capacity"]);
                         details.Available = Convert.ToInt32(dr["Available"]);

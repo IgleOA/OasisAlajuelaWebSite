@@ -1,4 +1,4 @@
-﻿@model ET.Worships
+﻿@model ET.ReservationEventDetail
 @using System.Globalization;
 
 @{
@@ -10,12 +10,15 @@
 <link href="~/Content/Reservations.css" rel="stylesheet" />
 <script src="~/Scripts/jquery-3.5.0.js"></script>
 <script type="text/javascript">
+    $(document).ready(function () {
+        $('#ModalMessage').modal('show');
+    });
     function Reserve(obj) {
         if (document.getElementById(obj.id).classList.contains('available')) {
             var txt = document.getElementById('SeatsReserved').value;
             var txtselect = document.getElementById('CountSelected').textContent;
             var SeatNbr = document.getElementById('SeatsNbrReserved').value;
-            if (SeatNbr < (@Model.MaxToReserve)) {
+            if (SeatNbr < (@Model.MaxToReserve) && SeatNbr < (@Model.Available)) {
                 if (txt.length > 0) {
                     txt += "," + obj.id;
                 }
@@ -29,13 +32,26 @@
                 document.getElementById('SeatsNbrReserved').value = count;
                 document.getElementById(obj.id).classList.remove('available');
                 document.getElementById(obj.id).classList.add('selected');
+                if (SeatNbr == (@Model.Available -1)) {
+                    Array.from(document.getElementsByClassName('available')).forEach(function (item) {
+                        document.getElementById(item.id).classList.remove('available');
+                        document.getElementById(item.id).classList.add('FullHouse');
+                        document.getElementById(item.id).removeAttribute("onclick");
+                    })
+                    
+                }
             }
             else {
-                if (@Model.MaxToReserve < 10) {
-                    alert('Ha execido la cantidad máxima de espacios a reservar para un mismo evento, si necesita mas espacios contacte directamente al Departamento de Logística.');
+                if (SeatNbr == (@Model.Available)) {
+                    alert('Se acabaron los cupos disponibles para este evento.');
                 }
                 else {
-                    alert('Ha execido la cantidad máxima de espacios a reservar simultaneamente. Si necesita más de 10 espacios, por favor realice la reserva en tractos de 10 espacios a la vez.');
+                    if (@Model.MaxToReserve < 10) {
+                        alert('Ha execido la cantidad máxima de espacios a reservar para un mismo evento, si necesita mas espacios contacte directamente al Departamento de Logística.');
+                    }
+                    else {
+                        alert('Ha execido la cantidad máxima de espacios a reservar simultaneamente. Si necesita más de 10 espacios, por favor realice la reserva en tractos de 10 espacios a la vez.');
+                    }
                 }
             }
         }
@@ -52,10 +68,19 @@
             document.getElementById('SeatsNbrReserved').value = count;
             document.getElementById(obj.id).classList.remove('selected');
             document.getElementById(obj.id).classList.add('available');
+            Array.from(document.getElementsByClassName('FullHouse')).forEach(function (item) {
+                document.getElementById(item.id).classList.remove('FullHouse');
+                document.getElementById(item.id).classList.add('available');
+                document.getElementById(item.id).setAttribute("onclick","Reserve(this);");
+            });
         }
 
     }
 
+    function Inhabilitar(item, index) {
+        document.getElementById(index).classList.remove('available');
+        document.getElementById(index).classList.remove('FullHouse');
+    }
 </script>
 @if (ViewBag.Write == true)
 {
@@ -98,15 +123,16 @@
                                             <div class="seatCharts-cell seatCharts-space">@row.Label</div>
                                             @foreach (var seat in row.SeatsData)
                                             {
-                                                if (seat.Reserved == true)
+                                                if (seat.Booked >= 1)
                                                 {
-                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved">@seat.Label</div>
+                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked" title="@seat.BookedFor">@seat.Label</div>
                                                 }
+
                                                 else
                                                 {
-                                                    if (seat.Booked >= 1)
+                                                    if (seat.Reserved == true)
                                                     {
-                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked" title="@seat.BookedFor">@seat.Label</div>
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved">@seat.Label</div>
                                                     }
                                                     else
                                                     {
@@ -126,15 +152,16 @@
                                             <div class="seatCharts-cell seatCharts-space">@row.Label</div>
                                             @foreach (var seat in row.SeatsData)
                                             {
-                                                if (seat.Reserved == true)
+                                                if (seat.Booked >= 1)
                                                 {
-                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved">@seat.Label</div>
+                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked" title="@seat.BookedFor">@seat.Label</div>
                                                 }
+
                                                 else
                                                 {
-                                                    if (seat.Booked >= 1)
+                                                    if (seat.Reserved == true)
                                                     {
-                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked" title="@seat.BookedFor">@seat.Label</div>
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved">@seat.Label</div>
                                                     }
                                                     else
                                                     {
@@ -154,15 +181,16 @@
                                             <div class="seatCharts-cell seatCharts-space">@row.Label</div>
                                             @foreach (var seat in row.SeatsData)
                                             {
-                                                if (seat.Reserved == true)
+                                                if (seat.Booked >= 1)
                                                 {
-                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved">@seat.Label</div>
+                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked" title="@seat.BookedFor">@seat.Label</div>
                                                 }
+
                                                 else
                                                 {
-                                                    if (seat.Booked >= 1)
+                                                    if (seat.Reserved == true)
                                                     {
-                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked" title="@seat.BookedFor">@seat.Label</div>
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved">@seat.Label</div>
                                                     }
                                                     else
                                                     {
@@ -182,15 +210,15 @@
                                             <div class="seatCharts-cell seatCharts-space float-right">@row.Label</div>
                                             @foreach (var seat in row.SeatsData)
                                             {
-                                                if (seat.Reserved == true)
+                                                if (seat.Booked >= 1)
                                                 {
-                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved float-right">@seat.Label</div>
-                                                }
+                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked float-right" title="@seat.BookedFor">@seat.Label</div>
+                                                }                                                
                                                 else
                                                 {
-                                                    if (seat.Booked >= 1)
+                                                    if (seat.Reserved == true)
                                                     {
-                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked float-right" title="@seat.BookedFor">@seat.Label</div>
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved float-right">@seat.Label</div>
                                                     }
                                                     else
                                                     {
@@ -212,15 +240,16 @@
                                             <div class="seatCharts-cell seatCharts-space">@row.Label</div>
                                             @foreach (var seat in row.SeatsData)
                                             {
-                                                if (seat.Reserved == true)
+                                                if (seat.Booked >= 1)
                                                 {
-                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved">@seat.Label</div>
+                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked" title="@seat.BookedFor">@seat.Label</div>
                                                 }
+
                                                 else
                                                 {
-                                                    if (seat.Booked >= 1)
+                                                    if (seat.Reserved == true)
                                                     {
-                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked" title="@seat.BookedFor">@seat.Label</div>
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved">@seat.Label</div>
                                                     }
                                                     else
                                                     {
@@ -240,15 +269,16 @@
                                             <div class="seatCharts-cell seatCharts-space">@row.Label</div>
                                             @foreach (var seat in row.SeatsData)
                                             {
-                                                if (seat.Reserved == true)
+                                                if (seat.Booked >= 1)
                                                 {
-                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved">@seat.Label</div>
+                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked" title="@seat.BookedFor">@seat.Label</div>
                                                 }
+
                                                 else
                                                 {
-                                                    if (seat.Booked >= 1)
+                                                    if (seat.Reserved == true)
                                                     {
-                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked" title="@seat.BookedFor">@seat.Label</div>
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved">@seat.Label</div>
                                                     }
                                                     else
                                                     {
@@ -268,15 +298,15 @@
                                             <div class="seatCharts-cell seatCharts-space">@row.Label</div>
                                             @foreach (var seat in row.SeatsData)
                                             {
-                                                if (seat.Reserved == true)
+                                                if (seat.Booked >= 1)
                                                 {
-                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved">@seat.Label</div>
+                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked" title="@seat.BookedFor">@seat.Label</div>
                                                 }
                                                 else
                                                 {
-                                                    if (seat.Booked >= 1)
+                                                    if (seat.Reserved == true)
                                                     {
-                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked" title="@seat.BookedFor">@seat.Label</div>
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved">@seat.Label</div>
                                                     }
                                                     else
                                                     {
@@ -304,15 +334,15 @@
                                                 {
                                                     if (seat.Label < 5)
                                                     {
-                                                        if (seat.Reserved == true)
+                                                        if (seat.Booked >= 1)
                                                         {
-                                                            <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved float-right">@seat.Label</div>
+                                                                <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked float-right" title="@seat.BookedFor">@seat.Label</div>
                                                         }
                                                         else
                                                         {
-                                                            if (seat.Booked >= 1)
+                                                            if (seat.Reserved == true)
                                                             {
-                                                                <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked float-right" title="@seat.BookedFor">@seat.Label</div>
+                                                                <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved float-right">@seat.Label</div>
                                                             }
                                                             else
                                                             {
@@ -322,15 +352,15 @@
                                                     }
                                                     else
                                                     {
-                                                        if (seat.Reserved == true)
+                                                        if (seat.Booked >= 1)
                                                         {
-                                                            <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved float-right">@(seat.Label - 1)</div>
+                                                                <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked float-right" title="@seat.BookedFor">@(seat.Label - 1)</div>
                                                         }
                                                         else
                                                         {
-                                                            if (seat.Booked >= 1)
+                                                            if (seat.Reserved == true)
                                                             {
-                                                                <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked float-right" title="@seat.BookedFor">@(seat.Label - 1)</div>
+                                                                <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved float-right">@(seat.Label - 1)</div>
                                                             }
                                                             else
                                                             {
@@ -353,7 +383,7 @@
                                     <table>
                                         <tr>
                                             <td><p class="text-white m-0 px-2" style="background-color: lightgray; border-radius: 5px;">Inhabilitado - <span>@Model.Unavailable</span></p></td>
-                                            <td><p class="text-white m-0 px-2" style="background-color: darkseagreen; border-radius: 5px;">Disponible - <span>@Model.Available</span></p></td>
+                                            <td><p class="text-white m-0 px-2" style="background-color: darkseagreen; border-radius: 5px;">Disponible - <span id="CountAvaiable">@Model.Available</span></p></td>
                                             <td><p class="text-white m-0 px-2" style="background-color: red; border-radius: 5px;">Seleccionado - <span id="CountSelected">0</span></p></td>
                                             <td><p class="text-white m-0 px-2" style="background-color: #0a3e77; border-radius: 5px;">Reservado - <span>@Model.Booked</span></p></td>
                                         </tr>
@@ -362,14 +392,13 @@
                                 @using (Html.BeginForm("CheckOut", "Reservations", FormMethod.Post, new { enctype = "multipart/form-data" }))
                                 {
                                     @Html.AntiForgeryToken()
-                                    @Html.HiddenFor(model => model.WorshipID)
+                                    @Html.HiddenFor(model => model.EventID)
 
                                     <div class="input-group mb-3 w-75 mx-auto">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-default">Reservado para</span>
                                         </div>
-                                        <input id="ReservedFor" name="ReservedFor" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-                                        <p class="my-auto mx-2"> Si aplica</p>
+                                        <input id="ReservedFor" name="ReservedFor" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="Si aplica">                                        
                                     </div>
 
                                     <div class="input-group mb-3 w-75 mx-auto">
@@ -391,6 +420,30 @@
             @{
                 Html.RenderAction("_PreviousReservations");
             }            
+            <div class="modal fade" id="ModalMessage">
+                <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="card bg-light">
+                                <article class="card-body">
+                                    <h3 class="my-1 text-colorbase font-weight-bold"><i class="fa fa-tags"></i> Aspectos Básicos</h3>
+                                    <hr />
+                                    <div class="my-2">
+                                        <ol class="m-0">
+                                            <li><strong>Por favor</strong> realizar la reservación bajo el concepto de <strong>Búrbujas Sociales</strong> - Grupo de personas que conviven juntos, lo que normalmente llamamos como <strong>Familias</strong>.</li>
+                                            <li><strong>Por favor EVITAR</strong> dejar espacios entre sillas, por favor seleccionar las sillas como bloques de sillas.</li>
+                                            <li>Cantidad máxima de asientos a reservar por reserva: <strong>10 espacios.</strong></li>
+                                            <li>Cantidad máxima de asientos a reservar por evento: <strong>30 espacios.</strong></li>
+                                        </ol>
+                                    </div>
+                                    <hr />
+                                    <button type="button" class="btn btn-secondary my-2 float-right" data-dismiss="modal">Cerrar</button>
+                                </article>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 }
@@ -403,21 +456,21 @@ else
             </div>
             <hr />
             <div class=" row justify-content-center">
-                <table class="table-responsive w-100 mb-0" style="max-width: 1950px;">
+                <table class="table-responsive w-100 mb-0" style="max-width: 1850px;">
                     <tbody>
                         <tr class="bg-transparent border-0" style="height: 150px;">
                             <td></td>
                             <td colspan="2" class="align-middle text-center">
                                 <table class="m-0">
                                     <tr>
-                                        <td class="text-center" style="width:250px;">
+                                        <td class="align-middle text-center" style="width:250px;">
                                             <h2 class="m-0 text-colorbase">Servicio</h2>
                                             <h1 class="text-capitalize">@Model.ScheduledDate.ToString("dddd, dd MMMM yyyy", new CultureInfo("es-US"))</h1>
                                         </td>
                                         <td class="align-middle" style="background-color:#0a3e77; width:250px;">
-                                            <h2 class="mx-0 my-2 text-white text-uppercase">Tarima Principal</h2>
+                                            <h2 class="mx-0 text-white text-uppercase">Tarima Principal</h2>
                                         </td>
-                                        <td style="width:250px;">
+                                        <td class="align-middle" style="width:250px;">
                                             <h2 class="m-0 text-colorbase">Hora</h2>
                                             <h1>@Model.ScheduledDate.ToString("h:mm tt") CR</h1>
                                         </td>
@@ -435,15 +488,16 @@ else
                                             <div class="seatCharts-cell seatCharts-space">@row.Label</div>
                                             @foreach (var seat in row.SeatsData)
                                             {
-                                                if (seat.Reserved == true)
+                                                if (seat.Booked >= 1)
                                                 {
-                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved">@seat.Label</div>
+                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked">@seat.Label</div>
                                                 }
+
                                                 else
                                                 {
-                                                    if (seat.Booked >= 1)
+                                                    if (seat.Reserved == true)
                                                     {
-                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked">@seat.Label</div>
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved">@seat.Label</div>
                                                     }
                                                     else
                                                     {
@@ -463,15 +517,16 @@ else
                                             <div class="seatCharts-cell seatCharts-space">@row.Label</div>
                                             @foreach (var seat in row.SeatsData)
                                             {
-                                                if (seat.Reserved == true)
+                                                if (seat.Booked >= 1)
                                                 {
-                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved">@seat.Label</div>
+                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked">@seat.Label</div>
                                                 }
+
                                                 else
                                                 {
-                                                    if (seat.Booked >= 1)
+                                                    if (seat.Reserved == true)
                                                     {
-                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked">@seat.Label</div>
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved">@seat.Label</div>
                                                     }
                                                     else
                                                     {
@@ -491,15 +546,16 @@ else
                                             <div class="seatCharts-cell seatCharts-space">@row.Label</div>
                                             @foreach (var seat in row.SeatsData)
                                             {
-                                                if (seat.Reserved == true)
+                                                if (seat.Booked >= 1)
                                                 {
-                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved">@seat.Label</div>
+                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked">@seat.Label</div>
                                                 }
+
                                                 else
                                                 {
-                                                    if (seat.Booked >= 1)
+                                                    if (seat.Reserved == true)
                                                     {
-                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked">@seat.Label</div>
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved">@seat.Label</div>
                                                     }
                                                     else
                                                     {
@@ -519,15 +575,15 @@ else
                                             <div class="seatCharts-cell seatCharts-space float-right">@row.Label</div>
                                             @foreach (var seat in row.SeatsData)
                                             {
-                                                if (seat.Reserved == true)
+                                                if (seat.Booked >= 1)
                                                 {
-                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved float-right">@seat.Label</div>
+                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked float-right">@seat.Label</div>
                                                 }
                                                 else
                                                 {
-                                                    if (seat.Booked >= 1)
+                                                    if (seat.Reserved == true)
                                                     {
-                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked float-right">@seat.Label</div>
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved float-right">@seat.Label</div>
                                                     }
                                                     else
                                                     {
@@ -549,15 +605,16 @@ else
                                             <div class="seatCharts-cell seatCharts-space">@row.Label</div>
                                             @foreach (var seat in row.SeatsData)
                                             {
-                                                if (seat.Reserved == true)
+                                                if (seat.Booked >= 1)
                                                 {
-                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved">@seat.Label</div>
+                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked">@seat.Label</div>
                                                 }
+
                                                 else
                                                 {
-                                                    if (seat.Booked >= 1)
+                                                    if (seat.Reserved == true)
                                                     {
-                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked">@seat.Label</div>
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved">@seat.Label</div>
                                                     }
                                                     else
                                                     {
@@ -577,15 +634,16 @@ else
                                             <div class="seatCharts-cell seatCharts-space">@row.Label</div>
                                             @foreach (var seat in row.SeatsData)
                                             {
-                                                if (seat.Reserved == true)
+                                                if (seat.Booked >= 1)
                                                 {
-                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved">@seat.Label</div>
+                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked">@seat.Label</div>
                                                 }
+
                                                 else
                                                 {
-                                                    if (seat.Booked >= 1)
+                                                    if (seat.Reserved == true)
                                                     {
-                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked">@seat.Label</div>
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved">@seat.Label</div>
                                                     }
                                                     else
                                                     {
@@ -605,15 +663,15 @@ else
                                             <div class="seatCharts-cell seatCharts-space">@row.Label</div>
                                             @foreach (var seat in row.SeatsData)
                                             {
-                                                if (seat.Reserved == true)
+                                                if (seat.Booked >= 1)
                                                 {
-                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved">@seat.Label</div>
+                                                    <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked">@seat.Label</div>
                                                 }
                                                 else
                                                 {
-                                                    if (seat.Booked >= 1)
+                                                    if (seat.Reserved == true)
                                                     {
-                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked">@seat.Label</div>
+                                                        <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved">@seat.Label</div>
                                                     }
                                                     else
                                                     {
@@ -641,15 +699,15 @@ else
                                                 {
                                                     if (seat.Label < 5)
                                                     {
-                                                        if (seat.Reserved == true)
+                                                        if (seat.Booked >= 1)
                                                         {
-                                                            <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved float-right">@seat.Label</div>
+                                                            <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked float-right">@seat.Label</div>
                                                         }
                                                         else
                                                         {
-                                                            if (seat.Booked >= 1)
+                                                            if (seat.Reserved == true)
                                                             {
-                                                                <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked float-right">@seat.Label</div>
+                                                                <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved float-right">@seat.Label</div>
                                                             }
                                                             else
                                                             {
@@ -659,15 +717,15 @@ else
                                                     }
                                                     else
                                                     {
-                                                        if (seat.Reserved == true)
+                                                        if (seat.Booked >= 1)
                                                         {
-                                                            <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved float-right">@(seat.Label - 1)</div>
+                                                            <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked float-right">@(seat.Label - 1)</div>
                                                         }
                                                         else
                                                         {
-                                                            if (seat.Booked >= 1)
+                                                            if (seat.Reserved == true)
                                                             {
-                                                                <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell booked float-right">@(seat.Label - 1)</div>
+                                                                <div id="@seat.SeatID" role="checkbox" aria-checked="false" focusable="true" tabindex="-1" class="seatCharts-seat seatCharts-cell reserved float-right">@(seat.Label - 1)</div>
                                                             }
                                                             else
                                                             {
@@ -690,7 +748,7 @@ else
                                     <table>
                                         <tr>
                                             <td><p class="text-white m-0 px-2" style="background-color: lightgray; border-radius: 5px;">Inhabilitado - <span>@Model.Unavailable</span></p></td>
-                                            <td><p class="text-white m-0 px-2" style="background-color: darkseagreen; border-radius: 5px;">Disponible - <span>@Model.Available</span></p></td>
+                                            <td><p class="text-white m-0 px-2" style="background-color: darkseagreen; border-radius: 5px;">Disponible - <span id="CountAvaiable">@Model.Available</span></p></td>
                                             <td><p class="text-white m-0 px-2" style="background-color: red; border-radius: 5px;">Seleccionado - <span id="CountSelected">0</span></p></td>
                                             <td><p class="text-white m-0 px-2" style="background-color: #0a3e77; border-radius: 5px;">Reservado - <span>@Model.Booked</span></p></td>
                                         </tr>
@@ -699,36 +757,57 @@ else
                                 @using (Html.BeginForm("CheckOut", "Reservations", FormMethod.Post, new { enctype = "multipart/form-data" }))
                                 {
                                     @Html.AntiForgeryToken()
-                                    @Html.HiddenFor(model => model.WorshipID)
-
-                                    @Html.ValidationSummary(true, "", new { @class = "text-danger m-0" })
+                                    @Html.HiddenFor(model => model.EventID)
 
                                     <div class="input-group mb-3 w-75 mx-auto">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-default">Reservado para</span>
                                         </div>
-                                        <input id="ReservedFor" name="ReservedFor" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-                                        <p class="my-auto mx-2"> Si aplica</p>
+                                        <input id="ReservedFor" name="ReservedFor" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="Si aplica">
                                     </div>
+
                                     <div class="input-group mb-3 w-75 mx-auto">
                                         @Html.EditorFor(model => model.SeatsReserved, new { htmlAttributes = new { @style = "display: none;" } })
-                                        
+
                                         @Html.EditorFor(model => model.SeatsNbrReserved, new { htmlAttributes = new { @style = "display: none;" } })
                                         @Html.ValidationMessageFor(model => model.SeatsNbrReserved, "", new { @class = "text-danger" })
                                     </div>
+
                                     <div class="form-group">
                                         <input type="submit" class="btnReserve" value="Reservar" />
                                     </div>
                                 }
-</td>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-            <div class="row justify-content-center table-responsive">
-                @{
-                    Html.RenderAction("_PreviousReservations");
-                }
+            @{
+                Html.RenderAction("_PreviousReservations");
+            }
+            <div class="modal fade" id="ModalMessage">
+                <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="card bg-light">
+                                <article class="card-body">
+                                    <h3 class="my-1 text-colorbase font-weight-bold"><i class="fa fa-tags"></i> Aspectos Básicos</h3>
+                                    <hr />
+                                    <div class="my-2">
+                                        <ol class="m-0">
+                                            <li><strong>Por favor</strong> realizar la reservación bajo el concepto de <strong>Búrbujas Sociales</strong> - Grupo de personas que conviven juntos, lo que normalmente llamamos como <strong>Familias</strong>.</li>
+                                            <li><strong>Por favor EVITAR</strong> dejar espacios entre sillas, por favor seleccionar las sillas como bloques de sillas.</li>
+                                            <li>Cantidad máxima de asientos a reservar por reserva: <strong>10 espacios.</strong></li>
+                                            <li>Cantidad máxima de asientos a reservar por evento: <strong>30 espacios.</strong></li>
+                                        </ol>
+                                    </div>
+                                    <hr />
+                                    <button type="button" class="btn btn-secondary my-2 float-right" data-dismiss="modal">Cerrar</button>
+                                </article>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

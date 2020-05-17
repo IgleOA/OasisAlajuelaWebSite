@@ -32,14 +32,14 @@ namespace BL
             return RDAL.RemoveGUID(GUID, InsertUser);
         }
 
-        public List<Reservations> ReservationsFullInfo(int WorshipID, int UserID)
+        public List<Reservations> ReservationsFullInfo(int EventID, int UserID)
         {
-            return RDAL.ReservationsFullInfo(WorshipID, UserID);
+            return RDAL.ReservationsFullInfo(EventID, UserID);
         }
 
-        public List<ReservationLevel1> ReservationsMainInfo(int WorshipID, int UserID)
+        public List<ReservationLevel1> ReservationsMainInfo(int EventID, int UserID)
         {
-            return RDAL.ReservationsMainInfo(WorshipID, UserID);
+            return RDAL.ReservationsMainInfo(EventID, UserID);
         }
 
         public List<ReservationLevel1> ReservationsMaster()

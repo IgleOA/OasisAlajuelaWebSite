@@ -73,7 +73,8 @@ namespace OasisAlajuelaWebSite.Controllers
                 {
                     MinisterList = MBL.List(true),
                     ScheduledDate = DateTime.Today,
-                    ReservationFlag = true
+                    ReservationFlag = false,
+                    Capacity = 554
                 };
 
                 return View(Event);
@@ -89,6 +90,12 @@ namespace OasisAlajuelaWebSite.Controllers
                 string InsertUser = User.Identity.GetUserName();
 
                 Event.ScheduledDate = Event.ScheduledDate.Add(Event.ScheduledTime);
+
+                if(Event.ReservationFlag == false)
+                {
+                    Event.Capacity = null;
+                    Event.SocialDistance = null;
+                }                
 
                 var r = UBL.AddNew(Event, InsertUser);
 
@@ -144,6 +151,7 @@ namespace OasisAlajuelaWebSite.Controllers
                 string InsertUser = User.Identity.GetUserName();
 
                 Event.ScheduledDate = Event.ScheduledDate.Add(Event.ScheduledTime);
+                Event.ActionType = "UPDATE";
 
                 var r = UBL.Update(Event, InsertUser);
 
@@ -154,7 +162,7 @@ namespace OasisAlajuelaWebSite.Controllers
                 }
                 else
                 {
-                    Event.ActionType = "UPDATE";
+                    
                     Event.MinisterList = MBL.List(true);
                     return View(Event);
                 }

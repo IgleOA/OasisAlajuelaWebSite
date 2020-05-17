@@ -21,6 +21,8 @@ namespace OasisAlajuelaWebSite.Controllers
         private AboutPageBL ABL = new AboutPageBL();
         private WebDirectoryBL WBL = new WebDirectoryBL();
         private UsersBL UsBL = new UsersBL();
+        private RightsBL RRBL = new RightsBL();
+
         public ActionResult Index()
         {
             HomePage Home = HBL.Home();
@@ -29,6 +31,65 @@ namespace OasisAlajuelaWebSite.Controllers
                 UsBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
             }
             return View(Home);
+        }
+
+        public ActionResult About()
+        {
+            AboutPage Aboutpage = ABL.About();
+
+            if (Request.IsAuthenticated)
+            {
+                UsBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+                var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
+                if (validation.ReadRight == false)
+                {
+                    ViewBag.Mensaje = "Usted no esta autorizado para ingresar a esta seccion, si necesita acceso contacte con un administrador.";
+                    return View("~/Views/Shared/Error.cshtml");
+                }
+                else
+                {
+                    Users user = UsBL.List().Where(x => x.UserName == User.Identity.GetUserName()).FirstOrDefault();
+
+                    if (user.RoleName.Contains("Admin"))
+                    {
+                        ViewBag.Layout = "~/Views/Shared/_AdminLayout.cshtml";
+                    }
+                    else
+                    {
+                        ViewBag.Layout = "~/Views/Shared/_MainLayout.cshtml";
+                    }
+                    ViewBag.Write = validation.WriteRight;
+                    return View(Aboutpage);
+                }
+            }
+            else
+            {
+                ViewBag.Layout = "~/Views/Shared/_MainLayout.cshtml";
+                return View(Aboutpage);
+            }
+        }
+
+        public ActionResult History()
+        {
+            if (Request.IsAuthenticated)
+            {
+                Users user = UsBL.List().Where(x => x.UserName == User.Identity.GetUserName()).FirstOrDefault();
+
+                if (user.RoleName.Contains("Admin"))
+                {
+                    ViewBag.Layout = "~/Views/Shared/_AdminLayout.cshtml";
+                }
+                else
+                {
+                    ViewBag.Layout = "~/Views/Shared/_MainLayout.cshtml";
+                }
+                return View();
+            }
+            else
+            {
+                ViewBag.Layout = "~/Views/Shared/_MainLayout.cshtml";
+                return View();
+            }
         }
 
         public ActionResult _Banners()
@@ -51,7 +112,6 @@ namespace OasisAlajuelaWebSite.Controllers
 
             return View(svcs.ToList());
         }
-
         public ActionResult _Sermons()
         {
             var data = (from d in SBL.List(true)
@@ -78,16 +138,7 @@ namespace OasisAlajuelaWebSite.Controllers
             return View(data.ToList());
         }
 
-        public ActionResult About()
-        {
-            if (Request.IsAuthenticated)
-            {
-                UsBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
-            }
-            AboutPage Aboutpage = ABL.About();
-
-            return View(Aboutpage);
-        }
+        
 
         public ActionResult _Menu()
         {

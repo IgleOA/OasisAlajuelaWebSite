@@ -117,6 +117,7 @@
     <Compile Include="BannnersDAL.cs" />
     <Compile Include="GroupsDAL.cs" />
     <Compile Include="HomeDAL.cs" />
+    <Compile Include="LeadershipDAL.cs" />
     <Compile Include="MinistersDAL.cs" />
     <Compile Include="MinistriesDAL.cs" />
     <Compile Include="NewsDAL.cs" />
@@ -131,7 +132,7 @@
     <Compile Include="UserProfileDAL.cs" />
     <Compile Include="UsersDAL.cs" />
     <Compile Include="WebDirectoryDAL.cs" />
-    <Compile Include="WorshipsDAL.cs" />
+    <Compile Include="ReservationEventDetailDAL.cs" />
     <Compile Include="YouTubeDAL.cs" />
   </ItemGroup>
   <ItemGroup>

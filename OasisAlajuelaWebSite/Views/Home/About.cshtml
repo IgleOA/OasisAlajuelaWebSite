@@ -2,9 +2,15 @@
 
 @{
     ViewBag.Title = "Acerca de Nosotros";
-    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    Layout = ViewBag.Layout;
 }
-<section class="hp-section">
+<style>
+    p {
+        margin-bottom: 1rem;
+        margin-top: 1rem;
+    }
+</style>
+<section class="hp-section ftco-animate animated fadeInUp">
     <div class="container">
         <h4 class="card-title mt-3 mb-2 text-center font-weight-bold">@ViewBag.Title.ToUpper()</h4>
         <hr />

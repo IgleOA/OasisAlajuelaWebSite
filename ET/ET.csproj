@@ -74,6 +74,7 @@
     <Compile Include="Emails.cs" />
     <Compile Include="Groups.cs" />
     <Compile Include="HomePage.cs" />
+    <Compile Include="Leadership.cs" />
     <Compile Include="Ministers.cs" />
     <Compile Include="Ministries.cs" />
     <Compile Include="News.cs" />
@@ -88,7 +89,7 @@
     <Compile Include="UserProfile.cs" />
     <Compile Include="Users.cs" />
     <Compile Include="WebDirectory.cs" />
-    <Compile Include="Worships.cs" />
+    <Compile Include="ReservationEventDetail.cs" />
     <Compile Include="YouTubeVideo.cs" />
   </ItemGroup>
   <ItemGroup>

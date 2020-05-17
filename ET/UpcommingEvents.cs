@@ -52,18 +52,16 @@ namespace ET
 
         public string EventTime { get; set; }
 
-        public int WorshipID { get; set; }
-
         [Display(Name = "Requiere Reservación?")]
         public bool ReservationFlag { get; set; }
 
         [Display(Name = "Capacidad")]
         public int? Capacity { get; set; }
 
-        public enum CapacityList
-        {
-            Total = 100, Media = 50, Cuarto = 25
-        }
+        [Display(Name = "Distanciamiento")]
+        public int? SocialDistance { get; set; }
+
+        public int Available { get; set; }
 
         public UpcommingEvents ()
         {

@@ -24,10 +24,10 @@
             <p class="card-subtitle p-0" style="color:white;">@Model.ScheduledDate.ToString("MM/dd/yyyy") @Model.EventTime CR</p>
         </div>
         <div class="col-md-6 pl-md-5">
-            @if(Model.WorshipID >= 1)
+            @if(Model.ReservationFlag == true && Model.Available > 0)
             { 
                 <div class="tagcloud text-center mt-2">
-                    <a href='@Url.Action("CheckOut","Reservations", new { id = Model.WorshipID })' target="_blank" title="Reservar" class="text-colorbase" style="text-decoration: none; font-size: 20px; z-index:15; background: white;"><i class="fas fa-sign-in-alt fa-1x"></i> Reserve su espacio</a>
+                    <a href='@Url.Action("CheckOut","Reservations", new { id = Model.EventID })' target="_blank" title="Reservar" class="text-colorbase" style="text-decoration: none; font-size: 20px; z-index:15; background: white;"><i class="fas fa-sign-in-alt fa-1x"></i> Reserve su espacio</a>
                 </div>
             }
             <div id="timer" class="d-flex mb-3">
