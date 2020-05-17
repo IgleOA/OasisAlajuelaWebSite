@@ -41,18 +41,18 @@
         <hr />
         @if (ViewBag.Write == true)
         {
-        <div class="row justify-content-start">
-            <div class="p-2 ml-4">
-                <div class="media services d-block text-justify">
-                    <div class="media-body px-0 m-0">
-                        <div class="d-flex justify-content-between">
-                            <a href='#' title="Agregar nuevo Tipo de Recurso" class="btn btn-light" style="text-decoration: none;" onclick="AddNewType()"><i class="fas fa-plus-square fa-1x"></i> Agregar nuevo Tipo de Recurso</a>
-                            <a href='#' title="Agregar Recurso" class="btn btn-light" style="text-decoration: none;" onclick="AddNew()"><i class="fas fa-plus-square fa-1x"></i> Agregar Recurso</a>
+            <div class="row justify-content-start">
+                    <div class="media services d-block text-justify">
+                        <div class="media-body px-0 m-0">
+                            <div class="d-flex justify-content-between">
+                 <div class="p-2 ml-4">
+                               <a href='#' title="Agregar nuevo Tipo de Recurso" class="btn btn-light" style="text-decoration: none;" onclick="AddNewType()"><i class="fas fa-plus-square fa-1x"></i> Agregar nuevo Tipo de Recurso</a>
+                                <a href='#' title="Agregar Recurso" class="btn btn-light" style="text-decoration: none;" onclick="AddNew()"><i class="fas fa-plus-square fa-1x"></i> Agregar Recurso</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
         }
         <div class="row mt-2 justify-content-center">
             @foreach (var item in Model)
@@ -77,44 +77,53 @@
                         {
                             var modalRT = "ModalRT" + item.ResourceTypeID.ToString();
 
-                            <a href="#" class="card-link m-0" title="Equipos asignados" data-toggle="modal" data-target='#@modalRT'>
-                                <span class="fas fa-users fa-1x mx-2" style="vertical-align: middle; color: #444444;"></span> Equipos Asignados
-                            </a>
-                            <div class="modal fade" id="@modalRT">
-                                <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-body">
-                                            <div class="card bg-light">
-                                                <article class="card-body">
-                                                    <h3 class="mt-3 mb-1">
-                                                        <i class="fa fa-tags"></i>
-                                                        Recurso:
-                                                        <span style="color:blue">@item.TypeName</span>
-                                                    </h3>
-                                                    <hr />
-                                                    @if (item.GroupList.Count >= 1)
-                                                    {
-                                                        <div class="tagcloud mt-2 align-content-center">
-                                                            @foreach (var r in item.GroupList)
-                                                            {
-                                                                <a href="#" class="text-decoration-none" style="font-size: 15px;" onclick="RemoveRG(@item.ResourceTypeID,@r.GroupID)">@r.GroupName <i class="fas fa-times"></i></a>                                                                
-                                                            }
-                                                        </div>
-                                                    }
-                                                    else
-                                                    {
-                                                        <p class="my-2">Aún no hay equipos asignados a este equipo.</p>
-                                                    }
-                                                    <hr />
-                                                    <div class="mt-2" style="inline-size: max-content;">
+                            if (item.IsPublic == true)
+                            {
+                                <p class="card-link m-0">
+                                    <span class="fas fa-users fa-1x mx-2" style="vertical-align: middle; color: #444444;"></span> Recurso Público
+                                </p>
+                            }
+                            else
+                            {
+                                <a href="#" class="card-link m-0" title="Equipos asignados" data-toggle="modal" data-target='#@modalRT'>
+                                    <span class="fas fa-users fa-1x mx-2" style="vertical-align: middle; color: #444444;"></span> Equipos Asignados
+                                </a>
+                                <div class="modal fade" id="@modalRT">
+                                    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <div class="card bg-light">
+                                                    <article class="card-body">
+                                                        <h3 class="mt-3 mb-1">
+                                                            <i class="fa fa-tags"></i>
+                                                            Recurso:
+                                                            <span style="color:blue">@item.TypeName</span>
+                                                        </h3>
+                                                        <hr />
+                                                        @if (item.GroupList.Count >= 1)
+                                                        {
+                                                            <div class="tagcloud mt-2 align-content-center">
+                                                                @foreach (var r in item.GroupList)
+                                                                {
+                                                                    <a href="#" class="text-decoration-none" style="font-size: 15px;" onclick="RemoveRG(@item.ResourceTypeID,@r.GroupID)">@r.GroupName <i class="fas fa-times"></i></a>
+                                                                }
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <p class="my-2">Aún no hay equipos asignados a este equipo.</p>
+                                                        }
+                                                        <hr />
+                                                        <div class="mt-2" style="inline-size: max-content;">
                                                             <a href='#' title="Agregar Involucrado" class="btn btn-light" style="text-decoration: none;" onclick='AddNewRG(@item.ResourceTypeID)'><i class="fas fa-plus-square fa-1x"></i> Agregar Equipo</a>
-                                                    </div>
-                                                </article>
+                                                        </div>
+                                                    </article>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            }
                         }
                     </div>
                 </div>

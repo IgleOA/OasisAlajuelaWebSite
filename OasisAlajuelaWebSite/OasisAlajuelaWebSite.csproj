@@ -2254,6 +2254,9 @@
     <Content Include="Content\bootstrap-select.css.map" />
     <Content Include="App_Data\AuditoriumLayout.json" />
     <None Include="Properties\PublishProfiles\IgleOA - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\IgleOAUAT - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\OasisAlajuela - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\PROD_FTP_Server.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
