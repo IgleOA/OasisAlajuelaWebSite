@@ -160,14 +160,14 @@ img > .d-block {
     width: 80px;
     height: 80px;
     position: relative;
-    background: #ffe5e5;
+    background: #CCE5FF;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     -ms-border-radius: 50%;
     border-radius: 50%;
 }
 .servicesSmall .icon span {
-    color: #ff5656;
+    color: #0a3e77;
 }
 
 .sermons {

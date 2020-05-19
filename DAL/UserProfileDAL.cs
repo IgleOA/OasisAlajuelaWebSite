@@ -134,7 +134,7 @@ namespace DAL
                     ParameterName = "@Phone",
                     SqlDbType = SqlDbType.VarChar,
                     Size = 50,
-                    Value = UP.Phone.Trim()
+                    Value = UP.Phone
                 };
                 SqlCmd.Parameters.Add(pPhone);
 
@@ -143,7 +143,7 @@ namespace DAL
                     ParameterName = "@Mobile",
                     SqlDbType = SqlDbType.VarChar,
                     Size = 50,
-                    Value = UP.Mobile.Trim()
+                    Value = UP.Mobile
                 };
                 SqlCmd.Parameters.Add(pMobile);
 
@@ -152,7 +152,7 @@ namespace DAL
                     ParameterName = "@Country",
                     SqlDbType = SqlDbType.VarChar,
                     Size = 100,
-                    Value = UP.Country.Trim()
+                    Value = UP.Country
                 };
                 SqlCmd.Parameters.Add(Country);
 
@@ -161,7 +161,7 @@ namespace DAL
                     ParameterName = "@State",
                     SqlDbType = SqlDbType.VarChar,
                     Size = 100,
-                    Value = UP.State.Trim()
+                    Value = UP.State
                 };
                 SqlCmd.Parameters.Add(State);
 
@@ -170,7 +170,7 @@ namespace DAL
                     ParameterName = "@City",
                     SqlDbType = SqlDbType.VarChar,
                     Size = 100,
-                    Value = UP.City.Trim()
+                    Value = UP.City
                 };
                 SqlCmd.Parameters.Add(City);
 
@@ -179,7 +179,7 @@ namespace DAL
                     ParameterName = "@Facebook",
                     SqlDbType = SqlDbType.VarChar,
                     Size = 100,
-                    Value = UP.Facebook.Trim()
+                    Value = UP.Facebook
                 };
                 SqlCmd.Parameters.Add(Facebook);
 
@@ -188,7 +188,7 @@ namespace DAL
                     ParameterName = "@Twitter",
                     SqlDbType = SqlDbType.VarChar,
                     Size = 100,
-                    Value = UP.Twitter.Trim()
+                    Value = UP.Twitter
                 };
                 SqlCmd.Parameters.Add(Twitter);
 
@@ -197,7 +197,7 @@ namespace DAL
                     ParameterName = "@Snapchat",
                     SqlDbType = SqlDbType.VarChar,
                     Size = 100,
-                    Value = UP.Snapchat.Trim()
+                    Value = UP.Snapchat
                 };
                 SqlCmd.Parameters.Add(Snapchat);
 
@@ -206,7 +206,7 @@ namespace DAL
                     ParameterName = "@Instragram",
                     SqlDbType = SqlDbType.VarChar,
                     Size = 100,
-                    Value = UP.Instragram.Trim()
+                    Value = UP.Instragram
                 };
                 SqlCmd.Parameters.Add(Instragram);
 
