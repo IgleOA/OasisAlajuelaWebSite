@@ -55,6 +55,7 @@ namespace OasisAlajuelaWebSite.Controllers
                     var strg = ViewToStringRenderer.RenderViewToString(this.ControllerContext, "~/Views/Users/EmailConfirmation.cshtml", User);
 
                     mailBody.AppendFormat(strg);
+                    
 
                     Email.BodyEmail = mailBody.ToString();
 
@@ -62,6 +63,7 @@ namespace OasisAlajuelaWebSite.Controllers
                     mm.Subject = Email.SubjectEmail;
                     mm.Body = Email.BodyEmail;
                     mm.IsBodyHtml = true;
+                    mm.BodyEncoding = Encoding.GetEncoding("utf-8");
 
                     SmtpClient smtp = new SmtpClient();
                     smtp.Send(mm);
