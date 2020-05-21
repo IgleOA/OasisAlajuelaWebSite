@@ -2252,7 +2252,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\bootstrap-select.css.map" />
-    <Content Include="App_Data\AuditoriumLayout.json" />
     <None Include="Properties\PublishProfiles\IgleOA - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\IgleOAUAT - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\OasisAlajuela - Web Deploy.pubxml" />
@@ -2859,7 +2858,9 @@
     <Content Include="Views\Leadership\Alicia_Guillen.cshtml" />
     <Content Include="Views\Home\History.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

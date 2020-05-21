@@ -55,6 +55,7 @@ namespace OasisAlajuelaWebSite.Controllers
                     list = list.Where(b => b.FullName.ToLower().Contains(searchString.ToLower()) | b.UserName.ToLower().Contains(searchString.ToLower()));
                 }
 
+                ViewBag.UsersCount = list.Count();
                 int pageSize = 10;
                 int pageNumber = (page ?? 1);
                 return View(list.ToPagedList(pageNumber, pageSize));
