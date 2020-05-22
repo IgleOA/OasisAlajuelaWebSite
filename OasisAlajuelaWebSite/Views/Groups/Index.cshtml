@@ -43,6 +43,11 @@
         url = url.replace("groupid", GroupID);
         window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
     }
+    function AddNewNote(GroupID) {
+        var url = '@Url.Action("AddNewByGroup","Notes", new { id = "groupid"})';
+        url = url.replace("groupid", GroupID);
+        window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
+    }
     function RemoveRG(RGID) {
         var x = confirm("Esta seguro que quiere eliminar este recurso de este equipo???");
         if (x) {
@@ -68,7 +73,7 @@
                         <th class="py-2 text-center">Recursos</th>
                         @if (ViewBag.WriteRight == true)
                         {
-                            <th colspan="2" class="py-2 text-center">Acción</th>
+                            <th colspan="3" class="py-2 text-center">Acción</th>
                         }
                     </tr>
 
@@ -99,6 +104,11 @@
                                 <td class="align-middle text-center px-0">
                                     <a href="#" class="card-link m-0" onclick="Remove(@item.GroupID)" title="Eliminar">
                                         <i class="fas fa-times-circle fa-2x mx-2" style="vertical-align: middle; color: #444444;"></i>
+                                    </a>
+                                </td>
+                                <td class="align-middle text-center px-0">
+                                    <a href="#" class="card-link m-0" onclick="AddNewNote(@item.GroupID)" title="Enviar Mensaje">
+                                        <i class="fas fa-comment-medical fa-2x mx-2" style="vertical-align: middle; color: #444444;"></i>
                                     </a>
                                 </td>
                             }

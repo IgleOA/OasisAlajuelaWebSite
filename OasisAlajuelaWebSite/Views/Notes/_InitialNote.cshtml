@@ -1,0 +1,47 @@
+﻿@model ET.UserNotes
+
+@{
+    Layout = null;
+}
+
+<script type="text/javascript">
+    function Read() {
+        $.ajax({
+                url: '/Notes/ReadNote',
+                data: { id: @Model.NoteID }
+            }).done(function () { alert('Hecho!!!'); $('#ModalMessage').modal('hide'); });
+    }
+    function Response() {
+        var url = '@Url.Action("ResponseNote","Notes", new { id = "NoteID" } )';
+        url = url.replace("NoteID", @Model.NoteID)
+        window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
+    }
+</script>
+<h3 class="my-1 text-colorbase font-weight-bold"><i class="far fa-envelope"></i> Hola @ViewBag.FullName</h3>
+<hr />
+@if (Model.ResponseNote.Length > 0)
+{
+    <div class="my-2">
+        @Html.LabelFor(model => model.RequestNote)
+        <p class="mx-2 my-0 p-0">@Html.Raw(Model.RequestNote)</p>
+        @Html.LabelFor(model => model.ResponseNote)
+        <p class="mx-2 my-0 p-0">@Html.Raw(Model.ResponseNote)</p>
+        <p class="mx-2 my-0 p-0 font-weight-bold text-right">@Model.InsertedBy</p>
+    </div>
+}
+else
+{
+    <div class="my-2">
+        <p class="mx-2 my-0 p-0">@Html.Raw(Model.RequestNote)</p>
+        <p class="mx-2 my-0 p-0 font-weight-bold text-right">@Model.InsertedBy</p>
+    </div>
+}
+<hr />
+<div class="tagcloud">
+    <a href="#" class="text-decoration-none my-2 float-left" style="font-size: 12px;" onclick="Read()"><i class="far fa-eye"></i> Marcar como Leído</a>
+    @if (Model.ResponseRequired == true)
+    {
+        <a href="#" class="text-decoration-none my-2" style="font-size: 12px;" onclick="Response()"><i class="far fa-share-square"></i> Responder</a>
+    }
+    <a href="#" class="text-decoration-none my-2 float-right" style="font-size: 12px;" data-dismiss="modal"><i class="fas fa-times"></i> Cerrar</a>    
+</div>

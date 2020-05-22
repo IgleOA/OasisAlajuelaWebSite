@@ -371,6 +371,7 @@
     <Compile Include="Controllers\MinistersController.cs" />
     <Compile Include="Controllers\MinistriesController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
+    <Compile Include="Controllers\NotesController.cs" />
     <Compile Include="Controllers\ReservationsController.cs" />
     <Compile Include="Controllers\ResourcesController.cs" />
     <Compile Include="Controllers\RightsController.cs" />
@@ -2857,6 +2858,13 @@
     <Content Include="Views\Leadership\Gerardo_Montero.cshtml" />
     <Content Include="Views\Leadership\Alicia_Guillen.cshtml" />
     <Content Include="Views\Home\History.cshtml" />
+    <Content Include="Views\Notes\_InitialNote.cshtml" />
+    <Content Include="Views\Notes\AddNew.cshtml" />
+    <Content Include="Views\Notes\AddNewByUser.cshtml" />
+    <Content Include="Views\Notes\ResponseNote.cshtml" />
+    <Content Include="Views\Notes\Index.cshtml" />
+    <Content Include="Views\Notes\_MessageMenu.cshtml" />
+    <Content Include="Views\Notes\AddNewByGroup.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

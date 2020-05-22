@@ -86,6 +86,7 @@
     <Compile Include="Services.cs" />
     <Compile Include="UpcommingEvents.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserNotes.cs" />
     <Compile Include="UserProfile.cs" />
     <Compile Include="Users.cs" />
     <Compile Include="WebDirectory.cs" />

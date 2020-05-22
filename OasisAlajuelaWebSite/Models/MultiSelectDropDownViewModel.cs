@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace OasisAlajuelaWebSite.Models
 {
@@ -58,4 +59,21 @@ namespace OasisAlajuelaWebSite.Models
 
         public string ActionType { get; set; }
     }
+    public class MultiSelectNewNote
+    {
+        [Required]
+        public List<int> SelectedMultiId { get; set; }
+
+        public List<Users> SelectedLst { get; set; }
+
+        [Required]
+        [Display(Name ="Mensaje")]
+        [UIHint("tinymce_jquery_full"), AllowHtml]
+        public string RequestNote { get; set; }
+
+        public bool ResponseRequired { get; set; }
+
+        public string ActionType { get; set; }
+    }
+
 }

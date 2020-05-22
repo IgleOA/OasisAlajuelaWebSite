@@ -1,0 +1,185 @@
+﻿@model PagedList.IPagedList<ET.UserNotes>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Mensajería";
+    Layout = ViewBag.Layout;
+}
+
+<script src="~/Scripts/jquery-3.5.0.min.js"></script>
+<script type="text/javascript">
+    function Read(NoteID) {
+        $.ajax({
+            url: '/Notes/ReadNote',
+            data: { id: NoteID }
+            }).done(function () { alert('Hecho!!!'); location.reload(); });
+    }
+    function Response(ID) {
+        var url = '@Url.Action("ResponseNote","Notes", new { id = "NoteID" } )';
+        url = url.replace("NoteID", ID)
+        window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
+    }
+    function AddNew() {
+        var url = '@Url.Action("AddNew", "Notes")';
+        window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
+    }
+</script>
+
+<section class="hp-section">
+    <div class="container">
+        <div class="row justify-content-start">
+            <h2 class="heading-section font-weight-bold my-2 p-0">@ViewBag.Title</h2>
+        </div>
+        @using (Html.BeginForm("Index", "Notes", FormMethod.Get))
+        {
+            <div class="row justify-content-start">
+                <div class="form-group input-group p-0 searchfield w-50">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text w"><i class="fas fa-search"></i></span>
+                    </div>
+                    @Html.TextBox("SearchString", null, new { @class = "form-control", @placeholder = "Buscar" })
+                </div>
+                <input type="submit" value="Buscar" class="btn btn-dark alt mt-0 mb-2" style="height: 2.75rem !important;" />
+            </div>
+        }
+        <div class="row justify-content-start">
+            <table class="table-responsive-xl align-content-center p-0 m-0">
+                <tbody>
+                    <tr class="align-middle">
+                        <th class="py-2 align-middle">@Html.DisplayNameFor(model => model.FirstOrDefault().NoteDate)</th>
+                        <th class="py-2 align-middle">@Html.DisplayNameFor(model => model.FirstOrDefault().InsertedBy)</th>
+                        <th class="py-2 align-middle">@Html.DisplayNameFor(model => model.FirstOrDefault().RequestNote)</th>
+                        <th class="py-2 align-middle">@Html.DisplayName("Respuesta")</th>
+                        <th class="py-2 align-middle">@Html.DisplayNameFor(model => model.FirstOrDefault().ReadFlag)</th>
+                        <th colspan="4" class="text-center py-2 align-middle">Acción</th>
+                    </tr>
+
+                    @foreach (var item in Model)
+                    {
+                        var modalname = "ModalCenter" + item.NoteID.ToString();
+                        var note = string.Empty;
+                        if (item.RequestNote.Length <= 25)
+                        {
+                            note = item.RequestNote;
+                        }
+                        else
+                        {
+                            note = item.RequestNote.Substring(0, 25) + "...";
+                        }
+                        var classname = "";
+                        if (item.ReadFlag == false)
+                        {
+                            classname = "bg-warning";
+                        }
+                        <tr class="@classname">
+                            <td class="align-middle">@Html.DisplayFor(modelItem => item.NoteDate)</td>
+                            <td class="align-middle">@Html.DisplayFor(modelItem => item.InsertedBy)</td>
+                            <td class="align-middle">@Html.DisplayFor(modelItem => note) </td>
+                            @{
+                                var Response = "No Requerida";
+
+                                if (item.ResponseNote.Length > 0)
+                                {
+
+                                    Response = "Enviada";
+                                }
+                                else
+                                {
+                                    if (item.ResponseRequired == true)
+                                    {
+                                        Response = "Pendiente";
+                                    }
+                                }
+                            }
+                            <td class="align-middle">@Html.DisplayFor(modelItem => Response) </td>
+                            @{
+                                var status = "No leído";
+                                if (item.ReadFlag == true)
+                                {
+                                    status = "Leido";
+                                }
+                            }
+                            <td class="align-middle">@Html.DisplayFor(modelItem => status)</td>
+                            <td class="text-center align-middle px-0">
+                                <a href="#" class="card-link m-0" title="Involucrados">
+                                    <span class="fas fa-search fa-1x mx-2" data-toggle="modal" data-target='#@modalname' style="vertical-align: middle; color: #444444;"></span>
+                                </a>
+                            </td>
+
+                        </tr>
+
+                    }
+                </tbody>
+            </table>
+        </div>
+        @foreach (var item in Model)
+        {
+            var modalname = "ModalCenter" + item.NoteID.ToString();
+
+            <div class="modal fade" id="@modalname">
+                <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="card bg-light">
+                                <article class="card-body">
+                                    <h3 class="my-1 text-colorbase font-weight-bold"><i class="far fa-envelope"></i> Hola @ViewBag.FullName</h3>
+                                    <hr />
+                                    @if (item.ResponseNote.Length > 0)
+                                    {
+                                        <div class="my-2">
+                                            @Html.LabelFor(model => item.RequestNote)
+                                            <p class="mx-2 my-0 p-0">@Html.Raw(item.RequestNote)</p>
+                                            @Html.LabelFor(model => item.ResponseNote)
+                                            <p class="mx-2 my-0 p-0">@Html.Raw(item.ResponseNote)</p>
+                                            <p class="mx-2 my-0 p-0 font-weight-bold text-right">@item.InsertedBy</p>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="my-2">
+                                            <p class="mx-2 my-0 p-0">@Html.Raw(item.RequestNote)</p>
+                                            <p class="mx-2 my-0 p-0 font-weight-bold text-right">@item.InsertedBy</p>
+                                        </div>
+                                    }
+                                    <hr />
+                                    <div class="tagcloud">
+
+                                        @if (item.ReadFlag == false)
+                                        {
+                                            <a href="#" class="text-decoration-none my-2 float-left" style="font-size: 12px;" onclick="Read(@item.NoteID)"><i class="far fa-eye"></i> Marcar como Leído</a>
+                                            if (item.ResponseRequired == true)
+                                            {
+                                                <a href="#" class="text-decoration-none my-2" style="font-size: 12px;" onclick="Response(@item.NoteID)"><i class="far fa-share-square"></i> Responder</a>
+                                            }
+                                        }
+                                        <a href="#" class="text-decoration-none my-2 float-right" style="font-size: 12px;" data-dismiss="modal"><i class="fas fa-times"></i> Cerrar</a>
+                                    </div>
+                                </article>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="row justify-content-start">
+            @if (Model.PageCount > 1)
+            {
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter }), new PagedListRenderOptions() { ContainerDivClasses = new string[] { "p-0" }, UlElementClasses = new string[] { "pagination m-0" } })
+            }
+        </div>
+        @if (ViewBag.Write == true)
+        {
+            <div class="row">
+                <div class="p-0">
+                    <div class="media services d-block text-justify">
+                        <div class="media-body py-2 mt-3">
+                            <div class="d-flex justify-content-between">
+                                <a href="#" onclick="AddNew()" title="Enviar un mensaje" class="btn btn-light mx-2" style="text-decoration: none;"><i class="fas fa-envelope fa-1x"></i> Enviar un mensaje</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>

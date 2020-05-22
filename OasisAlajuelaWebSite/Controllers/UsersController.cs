@@ -52,7 +52,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
                 if (!String.IsNullOrEmpty(searchString))
                 {
-                    list = list.Where(b => b.FullName.ToLower().Contains(searchString.ToLower()) | b.UserName.ToLower().Contains(searchString.ToLower()));
+                    list = list.Where(b => b.FullName.ToLower().Contains(searchString.ToLower()) | b.UserName.ToLower().Contains(searchString.ToLower()) | b.Email.ToLower().Contains(searchString.ToLower()));
                 }
 
                 ViewBag.UsersCount = list.Count();

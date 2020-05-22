@@ -1,0 +1,74 @@
+﻿@model ET.ResponseUserNote
+
+@{
+    ViewBag.Title = "Nueva Nota";
+    Layout = "~/Views/Shared/_PupopLayout.cshtml";
+}
+<script src="~/Scripts/jquery-3.5.0.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var flag = '@(Model.ActionType)';
+        if (flag == "UPDATE") {
+            opener.location.reload();
+            window.close();
+        }
+    });
+</script>
+
+<style>
+    .button {
+        margin: 0 !important;
+        height: 3rem !important;
+    }
+    p {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+</style>
+
+<div class="card bg-light">
+    <article class="card-body">
+        <h3 class="heading-section font-weight-bold m-0 p-0 align-center">
+            @ViewBag.Title
+        </h3>
+        <hr />
+        @using (Html.BeginForm("ResponseNote", "Notes", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger m-0" })
+                @Html.HiddenFor(model => model.NoteID)
+                <div class="form-group">
+                    @Html.Label("Mensaje", htmlAttributes: new { @class = "control-label col-md-2 p-0", @style = "max-width: 100%;" })
+                    <div class="input-group">
+                        @Html.Raw(ViewBag.RequestNote)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ResponseNote, htmlAttributes: new { @class = "control-label col-md-2 p-0", @style = "max-width: 100%;" })
+                    <div class="col w-100 p-0">
+                        @Html.TextAreaFor(model => model.ResponseNote, 5, 1, new { @class = "form-control", @maxlength = 200 } )
+                        <span id="charsLeft">Máximo 200 carácteres. </span>
+                        <script type="text/javascript">
+                            $(function () {
+                                $("#ResponseNote").keyup(function () {
+                                    var charsLeft = $(this).attr("maxlength") - $(this).val().length;
+                                    $("#charsLeft").text("Quedan " + charsLeft + " carácteres.");
+                                });
+                            });
+                        </script>
+                        @Html.ValidationMessageFor(model => model.ResponseNote, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="mx-0">
+                        <input type="submit" value="Guardar" class="btn btn-dark alt mt-0 mb-2" />
+                        <input type="button" value="Cancelar" class="btn btn-dark alt mt-0 mb-2" onclick="javascript: window.close();" />
+                    </div>
+                </div>
+            </div>
+        }
+    </article>
+</div>
+

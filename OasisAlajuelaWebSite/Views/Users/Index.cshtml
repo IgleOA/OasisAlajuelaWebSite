@@ -36,6 +36,15 @@
         var url = '@Url.Action("AddNew")';
         window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
     }
+    function AddNewNote() {
+        var url = '@Url.Action("AddNew", "Notes")';
+        window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
+    }
+    function AddNewNotebyID(ID) {
+        var url = '@Url.Action("AddNewByUser", "Notes", new { id = "UserID"})';
+        url = url.replace("UserID", ID);
+        window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
+    }
     function Edit(UserID) {
         var url = '@Url.Action("Edit", new { id = "userid" })';
         url = url.replace("userid", UserID);
@@ -78,7 +87,7 @@
                         <th class="text-center py-2 align-middle">@Html.DisplayNameFor(model => model.FirstOrDefault().ActiveFlag)</th>
                         @if (ViewBag.WriteRight == true)
                         {
-                            <th colspan="3" class="text-center py-2 align-middle">Acción</th>
+                            <th colspan="4" class="text-center py-2 align-middle">Acción</th>
                         }
                     </tr>
 
@@ -148,6 +157,11 @@
                                         <span class="fas fa-users fa-1x mx-2" data-toggle="modal" data-target='#@modalname' style="vertical-align: middle; color: #444444;"></span>
                                     </a>
                                 </td>
+                                <td class="text-center align-middle px-0">
+                                    <a href="#" class="card-link m-0" onclick="AddNewNotebyID(@item.UserID)" title="Enviar Mensaje">
+                                        <span class="fas fa-comment-medical fa-1x mx-2" style="vertical-align: middle; color: #444444;"></span>
+                                    </a>
+                                </td>
                             }
                         </tr>
 
@@ -212,6 +226,7 @@
                         <div class="media-body py-2 mt-3">
                             <div class="d-flex justify-content-between">
                                 <a href="#" onclick="AddNew()" title="Agregar un nuevo Usuario" class="btn btn-light" style="text-decoration: none;"><i class="fas fa-plus-square fa-1x"></i> Agregar un nuevo Usuario</a>
+                                <a href="#" onclick="AddNewNote()" title="Agregar Mensaje Grupal" class="btn btn-light mx-2" style="text-decoration: none;"><i class="fas fa-comment-medical fa-1x"></i> Agregar Nota Grupal</a>
                             </div>
                         </div>
                     </div>
