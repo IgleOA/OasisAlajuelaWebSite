@@ -536,5 +536,34 @@ namespace DAL
             if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return rpta;
         }
+
+        public bool AddLogin(LoginRecord Login)
+        {
+            bool rpta = true;
+
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[adm].[uspAddLogin]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                //Insert Parameters
+                SqlCmd.Parameters.AddWithValue("@UserID", Login.UserID);
+                SqlCmd.Parameters.AddWithValue("@IP", Login.IP);
+                SqlCmd.Parameters.AddWithValue("@Country", Login.Country);
+                SqlCmd.Parameters.AddWithValue("@Region", Login.Region);
+                SqlCmd.Parameters.AddWithValue("@City", Login.City);
+
+                rpta = Convert.ToBoolean(SqlCmd.ExecuteScalar());
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            return rpta;
+        }
     }
 }

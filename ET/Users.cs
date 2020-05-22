@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -95,6 +96,9 @@ namespace ET
         public bool RememberMe { get; set; }
 
         public string ReturnUrl { get; set; }
+
+        public string IP { get; set; }
+       
     }
 
     public class ForgotPasswordModel
@@ -129,5 +133,18 @@ namespace ET
         public string ConfirmPassword { get; set; }
 
         public string GUID { get; set; }
+    }
+
+    public class LoginRecord
+    {
+        public int UserID { get; set; }
+        
+        public string IP { get; set; }
+
+        public string Country { get; set; }
+
+        public string Region { get; set; }
+
+        public string City { get; set; }
     }
 }

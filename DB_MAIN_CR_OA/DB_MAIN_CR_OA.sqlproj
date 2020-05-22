@@ -182,6 +182,8 @@
     <Build Include="adm\Stored Procedures\uspAddUserNote.sql" />
     <Build Include="config\Stored Procedures\uspReadUserNotes.sql" />
     <Build Include="adm\Stored Procedures\uspUpdateUserNote.sql" />
+    <Build Include="adm\Tables\utbLogins.sql" />
+    <Build Include="adm\Stored Procedures\uspAddLogin.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DB_MAIN_CR_OA_DEV.publish.xml" />

@@ -63,7 +63,7 @@ AS
 										LEFT JOIN [adm].[utbRoles] R ON R.[RoleID] = IU.[RoleID]
 								WHERE	U.[UserName] = @UserName
 										AND N.[ActiveFlag] = 1
-								ORDER BY N.[ReadFlag], N.[InsertDate]
+								ORDER BY N.[ReadFlag], N.[InsertDate] DESC
 							END
 						ELSE
 							BEGIN
