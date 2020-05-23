@@ -2865,6 +2865,7 @@
     <Content Include="Views\Notes\Index.cshtml" />
     <Content Include="Views\Notes\_MessageMenu.cshtml" />
     <Content Include="Views\Notes\AddNewByGroup.cshtml" />
+    <Content Include="Views\Notes\AddNewAll.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

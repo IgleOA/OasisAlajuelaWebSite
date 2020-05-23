@@ -23,6 +23,10 @@
         var url = '@Url.Action("AddNew", "Notes")';
         window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
     }
+    function AddNewAll() {
+        var url = '@Url.Action("AddNewAll", "Notes")';
+        window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
+    }
 </script>
 
 <section class="hp-section">
@@ -101,7 +105,7 @@
                             }
                             <td class="align-middle">@Html.DisplayFor(modelItem => status)</td>
                             <td class="text-center align-middle px-0">
-                                <a href="#" class="card-link m-0" title="Involucrados">
+                                <a href="#" class="card-link m-0" title="Ver Mensaje">
                                     <span class="fas fa-search fa-1x mx-2" data-toggle="modal" data-target='#@modalname' style="vertical-align: middle; color: #444444;"></span>
                                 </a>
                             </td>
@@ -175,6 +179,7 @@
                         <div class="media-body py-2 mt-3">
                             <div class="d-flex justify-content-between">
                                 <a href="#" onclick="AddNew()" title="Enviar un mensaje" class="btn btn-light mx-2" style="text-decoration: none;"><i class="fas fa-envelope fa-1x"></i> Enviar un mensaje</a>
+                                <a href="#" onclick="AddNewAll()" title="Enviar mensaje a todos" class="btn btn-light mx-2" style="text-decoration: none;"><i class="fas fa-envelope fa-1x"></i> Enviar mensaje a todos</a>
                             </div>
                         </div>
                     </div>

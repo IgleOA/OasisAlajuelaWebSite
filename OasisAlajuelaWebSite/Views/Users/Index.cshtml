@@ -40,6 +40,10 @@
         var url = '@Url.Action("AddNew", "Notes")';
         window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
     }
+    function AddNewAll() {
+        var url = '@Url.Action("AddNewAll", "Notes")';
+        window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
+    }
     function AddNewNotebyID(ID) {
         var url = '@Url.Action("AddNewByUser", "Notes", new { id = "UserID"})';
         url = url.replace("UserID", ID);
@@ -226,7 +230,8 @@
                         <div class="media-body py-2 mt-3">
                             <div class="d-flex justify-content-between">
                                 <a href="#" onclick="AddNew()" title="Agregar un nuevo Usuario" class="btn btn-light" style="text-decoration: none;"><i class="fas fa-plus-square fa-1x"></i> Agregar un nuevo Usuario</a>
-                                <a href="#" onclick="AddNewNote()" title="Agregar Mensaje Grupal" class="btn btn-light mx-2" style="text-decoration: none;"><i class="fas fa-comment-medical fa-1x"></i> Agregar Nota Grupal</a>
+                                <a href="#" onclick="AddNewNote()" title="Agregar Mensaje Grupal" class="btn btn-light mx-2" style="text-decoration: none;"><i class="fas fa-comment-medical fa-1x"></i> Agregar Mensaje Grupal</a>
+                                <a href="#" onclick="AddNewAll()" title="Agregar Mensaje a Todos" class="btn btn-light mx-2" style="text-decoration: none;"><i class="fas fa-comment-medical fa-1x"></i> Agregar Mensaje a Todos</a>
                             </div>
                         </div>
                     </div>

@@ -1,4 +1,4 @@
-﻿@model ET.GroupNote
+﻿@model ET.AllNote
 
 @{
     ViewBag.Title = "Nuevo Mensaje";
@@ -27,18 +27,25 @@
             @ViewBag.Title
         </h3>
         <hr />
-        @using (Html.BeginForm("AddNewByGroup", "Notes", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        @using (Html.BeginForm("AddNewAll", "Notes", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             @Html.AntiForgeryToken()
             <div class="form-horizontal">
                 @Html.ValidationSummary(true, "", new { @class = "text-danger m-0" })
                 <div class="form-group">
-                    @Html.LabelFor(model => model.GroupID, htmlAttributes: new { @class = "control-label col-md-2 p-0", @style = "max-width: 100%;" })
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fas fa-search"></i></span>
-                        </div>
-                        @Html.DropDownListFor(m => m.GroupID, new SelectList(Model.GroupList, "GroupID", "GroupName"), new { @class = "custom-select" })
+                    @Html.LabelFor(model => model.RequestNote, htmlAttributes: new { @class = "control-label col-md-2 p-0", @style = "max-width: 100%;" })
+                    <div class="col w-100 p-0">
+                        @Html.TextAreaFor(model => model.RequestNote, 5, 1, new { @class = "form-control", @maxlength = 400 })
+                        <span id="charsLeft">Máximo 400 carácteres. </span>
+                        <script type="text/javascript">
+                            $(function () {
+                                $("#RequestNote").keyup(function () {
+                                    var charsLeft = $(this).attr("maxlength") - $(this).val().length;
+                                    $("#charsLeft").text("Quedan " + charsLeft + " carácteres.");
+                                });
+                            });
+                        </script>
+                        @Html.ValidationMessageFor(model => model.RequestNote, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group">
@@ -53,22 +60,6 @@
                         }
                         @Html.DropDownListFor(model => model.ResponseRequired, ReservationRequire, new { @class = "custom-select", style = "max-width: 70px;" })
                         @Html.ValidationMessageFor(model => model.ResponseRequired, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(model => model.RequestNote, htmlAttributes: new { @class = "control-label col-md-2 p-0", @style = "max-width: 100%;" })
-                    <div class="col w-100 p-0">
-                        @Html.TextAreaFor(model => model.RequestNote, 5, 1, new { @class = "form-control", @maxlength = 300 })
-                        <span id="charsLeft">Máximo 300 carácteres. </span>
-                        <script type="text/javascript">
-                            $(function () {
-                                $("#RequestNote").keyup(function () {
-                                    var charsLeft = $(this).attr("maxlength") - $(this).val().length;
-                                    $("#charsLeft").text("Quedan " + charsLeft + " carácteres.");
-                                });
-                            });
-                        </script>
-                        @Html.ValidationMessageFor(model => model.RequestNote, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group">

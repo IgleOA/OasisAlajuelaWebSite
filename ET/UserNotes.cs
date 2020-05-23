@@ -72,4 +72,19 @@ namespace ET
 
         public string ActionType { get; set; }
     }
+
+    public class AllNote
+    {
+        [Required]
+        [Display(Name = "Mensaje")]
+        public string RequestNote { get; set; }
+
+        [Required]
+        [Display(Name = "Requiere Respuesta?")]
+        public bool ResponseRequired { get; set; }
+
+        public List<Users> UsersList { get; set; }
+
+        public string ActionType { get; set; }
+    }
 }

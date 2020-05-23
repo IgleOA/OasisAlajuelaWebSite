@@ -169,6 +169,41 @@ namespace OasisAlajuelaWebSite.Controllers
             return this.View(model);
         }
 
+
+        public ActionResult AddNewAll()
+        {
+            AllNote Note = new AllNote();
+
+            return this.View(Note);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddNewAll(AllNote model)
+        {
+            if (ModelState.IsValid)
+            {
+                List<Users> Userslist = USBL.List();
+
+                foreach (var user in Userslist)
+                {
+                    UserNotes Note = new UserNotes()
+                    {
+                        UserID = user.UserID,
+                        RequestNote = model.RequestNote,
+                        ResponseRequired = model.ResponseRequired
+                    };
+
+                    var r = UNBL.AddNote(Note, User.Identity.GetUserName());
+                }
+
+                model.ActionType = "CREATE";
+                return this.View(model);
+
+            }
+            return this.View(model);
+        }
+
         public void ReadNote(int id)
         {
             ResponseUserNote Note = new ResponseUserNote()
