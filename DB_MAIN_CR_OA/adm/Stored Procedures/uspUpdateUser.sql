@@ -37,17 +37,51 @@ AS
                 END
 
             -- =======================================================
+				DECLARE @Status			BIT
+				DECLARE @StartValues	XML
+				DECLARE @EndValues		XML
+				CREATE TABLE #DBCC (EventType varchar(50), Parameters varchar(50), EventInfo nvarchar(max))
+
 				IF(@ActionType = 'CHGST')
 					BEGIN
-						DECLARE @Status BIT = (SELECT [ActiveFlag] FROM [adm].[utbUsers] WHERE [UserID] = @UserID) 
+						SET @Status			= (SELECT [ActiveFlag] FROM [adm].[utbUsers] WHERE [UserID] = @UserID) 
+
+						SET @StartValues	= (SELECT	[UserID],[RoleID],[FullName],[UserName],[Email],[ActiveFlag],[LastActivityDate],[CreationDate],[CreationUser],[LastModifyDate],[LastModifyUser] 
+											   FROM		[adm].[utbUsers] 
+											   WHERE	[UserID] = @UserID for xml AUTO, ELEMENTS XSINIL)					
+						
 						UPDATE	[adm].[utbUsers]
 						SET		[ActiveFlag]	= CASE WHEN @Status = 1 THEN 0 ELSE 1 END
 								,[LastModifyDate] = GETDATE()
 								,[LastModifyUser] = @InsertUser
 						WHERE	[UserID]		= @UserID
+
+						SET @EndValues			= (SELECT	[UserID],[RoleID],[FullName],[UserName],[Email],[ActiveFlag],[LastActivityDate],[CreationDate],[CreationUser],[LastModifyDate],[LastModifyUser] 
+												   FROM		[adm].[utbUsers] 
+												   WHERE	[UserID] = @UserID for xml AUTO, ELEMENTS XSINIL)
+						
+						INSERT INTO #DBCC
+						EXEC ('DBCC INPUTBUFFER(@@SPID)')
+
+						INSERT INTO [adm].[utbLogActivities] ([ActivityType],[TargetTable],[SQLStatement],[StartValues],[EndValues],[User],[LogActivityDate])
+						SELECT	'UPDATE'
+								,'[adm].[utbUsers]'
+								,(SELECT EventInfo FROM #DBCC)
+								,@StartValues
+								,@EndValues
+								,[LastModifyUser]
+								,GETDATE()
+						FROM	[adm].[utbUsers]
+						WHERE	[UserID] = @UserID
+
 					END
 				ELSE
 					BEGIN
+						SET @Status			= (SELECT [ActiveFlag] FROM [adm].[utbUsers] WHERE [UserID] = @UserID) 
+						SET @StartValues	= (SELECT	[UserID],[RoleID],[FullName],[UserName],[Email],[ActiveFlag],[LastActivityDate],[CreationDate],[CreationUser],[LastModifyDate],[LastModifyUser] 
+											   FROM		[adm].[utbUsers]
+											   WHERE	[UserID] = @UserID for xml AUTO, ELEMENTS XSINIL)	
+
 						UPDATE	[adm].[utbUsers] 
 						SET		[RoleID]		= @RoleID
 								,[FullName]		= @FullName
@@ -56,7 +90,26 @@ AS
 								,[ActiveFlag]	= @ActiveFlag
 								,[LastModifyUser] = @InsertUser
 								,[LastModifyDate] = GETDATE()
+						WHERE	[UserID]	= @UserID
+
+						SET		@EndValues	= (SELECT	[UserID],[RoleID],[FullName],[UserName],[Email],[ActiveFlag],[LastActivityDate],[CreationDate],[CreationUser],[LastModifyDate],[LastModifyUser] 
+											   FROM		[adm].[utbUsers] 
+											   WHERE	[UserID] = @UserID for xml AUTO, ELEMENTS XSINIL)
+						
+						INSERT INTO #DBCC
+						EXEC ('DBCC INPUTBUFFER(@@SPID)')
+
+						INSERT INTO [adm].[utbLogActivities] ([ActivityType],[TargetTable],[SQLStatement],[StartValues],[EndValues],[User],[LogActivityDate])
+						SELECT	'UPDATE'
+								,'[adm].[utbUsers]'
+								,(SELECT EventInfo FROM #DBCC)
+								,@StartValues
+								,@EndValues
+								,[LastModifyUser]
+								,GETDATE()
+						FROM	[adm].[utbUsers]
 						WHERE	[UserID] = @UserID
+
 					END 
 			-- =======================================================
 
