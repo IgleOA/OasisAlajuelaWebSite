@@ -61,7 +61,21 @@ namespace DAL
 
             if (ListResponse.Items.Count > 0)
             {
-                YTVideo.BannerLink = ListResponse.Items[0].Snippet.Thumbnails.Maxres.Url;
+                if (Convert.IsDBNull(ListResponse.Items[0].Snippet.Thumbnails.Maxres))
+                {
+                    YTVideo.BannerLink = ListResponse.Items[0].Snippet.Thumbnails.Maxres.Url;
+                }
+                else
+                {
+                    if(Convert.IsDBNull(ListResponse.Items[0].Snippet.Thumbnails.Standard))
+                    {
+                        YTVideo.BannerLink = ListResponse.Items[0].Snippet.Thumbnails.Standard.Url;
+                    }
+                    else
+                    {
+                        YTVideo.BannerLink = ListResponse.Items[0].Snippet.Thumbnails.High.Url;
+                    }
+                }
                 YTVideo.ActiveFlag = true;
             }
             
