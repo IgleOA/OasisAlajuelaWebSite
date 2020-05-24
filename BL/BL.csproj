@@ -63,6 +63,7 @@
     <Compile Include="SermonsBL.cs" />
     <Compile Include="ServicesBL.cs" />
     <Compile Include="UpcommingEventsBL.cs" />
+    <Compile Include="UserNotesBL.cs" />
     <Compile Include="UserProfileBL.cs" />
     <Compile Include="UsersBL.cs" />
     <Compile Include="WebDirectoryBL.cs" />

@@ -5,6 +5,7 @@ using ET;
 using BL;
 using OasisAlajuelaWebSite.Models;
 using Microsoft.AspNet.Identity;
+using System.Collections.Generic;
 
 namespace OasisAlajuelaWebSite.Controllers
 {
@@ -22,6 +23,7 @@ namespace OasisAlajuelaWebSite.Controllers
         private WebDirectoryBL WBL = new WebDirectoryBL();
         private UsersBL UsBL = new UsersBL();
         private RightsBL RRBL = new RightsBL();
+        private UserNotesBL UNBL = new UserNotesBL();
 
         public ActionResult Index()
         {
@@ -29,6 +31,14 @@ namespace OasisAlajuelaWebSite.Controllers
             if (Request.IsAuthenticated)
             {
                 UsBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+
+                List<UserNotes> Notes = UNBL.List(User.Identity.GetUserName(), false);
+
+                if(Notes.Count() > 0)
+                {
+                    ViewBag.Note = true;
+                }
+
             }
             return View(Home);
         }

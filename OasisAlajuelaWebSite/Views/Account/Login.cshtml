@@ -4,7 +4,18 @@
     ViewBag.Title = "Acceso";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
-
+<script src="~/Scripts/jquery-3.5.0.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.ajax({
+            url: 'https://api.ipify.org?format=json',
+            dataType: 'json',
+            success: function (json) {
+                document.getElementById('IP').value = json.ip;
+            }
+        });
+    });
+</script>
 <div class="card bg-light ftco-animate animated fadeInUp">
     <article class="card-body mx-auto" style="max-width: 400px;">
         <h4 class="card-title mt-3 text-center font-weight-bold">ACCESAR</h4>
@@ -26,8 +37,11 @@
                 @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Contraseña" })
                 @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
             </div>
+            <div class="form-group" style="display:none;">
+                @Html.TextBoxFor(m => m.IP)
+            </div>
             <div class="form-group">
-                <input type="submit" class="btn btn-primary btn-block alt" value="Ingresar" />
+                <input type="submit" class="btn btn-primary btn-block alt" value="Ingresar"/>
             </div>
             <div class="form-group text-center">
                 <p class="m-0">@Html.ActionLink("Registrarse como nuevo usuario", "Register", null, htmlAttributes: new { @class = "text-center" })</p>

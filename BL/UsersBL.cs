@@ -58,5 +58,10 @@ namespace BL
         {
             return UDAL.InsertActivity(UserName, Controller, Action, ActivityDate);
         }
+
+        public bool AddLogin (LoginRecord Login)
+        {
+            return UDAL.AddLogin(Login);
+        }
     }
 }

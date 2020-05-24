@@ -129,6 +129,7 @@
     <Compile Include="SermonsDAL.cs" />
     <Compile Include="ServicesDAL.cs" />
     <Compile Include="UpcommingEventsDAL.cs" />
+    <Compile Include="UserNotesDAL.cs" />
     <Compile Include="UserProfileDAL.cs" />
     <Compile Include="UsersDAL.cs" />
     <Compile Include="WebDirectoryDAL.cs" />

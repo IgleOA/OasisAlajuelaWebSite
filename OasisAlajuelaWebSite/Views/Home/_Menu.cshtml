@@ -15,6 +15,7 @@
                     <i class="far fa-user"></i> Hola @User.Identity.GetUserName()!
                 </a>
             </li>
+            @Html.Action("_MessageMenu","Notes")
             @foreach(var item in Model)
             {
                 <li>

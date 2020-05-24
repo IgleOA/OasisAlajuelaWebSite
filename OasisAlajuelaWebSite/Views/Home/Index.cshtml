@@ -68,3 +68,26 @@
         </div>
     </div>
 </section>
+@if (ViewBag.Note == true)
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#ModalMessage').modal('show');
+        });
+    </script>
+    <div class="modal fade" id="ModalMessage">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="card bg-light">
+                        <article class="card-body">
+                            @{ 
+                                Html.RenderAction("_InitialNote", "Notes");
+                            }
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

@@ -8,6 +8,8 @@ using OasisAlajuelaWebSite.Models;
 using System.Text;
 using System.IO;
 using System.Configuration;
+using System.Net;
+using Newtonsoft.Json;
 
 namespace OasisAlajuelaWebSite.Controllers
 { 
@@ -16,6 +18,8 @@ namespace OasisAlajuelaWebSite.Controllers
     public class AccountController : Controller
     {
         private UsersBL UBL = new UsersBL();
+        private static string API_KEY = "at_Bjasxw2BbwvQCW3wdSkYtciaPNaJ4";
+        private static string API_URL = "https://geo.ipify.org/api/v1?";
 
         [AllowAnonymous]
         public ActionResult Register()
@@ -151,6 +155,7 @@ namespace OasisAlajuelaWebSite.Controllers
                 return View(model);
             }
 
+            
             Users LoginUser = UBL.Login(model);
 
             if (LoginUser.UserID >= 1)
@@ -163,6 +168,18 @@ namespace OasisAlajuelaWebSite.Controllers
                 {
                     return this.Redirect(ReturnUrl);
                 }
+
+                Geolocation location = GetGeolocation(model.IP);
+                LoginRecord login = new LoginRecord()
+                {
+                    UserID = LoginUser.UserID,
+                    IP = location.Ip,
+                    Country = location.Location.Country,
+                    Region = location.Location.Region,
+                    City = location.Location.City
+                };
+
+                UBL.AddLogin(login);
 
                 ViewBag.UserName = LoginUser.UserName;
                 return RedirectToAction("Index", "Home");
@@ -294,6 +311,26 @@ namespace OasisAlajuelaWebSite.Controllers
         public ActionResult ResetPasswordConfirmation()
         {
             return View();
+        }
+
+        static Geolocation GetGeolocation(string IP)
+        {
+
+            string url = API_URL + $"apiKey={API_KEY}&ipAddress={IP}";
+            string resultData = string.Empty;
+
+            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+
+            using (HttpWebResponse response = (HttpWebResponse)req.GetResponse())
+            using (Stream stream = response.GetResponseStream())
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                resultData = reader.ReadToEnd();
+            }
+
+            Geolocation location = JsonConvert.DeserializeObject<Geolocation>(resultData);
+
+            return location;
         }
     }
 }

@@ -1,0 +1,20 @@
+﻿@{
+    Layout = null;
+}
+
+@if (ViewBag.MessageNbr > 0)
+{
+    <li>
+        <a href='@Url.Action("Index", "Notes")' class="Menulinks align-middle" title="Mensages">
+            Mensajes - <span class="font-weight-bold text-white">@ViewBag.MessageNbr Nuevo</span>
+        </a>
+    </li>
+}
+else
+{
+    <li>
+        <a href='@Url.Action("Index", "Notes")' class="Menulinks align-middle" title="Mensages">
+            Mensajes
+        </a>
+    </li>
+}
