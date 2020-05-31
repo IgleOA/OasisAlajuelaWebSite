@@ -1,0 +1,122 @@
+﻿@model IEnumerable<ET.Prayers>
+@using PagedList.Mvc;
+@using System.Globalization;
+
+@{
+    ViewBag.Title = "Peticiones de Oración";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="~/Images/LOGO PNG-FONDO NEGRO.png" />
+    <title>@ViewBag.Title</title>
+
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome/css/main.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome/css/fontawesome.min.css" rel="stylesheet" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <link href="~/Content/flaticon.css" rel="stylesheet" />
+
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+
+<body>
+    <script src="~/Scripts/jquery-3.5.0.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            window.print();
+    });
+    </script>
+    <!-- Header -->
+    <section id="two" class="wrapper style3 py-2">
+        <header class="alt">
+            <div class="mx-2">
+                <img src="~/Images/LOGO PNG-FONDO BLANCO.png" width="50" class="align-middle" />
+                <a class="text-black float-right" style="font-size: 1.5em;">
+                    Auditorio del Espíritu Santo <strong class="text-black">Oasis Alajuela</strong>
+                </a>
+            </div>
+        </header>
+    </section>
+    <!-- Body -->
+    <section id="three" class="container body-content" style="padding: 0 !important; margin:0 !important; width: 100% !important;">
+        <section class="hp-section">
+            <div class="container w-100">
+                <div class="justify-content-center text-center">
+                    <h2 class="heading-section font-weight-bold my-2 p-0 text-uppercase">@ViewBag.Title</h2>
+                </div>
+                <hr />
+                <div class="justify-content-start">
+                    <table class="table-responsive-xl align-content-center p-0 mb-2 w-100">
+                        <thead>
+                            <tr class="align-middle">
+                                <th class="py-2 text-center align-middle">@Html.DisplayName("#")</th>
+                                <th class="py-2 align-middle">@Html.DisplayName("Información")</th>
+                                <th class="py-2 align-middle">@Html.DisplayName("Contacto")</th>
+                                <th class="py-2 text-center align-middle">@Html.DisplayName("Check")</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="text-center align-middle py-1">@Html.DisplayFor(modelItem => item.PrayerID)</td>
+                                    <td class="align-middle py-1">
+                                        <span class="font-weight-bold">Solicitante: </span>@Html.DisplayFor(modelItem => item.Requester)
+                                        <br />
+                                        <span class="font-weight-bold">Motivo: </span>@Html.DisplayFor(modelItem => item.Reason)
+                                    </td>
+                                    <td class="align-middle py-1">
+                                        <i class="fas fa-envelope"></i> @Html.DisplayFor(modelItem => item.Email)
+                                        <br />
+                                        @if (item.PhoneNumber.Length > 0)
+                                        {<i class="fas fa-phone"></i> @Html.DisplayFor(modelItem => item.PhoneNumber) <br />}
+                                        @if (item.Country.Length > 0)
+                                        {<i class="fas fa-globe-americas"></i> @Html.DisplayFor(modelItem => item.Country)<span>, </span>@Html.DisplayFor(modelItem => item.Region)<span>, </span>@Html.DisplayFor(modelItem => item.City)}
+                                    </td>
+                                    <td class="text-center align-middle py-1">
+                                        <i class="far fa-square fa-2x"></i>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="site-footer p-2">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-12 text-center text-black">
+                        <p class="my-3">
+                            Oasis Alajuela &copy; @DateTime.Now.Year Derechos reservados
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/Content/font-awesome/js/jquery.min.js"></script>
+    <script src="~/Content/font-awesome/js/jquery.scrollex.min.js"></script>
+    <script src="~/Content/font-awesome/js/skel.min.js"></script>
+    <script src="~/Content/font-awesome/js/util.js"></script>
+    <script src="~/Content/font-awesome/js/main.js"></script>
+    <script src="~/Scripts/jquery-3.5.0.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+
+
+</body>
+</html>

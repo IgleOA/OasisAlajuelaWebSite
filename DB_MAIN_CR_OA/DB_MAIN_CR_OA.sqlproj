@@ -184,6 +184,9 @@
     <Build Include="adm\Stored Procedures\uspUpdateUserNote.sql" />
     <Build Include="adm\Tables\utbLogins.sql" />
     <Build Include="adm\Stored Procedures\uspAddLogin.sql" />
+    <Build Include="config\Tables\utbPayers.sql" />
+    <Build Include="adm\Stored Procedures\uspAddPrayer.sql" />
+    <Build Include="config\Stored Procedures\uspReadPrayers.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DB_MAIN_CR_OA_DEV.publish.xml" />

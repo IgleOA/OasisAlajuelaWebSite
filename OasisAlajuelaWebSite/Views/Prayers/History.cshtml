@@ -1,0 +1,127 @@
+﻿@model PagedList.IPagedList<ET.Prayers>
+@using PagedList.Mvc;
+@using System.Globalization;
+
+@{
+    ViewBag.Title = "Peticiones de Oración";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<section class="hp-section">
+    <div class="container">
+        <div class="row justify-content-center border-bottom">
+            <h2 class="heading-section font-weight-bold my-2 p-0 text-uppercase">@ViewBag.Title</h2>
+        </div>
+        <div class="row justify-content-start">
+            <div class="px-0">
+                <div class="media services d-block text-justify">
+                    <div class="media-body pt-2 pb-0">
+                        <div class="d-flex justify-content-between">
+                            <a href='@Url.Action("PrintVersion", new { id = true })' target="_blank" title="Exportar" class="btn btn-light mr-2" style="text-decoration: none;"><i class="far fa-file-pdf fa-1x"></i> Exportar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @if (Model.Count() >= 1)
+        {
+            using (Html.BeginForm("Index", "Prayers", FormMethod.Get))
+            {
+                <div class="row justify-content-start">
+                    <div class="form-group input-group py-2 px-0 m-0 searchfield w-50">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-search"></i></span>
+                        </div>
+                        @Html.TextBox("SearchString", null, new { @class = "form-control", @placeholder = "Buscar Nombre/Email/Celular/Motivo" })
+                    </div>
+
+                    <input type="submit" value="Buscar" class="btn btn-dark alt mt-2 mb-2" style="height: 2.75rem !important;" />
+                </div>
+            }
+            <div class="row justify-content-start">
+                <table class="table-responsive-xl align-content-center p-0 mb-2">
+                    <tbody>
+                        <tr class="align-middle">
+                            <th class="py-2 text-center align-middle">@Html.DisplayNameFor(model => model.FirstOrDefault().InsertDate)</th>
+                            <th class="py-2 align-middle">@Html.DisplayNameFor(model => model.FirstOrDefault().Requester)</th>
+                            <th class="py-2 align-middle">@Html.DisplayNameFor(model => model.FirstOrDefault().Reason)</th>
+                            <th class="py-2 text-center align-middle">@Html.DisplayNameFor(model => model.FirstOrDefault().Country)</th>
+                            <th class="py-2 text-center align-middle">@Html.DisplayNameFor(model => model.FirstOrDefault().City)</th>
+                            <th class="py-2 text-center align-middle"></th>
+                        </tr>
+                        @foreach (var item in Model)
+                        {
+                            var modalName = "ModalCenter" + item.PrayerID.ToString();
+                            var note = string.Empty;
+                            if (item.Reason.Length <= 25)
+                            {
+                                note = item.Reason;
+                            }
+                            else
+                            {
+                                note = item.Reason.Substring(0, 25) + "...";
+                            }
+                            <tr>
+                                <td class="text-center align-middle py-1">@Html.DisplayFor(modelItem => item.InsertDate)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Requester)</td>
+                                <td class="align-middle">@Html.DisplayFor(modelItem => note) </td>
+                                <td class="text-center align-middle py-1">@Html.DisplayFor(modelItem => item.Country)</td>
+                                <td class="text-center align-middle py-1">@Html.DisplayFor(modelItem => item.City)</td>
+                                <td class="text-center align-middle py-1">
+                                    <a href="#" class="card-link m-0" title="Ver Mensaje">
+                                        <span class="fas fa-search fa-1x mx-2" data-toggle="modal" data-target='#@modalName' style="vertical-align: middle; color: #444444;"></span>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="row justify-content-start">
+                @if (Model.PageCount > 1)
+                {
+                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter }), new PagedListRenderOptions() { ContainerDivClasses = new string[] { "p-0" }, UlElementClasses = new string[] { "pagination m-0" } })
+                }
+            </div>
+        }
+        else
+        {
+            <div class="row justify-content-start">
+                <p class="my-2">Aún no has realizado ninguna Petición de Oración.</p>
+
+            </div>
+        }
+        @foreach (var item in Model)
+        {
+            var modalname = "ModalCenter" + item.PrayerID.ToString();
+
+            <div class="modal fade" id="@modalname">
+                <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="card bg-light">
+                                <article class="card-body">
+                                    <h3 class="my-1 text-colorbase font-weight-bold"><i class="far fa-envelope"></i> @item.Requester</h3>
+                                    <hr />
+                                    <div class="my-2">
+                                        <p class="mx-2 my-0 p-0">@Html.Raw(item.Reason)</p>
+                                        <p class="mx-2 my-0 p-0 font-weight-bold text-right text-capitalize">@item.InsertDate.ToString("dd MMMM yyyy", new CultureInfo("es-US"))</p>
+                                    </div>
+
+                                    <hr />
+                                    <div class="tagcloud">
+                                        <a href="#" class="text-decoration-none my-2" style="font-size: 12px;"><i class="fas fa-envelope"></i> @item.Email</a>
+                                        @if (item.PhoneNumber.Length > 0)
+                                        {<a href="#" class="text-decoration-none my-2" style="font-size: 12px;"><i class="fas fa-phone"></i> @item.PhoneNumber</a>}
+                                        @if (item.Country.Length > 0)
+                                        {<a href="#" class="text-decoration-none my-2" style="font-size: 12px;"><i class="fas fa-globe-americas"></i> @item.Country, @item.Region, @item.City</a>}
+                                    </div>
+                                </article>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>

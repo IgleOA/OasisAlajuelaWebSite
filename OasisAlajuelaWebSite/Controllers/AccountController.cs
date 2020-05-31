@@ -18,8 +18,8 @@ namespace OasisAlajuelaWebSite.Controllers
     public class AccountController : Controller
     {
         private UsersBL UBL = new UsersBL();
-        private static string API_KEY = "at_Bjasxw2BbwvQCW3wdSkYtciaPNaJ4";
-        private static string API_URL = "https://geo.ipify.org/api/v1?";
+        private static string API_KEY = ConfigurationManager.AppSettings["GeolocationAPI_KEY"].ToString();
+        private static string API_URL = ConfigurationManager.AppSettings["GeolocationAPI_URL"].ToString();               
 
         [AllowAnonymous]
         public ActionResult Register()

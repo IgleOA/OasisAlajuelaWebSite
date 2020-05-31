@@ -372,6 +372,7 @@
     <Compile Include="Controllers\MinistriesController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\NotesController.cs" />
+    <Compile Include="Controllers\PrayersController.cs" />
     <Compile Include="Controllers\ReservationsController.cs" />
     <Compile Include="Controllers\ResourcesController.cs" />
     <Compile Include="Controllers\RightsController.cs" />
@@ -2057,6 +2058,7 @@
     <Content Include="Images\pic03.jpg" />
     <Content Include="Images\pic04.jpg" />
     <Content Include="Images\pic05.jpg" />
+    <Content Include="Images\Prayer.jpg" />
     <Content Include="Images\profile.png" />
     <Content Include="Images\Remove.png" />
     <Content Include="Images\slide01.jpg" />
@@ -2866,6 +2868,11 @@
     <Content Include="Views\Notes\_MessageMenu.cshtml" />
     <Content Include="Views\Notes\AddNewByGroup.cshtml" />
     <Content Include="Views\Notes\AddNewAll.cshtml" />
+    <Content Include="Views\Prayers\New.cshtml" />
+    <Content Include="Views\Prayers\Confirmation.cshtml" />
+    <Content Include="Views\Prayers\Index.cshtml" />
+    <Content Include="Views\Prayers\History.cshtml" />
+    <Content Include="Views\Prayers\PrintVersion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

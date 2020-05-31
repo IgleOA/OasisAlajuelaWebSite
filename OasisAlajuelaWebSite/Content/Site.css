@@ -640,3 +640,9 @@ span.yr, span.mos {
 .text-colorbase{
     color: #0a3e77 !important;
 }
+
+.prayerpanel {
+    background-image: url("../Images/Prayer.jpg") !important;
+    background-position-x: center !important;
+    background-position-y: top !important;
+}
