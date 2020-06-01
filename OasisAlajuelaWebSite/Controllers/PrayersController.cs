@@ -10,7 +10,7 @@ using System.Net;
 using System.IO;
 using Newtonsoft.Json;
 using PagedList;
-using RotativaHQ.MVC5;
+using RotativaHQ .MVC5;
 
 namespace OasisAlajuelaWebSite.Controllers
 {
