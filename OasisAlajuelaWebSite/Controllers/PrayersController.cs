@@ -10,6 +10,7 @@ using System.Net;
 using System.IO;
 using Newtonsoft.Json;
 using PagedList;
+using RotativaHQ.MVC5;
 
 namespace OasisAlajuelaWebSite.Controllers
 {
@@ -54,11 +55,19 @@ namespace OasisAlajuelaWebSite.Controllers
         }
 
         public ActionResult PrintVersion(bool id)
-        {            
-            List<Prayers> prayers = PBL.List(id);
+        {
+            var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
+            if (validation.ReadRight == false)
+            {
+                ViewBag.Mensaje = "Usted no esta autorizado para ingresar a esta seccion, si necesita acceso contacte con un administrador.";
+                return View("~/Views/Shared/Error.cshtml");
+            }
+            else
+            {
+                List<Prayers> prayers = PBL.List(id);
 
-            return View(prayers);
-            
+                return View(prayers);
+            }
         }
 
         [Authorize]
@@ -202,6 +211,13 @@ namespace OasisAlajuelaWebSite.Controllers
             return location;
         }
 
-        
+        public ActionResult Export(bool id)
+        {
+            string filename = "Peticiones_" + DateTime.Today.ToString("dd_MM_yyyy") + ".pdf";
+
+            List<Prayers> prayers = PBL.List(id);
+
+            return new ViewAsPdf("PrintVersion", prayers) { FileName = filename };
+        }
     }
 }
