@@ -24,13 +24,13 @@
     <header id="header" class="headerFixed">
         <div class="logo">
             <a href="@Url.Action("Index","Home")">
-                <img src="~/Images/LOGO PNG-FONDO AZUL.png" class="align-middle" style="height: -webkit-fill-available; height:95%;"/>
+                <img src="~/Images/LOGO PNG-FONDO AZUL.png" class="align-middle" style="height: -webkit-fill-available; height:95%;" />
             </a>
         </div>
         <a href="#menu" class="align-middle"><i class="fas fa-bars"></i> Menu</a>
     </header>
     <nav id="menu" name="menu">
-        @Html.Action("_Menu","Home")
+        @Html.Action("_Menu", "Home")
     </nav>
     <!-- Two -->
     <section id="two" class="wrapper style3">
@@ -41,6 +41,12 @@
             </header>
         </div>
     </section>
+    <div class="icon-bar">
+        <a href="https://www.facebook.com/OasisAlajuela/" target="_blank" class="facebook" title="Facebook"><i class="fa fa-facebook"></i></a>
+        <a href="https://www.youtube.com/channel/UCsWIb3EobSzS-pNrPXvq7_A" target="_blank" class="youtube" title="YouTube"><i class="fab fa-youtube"></i></a>
+        <a href="https://twitter.com/oasisalajuela" target="_blank" class="twitter" title="Twitter"><i class="fa fa-twitter"></i></a>
+        <a href="https://www.instagram.com/aes_oasis/" target="_blank" class="instagram" title="Instagram"><i class="fa fa-instagram"></i></a>        
+    </div>
     <!-- Body -->
     <section id="three" class="container body-content" style="padding: 0 !important; margin:0 !important; width: 100% !important;">
         @RenderBody()

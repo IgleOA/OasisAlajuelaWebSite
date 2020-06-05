@@ -26,6 +26,12 @@ namespace ET
         [Display(Name = "Orden")]
         public int Order { get; set; }
 
+        [Display(Name = "Controlador")]
+        public string ControllerLink { get; set; }
+
+        [Display(Name = "Acción")]
+        public string ActionLink { get; set; }
+
         public string ActionType { get; set; }
     }
 }

@@ -150,11 +150,13 @@ img > .d-block {
     -moz-border-radius: 50%;
     -ms-border-radius: 50%;
     border-radius: 50%;
+    transition: all 0.3s ease;
 }
 
-.services .icon span {
-    color: #0a3e77;
-}
+    .services .icon span {
+        color: #0a3e77;
+        transition: all 0.3s ease;
+    }
 
 .servicesSmall .icon {
     width: 80px;
@@ -404,6 +406,10 @@ img > .d-block {
     .searchfield {
         width: 100% !important;
     }
+
+    .Menulinks {
+        font-size: 14px;
+    }
 }
 
 
@@ -645,4 +651,58 @@ span.yr, span.mos {
     background-image: url("../Images/Prayer.jpg") !important;
     background-position-x: center !important;
     background-position-y: top !important;
+}
+
+.icon-bar {
+    position: fixed;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    z-index: 1;
+}
+
+    .icon-bar a {
+        display: block;
+        text-align: center;
+        padding: 10px;
+        transition: all 0.3s ease;
+        color: white;
+        font-size: 24px;
+    } 
+
+        @media (max-width: 380px) {
+            .icon-bar a {
+                padding: 7px;
+                font-size: 19px;
+            }  
+        }
+
+        .icon-bar a:hover {
+            background-color: #000;
+        }
+
+.facebook {
+    background: #3B5998;
+    color: white;
+}
+
+.twitter {
+    background: #55ACEE;
+    color: white;
+}
+
+.instagram {
+    background: radial-gradient(circle at 33% 100%, #fed373 4%, #f15245 30%, #d92e7f 62%, #9b36b7 85%, #515ecf);
+    color: white;
+}
+
+.linkedin {
+    background: #007bb5;
+    color: white;
+}
+
+.youtube {
+    background: #bb0000;
+    color: white;
 }

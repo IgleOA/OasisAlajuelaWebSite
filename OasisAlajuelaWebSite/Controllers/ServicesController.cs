@@ -87,11 +87,7 @@ namespace OasisAlajuelaWebSite.Controllers
             }
             else
             {
-                var data = from s in SBL.List(false)
-                           where s.ServiceID == id
-                           select s;
-
-                Services SVC = data.FirstOrDefault();
+                Services SVC = SBL.Details(id);
 
                 return View(SVC);
             }
@@ -124,7 +120,7 @@ namespace OasisAlajuelaWebSite.Controllers
             }
         }
 
-        public ActionResult ChangeStatus(int id)
+        public void ChangeStatus(int id)
         {
             UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
 
@@ -135,17 +131,7 @@ namespace OasisAlajuelaWebSite.Controllers
                 ServiceID = id
             };
 
-            var r = SBL.Update(SVC, InsertUser);
-
-            if (!r)
-            {
-                ViewBag.Mensaje = "Ha ocurrido un error inesperado.";
-                return View("~/Views/Shared/Error.cshtml");
-            }
-            else
-            {
-                return this.RedirectToAction("Index");
-            }
+            var r = SBL.Update(SVC, InsertUser);            
         }
     }
 }

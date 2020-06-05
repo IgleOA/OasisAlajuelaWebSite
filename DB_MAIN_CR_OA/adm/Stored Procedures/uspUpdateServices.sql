@@ -17,7 +17,9 @@ CREATE PROCEDURE [adm].[uspUpdateServices]
 	@SVCName		VARCHAR(50) = NULL,
 	@SVCDescription	VARCHAR(MAX) = NULL,
 	@SVCOrder		INT = NULL,
-	@ActiveFlag		BIT = NULL
+	@ActiveFlag		BIT = NULL,
+	@ControllerLink	VARCHAR(50) = NULL,
+	@ActionLink		VARCHAR(50) = NULL
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -67,7 +69,8 @@ AS
 								,[ServiceDescription]	= @SVCDescription	
 								,[ServiceIcon]		= @SVCIcon
 								,[Order]			= @SVCOrder
-								,[ActiveFlag]		= @ActiveFlag
+								,[ControllerLink]	= @ControllerLink
+								,[ActionLink]		= @ActionLink
 								,[LastModifyDate]	= GETDATE()
 								,[LastModifyUser]	= @User
 						WHERE	[ServiceID] = @ServiceID

@@ -45,7 +45,9 @@ namespace DAL
                             ServiceDescription = dr["ServiceDescription"].ToString(),
                             ServiceIcon = dr["ServiceIcon"].ToString(),
                             ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]),
-                            Order = Convert.ToInt32(dr["Order"])
+                            Order = Convert.ToInt32(dr["Order"]),
+                            ControllerLink = dr["ControllerLink"].ToString(),
+                            ActionLink = dr["ActionLink"].ToString()
                         };
                         List.Add(detail);
                     }
@@ -57,6 +59,46 @@ namespace DAL
             }
             if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return List;
+        }
+
+
+        public Services Details(int ServiceID)
+        {
+            Services detail = new Services();
+
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[config].[uspReadServices]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+               SqlCmd.Parameters.AddWithValue("@ServiceID", ServiceID);
+
+                //EXEC Command
+                using (var dr = SqlCmd.ExecuteReader())
+                {
+                    dr.Read();
+                    if (dr.HasRows)
+                    {
+                        detail.ServiceID = Convert.ToInt32(dr["ServiceID"]);
+                        detail.ServiceName = dr["ServiceName"].ToString();
+                        detail.ServiceDescription = dr["ServiceDescription"].ToString();
+                        detail.ServiceIcon = dr["ServiceIcon"].ToString();
+                        detail.ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]);
+                        detail.Order = Convert.ToInt32(dr["Order"]);
+                        detail.ControllerLink = dr["ControllerLink"].ToString();
+                        detail.ActionLink = dr["ActionLink"].ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            return detail;
         }
 
         public bool Update(Services Service, string User)
@@ -94,7 +136,7 @@ namespace DAL
                     ParameterName = "@SVCIcon",
                     SqlDbType = SqlDbType.VarChar,
                     Size = 50,
-                    Value = Service.ServiceIcon.Trim()
+                    Value = Service.ServiceIcon
                 };
                 SqlCmd.Parameters.Add(SVCIcon);
 
@@ -103,7 +145,7 @@ namespace DAL
                     ParameterName = "@SVCName",
                     SqlDbType = SqlDbType.VarChar,
                     Size = 50,
-                    Value = Service.ServiceName.Trim()
+                    Value = Service.ServiceName
                 };
                 SqlCmd.Parameters.Add(SVCName);
 
@@ -111,7 +153,7 @@ namespace DAL
                 {
                     ParameterName = "@SVCDescription",
                     SqlDbType = SqlDbType.VarChar,
-                    Value = Service.ServiceDescription.Trim()
+                    Value = Service.ServiceDescription
                 };
                 SqlCmd.Parameters.Add(SVCDescription);
 
@@ -130,6 +172,25 @@ namespace DAL
                     Value = Service.ActiveFlag
                 };
                 SqlCmd.Parameters.Add(ActiveFlag);
+
+                SqlParameter SVCController = new SqlParameter
+                {
+                    ParameterName = "@ControllerLink",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 50,
+                    Value = Service.ControllerLink
+                };
+                SqlCmd.Parameters.Add(SVCController);
+
+
+                SqlParameter SVActionLink = new SqlParameter
+                {
+                    ParameterName = "@ActionLink",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 50,
+                    Value = Service.ActionLink
+                };
+                SqlCmd.Parameters.Add(SVActionLink);
 
                 //EXEC Command
                 SqlCmd.ExecuteNonQuery();
@@ -156,7 +217,8 @@ namespace DAL
                 Parm.Add("@SVCName", Service.ServiceName.Trim());
                 Parm.Add("@SVCDescription", Service.ServiceDescription.Trim());
                 Parm.Add("@SVCOrder", Service.Order);
-
+                Parm.Add("@ControllerLink", Service.ControllerLink);
+                Parm.Add("@ActionLink", Service.ActionLink);
                 SqlCon.Open();
 
                 SqlCon.Execute("[adm].[uspAddServices]", Parm, commandType: CommandType.StoredProcedure);

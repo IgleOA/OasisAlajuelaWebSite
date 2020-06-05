@@ -11,7 +11,8 @@
 -- ======================================================================
 
 CREATE PROCEDURE [config].[uspReadServices]
-	@pActiveFlag BIT = NULL
+	@pActiveFlag	BIT = NULL,
+	@ServiceID		INT = NULL
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -26,9 +27,12 @@ AS
 						,[ServiceDescription]
 						,[ServiceIcon]
 						,[Order]
+						,[ControllerLink]
+						,[ActionLink]
 						,[ActiveFlag]						
 				FROM	[config].[utbServices]
 				WHERE	[ActiveFlag]  = ISNULL(@pActiveFlag,[ActiveFlag])
+						AND [ServiceID] = ISNULL(@ServiceID, [ServiceID])
 				ORDER BY [Order]
 			-- =======================================================
 
