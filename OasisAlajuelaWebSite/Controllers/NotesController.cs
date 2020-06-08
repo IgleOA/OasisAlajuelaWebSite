@@ -8,6 +8,7 @@ using BL;
 using Microsoft.AspNet.Identity;
 using OasisAlajuelaWebSite.Models;
 using PagedList;
+using System.Configuration;
 
 namespace OasisAlajuelaWebSite.Controllers
 {
@@ -265,7 +266,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
         public ActionResult Index(string currentFilter, string searchString, int? page)
         {
-            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
             var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString());
             if (validation.ReadRight == false)
             {

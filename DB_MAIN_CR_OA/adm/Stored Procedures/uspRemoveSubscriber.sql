@@ -1,23 +1,17 @@
 ﻿-- ======================================================================
--- Name: [adm].[uspAddResource]
--- Desc: Permite ingresar nuevos recursos.
+-- Name: [adm].[uspRemoveSubscriber]
+-- Desc: Se utiliza para remover un subcriptor
 -- Auth: Jonathan Piedra johmstone@gmail.com
--- Date: 3/13/2020
+-- Date: 04/02/2020
 -------------------------------------------------------------
 -- Change History
 -------------------------------------------------------------
 -- CI	Date		Author		Description
 -- --	----		------		-----------------------------
 -- ======================================================================
-CREATE PROCEDURE [adm].[uspAddResource]
-	@InsertUser		VARCHAR(50),	
-	@ResourceTypeID	INT,
-	@Description	VARCHAR(MAX),
-	@FileType		VARCHAR(100),
-	@FileData		VARBINARY(MAX)	= NULL,
-	@FileExt		VARCHAR(10)		= NULL,
-	@FileName		VARCHAR(500)	= NULL,
-	@FileURL		VARCHAR(500)	= NULL
+
+CREATE PROCEDURE [adm].[uspRemoveSubscriber]
+	@Email	VARCHAR(50)
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -36,10 +30,43 @@ AS
                 END
 
             -- =======================================================
-				INSERT INTO [config].[utbResources] ([ResourceTypeID],[FileType],[FileData],[FileExt],[FileName],[FileURL],[Description],[InsertUser],[LastModifyUser])
-				VALUES (@ResourceTypeID,@FileType,@FileData,REPLACE(@FileExt,'.',''),@FileName,@FileURL,@Description ,@InsertUser,@InsertUser)
+				DECLARE	@UserID			INT
+				DECLARE @StartValues	XML
+				DECLARE @EndValues		XML
+				CREATE TABLE #DBCC (EventType varchar(50), Parameters varchar(50), EventInfo nvarchar(max))
 
-				SELECT [ResourceID] = SCOPE_IDENTITY()
+				SELECT	@UserID = [UserID]
+				FROM	[adm].[utbUsers]
+				WHERE	[Email] = @Email
+				
+				SET @StartValues	= (SELECT	[UserID],[RoleID],[FullName],[UserName],[Email],[Subscriber],[ActiveFlag],[LastActivityDate],[CreationDate],[CreationUser],[LastModifyDate],[LastModifyUser] 
+										FROM	[adm].[utbUsers] 
+										WHERE	[UserID] = @UserID for xml AUTO, ELEMENTS XSINIL)					
+						
+				UPDATE	[adm].[utbUsers]
+				SET		[Subscriber] = 0
+						,[LastModifyDate] = GETDATE()
+						,[LastModifyUser] = [UserName]
+				WHERE	[UserID] = @UserID
+
+				SET @EndValues	= (SELECT	[UserID],[RoleID],[FullName],[UserName],[Email],[Subscriber],[ActiveFlag],[LastActivityDate],[CreationDate],[CreationUser],[LastModifyDate],[LastModifyUser] 
+								   FROM		[adm].[utbUsers] 
+								   WHERE	[UserID] = @UserID for xml AUTO, ELEMENTS XSINIL)
+						
+				INSERT INTO #DBCC
+				EXEC ('DBCC INPUTBUFFER(@@SPID)')
+
+				INSERT INTO [adm].[utbLogActivities] ([ActivityType],[TargetTable],[SQLStatement],[StartValues],[EndValues],[User],[LogActivityDate])
+				SELECT	'UPDATE'
+						,'[adm].[utbUsers]'
+						,(SELECT EventInfo FROM #DBCC)
+						,@StartValues
+						,@EndValues
+						,[LastModifyUser]
+						,GETDATE()
+				FROM	[adm].[utbUsers]
+				WHERE	[UserID] = @UserID
+				
 			-- =======================================================
 
         IF ( @@trancount > 0

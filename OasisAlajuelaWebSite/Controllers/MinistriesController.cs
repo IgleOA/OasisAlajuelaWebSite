@@ -6,6 +6,7 @@ using BL;
 using OasisAlajuelaWebSite.Models;
 using Microsoft.AspNet.Identity;
 using System.IO;
+using System.Configuration;
 
 namespace OasisAlajuelaWebSite.Controllers
 { 
@@ -22,7 +23,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
             if (Request.IsAuthenticated)
             {
-                UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+                UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
                 var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
                 if (validation.ReadRight == false)
                 {
@@ -73,7 +74,7 @@ namespace OasisAlajuelaWebSite.Controllers
             else
             {
                 Ministries Ministry = new Ministries();
-                UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+                UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
                 return View(Ministry);
             }
         }
@@ -128,7 +129,7 @@ namespace OasisAlajuelaWebSite.Controllers
             else
             {
                 Ministries Event = MBL.Details(id);
-                UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+                UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
                 return View(Event);
             }
         }
@@ -204,7 +205,7 @@ namespace OasisAlajuelaWebSite.Controllers
                 string InsertUser = User.Identity.GetUserName();
 
                 var r = MBL.Update(Event, InsertUser);
-                UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+                UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
                 if (!r)
                 {
                     ViewBag.Mensaje = "Ha ocurrido un error inesperado.";

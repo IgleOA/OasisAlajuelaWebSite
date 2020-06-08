@@ -13,7 +13,7 @@ namespace BL
             return SDAL.List(activeflag);
         }
 
-        public bool AddNew(Sermons ms, string insertuser)
+        public int AddNew(Sermons ms, string insertuser)
         {
             return SDAL.AddNew(ms, insertuser);
         }
@@ -26,6 +26,11 @@ namespace BL
         public Sermons Details(int NewID)
         {
             return SDAL.Details(NewID);
+        }
+
+        public SermonEmail DetailsForEmail (int SermonID)
+        {
+            return SDAL.DetailsForEmail(SermonID);
         }
     }
 }

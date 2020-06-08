@@ -5,7 +5,8 @@
     [UserName]         VARCHAR (50)  NOT NULL,
     [Email]            VARCHAR (50)  NOT NULL,
     [PasswordHash]     BINARY (64)   NOT NULL,
-    [ActiveFlag]       BIT           CONSTRAINT [utbUsersDefaultActiveFlagTrue] DEFAULT ((1)) NOT NULL,
+    [Subscriber]	   BIT           CONSTRAINT [utbUsersDefaultSubscriberTrue] DEFAULT ((1)) NOT NULL,
+	[ActiveFlag]       BIT           CONSTRAINT [utbUsersDefaultActiveFlagTrue] DEFAULT ((1)) NOT NULL,	
     [LastActivityDate] DATETIME      NULL,
     [CreationDate]     DATETIME      CONSTRAINT [utbUsersDefaultCreationDateSysDateTime] DEFAULT (sysdatetime()) NOT NULL,
     [CreationUser]     VARCHAR (100) CONSTRAINT [utbUsersDefaultCreationUserSuser_sSame] DEFAULT (suser_sname()) NOT NULL,
@@ -22,8 +23,8 @@ FOR INSERT
 AS
 	BEGIN
 		DECLARE @INSERTUPDATE VARCHAR(30)
-		DECLARE @StartValues	XML = (SELECT [UserID],[RoleID],[FullName],[UserName],[Email],[ActiveFlag],[LastActivityDate],[CreationDate],[CreationUser],[LastModifyDate],[LastModifyUser] FROM Deleted [Values] for xml AUTO, ELEMENTS XSINIL)
-		DECLARE @EndValues		XML = (SELECT [UserID],[RoleID],[FullName],[UserName],[Email],[ActiveFlag],[LastActivityDate],[CreationDate],[CreationUser],[LastModifyDate],[LastModifyUser] FROM Inserted [Values] for xml AUTO, ELEMENTS XSINIL)
+		DECLARE @StartValues	XML = (SELECT [UserID],[RoleID],[FullName],[UserName],[Email],[Subscriber],[ActiveFlag],[LastActivityDate],[CreationDate],[CreationUser],[LastModifyDate],[LastModifyUser] FROM Deleted [Values] for xml AUTO, ELEMENTS XSINIL)
+		DECLARE @EndValues		XML = (SELECT [UserID],[RoleID],[FullName],[UserName],[Email],[Subscriber],[ActiveFlag],[LastActivityDate],[CreationDate],[CreationUser],[LastModifyDate],[LastModifyUser] FROM Inserted [Values] for xml AUTO, ELEMENTS XSINIL)
 
 		CREATE TABLE #DBCC (EventType varchar(50), Parameters varchar(50), EventInfo nvarchar(max))
 

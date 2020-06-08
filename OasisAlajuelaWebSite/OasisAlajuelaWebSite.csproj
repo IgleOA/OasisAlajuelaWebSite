@@ -2889,6 +2889,10 @@
     <Content Include="Views\Prayers\Index.cshtml" />
     <Content Include="Views\Prayers\History.cshtml" />
     <Content Include="Views\Prayers\PrintVersion.cshtml" />
+    <Content Include="Views\Resources\EmailNewResource.cshtml" />
+    <Content Include="Views\Account\RemoveSubscriber.cshtml" />
+    <Content Include="Views\Account\RemoveSubscriberConfirmation.cshtml" />
+    <Content Include="Views\Sermons\EmailNewSermon.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -310,6 +310,7 @@ namespace DAL
                             FullName = dr["FullName"].ToString(),
                             UserName = dr["UserName"].ToString(),
                             Email = dr["Email"].ToString(),
+                            Subscriber = Convert.ToBoolean(dr["Subscriber"]),
                             ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]),
                             CreationDate = Convert.ToDateTime(dr["CreationDate"]),
                             RoleName = dr["RoleName"].ToString()                            
@@ -336,6 +337,52 @@ namespace DAL
             {
                 throw ex;
             }            
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            return List;
+        }
+
+        public List<Users> Subscribers(int ResourceID, bool IsPublic)
+        {
+            List<Users> List = new List<Users>();
+
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[config].[uspReadSubscribers]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                if (ResourceID > 0)
+                {
+                    SqlCmd.Parameters.AddWithValue("@ResourceID", ResourceID);
+                }
+                if(IsPublic == true)
+                {
+                    SqlCmd.Parameters.AddWithValue("@IsPublic", IsPublic);
+                }
+
+                using (var dr = SqlCmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        var detail = new Users
+                        {
+                            UserID = Convert.ToInt32(dr["UserID"]),
+                            Email = dr["Email"].ToString()                            
+                        };
+                        
+                        List.Add(detail);
+                    }
+                }
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+                                
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
             if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return List;
         }
@@ -462,6 +509,7 @@ namespace DAL
                         Detail.FullName = dr["FullName"].ToString();
                         Detail.UserName = dr["UserName"].ToString();
                         Detail.Email = dr["Email"].ToString();
+                        Detail.Subscriber = Convert.ToBoolean(dr["Subscriber"]);
                         Detail.ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]);
                         Detail.CreationDate = Convert.ToDateTime(dr["CreationDate"]);
                         Detail.RoleName = dr["RoleName"].ToString();
@@ -563,6 +611,42 @@ namespace DAL
                 throw ex;
             }
             if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            return rpta;
+        }
+
+        public bool RemoveSubscriber(string Email)
+        {
+            bool rpta = false;
+
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[adm].[uspRemoveSubscriber]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                //Insert Parameters
+                SqlParameter ParEmail = new SqlParameter
+                {
+                    ParameterName = "@Email",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 50,
+                    Value = Email
+                };
+                SqlCmd.Parameters.Add(ParEmail);
+
+                //EXEC Command
+                SqlCmd.ExecuteNonQuery();
+
+                rpta = true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+
             return rpta;
         }
     }

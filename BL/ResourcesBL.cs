@@ -13,7 +13,7 @@ namespace BL
             return RDAL.AddNewResourceType(RT, InsertUser);
         }
 
-        public bool AddNewResource(Resources RT, string InsertUser)
+        public int AddNewResource(Resources RT, string InsertUser)
         {
             return RDAL.AddNewResource(RT, InsertUser);
         }

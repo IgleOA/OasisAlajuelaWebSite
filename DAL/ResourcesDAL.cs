@@ -44,9 +44,9 @@ namespace DAL
             return rpta;
         }
 
-        public bool AddNewResource(Resources RT, string InsertUser)
+        public int AddNewResource(Resources RT, string InsertUser)
         {
-            bool rpta = false;
+            int rpta = 0;
 
             try
             {
@@ -78,7 +78,7 @@ namespace DAL
                 {
                     ParameterName = "@Description",
                     SqlDbType = SqlDbType.VarChar,
-                    Value = RT.Description.Trim()
+                    Value = RT.Description
                 };
                 SqlCmd.Parameters.Add(pDescription);
 
@@ -113,7 +113,7 @@ namespace DAL
                     ParameterName = "@FileName",
                     SqlDbType = SqlDbType.VarChar,
                     Size = 500,
-                    Value = RT.FileName.Trim()
+                    Value = RT.FileName
                 };
                 SqlCmd.Parameters.Add(pFileName);
 
@@ -122,20 +122,19 @@ namespace DAL
                     ParameterName = "@FileURL",
                     SqlDbType = SqlDbType.VarChar,
                     Size = 500,
-                    Value = RT.FileURL.Trim()
+                    Value = RT.FileURL
                 };
                 SqlCmd.Parameters.Add(pFileURL);
 
                 //EXEC Command
-                SqlCmd.ExecuteNonQuery();
-
-                rpta = true;
+                rpta = Convert.ToInt32(SqlCmd.ExecuteScalar());
             }
             catch (Exception ex)
             {
                 throw ex;
             }
             if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+
             return rpta;
         }
 
@@ -288,15 +287,20 @@ namespace DAL
                         if(!Convert.IsDBNull(dr["FileData"]))
                         {
                             details.FileData = (byte[])dr["FileData"];
-                        }
+                        }                       
                     }
-                }                
+                }
+
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+
+                details.TypeData = TypeList("").Where(x => x.ResourceTypeID == details.ResourceTypeID).FirstOrDefault();
             }
             catch (Exception ex)
             {
                 throw ex;
             }
             if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+
             return details;
         }
 

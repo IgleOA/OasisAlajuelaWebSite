@@ -187,6 +187,8 @@
     <Build Include="config\Tables\utbPayers.sql" />
     <Build Include="adm\Stored Procedures\uspAddPrayer.sql" />
     <Build Include="config\Stored Procedures\uspReadPrayers.sql" />
+    <Build Include="adm\Stored Procedures\uspRemoveSubscriber.sql" />
+    <Build Include="config\Stored Procedures\uspReadSubscribers.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DB_MAIN_CR_OA_DEV.publish.xml" />

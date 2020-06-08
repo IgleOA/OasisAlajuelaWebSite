@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity;
 using System.Linq;
 using PagedList;
 using System.IO;
+using System.Configuration;
 
 namespace OasisAlajuelaWebSite.Controllers
 {
@@ -27,7 +28,7 @@ namespace OasisAlajuelaWebSite.Controllers
             }
             else
             {
-                UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+                UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
                 ViewBag.CurrentSort = sortOrder;
                 ViewBag.LocationOrder = String.IsNullOrEmpty(sortOrder) ? "location_desc" : "";
                 ViewBag.StatusOrder = sortOrder == "Active" ? "Desactive" : "Active";
@@ -88,7 +89,7 @@ namespace OasisAlajuelaWebSite.Controllers
             }
             else
             {
-                UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+                UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
                 return this.RedirectToAction("Index", "Banners");
             }
         }
@@ -139,7 +140,7 @@ namespace OasisAlajuelaWebSite.Controllers
                 }
                 else
                 {
-                    UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+                    UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
                     MS.ActionType = "CREATE";
                     MS.LList = BLBL.List();
                     return View(MS);

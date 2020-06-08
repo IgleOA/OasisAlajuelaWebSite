@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
 using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using BL;
@@ -26,7 +28,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
         public ActionResult Index(string currentFilter, string searchString, int? page)
         {
-            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
 
             var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString());
             if (validation.ReadRight == false)
@@ -80,7 +82,7 @@ namespace OasisAlajuelaWebSite.Controllers
         [Authorize]
         public ActionResult History(string currentFilter, string searchString, int? page)
         {
-            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
 
             var list = from n in SBL.List(false)
                        select n;
@@ -118,7 +120,7 @@ namespace OasisAlajuelaWebSite.Controllers
         [Authorize]
         public ActionResult AddNew()
         {
-            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
             var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
             if (validation.WriteRight == false)
             {
@@ -138,69 +140,102 @@ namespace OasisAlajuelaWebSite.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //public async Task<ActionResult> AddNew(Sermons MS)
         public ActionResult AddNew(Sermons MS)
         {
-            if (MS.file == null)
+            if (Convert.IsDBNull(MS.file))
+            {                
+                String FileExt = Path.GetExtension(MS.file.FileName).ToUpper();
+                MS.BannerExt = FileExt;
+                Stream str = MS.file.InputStream;
+                BinaryReader Br = new BinaryReader(str);
+                Byte[] FileDet = Br.ReadBytes((Int32)str.Length);
+                MS.BannerData = FileDet;
+            }
+            else
             {
                 var Banner = ConvertURLtoBase(MS.SermonURL);
                 MS.BannerExt = Banner.BannerExt;
                 MS.BannerData = Banner.BannerData;
             }
-            else
-            {
-                String FileExt = Path.GetExtension(MS.file.FileName).ToUpper();
-
-                MS.BannerExt = FileExt;
-
-                Stream str = MS.file.InputStream;
-                BinaryReader Br = new BinaryReader(str);
-                Byte[] FileDet = Br.ReadBytes((Int32)str.Length);
-
-                MS.BannerData = FileDet;
-            }
 
             string InsertUser = User.Identity.GetUserName();
 
-            //YouTubeVideo NewVideo = new YouTubeVideo()
-            //{
-            //    Title = MS.Title,
-            //    Description = MS.Description,
-            //    Tags = MS.Tags,
-            //    VideoData = MS.fileVideo.InputStream
-            //};
+            
+            int SermonID = SBL.AddNew(MS, InsertUser);
 
-            //string ytID = await YBL.Insert(NewVideo);
+            if (SermonID > 0)
+            {
+                SermonEmail Res = SBL.DetailsForEmail(SermonID);
 
-            //if (ytID != null)
-            //{
-            //    MS.SermonURL = "https://youtu.be/" + ytID;
+                var uri = new Uri(Res.SermonURL);
 
-                var r = SBL.AddNew(MS, InsertUser);
+                // you can check host here => uri.Host <= "www.youtube.com"
 
-                if (!r)
+                var query = HttpUtility.ParseQueryString(uri.Query);
+
+                var videoId = string.Empty;
+
+                if (query.AllKeys.Contains("v"))
                 {
-                    ViewBag.Mensaje = "Ha ocurrido un error inesperado.";
-                    return View("~/Views/Shared/Error.cshtml");
+                    videoId = query["v"];
                 }
                 else
                 {
-                    MS.ActionType = "CREATE";
-                    MS.MinisterList = MBL.List(true);
-                    return View(MS);
+                    videoId = uri.Segments.Last();
                 }
-            //}
-            //else
-            //{
-            //    ViewBag.Mensaje = "Ha ocurrido un error inesperado.";
-            //    return View("~/Views/Shared/Error.cshtml");
-            //}
+
+                Res.ImageURL = "https://i.ytimg.com/vi/" + videoId + "/mqdefault.jpg";
+
+                MailAddressCollection emailtoBCC = new MailAddressCollection();
+                List<Users> Subscribers = USBL.Subscribers(0, true);
+
+                foreach (var item in Subscribers)
+                {
+                    emailtoBCC.Add(item.Email);
+                }
+
+                #region Email
+                Emails Email = new Emails()
+                {
+                    FromEmail = ConfigurationManager.AppSettings["AdminEmail"].ToString(),
+                    ToEmail = ConfigurationManager.AppSettings["Subscribers"].ToString(),
+                    SubjectEmail = "Oasis Alajuela ha subido una Prédica"
+                };
+
+                StringBuilder mailBody = new StringBuilder("");
+
+                var strg = ViewToStringRenderer.RenderViewToString(this.ControllerContext, "~/Views/Sermons/EmailNewSermon.cshtml", Res);
+
+                mailBody.AppendFormat(strg);
+
+                Email.BodyEmail = mailBody.ToString();
+
+                MailMessage mm = new MailMessage(Email.FromEmail, Email.ToEmail);
+                mm.Subject = Email.SubjectEmail;
+                mm.Body = Email.BodyEmail;
+                mm.IsBodyHtml = true;
+                mm.Bcc.Add(emailtoBCC.ToString());
+
+                SmtpClient smtp = new SmtpClient();
+                smtp.Send(mm);
+                #endregion
+
+                MS.ActionType = "CREATE";
+                MS.MinisterList = MBL.List(true);
+                return View(MS);
+            }
+            else
+            {
+                ViewBag.Mensaje = "Ha ocurrido un error inesperado.";
+                return View("~/Views/Shared/Error.cshtml");
+            }
+           
         }
 
         [Authorize]
         public ActionResult ChangeStatus(int id)
         {
-            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
             string InsertUser = User.Identity.GetUserName();
 
             Sermons New = new Sermons()
@@ -225,7 +260,7 @@ namespace OasisAlajuelaWebSite.Controllers
         [Authorize]
         public ActionResult Edit(int id)
         {
-            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
             var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
             if (validation.ReadRight == false)
             {
@@ -387,6 +422,56 @@ namespace OasisAlajuelaWebSite.Controllers
             Banner.BannerExt = Path.GetExtension(@YouTubeVideo.BannerLink.Split('?')[0]).ToUpper();
 
             return Banner;
+        }
+
+        public ActionResult EmailNewSermon(int id)
+        {
+            SermonEmail Res = SBL.DetailsForEmail(id);
+
+            var uri = new Uri(Res.SermonURL);
+
+            // you can check host here => uri.Host <= "www.youtube.com"
+
+            var query = HttpUtility.ParseQueryString(uri.Query);
+
+            var videoId = string.Empty;
+
+            if (query.AllKeys.Contains("v"))
+            {
+                videoId = query["v"];
+            }
+            else
+            {
+                videoId = uri.Segments.Last();
+            }
+
+            Res.ImageURL = "https://i.ytimg.com/vi/" + videoId + "/mqdefault.jpg";
+
+            return View(Res);
+        }
+
+        public static class ViewToStringRenderer
+        {
+            public static string RenderViewToString<TModel>(ControllerContext controllerContext, string viewName, TModel model)
+            {
+                ViewEngineResult viewEngineResult = ViewEngines.Engines.FindView(controllerContext, viewName, null);
+                if (viewEngineResult.View == null)
+                {
+                    throw new Exception("Could not find the View file. Searched locations:\r\n" + viewEngineResult.SearchedLocations);
+                }
+                else
+                {
+                    IView view = viewEngineResult.View;
+
+                    using (var stringWriter = new StringWriter())
+                    {
+                        var viewContext = new ViewContext(controllerContext, view, new ViewDataDictionary<TModel>(model), new TempDataDictionary(), stringWriter);
+                        view.Render(viewContext, stringWriter);
+
+                        return stringWriter.ToString();
+                    }
+                }
+            }
         }
     }
 }

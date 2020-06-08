@@ -23,6 +23,7 @@ namespace OasisAlajuelaWebSite.Controllers
         [Authorize]
         public ActionResult Index(string currentFilter, string searchString, int? page)
         {
+            UsBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
             var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString());
             if (validation.ReadRight == false)
             {
@@ -73,6 +74,7 @@ namespace OasisAlajuelaWebSite.Controllers
         [Authorize]
         public ActionResult History(string currentFilter, string searchString, int? page)
         {
+            UsBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
             var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString());
             if (validation.ReadRight == false)
             {
@@ -213,6 +215,8 @@ namespace OasisAlajuelaWebSite.Controllers
 
         public ActionResult Export(bool id)
         {
+            UsBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
+
             string filename = "Peticiones_" + DateTime.Today.ToString("dd_MM_yyyy") + ".pdf";
 
             List<Prayers> prayers = PBL.List(id);

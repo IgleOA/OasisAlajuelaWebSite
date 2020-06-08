@@ -10,6 +10,9 @@ using System.Collections.Generic;
 using System.Net;
 using System.Web;
 using OasisAlajuelaWebSite.Models;
+using System.Configuration;
+using System.Text;
+using System.Net.Mail;
 
 namespace OasisAlajuelaWebSite.Controllers
 {
@@ -24,7 +27,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
         public ActionResult Index()
         {
-            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
 
             var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString());
             if (validation.ReadRight == false)
@@ -46,7 +49,7 @@ namespace OasisAlajuelaWebSite.Controllers
                 }
 
                 var data = RBL.TypeList(User.Identity.GetUserName());
-                ViewBag.Write = validation.WriteRight;               
+                ViewBag.Write = validation.WriteRight;
                 return View(data.ToList());
 
             }
@@ -54,7 +57,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
         public ActionResult Type(int id, string currentFilter, string searchString, int? page)
         {
-            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
 
             var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
             if (validation.ReadRight == false)
@@ -114,9 +117,9 @@ namespace OasisAlajuelaWebSite.Controllers
 
         public ActionResult AddNewRT()
         {
-            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
 
-            var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(),"Index");
+            var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
             if (validation.WriteRight == false)
             {
                 ViewBag.Mensaje = "Usted no esta autorizado para ingresar a esta seccion, si necesita acceso contacte con un administrador.";
@@ -171,7 +174,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
         public ActionResult AddNewResource(int id = 0)
         {
-            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
             var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
             if (validation.WriteRight == false)
             {
@@ -182,7 +185,7 @@ namespace OasisAlajuelaWebSite.Controllers
             {
                 Resources MS = new Resources();
 
-                if(id == 0)
+                if (id == 0)
                 {
                     MS.TypeList = RBL.TypeList(User.Identity.GetUserName());
                 }
@@ -193,7 +196,7 @@ namespace OasisAlajuelaWebSite.Controllers
                                select r;
 
                     MS.TypeList = data.ToList();
-                }                
+                }
 
                 return View(MS);
             }
@@ -249,15 +252,45 @@ namespace OasisAlajuelaWebSite.Controllers
 
             string InsertUser = User.Identity.GetUserName();
 
-            var r = RBL.AddNewResource(MS, InsertUser);
+            int ResourceID = RBL.AddNewResource(MS, InsertUser);
 
-            if (!r)
+            if (ResourceID > 0)
             {
-                ViewBag.Mensaje = "Ha ocurrido un error inesperado.";
-                return View("~/Views/Shared/Error.cshtml");
-            }
-            else
-            {
+                Resources Res = RBL.ResourceDetails(ResourceID);
+                MailAddressCollection emailtoBCC = new MailAddressCollection();
+                List<Users> Subscribers = USBL.Subscribers(ResourceID,false);
+
+                foreach (var item in Subscribers)
+                {
+                    emailtoBCC.Add(item.Email);
+                }
+                
+                #region Email
+                Emails Email = new Emails()
+                {
+                    FromEmail = ConfigurationManager.AppSettings["AdminEmail"].ToString(),
+                    ToEmail = ConfigurationManager.AppSettings["Subscribers"].ToString(),
+                    SubjectEmail = "Oasis Alajuela ha subido un Recurso"
+                };
+
+                StringBuilder mailBody = new StringBuilder();
+
+                var strg = ViewToStringRenderer.RenderViewToString(this.ControllerContext, "~/Views/Resources/EmailNewResource.cshtml", Res);
+
+                mailBody.AppendFormat(strg);
+
+                Email.BodyEmail = mailBody.ToString();
+
+                MailMessage mm = new MailMessage(Email.FromEmail,Email.ToEmail);
+                mm.Subject = Email.SubjectEmail;
+                mm.Body = Email.BodyEmail;
+                mm.IsBodyHtml = true;
+                mm.Bcc.Add(emailtoBCC.ToString());
+
+                SmtpClient smtp = new SmtpClient();
+                smtp.Send(mm);
+                #endregion
+
                 MS.ActionType = "CREATE";
 
                 var data = from rd in RBL.TypeList(User.Identity.GetUserName())
@@ -266,6 +299,11 @@ namespace OasisAlajuelaWebSite.Controllers
 
                 MS.TypeList = data.ToList();
                 return View(MS);
+            }
+            else
+            {
+                ViewBag.Mensaje = "Ha ocurrido un error inesperado.";
+                return View("~/Views/Shared/Error.cshtml");
             }
         }
 
@@ -290,7 +328,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
         public ActionResult Edit(int id = 0)
         {
-            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
             var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
             if (validation.WriteRight == false)
             {
@@ -301,7 +339,7 @@ namespace OasisAlajuelaWebSite.Controllers
             {
                 Resources MS = RBL.ResourceDetails(id);
 
-                MS.TypeList = RBL.TypeList(User.Identity.GetUserName());                
+                MS.TypeList = RBL.TypeList(User.Identity.GetUserName());
 
                 return View(MS);
             }
@@ -326,7 +364,7 @@ namespace OasisAlajuelaWebSite.Controllers
                         return View(MS);
                     }
                 }
-                 
+
                 var r = RBL.Update(MS, InsertUser);
 
                 if (!r)
@@ -345,13 +383,13 @@ namespace OasisAlajuelaWebSite.Controllers
             {
                 MS.TypeList = RBL.TypeList(User.Identity.GetUserName());
                 this.ModelState.AddModelError(String.Empty, "Todos los campos son obligatorios.");
-                return View(MS);                
+                return View(MS);
             }
         }
 
         public ActionResult ChangeStatus(int id = 0)
         {
-            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
             var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
             if (validation.WriteRight == false)
             {
@@ -374,7 +412,7 @@ namespace OasisAlajuelaWebSite.Controllers
                 else
                 {
                     return this.RedirectToAction("Type", new { id = MS.ResourceTypeID });
-                }                
+                }
             }
         }
 
@@ -383,7 +421,7 @@ namespace OasisAlajuelaWebSite.Controllers
             string Extensions = string.Empty;
             bool isValid = false;
 
-            if(FileType == "Audio")
+            if (FileType == "Audio")
             {
                 Extensions = "MP3,AAC,OGG,WAV";
                 List<string> allowedExtensions = Extensions.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
@@ -449,7 +487,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
         public ActionResult AddGroup(int id)
         {
-            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
             MultiSelectNewRTG model = new MultiSelectNewRTG
             {
                 ResourceTypeID = id,
@@ -510,7 +548,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
         public ActionResult RemoveURG(int ResourceTypeID, int GroupID)
         {
-            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
             string InsertUser = User.Identity.GetUserName();
 
             ResourcesGroups UG = new ResourcesGroups()
@@ -555,5 +593,38 @@ namespace OasisAlajuelaWebSite.Controllers
 
             return lstobj;
         }
+
+        public ActionResult EmailNewResource(int id)
+        {
+            Resources Res = RBL.ResourceDetails(id);
+
+            return View(Res);
+        }
+
+        public static class ViewToStringRenderer
+        {
+            public static string RenderViewToString<TModel>(ControllerContext controllerContext, string viewName, TModel model)
+            {
+                ViewEngineResult viewEngineResult = ViewEngines.Engines.FindView(controllerContext, viewName, null);
+                if (viewEngineResult.View == null)
+                {
+                    throw new Exception("Could not find the View file. Searched locations:\r\n" + viewEngineResult.SearchedLocations);
+                }
+                else
+                {
+                    IView view = viewEngineResult.View;
+
+                    using (var stringWriter = new StringWriter())
+                    {
+                        var viewContext = new ViewContext(controllerContext, view, new ViewDataDictionary<TModel>(model), new TempDataDictionary(), stringWriter);
+                        view.Render(viewContext, stringWriter);
+
+                        return stringWriter.ToString();
+                    }
+                }
+            }
+        }
+
+        
     }
 }

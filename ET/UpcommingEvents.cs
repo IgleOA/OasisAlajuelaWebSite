@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Configuration;
 
 namespace ET
 {
@@ -75,7 +76,7 @@ namespace ET
                 bool isValid = true;
                 DateTime ScheduledDate = (DateTime)value;
 
-                if (ScheduledDate < DateTime.Now.AddHours(-6))
+                if (ScheduledDate < DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])))
                 {
                     isValid = false;
                 }

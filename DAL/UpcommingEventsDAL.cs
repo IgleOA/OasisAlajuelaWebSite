@@ -193,7 +193,7 @@ namespace DAL
                 {
                     ParameterName = "@pDate",
                     SqlDbType = SqlDbType.DateTime,
-                    Value = DateTime.Now.AddHours(-6)
+                    Value = DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"]))
                 };
                 SqlCmd.Parameters.Add(parDate);
 

@@ -8,6 +8,7 @@ using BL;
 using OasisAlajuelaWebSite.Models;
 using Microsoft.AspNet.Identity;
 using System.IO;
+using System.Configuration;
 
 namespace OasisAlajuelaWebSite.Controllers
 {
@@ -24,7 +25,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
             if (Request.IsAuthenticated)
             {
-                UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+                UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
                 var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
                 if (validation.ReadRight == false)
                 {
@@ -122,7 +123,7 @@ namespace OasisAlajuelaWebSite.Controllers
             else
             {
                 Leadership Leader = new Leadership();
-                UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+                UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
                 return View(Leader);
             }
         }
@@ -184,7 +185,7 @@ namespace OasisAlajuelaWebSite.Controllers
             else
             {
                 Leadership Leader = LBL.Details(id);
-                UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+                UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
                 return View(Leader);
             }
         }

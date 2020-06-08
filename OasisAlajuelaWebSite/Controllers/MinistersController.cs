@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using System.Configuration;
 
 namespace OasisAlajuelaWebSite.Controllers
 {
@@ -16,7 +17,7 @@ namespace OasisAlajuelaWebSite.Controllers
         private UsersBL UBL = new UsersBL();
         public ActionResult AddNew()
         {
-            UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+            UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
             Ministers Detail = new Ministers();
             return View(Detail);
         }
