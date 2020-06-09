@@ -5,5 +5,5 @@
 
 @foreach (var item in Model)
     {
-        <li>@Html.ActionLink(item.Name, item.ActionLink, "Ministries", routeValues: null, htmlAttributes: new { @class = "text-black text-decoration-none" })</li>
+        <li class="p-0">@Html.ActionLink(item.Name, item.ActionLink, "Ministries", routeValues: null, htmlAttributes: new { @class = "text-black" })</li>
     }                    

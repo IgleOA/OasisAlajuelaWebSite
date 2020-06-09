@@ -12,11 +12,11 @@ namespace ET
         [Key]
         public int PrayerID { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Este campo es obligatorio")]
         [Display(Name = "Nombre")]
         public string Requester { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Este campo es obligatorio")]
         [Display(Name ="Email")]
         [DataType(DataType.EmailAddress,ErrorMessage ="Por favor ingrese una email válido.")]
         public string Email { get; set; }
@@ -24,8 +24,8 @@ namespace ET
         [Display(Name = "Celular")]
         [DataType(DataType.PhoneNumber)]
         public string PhoneNumber { get; set; }
-        
-        [Required]
+
+        [Required(ErrorMessage = "Este campo es obligatorio")]
         [Display(Name = "Motivo de Oración")]
         public string Reason { get; set; }
         
