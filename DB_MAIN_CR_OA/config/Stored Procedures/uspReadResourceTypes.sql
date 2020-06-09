@@ -32,7 +32,7 @@ AS
 								,[ActiveFlag]  
 						FROM	[config].[utbResourceTypes]
 						WHERE	[ActiveFlag] = 1
-								AND [IsPublic] = 0
+								--AND [IsPublic] = 0
 					END
 				ELSE
 					BEGIN

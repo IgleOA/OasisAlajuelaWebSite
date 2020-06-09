@@ -44,6 +44,11 @@ namespace BL
             return UDAL.List();
         }
 
+        public List<Users> Subscribers(int ResourceID, bool IsPublic)
+        {
+            return UDAL.Subscribers(ResourceID, IsPublic);
+        }
+
         public bool Update(Users user, string insertuser)
         {
             return UDAL.Update(user, insertuser);
@@ -62,6 +67,11 @@ namespace BL
         public bool AddLogin (LoginRecord Login)
         {
             return UDAL.AddLogin(Login);
+        }
+
+        public bool RemoveSubscriber(string email)
+        {
+            return UDAL.RemoveSubscriber(email);
         }
     }
 }

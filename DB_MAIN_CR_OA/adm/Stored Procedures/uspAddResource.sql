@@ -38,6 +38,8 @@ AS
             -- =======================================================
 				INSERT INTO [config].[utbResources] ([ResourceTypeID],[FileType],[FileData],[FileExt],[FileName],[FileURL],[Description],[InsertUser],[LastModifyUser])
 				VALUES (@ResourceTypeID,@FileType,@FileData,REPLACE(@FileExt,'.',''),@FileName,@FileURL,@Description ,@InsertUser,@InsertUser)
+
+				SELECT [ResourceID] = SCOPE_IDENTITY()
 			-- =======================================================
 
         IF ( @@trancount > 0

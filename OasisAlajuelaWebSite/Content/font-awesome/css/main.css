@@ -4133,7 +4133,7 @@ body.subpage {
     box-shadow: none;
     color: #000;
     height: 100%;
-    max-width: 80%;
+    max-width: 50%;
     overflow-y: auto;
     padding: 3rem 2rem;
     position: fixed;

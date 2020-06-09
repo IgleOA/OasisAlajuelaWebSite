@@ -9,11 +9,11 @@
                     <h3 class="text-black font-weight-bolder">Ubicación</h3>
                     <p class="mb-0">200 Sureste de la Arrocera,<br>Pacto de Jocote, El Coyol,<br>Alajuela, Costa Rica</p>
                     <a href="https://www.waze.com/ul?preview_venue_id=180748388.1807221737.2214951&navigate=yes" target="_blank" class="mb-0 card-text" title="Waze" style="color: black !important;">
-                        <i class="fab fa-waze" style="vertical-align: middle;"></i> Ubicanos por Waze
+                        <i class="fab fa-waze" style="vertical-align: middle;"></i> <u>Ubicanos por Waze</u>
                     </a>
                     <br />
                     <a href="https://goo.gl/maps/K8BZw51Zaya1gP9k7" target="_blank" class="mb-0 card-text" title="Google Maps" style="color: black !important;">
-                        <i class="fas fa-map-marked-alt" style="vertical-align: middle;"></i> Ubicanos por Google Maps
+                        <i class="fas fa-map-marked-alt" style="vertical-align: middle;"></i> <u>Ubicanos por Google Maps</u>
                     </a>
                 </div>
             </div>
@@ -27,7 +27,7 @@
                         Domingo 7:30 AM -9:30 AM <br>
                         Domingo 10:00 AM - 12:00 AM <br />
                         <a href="@Url.Action("Index", "UpcommingEvents", new { id = "Public" })" class="mb-0 card-text" title="Próximos eventos" style="color: black !important;">
-                            <i class="fas fa-calendar-alt" style="vertical-align: middle;"></i> Ver mas...
+                            <i class="fas fa-calendar-alt" style="vertical-align: middle;"></i> <u>Ver mas...</u>
                         </a>
                     </p>
                 </div>
@@ -39,14 +39,16 @@
                     <p class="mb-0 text-black">
                         <i class="fas fa-phone-alt"></i> +(506) 2433 6502
                     </p>
-                    <p class="mb-0">
-                        <i class="far fa-envelope"></i> admin@oasisalajuela.com
-                    </p>
                     @{
                         var WhatsAppLink = "https://api.whatsapp.com/send?phone=" + ConfigurationManager.AppSettings["WhatsAppNumber"].ToString();
+                        var EmailLink = "mailto:" + ConfigurationManager.AppSettings["AdminEmail"].ToString();
                     }
+                    <a href="@EmailLink" target="_blank" class="mb-0 card-text" title="Email" style="color: black !important;">
+                        <i class="far fa-envelope" style="vertical-align: middle;"></i> <u>@ConfigurationManager.AppSettings["AdminEmail"].ToString()</u>
+                    </a>
+                    <br/>
                     <a href="@WhatsAppLink" target="_blank" class="mb-0 card-text" title="WhatsApp" style="color: black !important;">
-                        <i class="fab fa-whatsapp" style="vertical-align: middle;"></i> WhatsApp
+                        <i class="fab fa-whatsapp" style="vertical-align: middle;"></i> <u>WhatsApp</u>
                     </a>
                 </div>
             </div>
@@ -54,8 +56,8 @@
         <hr style="background: black;" />
         <div class="row justify-content-center text-black mt-3">
             <div class="col-md-4">
-                <h3 class="footer-heading mb-4 text-black font-weight-bolder">Sobre Nosotros</h3>
-                <ul class="list-unstyled m-0">
+                <h3 class="footer-heading my-2 text-black font-weight-bolder">Sobre Nosotros</h3>
+                <ul class="list-unstyled m-0 bg-transparent">
                     @{
                         Html.RenderAction("_FooterLeadership", "Leadership");
                     }
@@ -64,21 +66,21 @@
                 @Html.ActionLink("Ver más...", "History", "Home", null, htmlAttributes: new { @class = "text-black" })
             </div>
             <div class="col-md-4">
-                <h3 class="footer-heading mb-4 text-black font-weight-bolder">Ministerios</h3>
-                <ul class="list-unstyled">
+                <h3 class="footer-heading my-2 text-black font-weight-bolder">Ministerios</h3>
+                <ul class="list-unstyled m-0">
                     @{
                         Html.RenderAction("_FooterMinistries", "Ministries");
                     }
                 </ul>
             </div>
             <div class="col-md-4">
-                <div class="col-md-12">
-                    <h3 class="footer-heading mb-4 text-black font-weight-bolder">Siguenos en...</h3>
+                <div class="col-md-12 p-0">
+                    <h3 class="footer-heading my-2 text-black font-weight-bolder">Siguenos en...</h3>
                     <ul class="list-unstyled">
-                        <li><a href="https://twitter.com/oasisalajuela" target="_blank" class="text-black text-decoration-none" title="Twitter"><i class="fab fa-twitter-square fa-2x" style="vertical-align: middle;"></i> Twitter</a></li>
-                        <li><a href="https://www.facebook.com/OasisAlajuela/" target="_blank" class="text-black text-decoration-none" title="Facebook"><i class="fab fa-facebook-square fa-2x" style="vertical-align: middle;"></i> Facebook</a></li>
-                        <li><a href="https://www.instagram.com/aes_oasis/" target="_blank" class="text-black text-decoration-none" title="Instagram"><i class="fab fa-instagram-square fa-2x" style="vertical-align: middle;"></i> Instagram</a></li>
-                        <li><a href="https://www.youtube.com/channel/UCsWIb3EobSzS-pNrPXvq7_A" target="_blank" class="text-black text-decoration-none" title="YouTube"><i class="fab fa-youtube-square fa-2x" style="vertical-align: middle;"></i> YouTube</a></li>
+                        <li class="p-0"><a href="https://twitter.com/oasisalajuela" target="_blank" class="text-black text-decoration-none" title="Twitter"><i class="fab fa-twitter-square fa-2x" style="vertical-align: middle;"></i> <span style="text-decoration: underline;">Twitter</span></a></li>
+                        <li class="p-0"><a href="https://www.facebook.com/OasisAlajuela/" target="_blank" class="text-black text-decoration-none" title="Facebook"><i class="fab fa-facebook-square fa-2x" style="vertical-align: middle;"></i> <span style="text-decoration: underline;">Facebook</span></a></li>
+                        <li class="p-0"><a href="https://www.instagram.com/aes_oasis/" target="_blank" class="text-black text-decoration-none" title="Instagram"><i class="fab fa-instagram-square fa-2x" style="vertical-align: middle;"></i> <span style="text-decoration: underline;">Instagram</span></a></li>
+                        <li class="p-0"><a href="https://www.youtube.com/channel/UCsWIb3EobSzS-pNrPXvq7_A" target="_blank" class="text-black text-decoration-none" title="YouTube"><i class="fab fa-youtube-square fa-2x" style="vertical-align: middle;"></i> <span style="text-decoration: underline;">YouTube</span></a></li>
                     </ul>
                 </div>
             </div>

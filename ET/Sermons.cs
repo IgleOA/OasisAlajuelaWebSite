@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text;
 using System.Web;
 
 namespace ET
@@ -99,5 +100,28 @@ namespace ET
                 return isValid;
             }
         }
+    }
+
+    public class SermonEmail
+    {
+        public int SermonID { get; set; }
+
+        public string Title { get; set; }
+
+        public string MinisterName { get; set; }
+
+        public string Description { get; set; }
+
+        public string Tags { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        public DateTime SermonDate { get; set; }
+
+        [DataType(DataType.Url)]
+        public string SermonURL { get; set; }
+
+        [DataType(DataType.Url)]
+        public string ImageURL { get; set; }
     }
 }

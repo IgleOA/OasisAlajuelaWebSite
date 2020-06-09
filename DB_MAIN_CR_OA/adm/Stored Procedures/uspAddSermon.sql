@@ -40,6 +40,8 @@ AS
             -- =======================================================
 				INSERT INTO [config].[utbSermons] ([Title],[Description],[Tags],[MinisterID],[SermonDate],[SermonURL],[BackgroundImage],[BackgroundExt],[InsertUser],[LastModifyUser])
 				VALUES (@Title,@Description,@Tags,@MinisterID,@SermonDate,@SermonURL,@BannerData,REPLACE(@BannerExt,'.',''),@InsertUser,@InsertUser)
+
+				SELECT [SermonID] = SCOPE_IDENTITY()
 			-- =======================================================
 
         IF ( @@trancount > 0

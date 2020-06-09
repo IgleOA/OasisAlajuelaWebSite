@@ -49,12 +49,14 @@
     <Compile Include="AuditoriumLayoutBL.cs" />
     <Compile Include="BannersBL.cs" />
     <Compile Include="BannersLocationBL.cs" />
+    <Compile Include="EnrollmentsBL.cs" />
     <Compile Include="GroupsBL.cs" />
     <Compile Include="HomeBL.cs" />
     <Compile Include="LeadershipBL.cs" />
     <Compile Include="MinistersBL.cs" />
     <Compile Include="MinistriesBL.cs" />
     <Compile Include="NewsBL.cs" />
+    <Compile Include="PrayersBL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReservationsBL.cs" />
     <Compile Include="ResourcesBL.cs" />

@@ -41,6 +41,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
@@ -75,6 +76,7 @@
     <Compile Include="Banner.cs" />
     <Compile Include="BannersLocation.cs" />
     <Compile Include="Emails.cs" />
+    <Compile Include="Enrollments.cs" />
     <Compile Include="Geolocation.cs" />
     <Compile Include="Groups.cs" />
     <Compile Include="HomePage.cs" />
@@ -82,6 +84,7 @@
     <Compile Include="Ministers.cs" />
     <Compile Include="Ministries.cs" />
     <Compile Include="News.cs" />
+    <Compile Include="Prayers.cs" />
     <Compile Include="Reservations.cs" />
     <Compile Include="Resources.cs" />
     <Compile Include="Rights.cs" />

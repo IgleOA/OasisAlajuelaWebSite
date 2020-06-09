@@ -2,13 +2,29 @@
 
 @{ Layout = null; }
 
+<style>
+    .services .icon:hover {
+        background: #0a3e77;
+        
+    }
+    .services .icon span:hover {
+        color: white;
+    }
+</style>
 @foreach (var item in Model)
 {
     <div class="col-md-6 col-lg-3 d-flex align-self-stretch">
         <div class="media block-6 services d-block text-center">
             <div class="d-flex justify-content-center">
                 <div class="icon d-flex justify-content-center mb-3">
-                    <span class='align-self-center @item.ServiceIcon fa-4x'></span>
+                    @if (item.ControllerLink.Length > 0)
+                    {
+                        <a href='@Url.Action(item.ActionLink, item.ControllerLink)' target="_blank" class="text-decoration-none my-auto"><span class='align-self-center @item.ServiceIcon fa-4x'></span></a>
+                    }
+                    else
+                    {
+                        <span class='align-self-center @item.ServiceIcon fa-4x'></span>
+                    }
                 </div>
             </div>
             <div class="media-body p-2 mt-3">

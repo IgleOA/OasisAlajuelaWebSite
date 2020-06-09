@@ -48,6 +48,8 @@
                             <th class="py-2 align-middle">@Html.DisplayNameFor(model => model.ServiceIcon)</th>
                             <th class="py-2 align-middle">@Html.DisplayNameFor(model => model.ServiceName)</th>
                             <th class="py-2 align-middle">@Html.DisplayNameFor(model => model.ServiceDescription)</th>
+                            <th class="py-2 text-center align-middle">@Html.DisplayNameFor(model => model.ControllerLink)</th>
+                            <th class="py-2 text-center align-middle">@Html.DisplayNameFor(model => model.ActionLink)</th>
                             <th class="py-2 text-center align-middle">@Html.DisplayNameFor(model => model.ActiveFlag)</th>
                             <th class="py-2 text-center align-middle" colspan="2">Acción</th>
                         </tr>
@@ -72,6 +74,13 @@
                                     var Editflag = "EditFlag" + item.ServiceID.ToString();
                                     var Status = item.ActiveFlag ? "Habilitado" : "Inhabilitado";
                                 }
+
+                                <td class="text-center align-middle">
+                                    @Html.DisplayFor(modelItem => item.ControllerLink)
+                                </td>
+                                <td class="text-center align-middle">
+                                    @Html.DisplayFor(modelItem => item.ActionLink)
+                                </td>
                                 <td class="text-center align-middle">
                                     @Html.DisplayFor(modelItem => Status)
                                 </td>
@@ -144,6 +153,8 @@ else
                             <th class="py-2 align-middle">@Html.DisplayNameFor(model => model.ServiceIcon)</th>
                             <th class="py-2 align-middle">@Html.DisplayNameFor(model => model.ServiceName)</th>
                             <th class="py-2 align-middle">@Html.DisplayNameFor(model => model.ServiceDescription)</th>
+                            <th class="py-2 text-center align-middle">@Html.DisplayNameFor(model => model.ControllerLink)</th>
+                            <th class="py-2 text-center align-middle">@Html.DisplayNameFor(model => model.ActionLink)</th>
                             <th class="py-2 text-center align-middle">@Html.DisplayNameFor(model => model.ActiveFlag)</th>
                         </tr>
                         @foreach (var item in Model)
@@ -162,6 +173,12 @@ else
                                 </td>
                                 <td class="align-middle">@Html.DisplayFor(modelItem => item.ServiceName)</td>
                                 <td class="align-middle">@Html.DisplayFor(modelItem => item.ServiceDescription)</td>
+                                <td class="text-center align-middle">
+                                    @Html.DisplayFor(modelItem => item.ControllerLink)
+                                </td>
+                                <td class="text-center align-middle">
+                                    @Html.DisplayFor(modelItem => item.ActionLink)
+                                </td>
                                 @{
                                     var Editflag = "EditFlag" + item.ServiceID.ToString();
                                     var Status = item.ActiveFlag ? "Habilitado" : "Inhabilitado";

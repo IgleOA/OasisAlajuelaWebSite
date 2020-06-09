@@ -44,6 +44,9 @@ namespace ET
         [Display(Name = "Rol")]
         public string RoleName { get; set; }
 
+        [Display(Name = "Suscriptor")]
+        public bool Subscriber { get; set; }
+
         [Display(Name = "Status")]
         public bool ActiveFlag { get; set; }
 

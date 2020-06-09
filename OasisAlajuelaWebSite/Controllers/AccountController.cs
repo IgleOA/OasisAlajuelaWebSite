@@ -18,8 +18,8 @@ namespace OasisAlajuelaWebSite.Controllers
     public class AccountController : Controller
     {
         private UsersBL UBL = new UsersBL();
-        private static string API_KEY = "at_Bjasxw2BbwvQCW3wdSkYtciaPNaJ4";
-        private static string API_URL = "https://geo.ipify.org/api/v1?";
+        private static string API_KEY = ConfigurationManager.AppSettings["GeolocationAPI_KEY"].ToString();
+        private static string API_URL = ConfigurationManager.AppSettings["GeolocationAPI_URL"].ToString();               
 
         [AllowAnonymous]
         public ActionResult Register()
@@ -72,7 +72,7 @@ namespace OasisAlajuelaWebSite.Controllers
                     SmtpClient smtp = new SmtpClient();
                     smtp.Send(mm);
 
-                    UBL.InsertActivity(User.UserName, this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(),DateTime.Now.AddHours(-6));
+                    UBL.InsertActivity(User.UserName, this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(),DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
 
                     return this.RedirectToAction("RegisterConfirmation", "Account", new { FullName = User.FullName });
                 }
@@ -160,7 +160,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
             if (LoginUser.UserID >= 1)
             {
-                UBL.InsertActivity(LoginUser.UserName, this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+                UBL.InsertActivity(LoginUser.UserName, this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
 
                 FormsAuthentication.SetAuthCookie(LoginUser.UserName, model.RememberMe);
                 if (this.Url.IsLocalUrl(ReturnUrl) && ReturnUrl.Length > 1 && ReturnUrl.StartsWith("/")
@@ -331,6 +331,36 @@ namespace OasisAlajuelaWebSite.Controllers
             Geolocation location = JsonConvert.DeserializeObject<Geolocation>(resultData);
 
             return location;
+        }
+
+        [AllowAnonymous]
+        public ActionResult RemoveSubscriber()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult RemoveSubscriber(ForgotPasswordModel model)
+        {
+            bool r = UBL.RemoveSubscriber(model.Email);
+
+            if (!r)
+            {
+                this.ModelState.AddModelError(String.Empty, "Este correo no esta registrado.");
+                return View(model);
+            }
+            else
+            {
+                return this.RedirectToAction("RemoveSubscriberConfirmation", "Account");
+            }            
+        }
+
+        [AllowAnonymous]
+        public ActionResult RemoveSubscriberConfirmation()
+        {
+            return View();
         }
     }
 }

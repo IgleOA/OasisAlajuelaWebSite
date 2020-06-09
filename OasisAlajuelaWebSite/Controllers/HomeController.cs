@@ -6,6 +6,7 @@ using BL;
 using OasisAlajuelaWebSite.Models;
 using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
+using System.Configuration;
 
 namespace OasisAlajuelaWebSite.Controllers
 {
@@ -30,7 +31,7 @@ namespace OasisAlajuelaWebSite.Controllers
             HomePage Home = HBL.Home();
             if (Request.IsAuthenticated)
             {
-                UsBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+                UsBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
 
                 List<UserNotes> Notes = UNBL.List(User.Identity.GetUserName(), false);
 
@@ -49,7 +50,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
             if (Request.IsAuthenticated)
             {
-                UsBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+                UsBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
                 var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
                 if (validation.ReadRight == false)
                 {
@@ -111,7 +112,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
         public ActionResult _UpcommingEvents()
         {
-            var lastEvent = UBL.List(DateTime.Now.AddHours(-6),false,true).Take(1).FirstOrDefault();
+            var lastEvent = UBL.List(DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])),false,true).Take(1).FirstOrDefault();
 
             return View(lastEvent);
         }

@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using ET;
 using BL;
 using Microsoft.AspNet.Identity;
+using System.Configuration;
 
 namespace OasisAlajuelaWebSite.Controllers
 {
@@ -22,7 +23,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
             if (Request.IsAuthenticated)
             {
-                USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+                USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
                 var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
                 if (validation.ReadRight == false)
                 {
@@ -37,12 +38,12 @@ namespace OasisAlajuelaWebSite.Controllers
                     {
                         ViewBag.Layout = "~/Views/Shared/_AdminLayout.cshtml";
                         ViewBag.Write = validation.WriteRight;
-                        list = UBL.List(DateTime.Now.AddHours(-6), true, true);
+                        list = UBL.List(DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])), true, true);
                     }
                     else
                     {
                         ViewBag.Layout = "~/Views/Shared/_MainLayout.cshtml";
-                        list = UBL.List(DateTime.Now.AddHours(-6), false, true);
+                        list = UBL.List(DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])), false, true);
                     }
                     ViewBag.Write = validation.WriteRight;
 
@@ -51,7 +52,7 @@ namespace OasisAlajuelaWebSite.Controllers
             }
             else
             {
-                list = UBL.List(DateTime.Now.AddHours(-6), false, true);
+                list = UBL.List(DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])), false, true);
                 ViewBag.Layout = "~/Views/Shared/_MainLayout.cshtml";
                 return View(list.ToList());
             }
@@ -60,7 +61,7 @@ namespace OasisAlajuelaWebSite.Controllers
         [Authorize]
         public ActionResult AddNew()
         {
-            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
             var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
             if (validation.ReadRight == false)
             {
@@ -121,7 +122,7 @@ namespace OasisAlajuelaWebSite.Controllers
         [Authorize]
         public ActionResult Edit(int id)
         {
-            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
             var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
             if (validation.ReadRight == false)
             {
@@ -176,7 +177,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
         public ActionResult Disable(int id)
         {
-            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
             UpcommingEvents Event = UBL.Details(id);
             Event.ActionType = "DISABLE";
             string InsertUser = User.Identity.GetUserName();

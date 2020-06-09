@@ -1,0 +1,107 @@
+﻿@model ET.Prayers
+
+@{
+    ViewBag.Title = "Oración";
+    Layout = ViewBag.Layout;
+}
+
+<script src="~/Scripts/jquery-3.5.0.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.ajax({
+            url: 'https://api.ipify.org?format=json',
+            dataType: 'json',
+            success: function (json) {
+                document.getElementById('IP').value = json.ip;
+            }
+        });
+    });
+</script>
+<div class="card bg-light ftco-animate animated fadeInUp">
+    <div class="row wrapper style4 prayerpanel p-0">
+        <div class="m-0 p-0 w-100" style="background: rgba(0, 0, 0, 0.5)">
+            <div class="justify-content-center my-5 py-3">
+                <h3 class="my-2 mx-5 text-center">
+                    "En mi angustia invoqué a Jehová,
+                    Y clamé a mi Dios.
+                    El oyó mi voz desde su templo,
+                    Y mi clamor llegó delante de él, a sus oídos."
+                </h3>
+                <h4 class="h5 mt-2 font-weight-bold text-center">Salmos 18:6</h4>
+            </div>
+        </div>
+    </div>
+    <article class="card-body mx-auto" style="max-width: 1800px;">
+        <h4 class="card-title mt-3 text-center font-weight-bold">ENVÍANOS TU PETICIÓN DE ORACIÓN</h4>
+        <h4 class="text-center mt-2 mx-5">"Y todo lo que pidiereis al Padre en mi nombre, lo haré, para que el Padre sea glorificado en el Hijo. Si algo pidiereis en mi nombre, yo lo haré." - Juan 14:13,14</h4>
+        <hr />
+        @using (Html.BeginForm("New", "Prayers", FormMethod.Post, new { role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary("", new { @class = "text-danger" })
+            <div class="row ml-0 mr-md-5">
+                @Html.Label("Datos", htmlAttributes: new { @class = "control-label col-md-2 p-0 text-uppercase", @style = "max-width: 100%;" })
+            </div>
+            <div class="row ml-0">
+                <div class="form-group input-group p-0 w-auto mr-2">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                    </div>
+                    @Html.TextBoxFor(m => m.Requester, new { @class = "form-control", @placeholder = "Nombre", @style = "max-width: 300px;" })
+                    @Html.ValidationMessageFor(model => model.Requester, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group input-group p-0 w-auto mr-2">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                    </div>
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Correo electrónico", @style = "max-width: 300px;" })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group input-group p-0 w-auto mr-2">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                    </div>
+                    @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", @placeholder = "Celular", @style = "max-width: 300px;" })
+                    @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group w-100">
+                    @Html.LabelFor(model => model.Reason, htmlAttributes: new { @class = "control-label col-md-2 p-0 text-uppercase", @style = "max-width: 100%;" })
+                    <div class="col w-100 p-0">
+                        @Html.TextAreaFor(model => model.Reason, 7, 1, new { @class = "form-control", @maxlength = 1000 })
+                        <span id="charsLeft" class="float-right">Máximo 1000 carácteres. </span>
+                        <script type="text/javascript">
+                            $(function () {
+                                $("#Reason").keyup(function () {
+                                    var charsLeft = $(this).attr("maxlength") - $(this).val().length;
+                                    $("#charsLeft").text("Quedan " + charsLeft + " carácteres.");
+                                });
+                            });
+                        </script>
+                        @Html.ValidationMessageFor(model => model.Reason, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group" style="display:none;">
+                    @Html.TextBoxFor(m => m.IP)
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="mx-0">
+                        <input type="submit" value="Enviar Solicitud" class="btn btn-dark alt mt-0 mb-2 ml-0 mr-2" />
+                    </div>
+                </div>
+            </div>
+        }
+    </article>
+    
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+

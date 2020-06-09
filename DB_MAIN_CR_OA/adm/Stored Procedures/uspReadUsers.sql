@@ -26,6 +26,7 @@ AS
 						,U.[FullName]
 						,U.[UserName]
 						,U.[Email]
+						,U.[Subscriber]
 						,U.[ActiveFlag]
 						,U.[LastActivityDate]
 						,U.[CreationDate]

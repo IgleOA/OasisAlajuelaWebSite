@@ -22,5 +22,10 @@ namespace BL
         {
             return SDAL.Update(service, insertuser);
         }
+
+        public Services Details(int ServiceID)
+        {
+            return SDAL.Details(ServiceID);
+        }
     }
 }

@@ -184,6 +184,20 @@
     <Build Include="adm\Stored Procedures\uspUpdateUserNote.sql" />
     <Build Include="adm\Tables\utbLogins.sql" />
     <Build Include="adm\Stored Procedures\uspAddLogin.sql" />
+    <Build Include="config\Tables\utbPayers.sql" />
+    <Build Include="adm\Stored Procedures\uspAddPrayer.sql" />
+    <Build Include="config\Stored Procedures\uspReadPrayers.sql" />
+    <Build Include="adm\Stored Procedures\uspRemoveSubscriber.sql" />
+    <Build Include="config\Stored Procedures\uspReadSubscribers.sql" />
+    <Build Include="config\Tables\utbRegistrations.sql" />
+    <Build Include="config\Tables\utbEnrollments.sql" />
+    <Build Include="adm\Stored Procedures\uspAddEnrollment.sql" />
+    <Build Include="adm\Stored Procedures\uspUpdateEnrollment.sql" />
+    <Build Include="config\Stored Procedures\uspReadEnrollments.sql" />
+    <Build Include="adm\Stored Procedures\uspAddRegistration.sql" />
+    <Build Include="adm\Stored Procedures\uspUpdateRegistration.sql" />
+    <Build Include="config\Stored Procedures\ReadEnrolledUsers.sql" />
+    <Build Include="adm\Stored Procedures\uspApproveEnrollment.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DB_MAIN_CR_OA_DEV.publish.xml" />

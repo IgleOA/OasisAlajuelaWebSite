@@ -64,9 +64,9 @@ namespace DAL
             if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return List;
         }
-        public bool AddNew(Sermons NewMS, string InserUser)
+        public int AddNew(Sermons NewMS, string InserUser)
         {
-            bool rpta = false;
+            int rpta = 0;
 
             try
             {
@@ -83,9 +83,9 @@ namespace DAL
 
                 SqlCon.Open();
 
-                SqlCon.Execute("[adm].[uspAddSermon]", Parm, commandType: CommandType.StoredProcedure);
+                //SqlCon.Execute("[adm].[uspAddSermon]", Parm, commandType: CommandType.StoredProcedure);
 
-                rpta = true;
+                rpta = Convert.ToInt32(SqlCon.ExecuteScalar<int>("[adm].[uspAddSermon]", Parm, commandType: CommandType.StoredProcedure));
             }
             catch (Exception ex)
             {
@@ -240,6 +240,50 @@ namespace DAL
                 throw ex;
             }
             if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            return details;
+        }
+
+        public SermonEmail DetailsForEmail(int SermonID)
+        {
+            SermonEmail details = new SermonEmail();
+
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[config].[uspReadSermons]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                SqlParameter pNewID = new SqlParameter
+                {
+                    ParameterName = "@SermonID",
+                    SqlDbType = SqlDbType.Int,
+                    Value = SermonID
+                };
+                SqlCmd.Parameters.Add(pNewID);
+
+                using (var dr = SqlCmd.ExecuteReader())
+                {
+                    dr.Read();
+                    if (dr.HasRows)
+                    {
+                        details.SermonID = Convert.ToInt32(dr["SermonID"]);
+                        details.Title = dr["Title"].ToString();
+                        details.Description = dr["Description"].ToString();
+                        details.Tags = dr["Tags"].ToString();
+                        details.SermonDate = Convert.ToDateTime(dr["SermonDate"]);
+                        details.SermonURL = dr["SermonURL"].ToString();
+                        details.MinisterName = dr["MinisterName"].ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+
             return details;
         }
     }

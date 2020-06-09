@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using ET;
 using BL;
 using Microsoft.AspNet.Identity;
+using System.Configuration;
 
 namespace OasisAlajuelaWebSite.Controllers
 {
@@ -25,7 +26,7 @@ namespace OasisAlajuelaWebSite.Controllers
                         select r.RoleName).FirstOrDefault().ToString();
 
             ViewBag.RoleName = role;
-            UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+            UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
             return View(data.ToList());
         }
 
@@ -46,7 +47,7 @@ namespace OasisAlajuelaWebSite.Controllers
             string InsertUser = User.Identity.GetUserName();
 
             var r = RBL.Update(id, InsertUser);
-            UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+            UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
             if (!r)
             {
                 ViewBag.Mensaje = "Ha ocurrido un error inesperado.";
@@ -75,7 +76,7 @@ namespace OasisAlajuelaWebSite.Controllers
             string InsertUser = User.Identity.GetUserName();
 
             var r = RBL.Update(id, InsertUser);
-            UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(-6));
+            UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
             if (!r)
             {
                 ViewBag.Mensaje = "Ha ocurrido un error inesperado.";

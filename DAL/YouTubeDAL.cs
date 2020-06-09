@@ -10,12 +10,13 @@ using Google.Apis.Auth.OAuth2;
 using System.Threading;
 using Google.Apis.Util.Store;
 using System.IO;
+using System.Configuration;
 
 namespace DAL
 {
     public class YouTubeDAL
     {
-        private YouTubeService yt = new YouTubeService(new BaseClientService.Initializer() { ApiKey = "AIzaSyBqdmvtcDCB56cTfs3O2kbYLTZANZrm9ts" });
+        private YouTubeService yt = new YouTubeService(new BaseClientService.Initializer() { ApiKey = ConfigurationManager.AppSettings["YouTubeApiKey"].ToString() });
 
         private String UploadedVideoId { get; set; }
 
@@ -27,7 +28,7 @@ namespace DAL
 
             var ListRequest = youtubeService.Search.List("snippet");
             //var ListRequest = yt.Videos.List("snippet");
-            ListRequest.ChannelId = "UCsWIb3EobSzS-pNrPXvq7_A"; //Igle Channel
+            ListRequest.ChannelId = ConfigurationManager.AppSettings["YouTubeOAChannel"].ToString(); //Igle Channel
             //ListRequest.ChannelId = "UCgs9_FAGGtcforOWC91fgDw"; // test Channel
             ListRequest.Type = "video";
             ListRequest.Order = SearchResource.ListRequest.OrderEnum.Date;
