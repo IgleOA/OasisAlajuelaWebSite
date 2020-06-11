@@ -25,6 +25,7 @@ namespace OasisAlajuelaWebSite.Controllers
         private UsersBL UsBL = new UsersBL();
         private RightsBL RRBL = new RightsBL();
         private UserNotesBL UNBL = new UserNotesBL();
+        private PodcastsBL PBL = new PodcastsBL();
 
         public ActionResult Index()
         {
@@ -34,12 +35,16 @@ namespace OasisAlajuelaWebSite.Controllers
                 UsBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
 
                 List<UserNotes> Notes = UNBL.List(User.Identity.GetUserName(), false);
-
+                
                 if(Notes.Count() > 0)
                 {
                     ViewBag.Note = true;
                 }
-
+            }
+            List<Podcasts> Casts = PBL.List();
+            if(Casts.Count() > 0)
+            {
+                ViewBag.Podcasts = true;
             }
             return View(Home);
         }

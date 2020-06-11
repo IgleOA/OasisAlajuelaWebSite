@@ -1,6 +1,6 @@
 ﻿-- ======================================================================
--- Name: [adm].[uspAddHomePage]
--- Desc: Se utiliza para la creación de nuevo HomePage
+-- Name: [adm].[uspAddPodcast]
+-- Desc: Se utiliza para agregar una nuevo Podcast
 -- Auth: Jonathan Piedra johmstone@gmail.com
 -- Date: 03/27/2020
 -------------------------------------------------------------
@@ -10,16 +10,14 @@
 -- --	----		------		-----------------------------
 -- ======================================================================
 
-CREATE PROCEDURE [adm].[uspAddHomePage]
-	@InsertUser		VARCHAR(50),
-	@DVerse			VARCHAR(MAX),
-	@DVRef			VARCHAR(50),
-	@SVCTitle		VARCHAR(50),
-	@SVCDescription	VARCHAR(MAX),
-	@PodcastTitle	VARCHAR(50),
-	@PCDescription	VARCHAR(MAX),
-	@SerTitle		VARCHAR(50),
-	@SerDescription	VARCHAR(MAX)
+CREATE PROCEDURE [adm].[uspAddPodcast]
+	@InsertUser		VARCHAR(50),	
+	@Title			VARCHAR(30),
+	@Description	VARCHAR(200),
+	@BannerData		VARBINARY(MAX),
+	@BannerExt		VARCHAR(10),
+	@MinisterID		INT,
+	@InsertDate		DATETIME
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -38,14 +36,8 @@ AS
                 END
 
             -- =======================================================
-				UPDATE	[config].[utbHomePage]
-				SET		[ActiveFlag] = 0
-						,[LastModifyDate] = GETDATE()
-						,[LastModifyUser] = @InsertUser
-				WHERE 	[ActiveFlag] = 1
-
-				INSERT INTO [config].[utbHomePage] ([DailyVerse],[DailyVerseReference],[ServicesTitle],[ServicesDescription],[PodcastTitle],[PodcastDescription],[SermonsTitle],[SermonsDescription],[InsertUser],[LastModifyUser])
-				VALUES (@DVerse, @DVRef, @SVCTitle, @SVCDescription, @PodcastTitle, @PCDescription, @SerTitle, @SerDescription, @InsertUser, @InsertUser)
+				INSERT INTO [config].[utbPodcasts] ([Title],[Description],[BannerData],[BannerExt],[MinisterID],[InsertDate],[InsertUser],[LastModifyUser])
+				VALUES (@Title,@Description,@BannerData,REPLACE(@BannerExt,'.',''),@MinisterID,@InsertDate,@InsertUser,@InsertUser)
 			-- =======================================================
 
         IF ( @@trancount > 0

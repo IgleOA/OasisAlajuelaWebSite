@@ -35,7 +35,7 @@
         <div class="container">
             <div class="row justify-content-start border-bottom">
                 <div class="col-md-offset-2 col-md-10 p-2">
-                    <h2 class="heading-section font-weight-bold m-0">@ViewBag.Title - Versión 1.@Model.HomePageID</h2>                    
+                    <h2 class="heading-section font-weight-bold m-0">@ViewBag.Title - Versión 1.@Model.HomePageID</h2>
                 </div>
             </div>
             <div class="row justify-content-start">
@@ -75,6 +75,22 @@
                 <div class="col-md-6 d-flex align-self-stretch p-0">
                     <div class="d-block text-center w-100">
                         <div class="media-body p-2 mt-0">
+                            @Html.LabelFor(model => model.PodcastTitle, htmlAttributes: new { @class = "heading w-100 text-left" })
+                            <div>
+                                @Html.EditorFor(model => model.PodcastTitle, new { htmlAttributes = new { @class = "form-control w-75" } })
+                                @Html.ValidationMessageFor(model => model.PodcastTitle, "", new { @class = "text-danger" })
+                            </div>
+                            @Html.LabelFor(model => model.PodcastDescription, htmlAttributes: new { @class = "heading w-100 text-left" })
+                            <div>
+                                @Html.TextAreaFor(model => model.PodcastDescription, 5, 1, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.PodcastDescription, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 d-flex align-self-stretch p-0">
+                    <div class="d-block text-center w-100">
+                        <div class="media-body p-2 mt-0">
                             @Html.LabelFor(model => model.SermonsTitle, htmlAttributes: new { @class = "heading w-100 text-left" })
                             <div>
                                 @Html.EditorFor(model => model.SermonsTitle, new { htmlAttributes = new { @class = "form-control" } })
@@ -88,39 +104,30 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 d-flex align-self-stretch p-0">
-                    <div class="d-block text-center w-100 align-middle m-auto">
-                        <div class="row">
-                            <div class="col-sm">
-                                <a href='@Url.Action("Index","Banners")' title="Banners" class="align-self-center">
-                                    <span class='align-self-center fas fa-sign fa-4x'></span>
-                                    <h3 class="heading">Banners</h3>
-                                </a>
-                                <a href='@Url.Action("Index","UpcommingEvents")' title="Próximos eventos" class="align-self-center">
-                                    <span class='align-self-center far fa-calendar-alt fa-4x'></span>
-                                    <h3 class="heading">Próximos eventos</h3>
-                                </a>
-                                
-                            </div>
-                            <div class="col-sm">
-                                <a href='@Url.Action("Index","Ministries")' title="Ministerios" class="align-self-center">
-                                    <span class='align-self-center fas fa-church fa-4x'></span>
-                                    <h3 class="heading">Ministerios</h3>
-                                </a>
-                                <a href='@Url.Action("Index","Services")' title="Servicios" class="align-self-center">
-                                    <span class='align-self-center fas fa-people-carry fa-4x'></span>
-                                    <h3 class="heading">Servicios</h3>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
-            <div class="row justify-content-start">
+            <div class="row justify-content-start mb-3">
                 <div class="col-md-offset-2 col-md-10 p-2">
                     <input type="submit" value="Guardar" class="btn btn-primary alt" />
                     <input type="button" value="Cancelar" onclick="javascript: window.close();" class="btn btn-primary alt" />
                 </div>
+            </div>
+            <div class="row">
+                <a href='@Url.Action("Index","Banners")' title="Banners" class="align-self-center mx-auto">
+                    <span class='align-self-center fas fa-sign fa-4x'></span>
+                    <h3 class="heading">Banners</h3>
+                </a>
+                <a href='@Url.Action("Index","UpcommingEvents")' title="Próximos eventos" class="align-self-center mx-auto">
+                    <span class='align-self-center far fa-calendar-alt fa-4x'></span>
+                    <h3 class="heading">Próximos eventos</h3>
+                </a>
+                <a href='@Url.Action("Index","Ministries")' title="Ministerios" class="align-self-center mx-auto">
+                    <span class='align-self-center fas fa-church fa-4x'></span>
+                    <h3 class="heading">Ministerios</h3>
+                </a>
+                <a href='@Url.Action("Index","Services")' title="Servicios" class="align-self-center mx-auto">
+                    <span class='align-self-center fas fa-people-carry fa-4x'></span>
+                    <h3 class="heading">Servicios</h3>
+                </a>
             </div>
         </div>
     </section>

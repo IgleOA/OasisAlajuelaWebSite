@@ -1,6 +1,6 @@
 ﻿-- ======================================================================
--- Name: [adm].[uspAddHomePage]
--- Desc: Se utiliza para la creación de nuevo HomePage
+-- Name: [adm].[uspUpdatePodcast]
+-- Desc: Se utiliza para actualizar la informacion de un Podcast
 -- Auth: Jonathan Piedra johmstone@gmail.com
 -- Date: 03/27/2020
 -------------------------------------------------------------
@@ -10,16 +10,16 @@
 -- --	----		------		-----------------------------
 -- ======================================================================
 
-CREATE PROCEDURE [adm].[uspAddHomePage]
+CREATE PROCEDURE [adm].[uspUpdatePodcast]
 	@InsertUser		VARCHAR(50),
-	@DVerse			VARCHAR(MAX),
-	@DVRef			VARCHAR(50),
-	@SVCTitle		VARCHAR(50),
-	@SVCDescription	VARCHAR(MAX),
-	@PodcastTitle	VARCHAR(50),
-	@PCDescription	VARCHAR(MAX),
-	@SerTitle		VARCHAR(50),
-	@SerDescription	VARCHAR(MAX)
+	@PodcastID		INT,
+	@InsertDate		DATETIME,
+	@ActionType		VARCHAR(10) = NULL,
+	@Title			VARCHAR(50) = NULL,
+	@Description	VARCHAR(MAX) = NULL,
+	@BannerData		VARBINARY(MAX) = NULL,
+	@BannerExt		VARCHAR(10) = NULL,
+	@MinisterID		INT = NULL
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -38,14 +38,44 @@ AS
                 END
 
             -- =======================================================
-				UPDATE	[config].[utbHomePage]
-				SET		[ActiveFlag] = 0
-						,[LastModifyDate] = GETDATE()
-						,[LastModifyUser] = @InsertUser
-				WHERE 	[ActiveFlag] = 1
+				IF (@ActionType = 'CHGST')
+					BEGIN
+						DECLARE @Status BIT
+						SELECT	@Status = [ActiveFlag]
+						FROM	[config].[utbPodcasts]
+						WHERE	[PodcastID] = @PodcastID
 
-				INSERT INTO [config].[utbHomePage] ([DailyVerse],[DailyVerseReference],[ServicesTitle],[ServicesDescription],[PodcastTitle],[PodcastDescription],[SermonsTitle],[SermonsDescription],[InsertUser],[LastModifyUser])
-				VALUES (@DVerse, @DVRef, @SVCTitle, @SVCDescription, @PodcastTitle, @PCDescription, @SerTitle, @SerDescription, @InsertUser, @InsertUser)
+						IF(@Status = 1)
+							BEGIN
+								UPDATE	[config].[utbPodcasts] 
+								SET		[ActiveFlag] = 0
+										,[LastModifyDate] = @InsertDate
+										,[LastModifyUser] = @InsertUser
+								WHERE	[PodcastID] = @PodcastID
+							END
+						ELSE
+							BEGIN
+								UPDATE	[config].[utbPodcasts] 
+								SET		[ActiveFlag] = 1
+										,[LastModifyDate] = @InsertDate
+										,[LastModifyUser] = @InsertUser
+								WHERE	[PodcastID] = @PodcastID
+							END
+					END
+				ELSE					
+					BEGIN
+						UPDATE	[config].[utbPodcasts] 
+						SET		 [Title]		= ISNULL(@Title,[Title])
+								,[Description]	= ISNULL(@Description,[Description])
+								,[BannerData]	= @BannerData
+								,[BannerExt]	= REPLACE(@BannerExt,'.','')
+								,[MinisterID]	= ISNULL(@MinisterID,[MinisterID])
+								,[ActiveFlag]	= 1
+								,[LastModifyDate]	= @InsertDate
+								,[LastModifyUser]	= @InsertUser
+						WHERE	[PodcastID] = @PodcastID
+					END
+					
 			-- =======================================================
 
         IF ( @@trancount > 0

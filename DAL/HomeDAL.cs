@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
@@ -39,6 +38,8 @@ namespace DAL
                         Detail.DailyVerseReference = dr["DailyVerseReference"].ToString();
                         Detail.ServicesTitle = dr["ServicesTitle"].ToString();
                         Detail.ServicesDescription = dr["ServicesDescription"].ToString();
+                        Detail.PodcastTitle = dr["PodcastTitle"].ToString();
+                        Detail.PodcastDescription = dr["PodcastDescription"].ToString();
                         Detail.SermonsTitle = dr["SermonsTitle"].ToString();
                         Detail.SermonsDescription = dr["SermonsDescription"].ToString();
                     }
@@ -97,6 +98,23 @@ namespace DAL
                     Value = HP.ServicesDescription.Trim()
                 };
                 SqlCmd.Parameters.Add(SVCDescription);
+
+                SqlParameter PCTitle = new SqlParameter
+                {
+                    ParameterName = "@PodcastTitle",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 50,
+                    Value = HP.PodcastTitle.Trim()
+                };
+                SqlCmd.Parameters.Add(PCTitle);
+
+                SqlParameter PCDescription = new SqlParameter
+                {
+                    ParameterName = "@PCDescription",
+                    SqlDbType = SqlDbType.VarChar,
+                    Value = HP.PodcastDescription.Trim()
+                };
+                SqlCmd.Parameters.Add(PCDescription);
 
                 SqlParameter SerTitle = new SqlParameter
                 {

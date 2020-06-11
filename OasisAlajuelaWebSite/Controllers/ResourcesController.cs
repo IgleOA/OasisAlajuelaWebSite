@@ -468,9 +468,9 @@ namespace OasisAlajuelaWebSite.Controllers
                 {
                     int statusCode = (int)response.StatusCode;
 
-                    var r = YBL.YoutubeVideoValidation(videoId); // Check validation from YouTube
+                    //var r = YBL.YoutubeVideoValidation(videoId); // Check validation from YouTube
 
-                    if (statusCode >= 100 && statusCode < 400 && r.ActiveFlag == true) //Good requests
+                    if (statusCode >= 100 && statusCode < 400) //Good requests
                     {
                         isValid = true;
                     }

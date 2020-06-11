@@ -1,7 +1,7 @@
-﻿@model ET.News
+﻿@model ET.Podcasts
 
 @{
-    ViewBag.Title = "Nueva Noticia";
+    ViewBag.Title = "Editar Podcast";
     Layout = "~/Views/Shared/_PupopLayout.cshtml";
 }
 
@@ -10,7 +10,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         var flag = '@(Model.ActionType)';
-        if (flag == "CREATE")
+        if (flag == "UPDATE")
         {
             opener.location.reload();
             window.close();
@@ -25,6 +25,7 @@
                     $('.avatar').attr('src', e.target.result);
                 }
                 reader.readAsDataURL(input.files[0]);
+                document.getElementById('SaveOptions').style.display = 'block';
             }
         }
         $(".file-upload").on('change', function () {
@@ -36,13 +37,16 @@
 <div class="card bg-light">
     <article class="card-body">
         <h4 class="card-title mt-3 text-center font-weight-bold">@ViewBag.Title</h4>
-        @using (Html.BeginForm("AddNew", "News", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        @using (Html.BeginForm("Edit", "Podcasts", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             @Html.AntiForgeryToken()
 
             <div class="form-horizontal">
                 <hr />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger m-0" })
+                @Html.HiddenFor(model => model.PodcastID)
+                @Html.HiddenFor(model => model.BannerData)
+                @Html.HiddenFor(model => model.BannerExt)
                 <div class="form-group">
                     @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
                     <div class="col-md-10">
@@ -51,10 +55,20 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    @Html.LabelFor(model => model.MinisterID, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.MinisterID, new SelectList(Model.Ministerlist, "MinisterID", "FullName"), new { @class = "custom-select" })
+                        @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+               <div class="form-group">
                     @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
                     <div class="col-md-10">
-                        @Html.TextAreaFor(model => model.Description, 5, 1, new { @class = "form-control", @maxlength = 100 } )
-                        <span id="charsLeft">Máximo 100 carácteres. </span>
+                        @{ 
+                            var leftspace = 500 - Model.Description.Length;
+                        }
+                        @Html.TextAreaFor(model => model.Description, 5, 1, new { @class = "form-control", @maxlength = leftspace })
+                        <span id="charsLeft">Máximo 500 carácteres. </span>
                         <script type="text/javascript">
                             $(function () {
                                 $("#Description").keyup(function () {
@@ -67,16 +81,27 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    @Html.LabelFor(model => model.InsertDate, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.InsertDate, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.InsertDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
                     @Html.LabelFor(model => model.file, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
                     <div class="profile-img">
-                        <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-thumbnail w-75" alt="avatar" />
+                        @{
+                            var base64 = Convert.ToBase64String(Model.BannerData, 0, Model.BannerData.Length);
+                            var imgSrc = string.Format("data:image/{0};base64,{1}", Model.BannerExt, base64);
+                        }
+                        <img src="@imgSrc" class="avatar img-thumbnail w-75" alt="avatar" />
                         <div class="file btn btn-lg btn-primary w-75">
-                            Seleccionar Banner
+                            Cambiar
                             <input id="file" type="file" name="file" class="file-upload">
                         </div>
                     </div>
                 </div>
-
+                
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <input type="submit" value="Guardar" class="btn btn-dark alt mt-0 mb-2" />

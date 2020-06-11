@@ -388,6 +388,7 @@
     <Compile Include="Controllers\MinistriesController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\NotesController.cs" />
+    <Compile Include="Controllers\PodcastsController.cs" />
     <Compile Include="Controllers\PrayersController.cs" />
     <Compile Include="Controllers\ReservationsController.cs" />
     <Compile Include="Controllers\ResourcesController.cs" />
@@ -2902,6 +2903,10 @@
     <Content Include="Views\Enrollments\EnrollerConfirmation.cshtml" />
     <Content Include="Views\Enrollments\EnrolledUsers.cshtml" />
     <Content Include="Views\Users\ResetPasswordConfirmation.cshtml" />
+    <Content Include="Views\Podcasts\Index.cshtml" />
+    <Content Include="Views\Podcasts\AddNew.cshtml" />
+    <Content Include="Views\Podcasts\Edit.cshtml" />
+    <Content Include="Views\Podcasts\_Podcast.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

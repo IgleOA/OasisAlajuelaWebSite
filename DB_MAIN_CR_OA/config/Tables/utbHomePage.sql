@@ -4,6 +4,8 @@
     [DailyVerseReference] VARCHAR (200) NOT NULL,
     [ServicesTitle]       VARCHAR (200) NOT NULL,
     [ServicesDescription] VARCHAR (MAX) NOT NULL,
+	[PodcastTitle]        VARCHAR (200) NULL,
+    [PodcastDescription]  VARCHAR (MAX) NULL,
     [SermonsTitle]        VARCHAR (200) NOT NULL,
     [SermonsDescription]  VARCHAR (MAX) NOT NULL,
     [ActiveFlag]          BIT           CONSTRAINT [utbHomePageDefaultActiveFlagTrue] DEFAULT ((1)) NOT NULL,
