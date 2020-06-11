@@ -37,5 +37,10 @@ namespace BL
         {
             return EDAL.ApproveEnrollment(EnrollmentID);
         }
+
+        public List<EnrolledUsers> UserList(int EnrollmentID)
+        {
+            return EDAL.UserList(EnrollmentID);
+        }
     }
 }

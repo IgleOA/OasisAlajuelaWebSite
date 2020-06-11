@@ -62,7 +62,32 @@ namespace OasisAlajuelaWebSite.Controllers
                 return View(list.ToPagedList(pageNumber, pageSize));
             }
         }
+        public ActionResult EnrolledUsers(int id, int? page)
+        {
+            UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
+            var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
+            if (validation.ReadRight == false)
+            {
+                ViewBag.Mensaje = "Usted no esta autorizado para ingresar a esta seccion, si necesita acceso contacte con un administrador.";
+                return View("~/Views/Shared/Error.cshtml");
+            }
+            else
+            {
+                var list = EBL.List(true).Where(x => x.EnrollmentID == id).ToList();
 
+                var userlist = from d in EBL.UserList(id)
+                               select d;
+
+                ViewBag.WriteRight = validation.WriteRight;
+                ViewBag.CourseName = list.FirstOrDefault().GroupName;
+                ViewBag.ApprovalFlag = list.FirstOrDefault().ApprovalFlag;
+                ViewBag.EnrollmentID = id;
+                ViewBag.Total = userlist.Count();
+                int pageSize = 10;
+                int pageNumber = (page ?? 1);
+                return View(userlist.ToPagedList(pageNumber, pageSize));
+            }
+        }
         public ActionResult Add()
         {
             Enrollments Detail = new Enrollments()

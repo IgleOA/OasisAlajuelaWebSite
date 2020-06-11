@@ -245,6 +245,48 @@ namespace DAL
             return ValidCode;
         }
 
+        public bool AdminResetPassword(int UserID, string InsertUser)
+        {
+            bool rpta = false;
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[adm].[uspAdminResetPassword]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                //Insert Parameters
+                SqlParameter pUserID = new SqlParameter
+                {
+                    ParameterName = "@UserID",
+                    SqlDbType = SqlDbType.Int,
+                    Value = UserID
+                };
+                SqlCmd.Parameters.Add(pUserID);
+
+                SqlParameter pInsertUser = new SqlParameter
+                {
+                    ParameterName = "@InsertUser",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 50,
+                    Value = InsertUser
+                };
+                SqlCmd.Parameters.Add(pInsertUser);
+
+                //EXEC Command
+                SqlCmd.ExecuteNonQuery();
+
+                rpta = true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            return rpta;
+        }
+
         public bool ResetPassword(ResetPasswordModel Model)
         {
             bool rpta = false;

@@ -307,18 +307,6 @@ namespace OasisAlajuelaWebSite.Controllers
 
                     mailBody.AppendFormat(strg);
 
-                    //mailBody.AppendFormat("<h1>Oasis Alajuela</h1>");
-                    //mailBody.AppendFormat("<br />");
-                    //mailBody.AppendFormat("<p>Gracias {0} por registrarse y por tener el sentir de hacerte parte de esta familia. Dios trae cosas grandes para esta casa y ahora seras parte de ellas.</p>", UUser.FullName);
-                    //mailBody.AppendFormat("<br />");
-                    //mailBody.AppendFormat("<p>Desde ya puedes ver el contenido completo de nuestro website http://igleoa.azurewebsites.net/ </p>");
-                    //mailBody.AppendFormat("<br />");
-                    //mailBody.AppendFormat("<p>Usuario: {0}</p>", UUser.UserName);
-                    //mailBody.AppendFormat("<br />");
-                    //mailBody.AppendFormat("<p>Contraseña: {0}</p>", UUser.Password);
-                    //mailBody.AppendFormat("<br />");
-                    //mailBody.AppendFormat("<h3>Bendiciones....</h3>");
-
                     Email.BodyEmail = mailBody.ToString();
 
                     MailMessage mm = new MailMessage(Email.FromEmail, Email.ToEmail);
@@ -354,6 +342,47 @@ namespace OasisAlajuelaWebSite.Controllers
             }
 
             UUser.RolesList = RBL.List();
+            return View(UUser);
+        }
+
+        public void AdminResetPassword(int id)
+        {
+            UBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
+
+            var r = UBL.AdminResetPassword(id, User.Identity.GetUserName());
+
+            Users user = UBL.Details(id);
+            user.Password = "!234s6789";
+
+            #region Email
+            Emails Email = new Emails()
+            {
+                FromEmail = ConfigurationManager.AppSettings["AdminEmail"].ToString(),
+                ToEmail = user.Email,
+                SubjectEmail = "Su contraseña de OasisAlajuela.com ha sido restablecida"
+            };
+
+            StringBuilder mailBody = new StringBuilder();
+            var strg = ViewToStringRenderer.RenderViewToString(this.ControllerContext, "~/Views/Users/ResetPasswordConfirmation.cshtml", user);
+
+            mailBody.AppendFormat(strg);
+
+
+            Email.BodyEmail = mailBody.ToString();
+
+            MailMessage mm = new MailMessage(Email.FromEmail, Email.ToEmail);
+            mm.Subject = Email.SubjectEmail;
+            mm.Body = Email.BodyEmail;
+            mm.IsBodyHtml = true;
+            mm.BodyEncoding = Encoding.GetEncoding("utf-8");
+
+            SmtpClient smtp = new SmtpClient();
+            smtp.Send(mm); 
+            #endregion
+        }
+
+        public ActionResult ResetPasswordConfirmation(Users UUser)
+        {
             return View(UUser);
         }
 
