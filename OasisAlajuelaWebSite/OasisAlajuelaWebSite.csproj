@@ -2900,6 +2900,8 @@
     <Content Include="Views\Enrollments\Enroller.cshtml" />
     <Content Include="Views\Enrollments\EmailConfirmation.cshtml" />
     <Content Include="Views\Enrollments\EnrollerConfirmation.cshtml" />
+    <Content Include="Views\Enrollments\EnrolledUsers.cshtml" />
+    <Content Include="Views\Users\ResetPasswordConfirmation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

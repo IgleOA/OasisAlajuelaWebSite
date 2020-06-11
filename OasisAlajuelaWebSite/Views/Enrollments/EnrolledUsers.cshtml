@@ -1,0 +1,93 @@
+﻿@model PagedList.IPagedList<ET.EnrolledUsers>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Usuarios Matrículados";
+    Layout = "~/Views/Shared/_PupopLayout.cshtml";
+}
+<script src="~/Scripts/jquery-3.5.0.min.js"></script>
+<script type="text/javascript">
+    function AddNewUser(id) {
+        var url = '@Url.Action("EnrollUser", new { id = "EnrollmentID" })';
+        url = url.replace("EnrollmentID", id);
+        window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
+    }    
+    function RemoveUser(RegisterID) {
+        var x = confirm("Esta seguro que quiere eliminar Usuario de este curso???");
+        if (x) {
+            $.ajax({
+                url: '@Url.Action("RemoveUser")',
+                data: { id: RegisterID }
+            }).done(function () { alert('Hecho!!!'); location.reload(); });
+        }
+    }   
+</script>
+
+<div class="card bg-light px-0">
+    <div class="container">
+        <article class="card-body px-0">
+            <div class="row justify-content-center">
+                <h3 class="heading-section font-weight-bold my-2 p-0">@ViewBag.Title</h3>
+            </div>
+            <hr />
+            <h3 class="mt-3 mb-1">
+                <i class="fa fa-tags"></i>
+                Curso:
+                <span style="color:blue">@ViewBag.CourseName</span>
+            </h3>
+            <div class="mt-2">
+                <table class="m-0 table-responsive-md">
+                    <tbody>
+                        <tr>
+                            <td class="align-middle"><p class="font-weight-bold m-0" style="font-size: 15px;">Usuarios</p></td>
+                            <td align="center" class="align-middle"><p class="font-weight-bold m-0" style="font-size: 15px;">Teléfono o Celular</p></td>
+                            @if (ViewBag.WriteRight == true && ViewBag.ApprovalFlag == false)
+                            {
+                                <td align="center" class="align-middle"><p class="text-decoration-none font-weight-bold m-0" style="font-size: 15px;">Acción</p></td>
+                            }
+                        </tr>
+                        @foreach (var r in Model)
+                        {
+                            if (ViewBag.WriteRight == true && ViewBag.ApprovalFlag == false)
+                            {
+                                <tr>
+                                    <td class="py-1">
+                                        <p class="a text-decoration-none m-0" style="font-size: 15px;">@r.FullName</p>
+                                    </td>
+                                    <td align="center" class="py-1 align-middle">
+                                        <p class="a text-decoration-none m-0" style="font-size: 15px;">@r.PhoneNumber</p>
+                                    </td>
+                                    <td align="center" class="py-1 align-middle">
+                                        <a href="#" class="text-decoration-none" style="font-size: 15px;" onclick="RemoveUser(@r.RegisterID)" title="Eliminar"><i class="fas fa-times-circle"></i> Eliminar</a>
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td>
+                                        <p class="a text-decoration-none m-0 align-middle" style="font-size: 15px;">@r.FullName</p>
+                                    </td>
+                                    <td align="center">
+                                        <p class="a text-decoration-none m-0 align-middle" style="font-size: 15px;">@r.PhoneNumber</p>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+                <p class="m-0 pl-2 text-right" style="font-size:0.75rem;">Total Inscritos: <span class="font-weight-bold">@ViewBag.Total</span></p>
+            </div>
+            <div class="row justify-content-start ml-0">
+                @if (Model.PageCount > 1)
+                {
+                    @Html.PagedListPager(Model, page => Url.Action("EnrolledUsers", new { page }), new PagedListRenderOptions() { ContainerDivClasses = new string[] { "p-0" }, UlElementClasses = new string[] { "pagination m-0" } })
+                }
+                @if (ViewBag.WriteRight == true && ViewBag.ApprovalFlag == false)
+                {
+                    <a href='#' title="Matricular Usuario" class="btn btn-light px-2 py-1 my-auto" style="text-decoration: none;" onclick='AddNewUser(@ViewBag.EnrollmentID)'><i class="fas fa-plus-square fa-1x"></i> Matricular Usuario</a>
+                }
+            </div>
+        </article>
+    </div>
+</div>

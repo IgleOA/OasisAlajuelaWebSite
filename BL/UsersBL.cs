@@ -39,6 +39,11 @@ namespace BL
             return UDAL.ResetPassword(model);
         }
 
+        public bool AdminResetPassword(int UserID, string InsertUser)
+        {
+            return UDAL.AdminResetPassword(UserID, InsertUser);
+        }
+
         public List<Users> List()
         {
             return UDAL.List();

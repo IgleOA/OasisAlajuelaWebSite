@@ -32,6 +32,15 @@
             }).done(function () { alert('Hecho!!!'); location.reload(); });
         }
     }
+    function ResetPassword(userID) {
+        var x = confirm("Esta seguro que quiere restablecer la contraseña de este usuario???");
+        if (x) {
+            $.ajax({
+                url: '@Url.Action("AdminResetPassword")',
+                data: { id: userID }
+            }).done(function () { alert('Hecho!!!'); });
+        }
+    }
     function AddNew() {
         var url = '@Url.Action("AddNew")';
         window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
@@ -91,7 +100,7 @@
                         <th class="text-center py-2 align-middle">@Html.DisplayNameFor(model => model.FirstOrDefault().ActiveFlag)</th>
                         @if (ViewBag.WriteRight == true)
                         {
-                            <th colspan="4" class="text-center py-2 align-middle">Acción</th>
+                            <th colspan="5" class="text-center py-2 align-middle">Acción</th>
                         }
                     </tr>
 
@@ -155,6 +164,11 @@
                                     <a href="#" class="card-link m-0" onclick="Edit(@item.UserID)" title="Asignar nuevo rol">
                                         <i class="fas fa-user-edit fa-1x mx-2" style="vertical-align: middle; color: #444444;"></i>
                                     </a>                                    
+                                </td>
+                                <td class="text-center align-middle px-0">
+                                    <a href="#" class="card-link m-0" onclick="ResetPassword(@item.UserID)" title="Restablecer Contraseña">
+                                        <span class="fas fa-key fa-1x mx-2" style="vertical-align: middle; color: #444444;"></span>
+                                    </a>
                                 </td>
                                 <td class="text-center align-middle px-0">
                                     <a href="#" class="card-link m-0" title="Involucrados">

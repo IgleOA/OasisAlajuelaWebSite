@@ -198,6 +198,7 @@
     <Build Include="adm\Stored Procedures\uspUpdateRegistration.sql" />
     <Build Include="config\Stored Procedures\ReadEnrolledUsers.sql" />
     <Build Include="adm\Stored Procedures\uspApproveEnrollment.sql" />
+    <Build Include="adm\Stored Procedures\uspAdminResetPassword.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DB_MAIN_CR_OA_DEV.publish.xml" />
