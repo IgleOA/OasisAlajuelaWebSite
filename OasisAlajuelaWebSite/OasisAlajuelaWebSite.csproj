@@ -2907,6 +2907,7 @@
     <Content Include="Views\Podcasts\AddNew.cshtml" />
     <Content Include="Views\Podcasts\Edit.cshtml" />
     <Content Include="Views\Podcasts\_Podcast.cshtml" />
+    <Content Include="Views\Resources\TypeHistory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

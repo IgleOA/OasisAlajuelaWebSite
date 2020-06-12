@@ -16,7 +16,9 @@ CREATE PROCEDURE [adm].[uspUpdateResource]
 	@ResourceTypeID	INT = NULL,
 	@FileName		VARCHAR(500)	= NULL,
 	@Description	VARCHAR(MAX)	= NULL,
-	@FileURL		VARCHAR(500)	= NULL
+	@FileURL		VARCHAR(500)	= NULL,
+	@EnableStart	DATETIME		= NULL,
+	@EnableEnd		DATETIME		= NULL
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -47,12 +49,14 @@ AS
 				ELSE	
 					BEGIN
 						UPDATE	[config].[utbResources]
-						SET		[ResourceTypeID] = @ResourceTypeID
-								,[FileName] = ISNULL(@FileName,[FileName])
-								,[Description] = ISNULL(@Description,[Description])
-								,[FileURL] = ISNULL(@FileURL,[FileURL])
-								,[LastModifyDate] = GETDATE()
-								,[LastModifyUser] = @InsertUser
+						SET		[ResourceTypeID]	= @ResourceTypeID
+								,[FileName]			= ISNULL(@FileName,[FileName])
+								,[Description]		= ISNULL(@Description,[Description])
+								,[FileURL]			= ISNULL(@FileURL,[FileURL])
+								,[EnableStart]		= @EnableStart
+								,[EnableEnd]		= @EnableEnd
+								,[LastModifyDate]	= GETDATE()
+								,[LastModifyUser]	= @InsertUser
 						WHERE	[ResourceID] = @ResourceID
 					END
 			-- =======================================================

@@ -89,7 +89,56 @@ namespace OasisAlajuelaWebSite.Controllers
 
                 ViewBag.CurrentFilter = searchString;
 
-                var list = from l in RBL.ResourceList(id, true)
+                var list = from l in RBL.ResourceList(id, DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])))
+                           select l;
+
+                if (!String.IsNullOrEmpty(searchString))
+                {
+                    list = list.Where(b => b.FileName.Contains(searchString) || b.Description.Contains(searchString));
+                }
+                int pageSize = 10;
+                int pageNumber = (page ?? 1);
+
+                ResourceTypes TypeData = (from r in RBL.TypeList(User.Identity.GetUserName())
+                                          where r.ResourceTypeID == id
+                                          select r).FirstOrDefault();
+
+                ViewBag.Resource = TypeData.TypeName;
+                ViewBag.ResourceTypeID = TypeData.ResourceTypeID;
+
+                ViewBag.Write = validation.WriteRight;
+                ViewBag.CountResults = list.Count();
+
+                return View(list.ToPagedList(pageNumber, pageSize));
+
+            }
+
+        }
+
+        public ActionResult TypeHistory(int id, string currentFilter, string searchString, int? page)
+        {
+            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
+
+            var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
+            if (validation.WriteRight == false)
+            {
+                ViewBag.Mensaje = "Usted no esta autorizado para ingresar a esta seccion, si necesita acceso contacte con un administrador.";
+                return View("~/Views/Shared/Error.cshtml");
+            }
+            else
+            {
+                if (searchString != null)
+                {
+                    page = 1;
+                }
+                else
+                {
+                    searchString = currentFilter;
+                }
+
+                ViewBag.CurrentFilter = searchString;
+
+                var list = from l in RBL.History(id)
                            select l;
 
                 if (!String.IsNullOrEmpty(searchString))
@@ -183,7 +232,12 @@ namespace OasisAlajuelaWebSite.Controllers
             }
             else
             {
-                Resources MS = new Resources();
+                Resources MS = new Resources()
+                {
+                    ESDate = DateTime.Today,
+                    EEDate = DateTime.Today.AddDays(1),
+                    EETime = DateTime.Parse("11:59 PM").TimeOfDay
+                };
 
                 if (id == 0)
                 {
@@ -217,7 +271,7 @@ namespace OasisAlajuelaWebSite.Controllers
                                select rd;
 
                     MS.TypeList = data.ToList();
-                    this.ModelState.AddModelError(String.Empty, "El video proporcionado no existe en YouTube o es incorrecto.");
+                    this.ModelState.AddModelError(String.Empty, "El video proporcionado no existe en YouTube o GoogleDrive o es incorrecto.");
                     return View(MS);
                 }
             }
@@ -251,6 +305,17 @@ namespace OasisAlajuelaWebSite.Controllers
             }
 
             string InsertUser = User.Identity.GetUserName();
+
+            if(MS.AccessLimited == true)
+            {                
+                MS.EnableStart = MS.ESDate.Add(MS.ESTime);
+                MS.EnableEnd = MS.EEDate.Add(MS.EETime);
+            }
+            else
+            {
+                MS.EnableStart = null;
+                MS.EnableEnd = null;
+            }
 
             int ResourceID = RBL.AddNewResource(MS, InsertUser);
 
@@ -365,6 +430,17 @@ namespace OasisAlajuelaWebSite.Controllers
                     }
                 }
 
+                if (MS.AccessLimited == true)
+                {
+                    MS.EnableStart = MS.ESDate.Add(MS.ESTime);
+                    MS.EnableEnd = MS.EEDate.Add(MS.EETime);
+                }
+                else
+                {
+                    MS.EnableStart = null;
+                    MS.EnableEnd = null;
+                }
+
                 var r = RBL.Update(MS, InsertUser);
 
                 if (!r)
@@ -387,33 +463,15 @@ namespace OasisAlajuelaWebSite.Controllers
             }
         }
 
-        public ActionResult ChangeStatus(int id = 0)
+        public void ChangeStatus(int id = 0)
         {
             USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
-            var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
-            if (validation.WriteRight == false)
-            {
-                ViewBag.Mensaje = "Usted no esta autorizado para ingresar a esta seccion, si necesita acceso contacte con un administrador.";
-                return View("~/Views/Shared/Error.cshtml");
-            }
-            else
-            {
-                Resources MS = RBL.ResourceDetails(id);
-                MS.ActionType = "CHGST";
-                string InsertUser = User.Identity.GetUserName();
+           
+            Resources MS = RBL.ResourceDetails(id);
+            MS.ActionType = "CHGST";
+            string InsertUser = User.Identity.GetUserName();
 
-                var r = RBL.Update(MS, InsertUser);
-
-                if (!r)
-                {
-                    ViewBag.Mensaje = "Ha ocurrido un error inesperado.";
-                    return View("~/Views/Shared/Error.cshtml");
-                }
-                else
-                {
-                    return this.RedirectToAction("Type", new { id = MS.ResourceTypeID });
-                }
-            }
+            RBL.Update(MS, InsertUser);           
         }
 
         public bool ValidationFormat(string FileType, string FileExt)

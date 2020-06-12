@@ -17,7 +17,9 @@ CREATE PROCEDURE [adm].[uspAddResource]
 	@FileData		VARBINARY(MAX)	= NULL,
 	@FileExt		VARCHAR(10)		= NULL,
 	@FileName		VARCHAR(500)	= NULL,
-	@FileURL		VARCHAR(500)	= NULL
+	@FileURL		VARCHAR(500)	= NULL,
+	@EnableStart	DATETIME = NULL,
+	@EnableEnd		DATETIME = NULL
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -36,8 +38,8 @@ AS
                 END
 
             -- =======================================================
-				INSERT INTO [config].[utbResources] ([ResourceTypeID],[FileType],[FileData],[FileExt],[FileName],[FileURL],[Description],[InsertUser],[LastModifyUser])
-				VALUES (@ResourceTypeID,@FileType,@FileData,REPLACE(@FileExt,'.',''),@FileName,@FileURL,@Description ,@InsertUser,@InsertUser)
+				INSERT INTO [config].[utbResources] ([ResourceTypeID],[FileType],[FileData],[FileExt],[FileName],[FileURL],[Description],[EnableStart],[EnableEnd],[InsertUser],[LastModifyUser])
+				VALUES (@ResourceTypeID,@FileType,@FileData,REPLACE(@FileExt,'.',''),@FileName,@FileURL,@Description,@EnableStart,@EnableEnd,@InsertUser,@InsertUser)
 
 				SELECT [ResourceID] = SCOPE_IDENTITY()
 			-- =======================================================

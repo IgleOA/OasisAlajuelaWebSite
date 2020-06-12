@@ -46,8 +46,7 @@ namespace DAL
 
         public int AddNewResource(Resources RT, string InsertUser)
         {
-            int rpta = 0;
-
+            int rpta;
             try
             {
                 SqlCon.Open();
@@ -126,6 +125,25 @@ namespace DAL
                 };
                 SqlCmd.Parameters.Add(pFileURL);
 
+                if(RT.AccessLimited == true)
+                {
+                    SqlParameter pEnableStart = new SqlParameter
+                    {
+                        ParameterName = "@EnableStart",
+                        SqlDbType = SqlDbType.DateTime,
+                        Value = RT.EnableStart
+                    };
+                    SqlCmd.Parameters.Add(pEnableStart);
+
+                    SqlParameter pEnableEnd = new SqlParameter
+                    {
+                        ParameterName = "@EnableEnd",
+                        SqlDbType = SqlDbType.DateTime,
+                        Value = RT.EnableEnd
+                    };
+                    SqlCmd.Parameters.Add(pEnableEnd);
+                }
+
                 //EXEC Command
                 rpta = Convert.ToInt32(SqlCmd.ExecuteScalar());
             }
@@ -191,7 +209,7 @@ namespace DAL
             return List;
         }
 
-        public List<Resources> ResourceList(int ResourceTypeID, Boolean ActiveFlag)
+        public List<Resources> ResourceList(int ResourceTypeID, DateTime Date)
         {
             List<Resources> List = new List<Resources>();
 
@@ -211,17 +229,14 @@ namespace DAL
                 };
                 SqlCmd.Parameters.Add(pResourceTypeID);
 
-                if (ActiveFlag == true)
+                SqlParameter pDate = new SqlParameter
                 {
-                    SqlParameter pActiveFlag = new SqlParameter
-                    {
-                        ParameterName = "@ActiveFlag",
-                        SqlDbType = SqlDbType.Bit,
-                        Value = ActiveFlag
-                    };
-                    SqlCmd.Parameters.Add(pActiveFlag);
-                }
-
+                    ParameterName = "@Date",
+                    SqlDbType = SqlDbType.DateTime,
+                    Value = Date
+                };
+                SqlCmd.Parameters.Add(pDate);
+                
                 using (var dr = SqlCmd.ExecuteReader())
                 {
                     while (dr.Read())
@@ -241,6 +256,61 @@ namespace DAL
                         List.Add(detail);
                     }
                 }                
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            return List;
+        }
+
+        public List<Resources> History(int ResourceTypeID)
+        {
+            List<Resources> List = new List<Resources>();
+
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[config].[uspReadResources]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                SqlCmd.Parameters.AddWithValue("@HistoryFlag", true);
+                SqlCmd.Parameters.AddWithValue("@ResourceTypeID", ResourceTypeID);
+
+                using (var dr = SqlCmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        var detail = new Resources
+                        {
+                            ResourceID = Convert.ToInt32(dr["ResourceID"]),
+                            ResourceTypeID = Convert.ToInt32(dr["ResourceTypeID"]),
+                            TypeName = dr["TypeName"].ToString(),
+                            FileType = dr["FileType"].ToString(),
+                            FileExt = dr["FileExt"].ToString(),
+                            FileName = dr["FileName"].ToString(),
+                            FileURL = dr["FileURL"].ToString(),
+                            Description = dr["Description"].ToString(),
+                            ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"])
+                        };
+                        
+
+                        if(!Convert.IsDBNull(dr["EnableStart"]))
+                        {
+                            detail.EnableStart = Convert.ToDateTime(dr["EnableStart"]);
+                            detail.EnableEnd = Convert.ToDateTime(dr["EnableEnd"]);
+                        }
+                        else
+                        {
+                            detail.EnableStart = null;
+                            detail.EnableEnd = null;
+                        }
+                        List.Add(detail);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -286,8 +356,22 @@ namespace DAL
                         details.ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]);
                         if(!Convert.IsDBNull(dr["FileData"]))
                         {
-                            details.FileData = (byte[])dr["FileData"];
-                        }                       
+                            details.FileData = (byte[])dr["FileData"];                           
+                        }
+                        if (!Convert.IsDBNull(dr["EnableStart"]))
+                        {
+                            details.EnableStart = Convert.ToDateTime(dr["EnableStart"]);
+                            details.EnableEnd = Convert.ToDateTime(dr["EnableEnd"]);
+                            details.ESDate = Convert.ToDateTime(dr["EnableStart"]);
+                            details.ESTime = (TimeSpan)dr["ESTime"];
+                            details.EEDate = Convert.ToDateTime(dr["EnableEnd"]);
+                            details.EETime = (TimeSpan)dr["EETime"];
+                        }
+                        else
+                        {
+                            details.EnableStart = null;
+                            details.EnableEnd = null;
+                        }
                     }
                 }
 
@@ -306,8 +390,7 @@ namespace DAL
 
         public bool Update(Resources RT, string InsertUser)
         {
-            bool rpta = false;
-
+            bool rpta;
             try
             {
                 DynamicParameters Parm = new DynamicParameters();
@@ -318,6 +401,8 @@ namespace DAL
                 Parm.Add("@FileName", RT.FileName.Trim());
                 Parm.Add("@Description", RT.Description.Trim()); 
                 Parm.Add("@FileURL", RT.FileURL.Trim());
+                Parm.Add("@EnableStart", RT.EnableStart);
+                Parm.Add("@EnableEnd", RT.EnableEnd);
 
                 SqlCon.Open();
 
@@ -330,6 +415,7 @@ namespace DAL
                 throw ex;
             }
             if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+
             return rpta;
         }
     }
