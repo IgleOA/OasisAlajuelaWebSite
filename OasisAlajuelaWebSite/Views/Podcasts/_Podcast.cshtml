@@ -1,0 +1,61 @@
+﻿@model IEnumerable<ET.Podcasts>
+
+@{ Layout = null; }
+
+<script src="~/Scripts/jquery-3.5.0.min.js"></script>
+
+<div id="PodcastCarousel" class="carousel slide p-0" data-ride="carousel" style="max-width: 700px;">
+    <ol class="carousel-indicators mb-2" style="bottom:auto!important; top:0;">
+        @foreach (var item in Model)
+        {
+            if (item.Slide == 0)
+            {
+                <li data-target="#PodcastCarousel" data-slide-to="@item.Slide" class="active"></li>
+            }
+            else
+            {
+                <li data-target="#PodcastCarousel" data-slide-to="@item.Slide"></li>
+            }
+        }
+    </ol>
+    <div class="carousel-inner">
+        @foreach (var item in Model)
+        {
+            var base64 = Convert.ToBase64String(item.BannerData, 0, item.BannerData.Length);
+            var imgSrc = string.Format("data:image/{0};base64,{1}", item.BannerExt, base64);
+            
+
+            if (item.Slide == 0)
+            {
+                <div class="carousel-item active animated fadeIn" style="-webkit-animation-duration: 5s; animation-duration: 5s;">
+                    <img src="@imgSrc" class="d-block w-100"  title="@item.Title" style="width: 100% !important; max-height: 500px !important; border-radius: 10px;">
+                    <div class="py-1 text-center">
+                        <h4 class="mb-1 font-weight-bold">@item.Title</h4>
+                        <p class="m-0">@item.Description</p>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="carousel-item animated fadeIn" style="-webkit-animation-duration: 5s; animation-duration: 5s;">
+                    <img src="@imgSrc" class="d-block w-100"  title="@item.Title" style="width: 100% !important; max-height: 500px !important; border-radius: 10px;">
+                    <div class="py-1 text-center">
+                        <h4 class="mb-1 font-weight-bold">@item.Title</h4>
+                        <p class="m-0">@item.Description</p>
+                    </div>
+                </div>
+            }
+        }       
+        
+    </div>
+    <a class="carousel-control-prev" href="#PodcastCarousel" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#PodcastCarousel" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+
+<script src="~/Scripts/popper.min.js"></script>

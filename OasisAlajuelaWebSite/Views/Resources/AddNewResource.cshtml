@@ -29,6 +29,16 @@
         }
 
     }
+    function AccessCtrlChg() {
+        var flag = document.getElementById("AccessLimited");
+        var ALDIV = document.getElementById("AccessDiv");
+        if (flag.value == "true") {
+            ALDIV.style.display = "block";
+        }
+        else {
+            ALDIV.style.display = "none";
+        }
+    }
 </script>
 
 <div class="card bg-light">
@@ -85,6 +95,57 @@
                             <div class="col">
                                 @Html.EditorFor(model => model.FileURL, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(model => model.FileURL, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Acceso Limitado", htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
+                            <div class="input-group m-3 w-100">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text font-weight-bold" id="inputGroup-sizing-default">Requiere Acceso Limitado?</span>
+                                </div>
+                                @{
+                                    List<SelectListItem> AccessCtrl = new List<SelectListItem>();
+                                    AccessCtrl.Add(new SelectListItem() { Text = "Si", Value = "true" });
+                                    AccessCtrl.Add(new SelectListItem() { Text = "No", Value = "false" });
+                                }
+                                @Html.DropDownListFor(model => model.AccessLimited, AccessCtrl, new { @class = "custom-select", style = "max-width: 70px;", @onchange = "AccessCtrlChg()" })
+                                @Html.ValidationMessageFor(model => model.AccessLimited, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div id="AccessDiv" class="form-group mx-3 mt-3 mb-0" style="display: none;">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Desde</span>
+                                        </div>
+                                        @Html.EditorFor(model => model.ESDate, new { htmlAttributes = new { @class = "form-control", @style = "width: 225px;" } })
+                                        @Html.ValidationMessageFor(model => model.ESDate, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col pl-1">
+                                    <div class="input-group mb-3">
+                                        @Html.EditorFor(model => model.ESTime, new { htmlAttributes = new { @class = "form-control", @style = "max-width: 120px;" } })
+                                        @Html.ValidationMessageFor(model => model.ESTime, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Hasta</span>
+                                        </div>
+                                        @Html.EditorFor(model => model.EEDate, new { htmlAttributes = new { @class = "form-control", @style = "width: 225px;" } })
+                                        @Html.ValidationMessageFor(model => model.EEDate, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col pl-1">
+                                    <div class="input-group mb-3">
+                                        @Html.EditorFor(model => model.EETime, new { htmlAttributes = new { @class = "form-control", @style = "max-width: 120px;" } })
+                                        @Html.ValidationMessageFor(model => model.EETime, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -24,6 +24,14 @@ namespace ET
         public string ServicesDescription { get; set; }
 
         [Required]
+        [Display(Name = "Podcast- Subtitulo")]
+        public string PodcastTitle { get; set; }
+
+        [Required]
+        [Display(Name = "Podcast - Descripción")]
+        public string PodcastDescription { get; set; }
+
+        [Required]
         [Display(Name = "Prédicas - Subtitulo")]
         public string SermonsTitle { get; set; }
 

@@ -11,9 +11,10 @@
 -- ======================================================================
 
 CREATE PROCEDURE [config].[uspReadResources]
+	@ResourceID		INT = NULL,	
+	@HistoryFlag	BIT = NULL,	
 	@ResourceTypeID INT = NULL,
-	@ActiveFlag BIT = NULL,
-	@ResourceID	INT = NULL
+	@Date			DATETIME = NULL
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -32,8 +33,12 @@ AS
 								,S.[FileData]
 								,S.[FileExt]
 								,S.[FileName]
-								,[FileURL] = REPLACE(REPLACE(REPLACE(S.[FileURL],'https://youtu.be/','https://www.youtube.com/embed/'),'https://www.youtube.com/watch?v=','https://www.youtube.com/embed/'),'\','')
+								,S.[FileURL]
 								,S.[Description]
+								,S.[EnableStart]
+								,[ESTime]	= CONVERT(TIME,	S.[EnableStart])
+								,S.[EnableEnd]
+								,[EETime]	= CONVERT(TIME,	S.[EnableEnd])
 								,S.[ActiveFlag]
 						FROM	[config].[utbResources] S
 								LEFT JOIN [config].[utbResourceTypes] M ON M.[ResourceTypeID] = S.[ResourceTypeID]
@@ -41,21 +46,46 @@ AS
 					END
 				ELSE
 					BEGIN
-						SELECT	S.[ResourceID]
-								,S.[ResourceTypeID]
-								,M.[TypeName] 		
-								,S.[FileType]
-								--,S.[FileData]
-								,S.[FileExt]
-								,S.[FileName]
-								,[FileURL] = REPLACE(REPLACE(REPLACE(S.[FileURL],'https://youtu.be/','https://www.youtube.com/embed/'),'https://www.youtube.com/watch?v=','https://www.youtube.com/embed/'),'\','')
-								,S.[Description]
-								,S.[ActiveFlag]
-						FROM	[config].[utbResources] S
-								LEFT JOIN [config].[utbResourceTypes] M ON M.[ResourceTypeID] = S.[ResourceTypeID]
-						WHERE	S.[ActiveFlag] = ISNULL(@ActiveFlag,S.[ActiveFlag])
-								AND S.ResourceTypeID = ISNULL(@ResourceTypeID,S.[ResourceTypeID])
-						ORDER BY S.[InsertDate] DESC
+						IF(@HistoryFlag = 1)
+							BEGIN
+								SELECT	S.[ResourceID]
+										,S.[ResourceTypeID]
+										,M.[TypeName] 		
+										,S.[FileType]
+										--,S.[FileData]
+										,S.[FileExt]
+										,S.[FileName]
+										,[FileURL] = REPLACE(REPLACE(REPLACE(REPLACE(S.[FileURL],'https://youtu.be/','https://www.youtube.com/embed/'),'https://www.youtube.com/watch?v=','https://www.youtube.com/embed/'),'\',''),'view?usp=sharing','preview?rm=minimal')
+										,S.[Description]
+										,S.[EnableStart]
+										,S.[EnableEnd]
+										,S.[ActiveFlag]
+								FROM	[config].[utbResources] S
+										LEFT JOIN [config].[utbResourceTypes] M ON M.[ResourceTypeID] = S.[ResourceTypeID]
+								WHERE	S.[ResourceTypeID] = @ResourceTypeID
+							END
+						ELSE
+							BEGIN
+								SELECT	S.[ResourceID]
+										,S.[ResourceTypeID]
+										,M.[TypeName] 		
+										,S.[FileType]
+										--,S.[FileData]
+										,S.[FileExt]
+										,S.[FileName]
+										,[FileURL] = REPLACE(REPLACE(REPLACE(REPLACE(S.[FileURL],'https://youtu.be/','https://www.youtube.com/embed/'),'https://www.youtube.com/watch?v=','https://www.youtube.com/embed/'),'\',''),'view?usp=sharing','preview')
+										,S.[Description]
+										,S.[EnableStart]
+										,S.[EnableEnd]
+										,S.[ActiveFlag]
+								FROM	[config].[utbResources] S
+										LEFT JOIN [config].[utbResourceTypes] M ON M.[ResourceTypeID] = S.[ResourceTypeID]
+								WHERE	S.[ActiveFlag] = 1
+										AND S.ResourceTypeID = ISNULL(@ResourceTypeID,S.[ResourceTypeID])
+										AND (@Date BETWEEN S.[EnableStart] AND S.[EnableEnd]
+											 OR S.[EnableEnd] IS NULL)
+								ORDER BY S.[InsertDate] DESC
+							END
 					END
 			-- =======================================================
 

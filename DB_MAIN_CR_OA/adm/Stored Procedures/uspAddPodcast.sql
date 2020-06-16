@@ -1,24 +1,23 @@
 ﻿-- ======================================================================
--- Name: [adm].[uspUpdateResource]
--- Desc: Permite actualizar la informacion de un recurso.
+-- Name: [adm].[uspAddPodcast]
+-- Desc: Se utiliza para agregar una nuevo Podcast
 -- Auth: Jonathan Piedra johmstone@gmail.com
--- Date: 3/13/2020
+-- Date: 03/27/2020
 -------------------------------------------------------------
 -- Change History
 -------------------------------------------------------------
 -- CI	Date		Author		Description
 -- --	----		------		-----------------------------
 -- ======================================================================
-CREATE PROCEDURE [adm].[uspUpdateResource]
+
+CREATE PROCEDURE [adm].[uspAddPodcast]
 	@InsertUser		VARCHAR(50),	
-	@ResourceID		INT,
-	@ActionType		VARCHAR(10),
-	@ResourceTypeID	INT = NULL,
-	@FileName		VARCHAR(500)	= NULL,
-	@Description	VARCHAR(MAX)	= NULL,
-	@FileURL		VARCHAR(500)	= NULL,
-	@EnableStart	DATETIME		= NULL,
-	@EnableEnd		DATETIME		= NULL
+	@Title			VARCHAR(30),
+	@Description	VARCHAR(200),
+	@BannerData		VARBINARY(MAX),
+	@BannerExt		VARCHAR(10),
+	@MinisterID		INT,
+	@InsertDate		DATETIME
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -37,28 +36,8 @@ AS
                 END
 
             -- =======================================================
-				IF(@ActionType = 'CHGST')
-					BEGIN
-						UPDATE	[config].[utbResources]
-						SET		[ActiveFlag] = 0
-								,[LastModifyDate] = GETDATE()
-								,[LastModifyUser] = @InsertUser
-						WHERE	[ResourceID] = @ResourceID
-						
-					END
-				ELSE	
-					BEGIN
-						UPDATE	[config].[utbResources]
-						SET		[ResourceTypeID]	= @ResourceTypeID
-								,[FileName]			= ISNULL(@FileName,[FileName])
-								,[Description]		= ISNULL(@Description,[Description])
-								,[FileURL]			= ISNULL(@FileURL,[FileURL])
-								,[EnableStart]		= @EnableStart
-								,[EnableEnd]		= @EnableEnd
-								,[LastModifyDate]	= GETDATE()
-								,[LastModifyUser]	= @InsertUser
-						WHERE	[ResourceID] = @ResourceID
-					END
+				INSERT INTO [config].[utbPodcasts] ([Title],[Description],[BannerData],[BannerExt],[MinisterID],[InsertDate],[InsertUser],[LastModifyUser])
+				VALUES (@Title,@Description,@BannerData,REPLACE(@BannerExt,'.',''),@MinisterID,@InsertDate,@InsertUser,@InsertUser)
 			-- =======================================================
 
         IF ( @@trancount > 0

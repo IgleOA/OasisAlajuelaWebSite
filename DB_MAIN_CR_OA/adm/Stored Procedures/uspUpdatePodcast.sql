@@ -1,24 +1,25 @@
 ﻿-- ======================================================================
--- Name: [adm].[uspUpdateResource]
--- Desc: Permite actualizar la informacion de un recurso.
+-- Name: [adm].[uspUpdatePodcast]
+-- Desc: Se utiliza para actualizar la informacion de un Podcast
 -- Auth: Jonathan Piedra johmstone@gmail.com
--- Date: 3/13/2020
+-- Date: 03/27/2020
 -------------------------------------------------------------
 -- Change History
 -------------------------------------------------------------
 -- CI	Date		Author		Description
 -- --	----		------		-----------------------------
 -- ======================================================================
-CREATE PROCEDURE [adm].[uspUpdateResource]
-	@InsertUser		VARCHAR(50),	
-	@ResourceID		INT,
-	@ActionType		VARCHAR(10),
-	@ResourceTypeID	INT = NULL,
-	@FileName		VARCHAR(500)	= NULL,
-	@Description	VARCHAR(MAX)	= NULL,
-	@FileURL		VARCHAR(500)	= NULL,
-	@EnableStart	DATETIME		= NULL,
-	@EnableEnd		DATETIME		= NULL
+
+CREATE PROCEDURE [adm].[uspUpdatePodcast]
+	@InsertUser		VARCHAR(50),
+	@PodcastID		INT,
+	@InsertDate		DATETIME,
+	@ActionType		VARCHAR(10) = NULL,
+	@Title			VARCHAR(50) = NULL,
+	@Description	VARCHAR(MAX) = NULL,
+	@BannerData		VARBINARY(MAX) = NULL,
+	@BannerExt		VARCHAR(10) = NULL,
+	@MinisterID		INT = NULL
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -37,28 +38,44 @@ AS
                 END
 
             -- =======================================================
-				IF(@ActionType = 'CHGST')
+				IF (@ActionType = 'CHGST')
 					BEGIN
-						UPDATE	[config].[utbResources]
-						SET		[ActiveFlag] = 0
-								,[LastModifyDate] = GETDATE()
-								,[LastModifyUser] = @InsertUser
-						WHERE	[ResourceID] = @ResourceID
-						
+						DECLARE @Status BIT
+						SELECT	@Status = [ActiveFlag]
+						FROM	[config].[utbPodcasts]
+						WHERE	[PodcastID] = @PodcastID
+
+						IF(@Status = 1)
+							BEGIN
+								UPDATE	[config].[utbPodcasts] 
+								SET		[ActiveFlag] = 0
+										,[LastModifyDate] = @InsertDate
+										,[LastModifyUser] = @InsertUser
+								WHERE	[PodcastID] = @PodcastID
+							END
+						ELSE
+							BEGIN
+								UPDATE	[config].[utbPodcasts] 
+								SET		[ActiveFlag] = 1
+										,[LastModifyDate] = @InsertDate
+										,[LastModifyUser] = @InsertUser
+								WHERE	[PodcastID] = @PodcastID
+							END
 					END
-				ELSE	
+				ELSE					
 					BEGIN
-						UPDATE	[config].[utbResources]
-						SET		[ResourceTypeID]	= @ResourceTypeID
-								,[FileName]			= ISNULL(@FileName,[FileName])
-								,[Description]		= ISNULL(@Description,[Description])
-								,[FileURL]			= ISNULL(@FileURL,[FileURL])
-								,[EnableStart]		= @EnableStart
-								,[EnableEnd]		= @EnableEnd
-								,[LastModifyDate]	= GETDATE()
+						UPDATE	[config].[utbPodcasts] 
+						SET		 [Title]		= ISNULL(@Title,[Title])
+								,[Description]	= ISNULL(@Description,[Description])
+								,[BannerData]	= @BannerData
+								,[BannerExt]	= REPLACE(@BannerExt,'.','')
+								,[MinisterID]	= ISNULL(@MinisterID,[MinisterID])
+								,[ActiveFlag]	= 1
+								,[LastModifyDate]	= @InsertDate
 								,[LastModifyUser]	= @InsertUser
-						WHERE	[ResourceID] = @ResourceID
+						WHERE	[PodcastID] = @PodcastID
 					END
+					
 			-- =======================================================
 
         IF ( @@trancount > 0

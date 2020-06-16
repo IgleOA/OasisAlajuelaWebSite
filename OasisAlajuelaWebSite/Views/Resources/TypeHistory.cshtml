@@ -1,0 +1,236 @@
+﻿@model PagedList.IPagedList<ET.Resources>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Historial de Recursos";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+@if (ViewBag.CountResults >= 1)
+{
+    <script type="text/javascript">
+        function AddNew() {
+            var url = '@Url.Action("AddNewResource", new { id = ViewBag.ResourceTypeID })';
+            window.open(url, '_blank', 'left=100,top=100,width=1000,height=650,toolbar=1,resizable=0');
+        }
+        function Edit(NewID) {
+            var url = '@Url.Action("Edit", new { id = "newid" })';
+            url = url.replace("newid", NewID);
+            window.open(url, '_blank', 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
+        }
+        function Activate(NewID) {
+            $.ajax({
+                url: '@Url.Action("ChangeStatus")',
+                data: { id: NewID }
+            }).done(function () { alert('Hecho!!!'); location.reload(); });
+        }
+        function Desactivate(NewID) {
+            var x = confirm("Esta seguro que quiere eliminar este recurso???");
+            if (x) {
+                $.ajax({
+                    url: '@Url.Action("ChangeStatus")',
+                    data: { id: NewID }
+                }).done(function () { alert('Hecho!!!'); location.reload(); });
+            }
+        }
+    </script>
+
+    <section class="hp-section">
+        <div class="container">
+            <div class="row justify-content-center border-bottom mb-2">
+                <h2 class="heading-section font-weight-bold my-2 pl-2">@ViewBag.Title</h2>
+            </div>
+            <div class="row justify-content-start">
+                <div class="py-2 px-0">
+                    <div class="media services d-block text-justify">
+                        <div class="media-body px-0 m-0">
+                            <div class="d-flex justify-content-between">
+                                <a href='#' title="Agregar Recurso" class="btn btn-light" style="text-decoration: none;" onclick="AddNew()"><i class="fas fa-plus-square fa-1x"></i> Agregar Recurso</a>                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @using (Html.BeginForm("TypeHistory", "Resources", FormMethod.Get))
+            {
+                <div class="row justify-content-start">
+                    <div class="form-group input-group py-2 pl-0 searchfield w-50">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text w"><i class="fas fa-search"></i></span>
+                        </div>
+                        @Html.TextBox("SearchString", null, new { @class = "form-control", @placeholder = "Palabra clave" })
+                    </div>
+                    <input type="submit" value="Buscar" class="btn btn-dark alt mt-0 my-2" style="height: 2.75rem !important;" />
+                </div>
+            }
+            <div class="row justify-content-start">
+                <table class="table-responsive-xl align-content-center p-0">
+                    <tbody>
+                        <tr class="align-middle">
+                            <th class="py-2 text-center align-middle" colspan="2">@Html.DisplayNameFor(model => model.FirstOrDefault().FileType)</th>
+                            <th class="py-2 text-center align-middle">@Html.DisplayNameFor(model => model.FirstOrDefault().FileName)</th>
+                            <th class="py-2 text-center align-middle">@Html.DisplayNameFor(model => model.FirstOrDefault().AccessLimited)</th>
+                            <th class="py-2 text-center align-middle">@Html.DisplayNameFor(model => model.FirstOrDefault().EnableStart)</th>
+                            <th class="py-2 text-center align-middle">@Html.DisplayNameFor(model => model.FirstOrDefault().EnableEnd)</th>
+                            <th class="py-2 text-center align-middle">@Html.DisplayNameFor(model => model.FirstOrDefault().ActiveFlag)</th>
+                            <th class="py-2 text-center align-middle" colspan="2">Acción</th>
+                        </tr>
+                        @foreach (var item in Model)
+                        {
+                            var modalname = "ModalCenter" + item.ResourceID.ToString();
+                            var Status = item.ActiveFlag ? "Si" : "No";
+                            var Limited = "No";
+                            if(item.EnableEnd.ToString() != "")
+                            {
+                                Limited = "Si";
+                            }
+                            <tr>
+                                <td class="align-middle">
+                                    @switch (item.FileType)
+                                    {
+                                        case "Video":
+                                            <div class="justify-content-center my-auto servicesSmall">
+                                                <div class="icon d-flex justify-content-center m-0">
+                                                    <span class="align-self-center fab fa-youtube fa-3x" data-toggle="modal" data-target='#@modalname'></span>
+                                                </div>
+                                            </div>
+                                            <div class="modal fade" id="@modalname">
+                                                <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-body">
+                                                            <iframe src="@item.FileURL" class="modalvideo" frameborder="0" allowfullscreen></iframe>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <script src="~/Scripts/jquery-3.5.0.min.js"></script>
+                                            <script src="~/Scripts/bootstrap.min.js"></script>
+                                            <script type="text/javascript">
+                                                        $('#@modalname').on('hidden.bs.modal', function (e) {
+                                                            $("#@modalname iframe").attr("src", $("#@modalname iframe").attr("src"));
+                                                        });
+                                            </script>
+                                            break;
+                                        case "Audio":
+
+                                            var filetype = "audio/" + item.FileExt;
+
+                                            <div class="justify-content-center my-auto servicesSmall">
+                                                <div class="icon d-flex justify-content-center m-0">
+                                                    <span class="align-self-center fas fa-volume-up fa-3x" data-toggle="modal" data-target='#@modalname'></span>
+                                                </div>
+                                            </div>
+                                            <div class="modal fade" id="@modalname">
+                                                <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                                                    <div class="modal-content" style="background-color: azure !important;">
+                                                        <div class="modal-body">
+                                                            <div class="col pl-md-4 justify-content-start">
+                                                                <h3 class="mb-2">
+                                                                    <a class="font-weight-bold">@item.FileName</a>
+                                                                </h3>
+                                                                <p class="mb-2 justify-content-start">
+                                                                    @item.Description
+                                                                </p>
+                                                            </div>
+                                                            <audio controls>
+                                                                <source src='@Url.Action("GetFile", new { id = item.ResourceID })' type=@filetype />
+                                                            </audio>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <script src="~/Scripts/jquery-3.5.0.min.js"></script>
+                                            <script src="~/Scripts/bootstrap.min.js"></script>
+                                            <script type="text/javascript">
+                                                        $('#@modalname').on('hidden.bs.modal', function (e) {
+                                                            $(this).find('audio')[0].pause();
+                                                        });
+                                            </script>
+                                            break;
+                                        default:
+                                            <div class="justify-content-center my-auto servicesSmall">
+                                                <div class="icon d-flex justify-content-center m-0">
+                                                    <a href='@Url.Action("DownloadFile", new { id = item.ResourceID })' class="align-self-center">
+                                                        <span class="align-self-center fas fa-file-download fa-3x"></span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            break;
+                                    }
+                                </td>
+                                <td class="align-middle">@Html.DisplayFor(modelItem => item.FileType)</td>
+                                <td class="align-middle">@Html.DisplayFor(modelItem => item.FileName)</td>
+                                <td class="text-center align-middle">@Html.DisplayFor(modelItem => Limited)</td>
+                                <td class="text-center align-middle">@Html.DisplayFor(modelItem => item.EnableStart)</td>
+                                <td class="text-center align-middle">@Html.DisplayFor(modelItem => item.EnableEnd)</td>
+                                <td class="text-center align-middle">
+                                    @Html.DisplayFor(modelItem => Status)
+                                </td>
+                                <td class="text-center align-middle">
+                                    @if (item.ActiveFlag == false)
+                                    {
+                                        <a href="#" class="card-link" onclick="Activate(@item.ResourceID)" title="Habilitar"><i class="fas fa-check-circle fa-2x ActiveColor" style="vertical-align: middle;"></i></a>
+                                    }
+                                    else
+                                    {
+                                        <a href="#" class="card-link" onclick="Desactivate(@item.ResourceID)" title="Deshabilitar"><i class="fas fa-times-circle fa-2x DisactiveColor" style="vertical-align: middle;"></i></a>
+                                    }
+                                </td>
+                                <td class="text-center align-middle">
+                                    <a href='#' target="_blank" class="card-link" onclick="Edit(@item.ResourceID)" title="Editar"><i class="fas fa-edit fa-2x text-black" style="vertical-align: middle;"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="row justify-content-start">
+                @if (Model.PageCount > 1)
+                {
+                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter }), new PagedListRenderOptions() { ContainerDivClasses = new string[] { "p-0" }, UlElementClasses = new string[] { "pagination m-0" } })
+                }
+            </div>
+        </div>
+    </section>
+}
+else
+{
+    <section class="hp-section">
+        <div class="container">
+            <div class="row justify-content-center border-bottom mb-2">
+                <h2 class="heading-section font-weight-bold my-2 pl-2">@ViewBag.Title</h2>
+            </div>
+            <div class="row justify-content-start">
+                <div class="py-2">
+                    <div class="media services d-block text-justify">
+                        <div class="media-body px-0 m-0">
+                            <div class="d-flex justify-content-between">
+                                <p class="mb-2 justify-content-start">
+                                    En este momento no hay recursos disponibles para esta categoria. Bendiciones...
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script type="text/javascript">
+                function AddNew() {
+                    var url = '@Url.Action("AddNewResource", new { id = ViewBag.ResourceTypeID })';
+                    window.open(url, '_blank', 'left=100,top=100,width=1000,height=650,toolbar=1,resizable=0');
+                }
+            </script>
+            <div class="row justify-content-start">
+                <div class="py-2">
+                    <div class="media services d-block text-justify">
+                        <div class="media-body px-0 m-0">
+                            <div class="d-flex justify-content-between">
+                                <a href='#' title="Agregar Recurso" class="btn btn-light" style="text-decoration: none;" onclick="AddNew()"><i class="fas fa-plus-square fa-1x"></i> Agregar Recurso</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}

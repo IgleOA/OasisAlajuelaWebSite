@@ -1,6 +1,7 @@
 ﻿using ET;
 using DAL;
 using System.Collections.Generic;
+using System;
 
 namespace BL
 {
@@ -23,9 +24,14 @@ namespace BL
             return RDAL.TypeList(UserName);
         }
 
-        public List<Resources> ResourceList(int ResourceTypeID, bool ActiveFlag)
+        public List<Resources> ResourceList(int ResourceTypeID, DateTime Date)
         {
-            return RDAL.ResourceList(ResourceTypeID, ActiveFlag);
+            return RDAL.ResourceList(ResourceTypeID, Date);
+        }
+
+        public List<Resources> History(int ResourceTypeID)
+        {
+            return RDAL.History(ResourceTypeID);
         }
 
         public Resources ResourceDetails(int ResourceID)

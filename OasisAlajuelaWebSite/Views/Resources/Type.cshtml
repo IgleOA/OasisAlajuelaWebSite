@@ -35,6 +35,21 @@
             <div class="row justify-content-center border-bottom mb-2">
                 <h2 class="heading-section font-weight-bold my-2 pl-2">@ViewBag.Title</h2>
             </div>
+            @if (ViewBag.Write == true)
+            {
+                <div class="row justify-content-start">
+                    <div class="py-2">
+                        <div class="media services d-block text-justify">
+                            <div class="media-body px-0 m-0">
+                                <div class="d-flex justify-content-between">
+                                    <a href='#' title="Agregar Recurso" class="btn btn-light" style="text-decoration: none;" onclick="AddNew()"><i class="fas fa-plus-square fa-1x"></i> Agregar Recurso</a>
+                                    <a href='@Url.Action("TypeHistory", new { id = ViewBag.ResourceTypeID})' target="_blank" title="Ver Historial" class="btn btn-light mx-2" style="text-decoration: none;"><i class="fas fa-history fa-1x"></i> Ver Historial</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
             @using (Html.BeginForm("Type", "Resources", FormMethod.Get))
             {
                 <div class="row justify-content-start">
@@ -98,7 +113,7 @@
                         </script>
                         break;
                     case "Audio":
-                     
+
                         var filetype = "audio/" + item.FileExt;
 
                         <hr class="mb-2" />
@@ -203,20 +218,7 @@
                 }
             </div>
             <hr />
-            @if (ViewBag.Write == true)
-            {
-                <div class="row justify-content-start">
-                    <div class="py-2">
-                        <div class="media services d-block text-justify">
-                            <div class="media-body px-0 m-0">
-                                <div class="d-flex justify-content-between">
-                                    <a href='#' title="Agregar Recurso" class="btn btn-light" style="text-decoration: none;" onclick="AddNew()"><i class="fas fa-plus-square fa-1x"></i> Agregar Recurso</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
+
         </div>
     </section>
 }

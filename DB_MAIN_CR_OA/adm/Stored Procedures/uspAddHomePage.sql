@@ -16,6 +16,8 @@ CREATE PROCEDURE [adm].[uspAddHomePage]
 	@DVRef			VARCHAR(50),
 	@SVCTitle		VARCHAR(50),
 	@SVCDescription	VARCHAR(MAX),
+	@PodcastTitle	VARCHAR(50),
+	@PCDescription	VARCHAR(MAX),
 	@SerTitle		VARCHAR(50),
 	@SerDescription	VARCHAR(MAX)
 AS 
@@ -42,8 +44,8 @@ AS
 						,[LastModifyUser] = @InsertUser
 				WHERE 	[ActiveFlag] = 1
 
-				INSERT INTO [config].[utbHomePage] ([DailyVerse],[DailyVerseReference],[ServicesTitle],[ServicesDescription],[SermonsTitle],[SermonsDescription],[InsertUser],[LastModifyUser])
-				VALUES (@DVerse, @DVRef, @SVCTitle, @SVCDescription, @SerTitle, @SerDescription, @InsertUser, @InsertUser)
+				INSERT INTO [config].[utbHomePage] ([DailyVerse],[DailyVerseReference],[ServicesTitle],[ServicesDescription],[PodcastTitle],[PodcastDescription],[SermonsTitle],[SermonsDescription],[InsertUser],[LastModifyUser])
+				VALUES (@DVerse, @DVRef, @SVCTitle, @SVCDescription, @PodcastTitle, @PCDescription, @SerTitle, @SerDescription, @InsertUser, @InsertUser)
 			-- =======================================================
 
         IF ( @@trancount > 0

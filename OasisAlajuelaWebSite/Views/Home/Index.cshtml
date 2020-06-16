@@ -37,37 +37,87 @@
             </div>
         </div>
         <div class="row justify-content-center">
-            @{ 
+            @{
                 Html.RenderAction("_Services");
             }
         </div>
     </div>
 </section>
-
-<section class="hp-section" style="background-color: #f8f9fa !important">
-    <div class="container">
-        <div class="row no-gutters justify-content-center">
-            <div class="col-md-7 text-center heading-section">
-                <span class="subheading">Prédicas</span>
-                <h2 class="mb-4">
-                    <a href='@Url.Action("Index","Sermons")' style="color: black;">
-                        @Model.SermonsTitle
-                    </a>
-                </h2>
-                <p>@Model.SermonsDescription</p>
+@if (ViewBag.Podcasts == true)
+{
+    <section class="hp-section" style="background-color: #f8f9fa !important">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6 text-center heading-section">
+                    <span class="subheading">Podcasts</span>
+                    <h2 class="mb-4">@Model.PodcastTitle</h2>
+                    <p>@Model.PodcastDescription</p>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                @{
+                    Html.RenderAction("_Podcast", "Podcasts");
+                }
+            </div>
+            <div class="row justify-content-center">
+                @Html.ActionLink("Ver más...", "Index", "Podcasts", null, htmlAttributes: new { @class = "button alt" })
             </div>
         </div>
-        <div class="row justify-content-center">
-            @{
-                //Html.RenderAction("_YouTubeVideos");
-                Html.RenderAction("_Sermons");
-            }
+    </section>
+    <section class="hp-section">
+        <div class="container">
+            <div class="row no-gutters justify-content-center">
+                <div class="col-md-7 text-center heading-section">
+                    <span class="subheading">Prédicas</span>
+                    <h2 class="mb-4">
+                        <a href='@Url.Action("Index","Sermons")' style="color: black;">
+                            @Model.SermonsTitle
+                        </a>
+                    </h2>
+                    <p>@Model.SermonsDescription</p>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                @{
+                    //Html.RenderAction("_YouTubeVideos");
+                    Html.RenderAction("_Sermons");
+                }
+            </div>
+            <div class="row justify-content-center">
+                @Html.ActionLink("Ver más...", "Index", "Sermons", null, htmlAttributes: new { @class = "button alt" })
+            </div>
         </div>
-        <div class="row justify-content-center">
-            @Html.ActionLink("Ver más...", "Index", "Sermons", null, htmlAttributes: new { @class = "button alt" })
+    </section>
+}
+else 
+{
+    <section class="hp-section" style="background-color: #f8f9fa !important">
+        <div class="container">
+            <div class="row no-gutters justify-content-center">
+                <div class="col-md-7 text-center heading-section">
+                    <span class="subheading">Prédicas</span>
+                    <h2 class="mb-4">
+                        <a href='@Url.Action("Index","Sermons")' style="color: black;">
+                            @Model.SermonsTitle
+                        </a>
+                    </h2>
+                    <p>@Model.SermonsDescription</p>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                @{
+                    //Html.RenderAction("_YouTubeVideos");
+                    Html.RenderAction("_Sermons");
+                }
+            </div>
+            <div class="row justify-content-center">
+                @Html.ActionLink("Ver más...", "Index", "Sermons", null, htmlAttributes: new { @class = "button alt" })
+            </div>
         </div>
-    </div>
-</section>
+    </section>                 
+}
+
+
 @if (ViewBag.Note == true)
 {
     <script type="text/javascript">
@@ -81,7 +131,7 @@
                 <div class="modal-body">
                     <div class="card bg-light">
                         <article class="card-body">
-                            @{ 
+                            @{
                                 Html.RenderAction("_InitialNote", "Notes");
                             }
                         </article>

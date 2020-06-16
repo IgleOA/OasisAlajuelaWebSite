@@ -84,6 +84,7 @@
     <Compile Include="Ministers.cs" />
     <Compile Include="Ministries.cs" />
     <Compile Include="News.cs" />
+    <Compile Include="Podcasts.cs" />
     <Compile Include="Prayers.cs" />
     <Compile Include="Reservations.cs" />
     <Compile Include="Resources.cs" />

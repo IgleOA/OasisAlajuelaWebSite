@@ -26,6 +26,8 @@ AS
 						,[DailyVerseReference]
 						,[ServicesTitle]
 						,[ServicesDescription]
+						,[PodcastTitle]
+						,[PodcastDescription]
 						,[SermonsTitle]
 						,[SermonsDescription]
 				FROM	[config].[utbHomePage]

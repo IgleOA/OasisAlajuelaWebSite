@@ -7,6 +7,8 @@
     [FileName]       VARCHAR (500)   NOT NULL,
     [FileURL]        VARCHAR (MAX)   NULL,
     [Description]    VARCHAR (MAX)   NOT NULL,
+	[EnableStart]	 DATETIME		 NULL,
+	[EnableEnd]		 DATETIME		 NULL,
     [ActiveFlag]     BIT             CONSTRAINT [utbResourcesDefaultActiveFlagTrue] DEFAULT ((1)) NOT NULL,
     [InsertDate]     DATETIME        CONSTRAINT [utbResourcesDefaultInsertDateSysDateTime] DEFAULT (sysdatetime()) NOT NULL,
     [InsertUser]     VARCHAR (100)   CONSTRAINT [utbResourcesDefaultInsertUserSuser_Sname] DEFAULT (suser_sname()) NOT NULL,
