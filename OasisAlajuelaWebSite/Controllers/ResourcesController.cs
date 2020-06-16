@@ -373,6 +373,7 @@ namespace OasisAlajuelaWebSite.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public FileResult DownLoadFile(int id)
         {
             var FileById = RBL.ResourceDetails(id);
