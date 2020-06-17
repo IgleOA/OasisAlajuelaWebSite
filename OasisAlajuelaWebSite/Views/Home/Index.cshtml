@@ -5,21 +5,29 @@
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
 
-<section class="hp-section p-1 m-0">
-    @{
-        Html.RenderAction("_Banners");
-    }
+<section class="headerFixed">
 </section>
-<section class="wrapper style4 p-1">
+<section class="hero-wrap js-fullheight MainPageImg ftco-animate animated fadeInUp">
+    <div class="container">
+        <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center" data-scrollax-parent="true" style="height:920px;">
+            <div class="col-md-10 text-center ftco-animate animated fadeInUp" data-scrollax=" properties: { translateY: '70%' }">
+                <h1 class="mb-0">Amamos al Espíritu Santo</h1>
+                <h3 class="subheading mb-4 pb-1">Te invitamos a ser parte de un puedo que ama y anhela al Espíritu Santo y que no lo dejará ir</h3>
+                <p><a href='@Url.Action("Register","Account")' title="Registrar" class="button btn-dark">Registrate!</a></p>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="wrapper style4 p-1 ftco-animate animated fadeInUp">
     @{
         Html.RenderAction("_UpcommingEvents");
     }
 </section>
-<section class="hp-daily-verse bg-light">
+<section class="hp-daily-verse bg-light ftco-animate animated fadeInUp">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-10 daily-verse text-center p-5">
-                <span class="fas fa-bible fa-4x wa" style="color: #0a3e77"></span>
+                <span class="fas fa-bible fa-4x"></span>
                 <h3 class="my-2">"@Model.DailyVerse"</h3>
                 <h4 class="h5 mt-2 font-weight-bold">&mdash; @Model.DailyVerseReference</h4>
             </div>
@@ -27,12 +35,34 @@
     </div>
 </section>
 
-<section class="hp-section">
+@if (ViewBag.Blogs == true)
+{
+    <section class="hp-section ftco-animate animated fadeInUp">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-10 text-center heading-section ftco-animate animated fadeInUp">
+                    <h2 class="mb-0"><span class="px-4">Oasis Blog</span></h2>
+                    <span class="subheading">@Model.PodcastTitle</span>
+                    <p>@Model.PodcastDescription</p>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                @{
+                    Html.RenderAction("_Blogs", "Blogs");
+                }
+            </div>
+            <div class="row justify-content-center">
+                @Html.ActionLink("Ver más...", "Index", "Blogs", null, htmlAttributes: new { @class = "button alt" })
+            </div>
+        </div>
+    </section>
+}
+<section class="hp-section bg-light ftco-animate animated fadeInUp">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-6 text-center heading-section">
-                <span class="subheading">Nuestros servicios</span>
-                <h2 class="mb-4">@Model.ServicesTitle</h2>
+            <div class="col-md-10 text-center heading-section heading-section-light ftco-animate animated fadeInUp">
+                <h2 class="mb-0"><span class="px-4">Nuestros servicios</span></h2>
+                <span class="subheading">@Model.ServicesTitle</span>
                 <p>@Model.ServicesDescription</p>
             </div>
         </div>
@@ -43,79 +73,35 @@
         </div>
     </div>
 </section>
-@if (ViewBag.Podcasts == true)
-{
-    <section class="hp-section" style="background-color: #f8f9fa !important">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-6 text-center heading-section">
-                    <span class="subheading">Podcasts</span>
-                    <h2 class="mb-4">@Model.PodcastTitle</h2>
-                    <p>@Model.PodcastDescription</p>
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                @{
-                    Html.RenderAction("_Podcast", "Podcasts");
-                }
-            </div>
-            <div class="row justify-content-center">
-                @Html.ActionLink("Ver más...", "Index", "Podcasts", null, htmlAttributes: new { @class = "button alt" })
+
+<section class="hp-section p-0 m-0 ftco-animate animated fadeInUp">
+    @{
+        Html.RenderAction("_Banners");
+    }
+</section>
+
+
+<section class="hp-section ftco-animate animated fadeInUp">
+    <div class="container">
+        <div class="row no-gutters justify-content-center">
+            <div class="col-md-7 text-center heading-section">
+                <h2 class="mb-0"><span class="px-4">Prédicas</span></h2>
+                <span class="subheading">@Model.ServicesTitle</span>
+                <p>@Model.SermonsDescription</p>
             </div>
         </div>
-    </section>
-    <section class="hp-section">
-        <div class="container">
-            <div class="row no-gutters justify-content-center">
-                <div class="col-md-7 text-center heading-section">
-                    <span class="subheading">Prédicas</span>
-                    <h2 class="mb-4">
-                        <a href='@Url.Action("Index","Sermons")' style="color: black;">
-                            @Model.SermonsTitle
-                        </a>
-                    </h2>
-                    <p>@Model.SermonsDescription</p>
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                @{
-                    //Html.RenderAction("_YouTubeVideos");
-                    Html.RenderAction("_Sermons");
-                }
-            </div>
-            <div class="row justify-content-center">
-                @Html.ActionLink("Ver más...", "Index", "Sermons", null, htmlAttributes: new { @class = "button alt" })
-            </div>
+        <div class="row justify-content-center">
+            @{
+                //Html.RenderAction("_YouTubeVideos");
+                Html.RenderAction("_Sermons");
+            }
         </div>
-    </section>
-}
-else 
-{
-    <section class="hp-section" style="background-color: #f8f9fa !important">
-        <div class="container">
-            <div class="row no-gutters justify-content-center">
-                <div class="col-md-7 text-center heading-section">
-                    <span class="subheading">Prédicas</span>
-                    <h2 class="mb-4">
-                        <a href='@Url.Action("Index","Sermons")' style="color: black;">
-                            @Model.SermonsTitle
-                        </a>
-                    </h2>
-                    <p>@Model.SermonsDescription</p>
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                @{
-                    //Html.RenderAction("_YouTubeVideos");
-                    Html.RenderAction("_Sermons");
-                }
-            </div>
-            <div class="row justify-content-center">
-                @Html.ActionLink("Ver más...", "Index", "Sermons", null, htmlAttributes: new { @class = "button alt" })
-            </div>
+        <div class="row justify-content-center">
+            @Html.ActionLink("Ver más...", "Index", "Sermons", null, htmlAttributes: new { @class = "button alt" })
         </div>
-    </section>                 
-}
+    </div>
+</section>
+
 
 
 @if (ViewBag.Note == true)

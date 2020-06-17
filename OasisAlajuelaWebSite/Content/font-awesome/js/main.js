@@ -110,6 +110,16 @@ var settings = {
 
 	};
 
+	var fullHeight = function () {
+
+		$('.js-fullheight').css('height', $(window).height());
+		$(window).resize(function () {
+			$('.js-fullheight').css('height', $(window).height());
+		});
+
+	};
+	fullHeight();
+
 	/**
 	 * Custom banner slider for Slate.
 	 * @return {jQuery} jQuery object.

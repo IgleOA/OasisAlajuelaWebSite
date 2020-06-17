@@ -49,6 +49,7 @@
     <Compile Include="AuditoriumLayoutBL.cs" />
     <Compile Include="BannersBL.cs" />
     <Compile Include="BannersLocationBL.cs" />
+    <Compile Include="BlogsBL.cs" />
     <Compile Include="EnrollmentsBL.cs" />
     <Compile Include="GroupsBL.cs" />
     <Compile Include="HomeBL.cs" />

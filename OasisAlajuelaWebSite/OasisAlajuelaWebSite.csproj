@@ -380,6 +380,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\BannersController.cs" />
+    <Compile Include="Controllers\BlogsController.cs" />
     <Compile Include="Controllers\EnrollmentsController.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -2028,6 +2029,7 @@
     <Content Include="Content\font-awesome\webfonts\fa-brands-400.svg" />
     <Content Include="Content\font-awesome\webfonts\fa-regular-400.svg" />
     <Content Include="Content\font-awesome\webfonts\fa-solid-900.svg" />
+    <Content Include="Content\ionicons.min.css" />
     <Content Include="Content\jquery.seat-charts.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\Reservations.css" />
@@ -2043,47 +2045,16 @@
     <Content Include="fonts\open-iconic\open-iconic.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Images\AM.png" />
-    <Content Include="Images\bg.jpg" />
-    <Content Include="Images\bg2.jpg" />
     <Content Include="Images\bg3.jpg" />
-    <Content Include="Images\bg4.jpg" />
-    <Content Include="Images\bg_4.jpg" />
-    <Content Include="Images\detail.jpg" />
-    <Content Include="Images\Edit.png" />
-    <Content Include="Images\EmptyStar.png" />
     <Content Include="Images\familiaPastoral.jpeg" />
-    <Content Include="Images\fondo.png" />
-    <Content Include="Images\FullyStar.png" />
-    <Content Include="Images\HolySpirit.jpg" />
-    <Content Include="Images\Icon_Delete.png" />
-    <Content Include="Images\Icon_Delete_View.png" />
-    <Content Include="Images\Icon_Download.png" />
-    <Content Include="Images\Icon_Off.png" />
-    <Content Include="Images\Icon_On.png" />
-    <Content Include="Images\Icon_Sound.png" />
-    <Content Include="Images\Icon_Zoom.png" />
-    <Content Include="Images\igleoa1.jpg" />
-    <Content Include="Images\igleoa3.png" />
-    <Content Include="Images\LOGO PNG-FONDO AZUL.png" />
-    <Content Include="Images\LOGO PNG-FONDO BLANCO.png" />
-    <Content Include="Images\LOGO PNG-FONDO NEGRO.png" />
-    <Content Include="Images\logo-OasisAlajuela-Black.png" />
-    <Content Include="Images\logo-OasisAlajuela-White.png" />
+    <Content Include="Images\HomePageMain.jpg" />
+    <Content Include="Images\NuevoLogo-OA.png" />
+    <Content Include="Images\OasisAlajuela_Blanco.png" />
+    <Content Include="Images\OasisAlajuela_Negro.png" />
+    <Content Include="Images\OasisNuevoLogo-FondoBlanco.png" />
+    <Content Include="Images\OasisNuevoLogo-FondoNegro.png" />
     <Content Include="Images\Pastores.jpg" />
-    <Content Include="Images\pic01.jpg" />
-    <Content Include="Images\pic02.jpg" />
-    <Content Include="Images\pic03.jpg" />
-    <Content Include="Images\pic04.jpg" />
-    <Content Include="Images\pic05.jpg" />
-    <Content Include="Images\Prayer.jpg" />
-    <Content Include="Images\profile.png" />
-    <Content Include="Images\Remove.png" />
-    <Content Include="Images\slide01.jpg" />
-    <Content Include="Images\slide02.jpg" />
-    <Content Include="Images\slide03.jpg" />
-    <Content Include="Images\slide04.jpg" />
-    <Content Include="Images\slide05.jpg" />
+    <Content Include="Images\Resena_header.png" />
     <Content Include="logo-OasisAlajuela-Black.ico" />
     <Content Include="Scripts\aos.js" />
     <Content Include="Scripts\bootstrap-select.js" />
@@ -2269,9 +2240,6 @@
     <Content Include="Content\font-awesome\fonts\fontawesome-webfont.woff" />
     <Content Include="Content\font-awesome\fonts\fontawesome-webfont.woff2" />
     <Content Include="Content\font-awesome\fonts\FontAwesome.otf" />
-    <Content Include="Content\client_secret.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Content\bootstrap-select.css.map" />
     <None Include="Properties\PublishProfiles\IgleOA - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\IgleOAUAT - Web Deploy.pubxml" />
@@ -2908,6 +2876,11 @@
     <Content Include="Views\Podcasts\Edit.cshtml" />
     <Content Include="Views\Podcasts\_Podcast.cshtml" />
     <Content Include="Views\Resources\TypeHistory.cshtml" />
+    <Content Include="Views\Blogs\AddNew.cshtml" />
+    <Content Include="Views\Blogs\Edit.cshtml" />
+    <Content Include="Views\Blogs\History.cshtml" />
+    <Content Include="Views\Blogs\Index.cshtml" />
+    <Content Include="Views\Blogs\_Blogs.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

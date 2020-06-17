@@ -25,7 +25,7 @@ namespace OasisAlajuelaWebSite.Controllers
         private UsersBL UsBL = new UsersBL();
         private RightsBL RRBL = new RightsBL();
         private UserNotesBL UNBL = new UserNotesBL();
-        private PodcastsBL PBL = new PodcastsBL();
+        private BlogsBL PBL = new BlogsBL();
 
         public ActionResult Index()
         {
@@ -41,10 +41,10 @@ namespace OasisAlajuelaWebSite.Controllers
                     ViewBag.Note = true;
                 }
             }
-            List<Podcasts> Casts = PBL.List();
+            List<Blogs> Casts = PBL.List();
             if(Casts.Count() > 0)
             {
-                ViewBag.Podcasts = true;
+                ViewBag.Blogs = true;
             }
             return View(Home);
         }

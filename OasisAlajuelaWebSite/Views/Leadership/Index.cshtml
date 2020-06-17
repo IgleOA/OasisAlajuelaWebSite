@@ -10,6 +10,9 @@
         margin-top: 0;
     }    
 </style>
+<div style="height:60px;">
+
+</div>
 @if (ViewBag.Write == true)
 {
     <script src="~/Scripts/jquery-3.5.0.min.js"></script>
@@ -33,14 +36,14 @@
                 window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
             }
     </script>
-    <section class="hp-section bg-light">
+    <section class="hp-section bg-light ftco-animate animated fadeInUp p-0">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="text-center heading-section">
-                    <h2 class="mb-3">@ViewBag.Title.ToUpper()</h2>
+                <div class="col text-center heading-section heading-section-light ftco-animate animated fadeInUp">
+                    <h2 class="mb-0"><span class="px-4">@ViewBag.Title.ToUpper()</span></h2>
+                    <span class="subheading">Nuestro Equipo Pastoral</span>
                 </div>
             </div>
-            <hr />
             <div class="row justify-content-start">
                 <div class="px-lg-4">
                     <div class="media services d-block text-justify">
@@ -62,7 +65,7 @@
                         <div class="blog-entry justify-content-end mb-2">
                             <a class="block-20" style="background-image: url('@imgSrc')"></a>
                             <div class="textBlog d-flex float-right d-block">
-                                <div class="topper text-center pt-4 px-3" style="background: #0a3e77 !important; opacity: 0.35;">
+                                <div class="topper text-center pt-4 px-3" style="background: #00CAEC !important;">
 
                                 </div>
                                 <div class="desc px-4 pt-4 pb-2 w-100">
@@ -98,11 +101,11 @@ else
     <section class="hp-section bg-light">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="text-center heading-section">
-                    <h2 class="mb-3">@ViewBag.Title.ToUpper()</h2>
+                <div class="col text-center heading-section heading-section-light ftco-animate animated fadeInUp">
+                    <h2 class="mb-0"><span class="px-4">@ViewBag.Title.ToUpper()</span></h2>
+                    <span class="subheading">Nuestro Equipo Pastoral</span>
                 </div>
             </div>
-            <hr />
             <div class="row d-flex mt-3">
                 @foreach (var item in Model)
                 {
@@ -111,9 +114,9 @@ else
 
                     <div class="col-lg-4 d-flex ftco-animate animated fadeInUp">
                         <div class="blog-entry justify-content-end mb-2">
-                            <a class="block-20" style="background-image: url('@imgSrc')"></a>
+                            <a class="block-20 zoom125x" style="background-image: url('@imgSrc')"></a>
                             <div class="textBlog d-flex float-right d-block">
-                                <div class="topper text-center pt-4 px-3" style="background: #0a3e77 !important; opacity: 0.35;">
+                                <div class="topper text-center pt-4 px-3" style="background: #00CAEC !important;">
 
                                 </div>
                                 <div class="desc px-4 pt-4 pb-2 w-100">

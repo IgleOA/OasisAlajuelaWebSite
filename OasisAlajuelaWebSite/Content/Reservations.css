@@ -66,7 +66,7 @@ div.seatCharts-seat.reserved {
 }
 
 div.seatCharts-seat.booked {
-    background-color: #0a3e77;
+    background-color: #00CAEC;
     cursor: not-allowed;
 }
 
@@ -143,17 +143,17 @@ input[type="submit"],
 button, 
 .button,
 .btnReserve {
-    background: #0a3e77 !important;
+    background: #00CAEC !important;
     color: white !important;
     border-radius: 5px !important;
-    border-color: #0a3e77 !important;
+    border-color: #00CAEC !important;
 }
     input[type="submit"]:hover,
     button:hover,
     .button:hover,
     .btnReserve:hover {
         background: #B0C4DE !important;
-        color: #0a3e77 !important;
+        color: #00CAEC !important;
         border-radius: 5px !important;
-        border-color: #0a3e77 !important;
+        border-color: #00CAEC !important;
     }

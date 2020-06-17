@@ -3,9 +3,9 @@
 @{ Layout = null; }
 
 
-<li class="p-0">@Html.ActionLink("Liderazgo", "Index", "Leadership", routeValues: null, htmlAttributes: new { @class = "text-black" })</li>
+<li class="p-0">@Html.ActionLink("Liderazgo", "Index", "Leadership", routeValues: null, htmlAttributes: new { @class = "" })</li>
 
 @foreach (var item in Model)
 {
-    <li class="p-0">@Html.ActionLink(item.FullName, item.ActionLink, "Leadership", routeValues: null, htmlAttributes: new { @class = "text-black" })</li>
+    <li class="p-0">@Html.ActionLink(item.FullName, item.ActionLink, "Leadership", routeValues: null, htmlAttributes: new { @class = "" })</li>
 }
