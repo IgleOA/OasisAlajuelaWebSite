@@ -6,6 +6,10 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
+<div id="header" class="headerFixed" style="z-index:-1;position:relative;">
+
+</div>
+
 @if (ViewBag.Write == true)
 {
     <script src="~/Scripts/jquery-3.5.0.min.js"></script>
@@ -30,10 +34,12 @@
             window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
         }
     </script>
-    <section class="hp-section">
+    
+    <section class="hp-section bg-light ftco-animate animated fadeInUp">
         <div class="container">
-            <div class="row justify-content-start">
-                <h2 class="heading-section font-weight-bold my-2 p-0">@ViewBag.Title</h2>
+            <div class="col p-0 text-center heading-section heading-section-light ftco-animate animated fadeInUp">
+                <h2 class="mb-0"><span class="px-4">@ViewBag.Title.ToUpper()</span></h2>
+                <span class="subheading">Desde esta sección usted puede configurar todo lo refente a los banners.</span>
             </div>
             @using (Html.BeginForm("Index", "Banners", FormMethod.Get))
             {
@@ -117,27 +123,18 @@
                 {
                     @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }), new PagedListRenderOptions() { ContainerDivClasses = new string[] { "p-0" }, UlElementClasses = new string[] { "pagination m-0" } })
                 }
-            </div>
-            <div class="row">
-                <div class="p-0">
-                    <div class="media services d-block text-justify">
-                        <div class="media-body p-0 m-0">
-                            <div class="d-flex justify-content-between">
-                                <a href="#" onclick="AddNew()" title="Agregar nuevo Banner" class="btn btn-light" style="text-decoration: none;"><i class="fas fa-plus-square fa-1x"></i> Agregar nuevo Banner</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                <a href="#" onclick="AddNew()" title="Agregar nuevo Banner" class="btn btn-light" style="text-decoration: none; padding: 6px 12px;"><i class="fas fa-plus-square fa-1x"></i> Agregar nuevo Banner</a>
+            </div>            
         </div>
     </section>
 }
 else
-{
-    <section class="hp-section">
+{    
+    <section class="hp-section bg-light ftco-animate animated fadeInUp">
         <div class="container">
-            <div class="row justify-content-start">
-                <h2 class="heading-section font-weight-bold my-2 p-0">@ViewBag.Title</h2>
+            <div class="col p-0 text-center heading-section heading-section-light ftco-animate animated fadeInUp">
+                <h2 class="mb-0"><span class="px-4">@ViewBag.Title.ToUpper()</span></h2>
+                <span class="subheading">Desde esta sección usted puede configurar todo lo refente a los banners.</span>
             </div>
             @using (Html.BeginForm("Index", "Banners", FormMethod.Get))
             {

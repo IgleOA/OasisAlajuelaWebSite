@@ -1,7 +1,7 @@
 ﻿@model ET.Enrollments
 
 @{
-    ViewBag.Title = "Nueva Matrícula";
+    ViewBag.Title = "Matrículas";
     Layout = "~/Views/Shared/_PupopLayout.cshtml";
 }
 
@@ -21,11 +21,12 @@
         window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
     }
 </script>
-
-<div class="card bg-light">
-    <article class="card-body">
-        <h4 class="card-title mt-3 text-center font-weight-bold text-uppercase">@ViewBag.Title</h4>
-        <hr/>
+<div class="col text-center heading-section ftco-animate animated fadeInUp">
+    <h2 class="mb-0 mt-3"><span class="px-4">@ViewBag.Title</span></h2>
+    <span class="subheading">Crear nueva Matrícula</span>
+</div>
+<div class="ftco-animate animated fadeInUp">
+    <article class="card-body py-0">
         @using (Html.BeginForm("Add", "Enrollments", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             @Html.AntiForgeryToken()
@@ -36,7 +37,7 @@
                     <a href="#" onclick="Create();" title="Agregar Grupo"><i class="fas fa-user-plus"></i></a>
                 </div>
                 <div class="col">
-                    @Html.DropDownListFor(model => model.GroupID, new SelectList(Model.GroupList, "GroupID", "GroupName"),"Seleccione el Curso", new { @class = "custom-select" })
+                    @Html.DropDownListFor(model => model.GroupID, new SelectList(Model.GroupList, "GroupID", "GroupName"), "Seleccione el Curso", new { @class = "custom-select" })
                     @Html.ValidationMessageFor(model => model.GroupID, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -54,7 +55,7 @@
                     @Html.ValidationMessageFor(model => model.CloseRegister, "", new { @class = "text-danger" })
                 </div>
             </div>
-            <div class="form-group text-center">
+            <div class="form-group pl-3">
                 <input type="submit" class="btn btn-dark alt mt-0 mb-2" value="Guardar" />
                 <input type="button" value="Cancelar" class="btn btn-dark alt mt-0 mb-2" onclick="javascript: window.close();" />
 

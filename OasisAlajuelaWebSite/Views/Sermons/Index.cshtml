@@ -6,6 +6,9 @@
     ViewBag.Title = "Prédicas";
     Layout = ViewBag.Layout;
 }
+<div id="header" class="headerFixed" style="z-index:-1;position:relative;">
+
+</div>
 
 @if (ViewBag.Write == true)
 {
@@ -30,10 +33,11 @@
             window.open(url, '_blank', 'left=100,top=100,width=1000,height=650,toolbar=1,resizable=0');
         }
     </script>
-    <section class="hp-section">
+    <section class="hp-section ftco-animate animated fadeInUp">
         <div class="container">
-            <div class="row justify-content-center border-bottom mb-2">
-                <h2 class="heading-section font-weight-bold m-0 p-0">@ViewBag.Title.ToUpper()</h2>
+            <div class="col p-0 text-center heading-section ftco-animate animated fadeInUp">
+                <h2 class="mb-0"><span class="px-4">@ViewBag.Title.ToUpper()</span></h2>
+                <span class="subheading">Palabras dictadas directo del Corazón de Dios</span>
             </div>
             <div class="row justify-content-start">
                 <div class="px-0">
@@ -50,9 +54,9 @@
             @using (Html.BeginForm("Index", "Sermons", FormMethod.Get))
             {
                 <div class="row justify-content-start">
-                    <div class="form-group input-group py-2 px-0 searchfield w-50">
+                    <div class="form-group input-group py-2 px-0 searchfield w-50 ml-3">
                         <div class="input-group-prepend">
-                            <span class="input-group-text w"><i class="fas fa-search"></i></span>
+                            <span class="input-group-text"><i class="fas fa-search"></i></span>
                         </div>
                         @Html.TextBox("SearchString", null, new { @class = "form-control", @placeholder = "Buscar Titulo o Tags" })
                     </div>
@@ -76,7 +80,7 @@
                             </div>
                         </a>
                     </div>
-                    <div class="col-lg-10 pl-md-4 justify-content-start">
+                    <div class="col-md-9 pl-md-4 justify-content-start">
                         <h3 class="mb-2">
                             <a>@item.Title</a>
                             <a href="#" class="btn btn-light px-3" onclick="Desactivate(@item.SermonID)" title="Deshabilitar"><i id="@Editflag" class="far fa-trash-alt fa-1x" style="vertical-align: middle;"></i> Eliminar</a>
@@ -128,7 +132,7 @@
             <div class="row justify-content-start">
                 @if (Model.PageCount > 1)
                 {
-                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter }), new PagedListRenderOptions() { ContainerDivClasses = new string[] { "py-2" }, UlElementClasses = new string[] { "pagination m-0" } })
+                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter }), new PagedListRenderOptions() { ContainerDivClasses = new string[] { "py-2" }, UlElementClasses = new string[] { "pagination ml-3 my-0" } })
                 }
             </div>
         </div>
@@ -136,10 +140,11 @@
 }
 else
 {
-    <section class="hp-section">
+    <section class="hp-section ftco-animate animated fadeInUp">
         <div class="container">
-            <div class="row justify-content-center border-bottom mb-2">
-                <h2 class="heading-section font-weight-bold my-2 p-0">@ViewBag.Title</h2>
+            <div class="col p-0 text-center heading-section ftco-animate animated fadeInUp">
+                <h2 class="mb-0"><span class="px-4">@ViewBag.Title.ToUpper()</span></h2>
+                <span class="subheading">Palabras dictadas directo del Corazón de Dios</span>
             </div>
             @using (Html.BeginForm("Index", "Sermons", FormMethod.Get))
             {
@@ -170,7 +175,7 @@ else
                             </div>
                         </a>
                     </div>
-                    <div class="col-lg-10 pl-md-4 justify-content-start">
+                    <div class="col-md-9 pl-md-4 justify-content-start">
                         <h3 class="mb-2">
                             <a>@item.Title</a>
                         </h3>
@@ -220,7 +225,7 @@ else
             <div class="row justify-content-start">
                 @if (Model.PageCount > 1)
                 {
-                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter }), new PagedListRenderOptions() { ContainerDivClasses = new string[] { "p-0" }, UlElementClasses = new string[] { "pagination m-0" } })
+                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter }), new PagedListRenderOptions() { ContainerDivClasses = new string[] { "p-0" }, UlElementClasses = new string[] { "pagination ml-3 my-0" } })
                 }
             </div>
         </div>

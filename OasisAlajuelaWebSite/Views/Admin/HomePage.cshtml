@@ -26,17 +26,18 @@
     }
 </script>
 
+<div id="header" class="headerFixed" style="z-index:-1;position:relative;">
 
+</div>
 
-@using (Html.BeginForm("HomePage","Admin",FormMethod.Post,new { onsubmit = "Validate();" }))
+@using (Html.BeginForm("HomePage", "Admin", FormMethod.Post, new { onsubmit = "Validate();" }))
 {
     @Html.AntiForgeryToken()
-    <section class="hp-section">
+    <section class="hp-section ftco-animate animated fadeInUp">
         <div class="container">
-            <div class="row justify-content-start border-bottom">
-                <div class="col-md-offset-2 col-md-10 p-2">
-                    <h2 class="heading-section font-weight-bold m-0">@ViewBag.Title - Versión 1.@Model.HomePageID</h2>
-                </div>
+            <div class="col p-0 text-center heading-section ftco-animate animated fadeInUp">
+                <h2 class="mb-0"><span class="px-4">@ViewBag.Title.ToUpper()</span></h2>
+                <span class="subheading">HomePage - Versión 1.@Model.HomePageID</span>
             </div>
             <div class="row justify-content-start">
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })

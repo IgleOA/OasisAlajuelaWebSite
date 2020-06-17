@@ -2051,9 +2051,12 @@
     <Content Include="Images\NuevoLogo-OA.png" />
     <Content Include="Images\OasisAlajuela_Blanco.png" />
     <Content Include="Images\OasisAlajuela_Negro.png" />
+    <Content Include="Images\OasisAlajuela_TransparenteBlanco.png" />
     <Content Include="Images\OasisNuevoLogo-FondoBlanco.png" />
     <Content Include="Images\OasisNuevoLogo-FondoNegro.png" />
+    <Content Include="Images\OasisNuevoLogo_Blanco.png" />
     <Content Include="Images\Pastores.jpg" />
+    <Content Include="Images\Prayer.jpg" />
     <Content Include="Images\Resena_header.png" />
     <Content Include="logo-OasisAlajuela-Black.ico" />
     <Content Include="Scripts\aos.js" />

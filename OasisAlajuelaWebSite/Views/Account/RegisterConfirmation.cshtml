@@ -3,11 +3,17 @@
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
 
-<div class="card bg-light ftco-animate animated fadeInUp">
-    <article class="card-body mx-auto">
-        <h4 class="card-title mt-3 text-center font-weight-bold">Confirmación de registro</h4>
+<div id="header" class="headerFixed" style="z-index:-1;position:relative;">
+
+</div>
+<div class="col text-center heading-section ftco-animate animated fadeInUp">
+    <h2 class="mb-0 mt-3"><span class="px-4">@ViewBag.Title</span></h2>
+    <span class="subheading">Registro Existoso!!!</span>
+</div>
+<div class="ftco-animate animated fadeInUp">
+    <article class="card-body mx-auto text-center">
         <p class="text-center m-0">Gracias @ViewBag.FullName por registrarse...</p>
         <p class="text-center">Bendiciones...</p>
-        @Html.ActionLink("Ingresar","Login","Account",null, htmlAttributes: new { @class = "btn btn-primary btn-block alt" })
+        @Html.ActionLink("Ingresar","Login","Account",null, htmlAttributes: new { @class = "button btn-dark alt" })
     </article>
 </div>

@@ -24,18 +24,19 @@
         window.open(url, '_blank' , 'left=100,top=100,width=500,height=850,toolbar=0,resizable=0');
     }
 </script>
+<div id="header" class="headerFixed" style="z-index:-1;position:relative;">
 
+</div>
 <section class="hp-section">
     <div class="container">
         <div class="panel panel-danger">
-            <div class="panel-heading">
-                <h3 class="panel-title text-center">
-                    <span class="fas fa-calendar-alt"></span>
-                    @ViewBag.Title
-                </h3>
-                <hr />
+            <div class="row justify-content-center">
+                <div class="col text-center heading-section ftco-animate animated fadeInUp">
+                    <h2 class="mb-0"><span class="px-4"><i class="fas fa-calendar-alt"></i> @ViewBag.Title.ToUpper()</span></h2>
+                    <span class="subheading">Eventos llenos del Poder de Dios</span>
+                </div>
             </div>
-            <div class="panel-body">
+            <div class="panel-body ftco-animate animated fadeInUp">
                 <ul class="media-list p-0 m-0">
                     @foreach (var item in Model)
                     {
@@ -44,7 +45,7 @@
                                 <div class="panel panel-danger text-center date">
                                     <div class="panel-heading month p-0">
                                         <span class="panel-title strong">
-                                            @item.EventMonth.Substring(0,3)
+                                            @item.EventMonth.Substring(0, 3)
                                         </span>
                                     </div>
                                     <div class="panel-body day text-danger">
@@ -67,11 +68,13 @@
                                 }
                                 else
                                 {
-                                    <p class="ml-1 mt-1 mb-1 mr-3 text-justify">@if (@item.Description.Length > 0)
-                                    {@item.Description }
-                                else
-                                { @item.Title}</p>
-                                }
+                                    <p class="ml-1 mt-1 mb-1 mr-3 text-justify">
+                                        @if (@item.Description.Length > 0)
+                                        {@item.Description }
+                                    else
+                                    { @item.Title}
+                                </p>
+                            }
                                 @if (item.ReservationFlag == true)
                                 {
                                     if (item.Available > 0)

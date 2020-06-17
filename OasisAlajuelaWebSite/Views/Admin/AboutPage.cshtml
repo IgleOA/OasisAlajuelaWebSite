@@ -1,7 +1,7 @@
 ﻿@model ET.AboutPage
 
 @{
-    ViewBag.Title = "Editar - AboutPage";
+    ViewBag.Title = "About Page";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
 
@@ -27,13 +27,18 @@
     }
 </script>
 
+<div id="header" class="headerFixed" style="z-index:-1;position:relative;">
+
+</div>
 @using (Html.BeginForm("AboutPage", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    <section class="hp-section pt-0">
+    <section class="hp-section ftco-animate animated fadeInUp">
         <div class="container">
-            <h4 class="card-title mt-3 mb-2 text-center font-weight-bold">@ViewBag.Title.ToUpper()</h4>
-            <hr />
+            <div class="col p-0 text-center heading-section ftco-animate animated fadeInUp">
+                <h2 class="mb-0"><span class="px-4">@ViewBag.Title.ToUpper()</span></h2>
+                <span class="subheading">En esta sección se edita la informacion que se muestra en el About Page</span>
+            </div>
             <div class="form-group mt-2">
                 <h3 class="heading font-weight-bold">Historia</h3>
                 <div class="w-100">
@@ -63,7 +68,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
+                <div class="col-md-offset-2 col-md-10 p-0">
                     <input type="submit" value="Guardar" class="btn btn-dark alt mt-0 mb-2" />
                     <input type="button" value="Cancelar" class="btn btn-dark alt mt-0 mb-2" onclick="javascript: window.close();" />
                 </div>

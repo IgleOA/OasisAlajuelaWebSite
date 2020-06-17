@@ -27,12 +27,11 @@
     }
 </style>
 
-<div class="card bg-light">
+<div class="ftco-animate animated fadeInUp">
     <article class="card-body">
-        <h3 class="heading-section font-weight-bold m-0 p-0 align-center">
-            @ViewBag.Title
-        </h3>
-        <hr />
+        <div class="col p-0 mt-2 text-center heading-section ftco-animate animated fadeInUp">
+            <h2 class="mb-0"><span class="px-4">@ViewBag.Title.ToUpper()</span></h2>
+        </div>
         @using (Html.BeginForm("ResponseNote", "Notes", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             @Html.AntiForgeryToken()
@@ -48,7 +47,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.ResponseNote, htmlAttributes: new { @class = "control-label col-md-2 p-0", @style = "max-width: 100%;" })
                     <div class="col w-100 p-0">
-                        @Html.TextAreaFor(model => model.ResponseNote, 5, 1, new { @class = "form-control", @maxlength = 200 } )
+                        @Html.TextAreaFor(model => model.ResponseNote, 5, 1, new { @class = "form-control", @maxlength = 200 })
                         <span id="charsLeft">Máximo 200 carácteres. </span>
                         <script type="text/javascript">
                             $(function () {

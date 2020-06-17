@@ -30,15 +30,16 @@
     }
 </script>
 
-<section class="hp-section bg-light">
+<div id="header" class="headerFixed" style="z-index:-1;position:relative;">
+
+</div>
+
+<section class="hp-section ftco-animate animated fadeInUp">
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="text-center heading-section">
-                <h2 class="m-0">@ViewBag.Title</h2>
-                <p class="mb-2">Recursos que alimentan el alma y que vienen directo del corazón de Dios.</p>
-            </div>
+        <div class="col p-0 text-center heading-section ftco-animate animated fadeInUp">
+            <h2 class="mb-0"><span class="px-4">@ViewBag.Title.ToUpper()</span></h2>
+            <span class="subheading">Recursos que alimentan el alma y que vienen directo del corazón de Dios.</span>
         </div>
-        <hr />
         @if (ViewBag.Write == true)
         {
             <div class="row justify-content-start">

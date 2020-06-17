@@ -7,21 +7,22 @@
 }
 
 <script src="~/Scripts/jquery-3.5.0.min.js"></script>
-<script type="text/javascript">   
+<script type="text/javascript">
+
     function AddNew() {
         var url = '@Url.Action("Add")';
         window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
-    }    
+    }
     function AddNewUser(id) {
         var url = '@Url.Action("EnrollUser", new { id = "EnrollmentID" })';
         url = url.replace("EnrollmentID", id);
         window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
-    } 
+    }
     function UsersDetails(id) {
         var url = '@Url.Action("EnrolledUsers", new { id = "EnrollmentID" })';
         url = url.replace("EnrollmentID", id);
         window.open(url, '_blank' , 'left=100,top=100,width=1000,height=650,toolbar=1,resizable=0');
-    } 
+    }
     function Desactivate(EnrollmentID) {
         var x = confirm("Esta seguro que quiere eliminar este curso???");
         if (x) {
@@ -51,10 +52,15 @@
     }
 </script>
 
-<section class="hp-section">
+<div id="header" class="headerFixed" style="z-index:-1;position:relative;">
+
+</div>
+
+<section class="hp-section ftco-animate animated fadeInUp">
     <div class="container">
-        <div class="row justify-content-start">
-            <h2 class="heading-section font-weight-bold my-2 p-0">@ViewBag.Title</h2>
+        <div class="col p-0 text-center heading-section ftco-animate animated fadeInUp">
+            <h2 class="mb-0"><span class="px-4">@ViewBag.Title.ToUpper()</span></h2>
+            <span class="subheading">Indice y Manejo de Matrículas</span>
         </div>
         @using (Html.BeginForm("Index", "Enrollments", FormMethod.Get))
         {
@@ -94,10 +100,11 @@
                             {
                                 <td class="text-center align-middle px-1"></td>
                                 <td class="text-center align-middle px-1">
-                                    <a href="#" class="card-link m-0" title="Matriculados">
-                                        <span class="fas fa-users fa-1x mx-2" data-toggle="modal" data-target='#@modalname' style="vertical-align: middle; color: #444444;"></span>
+                                    <a href="#" class="card-link m-1" onclick="UsersDetails(@item.EnrollmentID)" title="Matriculados" style="color: #444444 !important;">
+                                        <i class="fas fa-users fa-1x mx-2" style="vertical-align: middle;"></i>
                                     </a>
-                                </td> 
+                                </td>
+
                                 <td class="text-center align-middle px-1"></td>
                             }
                             else
@@ -110,20 +117,22 @@
                                 <td class="text-center align-middle px-1">
                                     <a href="#" class="card-link m-1" onclick="UsersDetails(@item.EnrollmentID)" title="Matriculados" style="color: #444444 !important;">
                                         <i class="fas fa-users fa-1x mx-2" style="vertical-align: middle;"></i>
-                                    </a>                                    
-                                </td> 
+                                    </a>
+                                </td>
+
                                 <td class="text-center align-middle px-1">
                                     <a href="#" class="card-link m-1" onclick="Approve(@item.EnrollmentID)" title="Aprobar Matrícula" style="color: #444444 !important;">
                                         <i class="fas fa-check-square fa-1x" style="vertical-align: middle;"></i>
                                     </a>
-                                </td> 
+                                </td>
+
                             }
                         </tr>
                     }
                 </tbody>
             </table>
         </div>
-        
+
         <div class="row justify-content-start">
             @if (Model.PageCount > 1)
             {

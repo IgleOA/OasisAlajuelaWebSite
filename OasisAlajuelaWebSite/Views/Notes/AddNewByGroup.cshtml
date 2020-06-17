@@ -21,12 +21,12 @@
         height: 3rem !important;
     }
 </style>
-<div class="card bg-light">
+<div class="ftco-animate animated fadeInUp">
     <article class="card-body">
-        <h3 class="heading-section font-weight-bold m-0 p-0 align-center">
-            @ViewBag.Title
-        </h3>
-        <hr />
+        <div class="col p-0 mt-2 text-center heading-section ftco-animate animated fadeInUp">
+            <h2 class="mb-0"><span class="px-4">@ViewBag.Title.ToUpper()</span></h2>
+            <span class="subheading">Envía un mensaje a todos los usuarios de este Equipo</span>
+        </div>
         @using (Html.BeginForm("AddNewByGroup", "Notes", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             @Html.AntiForgeryToken()

@@ -3,44 +3,6 @@
 
 <div class="site-footer">
     <div class="container">
-        @*<div class="row text-black mb-3">
-            
-            <div class="col-md-4 text-center">
-                <div>
-                    <span class="far fa-clock h2 d-block"></span>
-                    <h3 class="text-black font-weight-bolder">Horario de Servicios</h3>
-                    <p class="mb-0">
-                        Jueves 7:00 PM - 9:00 PM <br>
-                        Viernes de Jovenes - 7:00 PM <br>
-                        Domingo 7:30 AM -9:30 AM <br>
-                        Domingo 10:00 AM - 12:00 AM <br />
-                        <a href="@Url.Action("Index", "UpcommingEvents", new { id = "Public" })" class="mb-0 card-text" title="Próximos eventos" style="color: black !important;">
-                            <i class="fas fa-calendar-alt" style="vertical-align: middle;"></i> <u>Ver mas...</u>
-                        </a>
-                    </p>
-                </div>
-            </div>
-            <div class="col-md-4 text-center">
-                <div>
-                    <span class="fas fa-comments fa-2x h2 d-block"></span>
-                    <h3 class="text-black font-weight-bolder">Contacto</h3>
-                    <p class="mb-0 text-black">
-                        <i class="fas fa-phone-alt"></i> +(506) 2433 6502
-                    </p>
-                    @{
-                        var WhatsAppLink = "https://api.whatsapp.com/send?phone=" + ConfigurationManager.AppSettings["WhatsAppNumber"].ToString();
-                        var EmailLink = "mailto:" + ConfigurationManager.AppSettings["AdminEmail"].ToString();
-                    }
-                    <a href="@EmailLink" target="_blank" class="mb-0 card-text" title="Email" style="color: black !important;">
-                        <i class="far fa-envelope" style="vertical-align: middle;"></i> <u>@ConfigurationManager.AppSettings["AdminEmail"].ToString()</u>
-                    </a>
-                    <br/>
-                    <a href="@WhatsAppLink" target="_blank" class="mb-0 card-text" title="WhatsApp" style="color: black !important;">
-                        <i class="fab fa-whatsapp" style="vertical-align: middle;"></i> <u>WhatsApp</u>
-                    </a>
-                </div>
-            </div>
-        </div>*@
         <hr style="background: white;" />
         <div class="row justify-content-center text-black mt-3">
             <div class="col-md-4">
@@ -73,7 +35,7 @@
             </div>
             <div class="col-md-4">
                 <div class="col-md-12 p-0">
-                    <h3 class="footer-heading mt-3 mb-2 text-white font-weight-bolder"><i class="far fa-clock"></i> Horario de Servicios</h3>
+                    <h3 class="footer-heading my-2 text-white font-weight-bolder"><i class="far fa-clock"></i> Horario de Servicios</h3>
                     <p class="mb-0">
                         Jueves 7:00 PM - 9:00 PM <br>
                         Viernes de Jovenes - 7:00 PM <br>
@@ -113,7 +75,7 @@
         <hr class="my-4" style="background: white;"/>
         <div class="row justify-content-center mt-3">
             <div class="col-md-12 text-center text-black">
-                <img src="~/Images/OasisNuevoLogo-FondoNegro.png" width="500" alt="Oasis Alajuela" style="max-width: 100%; height: auto;" />
+                <img src="~/Images/OasisNuevoLogo_Blanco.png" width="500" alt="Oasis Alajuela" style="max-width: 100%; height: auto;" />
                 <p>
                     Oasis Alajuela &copy; @DateTime.Now.Year Derechos reservados
                 </p>

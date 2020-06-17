@@ -132,74 +132,7 @@ img > .d-block {
     background-size: cover;
 }
 
-.site-footer {
-    padding: 4em 0;
-    background-image: url('../Images/bg2.jpg');
-    background-size: cover;
-    background-position: center top;
-    background-repeat: no-repeat;
-    color: rgba(255, 255, 255, 0.5);
-    position: relative;
-}
 
-    .site-footer:before {
-        position: absolute;
-        content: "";
-        background: rgba(0, 0, 0, 0.1);
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-    }
-
-    .site-footer .footer-heading {
-        font-size: 20px;
-    }
-
-    .site-footer a {
-        color: rgba(255, 255, 255, 0.3);
-    }
-
-        .site-footer a:hover {
-            color: #fff;
-        }
-
-    .site-footer ul li {
-        margin-bottom: 10px;
-    }
-
-.headerFixed {
-    position: fixed;
-    background: url('../Images/bg.jpg');
-    height: 60px !important;
-}
-
-@media (max-width: 800px)  {
-    .headerFixed {
-        height: 44px !important;
-    }
-}
-
-.marquee {
-    height: 50px;
-    overflow: hidden;
-    position: relative;
-}
-
-    .marquee div {
-        display: block;
-        /*width: 2000px;*/
-        height: 30px;
-        position: absolute;
-        overflow: hidden;
-        animation: marquee 25s linear infinite;
-    }
-
-@keyframes marquee {
-    0% { left: 100%;}
-
-    100% {left: -100%;}
-}
 
 #FootherBanner {
     background-color: rgba(0,0,0,0.95);
@@ -411,47 +344,9 @@ img > .d-block {
             color: #000000;
         }
 
-.topper {
-    width: 100px;
-    background: #ebe3da;
-}
 
-@media (max-width: 767.98px) {
-    .topper {
-        width: 75px;    
-    }
-}
-@media (max-width: 500px) {
-    .topper {
-        width: 55px;
-    }
-}
-@media (max-width: 375px) {
-    .topper {
-        width: 35px;
-    }
-}
 
-.blog-entry .textBlog {
-    position: relative;
-    background: #fff;
-    width: 100%;
-    margin: 0 auto;
-}
-span.dayBlog {
-    margin-top: 5px;
-    font-size: 50px;
-    font-weight: 300;
-    color: #b59877;
-    line-height: 1.2;
-}
-span.yr, span.mos {
-    display: block;
-    color: #c7b198;
-}
-.desc {
-    width: calc(100% - 100px);
-}
+
 
 .heading {
     
@@ -1013,3 +908,144 @@ h1, h2, h3, h4, h5,
         transform: scale(1.25);
         z-index: 1
     }
+
+.NoteDate {
+    font-size: 20px;
+    display: block;
+    margin-bottom: 5px;
+    font-family: "Crimson Text", serif;
+    font-style: italic;
+    display: none;
+}
+.blog-entry .textBlog {
+    position: relative;
+    background: #fff;
+    width: 100%;
+    margin: 0 auto;
+}
+
+span.dayBlog {
+    margin-top: 5px;
+    font-size: 50px;
+    font-weight: 300;
+    color: white;
+    line-height: 1.2;
+}
+
+span.yr, span.mos {
+    display: block;
+    color: white;
+}
+
+.desc {
+    width: calc(100% - 10px);
+}
+
+.topper {
+    width: 100px;
+    background: #00CAEC;
+}
+
+@media (max-width: 767.98px) {
+    .topper {
+        width: 75px;
+    }
+}
+
+@media (max-width: 500px) {
+    .topper {
+        width: 55px;
+    }
+    p.NoteDate {
+        display: block;
+    }
+    span.dayBlog {
+        display: none;
+    }
+    span.mos{
+        display:none;
+    }
+    span.yr{
+        display:none;
+    }
+}
+
+@media (max-width: 375px) {
+    .topper {
+        width: 35px;
+    }
+}
+
+
+.site-footer {
+    padding: 4em 0;
+    background-image: url('../Images/bg2.jpg');
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    color: rgba(255, 255, 255, 0.5);
+    position: relative;
+}
+
+    .site-footer:before {
+        position: absolute;
+        content: "";
+        background: rgba(0, 0, 0, 0.1);
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+
+    .site-footer .footer-heading {
+        font-size: 20px;
+    }
+
+    .site-footer a {
+        color: rgba(255, 255, 255, 0.3);
+    }
+
+        .site-footer a:hover {
+            color: #fff;
+        }
+
+    .site-footer ul li {
+        margin-bottom: 10px;
+    }
+
+.headerFixed {
+    position: fixed;
+    background: url('../Images/bg.jpg');
+    height: 60px !important;
+}
+
+@media (max-width: 800px) {
+    .headerFixed {
+        height: 44px !important;
+    }
+}
+
+.marquee {
+    height: 50px;
+    overflow: hidden;
+    position: relative;
+}
+
+    .marquee div {
+        display: block;
+        /*width: 2000px;*/
+        height: 30px;
+        position: absolute;
+        overflow: hidden;
+        animation: marquee 25s linear infinite;
+    }
+
+@keyframes marquee {
+    0% {
+        left: 100%;
+    }
+
+    100% {
+        left: -100%;
+    }
+}

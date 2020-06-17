@@ -3,31 +3,49 @@
 @using System.Globalization;
 
 @{
-    ViewBag.Title = "Oasis Blog - Historial";
+    ViewBag.Title = "Oasis Blog";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 <script type="text/javascript">
     function AddNew() {
-            var url = '@Url.Action("AddNew")';
-            window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
+        var url = '@Url.Action("AddNew")';
+        window.open(url, '_blank', 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
+    }
+    function Edit(NewID) {
+        var url = '@Url.Action("Edit", new { id = "newid" })';
+        url = url.replace("newid", NewID);
+        window.open(url, '_blank', 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
+    }
+    function Desactivate(NewID) {
+        var x = confirm("Esta seguro que quiere DESACTIVAR este Blog???");
+        if (x) {
+            $.ajax({
+                url: '@Url.Action("ChangeStatus")',
+                data: { id: NewID }
+            }).done(function () { alert('Hecho!!!'); location.reload(); });
         }
+    }
+    function Activate(NewID) {
+        var x = confirm("Esta seguro que quiere ACTIVAR este Blog de nuevo???");
+        if (x) {
+            $.ajax({
+                url: '@Url.Action("ChangeStatus")',
+                data: { id: NewID }
+            }).done(function () { alert('Hecho!!!'); location.reload(); });
+        }
+    }
 </script>
-<section class="hp-section">
+<div id="header" class="headerFixed" style="z-index:-1;position:relative;">
+
+</div>
+
+<section class="hp-section bg-light">
     <div class="container">
-        <div class="row justify-content-center border-bottom mb-2">
-            <h2 class="heading-section font-weight-bold my-2 pl-2">@ViewBag.Title</h2>
+        <div class="col p-0 text-center heading-section heading-section-light ftco-animate animated fadeInUp">
+            <h2 class="mb-0"><span class="px-4">@ViewBag.Title.ToUpper()</span></h2>
+            <span class="subheading">Historial</span>
         </div>
-        <div class="row justify-content-start">
-            <div class="py-2 px-0">
-                <div class="media services d-block text-justify">
-                    <div class="media-body px-0 m-0">
-                        <div class="d-flex justify-content-between">
-                            <a href='#' title="Agregar Blog" class="btn btn-light" style="text-decoration: none;" onclick="AddNew()"><i class="fas fa-plus-square fa-1x"></i> Agregar Blog</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
         @using (Html.BeginForm("History", "Blogs", FormMethod.Get))
         {
             <div class="row justify-content-start">
@@ -89,6 +107,7 @@
                                                             </div>
                                                             <div class="desc p-4">
                                                                 <div class="row">
+                                                                    <p class="m-0 NoteDate">@item.NewDay @item.NewMonth @item.NewYear</p>
                                                                     <h3 class="heading mt-2">
                                                                         <a class="font-weight-bolder">@item.Title</a>
                                                                     </h3>
@@ -96,7 +115,8 @@
                                                                     <p class="mb-2 text-justify">@item.Description</p>
                                                                     <br />
                                                                     <p class="mb-2 mr-0 ml-auto font-weight-bold">@item.MinisterName</p>
-                                                                </div>                                                                
+                                                                </div>
+                                                                <a href="#" class="text-decoration-none my-2 float-right" style="font-size: 12px;" data-dismiss="modal"><i class="fas fa-times"></i> Cerrar</a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -124,12 +144,13 @@
                 </tbody>
             </table>
         </div>
-        
+
         <div class="row justify-content-start">
             @if (Model.PageCount > 1)
             {
                 @Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter }), new PagedListRenderOptions() { ContainerDivClasses = new string[] { "p-0" }, UlElementClasses = new string[] { "pagination m-0" } })
             }
+            <a href="#" onclick="AddNew()" title="Agregar Blog" class="btn btn-light" style="text-decoration: none; padding: 6px 12px;"><i class="fas fa-plus-square fa-1x"></i> Agregar Blog</a>
         </div>
     </div>
 </section>
