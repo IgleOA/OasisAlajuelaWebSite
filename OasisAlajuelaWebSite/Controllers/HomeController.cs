@@ -138,14 +138,14 @@ namespace OasisAlajuelaWebSite.Controllers
             return View(data.ToList());
         }
 
-        public ActionResult _YouTubeVideos()
-        {
-            var data = (from d in YBL.Youtubelist(5)
-                        orderby d.PublishedAt descending
-                        select d).Take(3);
+        //public ActionResult _YouTubeVideos()
+        //{
+        //    var data = (from d in YBL.Youtubelist(5)
+        //                orderby d.PublishedAt descending
+        //                select d).Take(3);
 
-            return View(data.ToList());
-        }
+        //    return View(data.ToList());
+        //}
 
         public ActionResult _News()
         {

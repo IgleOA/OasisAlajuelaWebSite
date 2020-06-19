@@ -7,7 +7,7 @@
 
 @if (ViewBag.Write == true)
 {
-    <script src="~/Scripts/jquery-3.5.1.min.js"></script>
+    <script src="~/Scripts/jquery-3.5.0.min.js"></script>
     <script type="text/javascript">
         function Desactivate(NewID) {
             var x = confirm("Esta seguro que quiere eliminar esta Podcast???");
@@ -76,8 +76,8 @@
                                     </div>
                                     <div class="row">
                                         <div class="px-4 py-0">
-                                            <a href="#" class="btn btn-light px-3" onclick="Desactivate(@item.PodcastID)" title="Deshabilitar"><i class="fas fa-trash-alt fa-1x" style="vertical-align: middle;"></i></a>
-                                            <a href="#" class="btn btn-light px-3" onclick="Edit(@item.PodcastID)" title="Editar"><i class="far fa-edit fa-1x" style="vertical-align: middle;"></i></a>                                           
+                                            <a href="#" class="btn btn-light px-3" onclick="Desactivate(@item.PodcastID)" title="Deshabilitar"><i class="fas fa-trash-alt fa-1x" ></i></a>
+                                            <a href="#" class="btn btn-light px-3" onclick="Edit(@item.PodcastID)" title="Editar"><i class="far fa-edit fa-1x" ></i></a>                                           
                                         </div>
                                     </div>
                                 </div>

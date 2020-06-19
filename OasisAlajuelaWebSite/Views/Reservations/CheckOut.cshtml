@@ -2,7 +2,7 @@
 @using System.Globalization;
 
 @{
-    ViewBag.Title = "Sistema de Reservación";
+    ViewBag.Title = "Reservaciones";
     Layout = ViewBag.Layout;
 }
 
@@ -82,14 +82,17 @@
         document.getElementById(index).classList.remove('FullHouse');
     }
 </script>
+<div id="header" class="headerFixed" style="z-index:-1;position:relative;">
+
+</div>
 @if (ViewBag.Write == true)
 {
-    <div class="hp-section">
+    <div class="hp-section pt-0">
         <div class="container w-100 justify-content-center" style="margin-bottom: 100px;">
-            <div class="row justify-content-center">
-                <h2 class="heading-section font-weight-bold my-2 p-0">@ViewBag.Title</h2>
+            <div class="col text-center heading-section ftco-animate animated fadeInUp">
+                <h2 class="mb-0 mt-3"><span class="px-4"><i class="fas fa-ticket-alt"></i> @ViewBag.Title</span></h2>
+                <span class="subheading">Sistema de Reservación</span>
             </div>
-            <hr />
             <div class=" row justify-content-center">
                 <table class="table-responsive w-100 mb-0" style="max-width: 1850px;">
                     <tbody>
@@ -100,14 +103,14 @@
                                     <tr>
                                         <td class="align-middle text-center" style="width:250px;">
                                             <h2 class="m-0 text-colorbase">Servicio</h2>
-                                            <h1 class="text-capitalize">@Model.ScheduledDate.ToString("dddd, dd MMMM yyyy", new CultureInfo("es-US"))</h1>
+                                            <h3 class="text-capitalize">@Model.ScheduledDate.ToString("dddd, dd MMMM yyyy", new CultureInfo("es-US"))</h3>
                                         </td>
                                         <td class="align-middle" style="background-color:#00CAEC; width:250px;">
                                             <h2 class="mx-0 text-white text-uppercase">Tarima Principal</h2>
                                         </td>
                                         <td class="align-middle" style="width:250px;">
                                             <h2 class="m-0 text-colorbase">Hora</h2>
-                                            <h1>@Model.ScheduledDate.ToString("h:mm tt") CR</h1>
+                                            <h3>@Model.ScheduledDate.ToString("h:mm tt") CR</h3>
                                         </td>
                                     </tr>
                                 </table>
@@ -409,7 +412,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <input type="submit" class="btnReserve" value="Reservar" />
+                                        <input type="submit" class="button btn-dark" value="Reservar" />
                                     </div>
                                 }
                             </td>
@@ -437,7 +440,7 @@
                                         </ol>
                                     </div>
                                     <hr />
-                                    <button type="button" class="btn btn-secondary my-2 float-right" data-dismiss="modal">Cerrar</button>
+                                    <button type="button" class="button btn-dark my-2 float-right" data-dismiss="modal">Cerrar</button>
                                 </article>
                             </div>
                         </div>
@@ -802,7 +805,7 @@ else
                                         </ol>
                                     </div>
                                     <hr />
-                                    <button type="button" class="btn btn-secondary my-2 float-right" data-dismiss="modal">Cerrar</button>
+                                    <button type="button" class="button btn-dark my-2 float-right" data-dismiss="modal">Cerrar</button>
                                 </article>
                             </div>
                         </div>

@@ -207,6 +207,7 @@
     <Build Include="config\Stored Procedures\uspReadBlogs.sql" />
     <Build Include="adm\Stored Procedures\uspAddBlog.sql" />
     <Build Include="adm\Stored Procedures\uspUpdateBlog.sql" />
+    <Build Include="adm\Stored Procedures\uspUpdateMinister.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DB_MAIN_CR_OA_DEV.publish.xml" />

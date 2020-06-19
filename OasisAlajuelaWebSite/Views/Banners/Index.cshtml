@@ -12,7 +12,7 @@
 
 @if (ViewBag.Write == true)
 {
-    <script src="~/Scripts/jquery-3.5.1.min.js"></script>
+    <script src="~/Scripts/jquery-3.5.0.min.js"></script>
     <script type="text/javascript">
         function Activate(BID) {
             $.ajax({
@@ -95,7 +95,7 @@
                                                 });
                                             });
                                         </script>
-                                        <a href="#" class="card-link" onclick="Activate(@item.BannerID)" title="Habilitar"><i id="@Editflag" class="fas fa-times-circle fa-2x DisactiveColor" style="vertical-align: middle;"></i></a>
+                                        <a href="#" class="card-link" onclick="Activate(@item.BannerID)" title="Habilitar"><i id="@Editflag" class="fas fa-times-circle fa-2x DisactiveColor" ></i></a>
                                     }
                                     else
                                     {
@@ -110,7 +110,7 @@
                                                 });
                                             });
                                         </script>
-                                        <a href="#" class="card-link" onclick="Desactivate(@item.BannerID)" title="Deshabilitar"><i id="@Editflag" class="fas fa-check-circle fa-2x ActiveColor" style="vertical-align: middle;"></i></a>
+                                        <a href="#" class="card-link" onclick="Desactivate(@item.BannerID)" title="Deshabilitar"><i id="@Editflag" class="fas fa-check-circle fa-2x ActiveColor" ></i></a>
                                     }
                                 </td>
                             </tr>

@@ -1,11 +1,11 @@
 ﻿@model ET.Sermons
 
 @{
-    ViewBag.Title = "Editar Prédica";
+    ViewBag.Title = "Prédicas";
     Layout = "~/Views/Shared/_PupopLayout.cshtml";
 }
 
-<script src="~/Scripts/jquery-3.5.1.min.js"></script>
+<script src="~/Scripts/jquery-3.5.0.min.js"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -34,15 +34,17 @@
     });
 </script>
 
-<div class="card bg-light">
-    <article class="card-body">
-        <h4 class="card-title mt-3 text-center font-weight-bold">@ViewBag.Title</h4>
+<div class="col text-center heading-section ftco-animate animated fadeInUp">
+    <h2 class="mb-0 mt-3"><span class="px-4">@ViewBag.Title</span></h2>
+    <span class="subheading">Editar Información</span>
+</div>
+<div class="ftco-animate animated fadeInUp">
+    <article class="card-body py-0">
         @using (Html.BeginForm("Edit", "Sermons", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             @Html.AntiForgeryToken()
 
             <div class="form-horizontal">
-                <hr />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger m-0" })
                 @Html.HiddenFor(model => model.SermonID)
                 @Html.HiddenFor(model => model.BannerData)
@@ -59,7 +61,7 @@
                         <div class="form-group">
                             @Html.LabelFor(model => model.MinisterID, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
                             <div class="col">
-                                @Html.DropDownListFor(model => model.MinisterID, new SelectList(Model.MinisterList,"MinisterID","FullName"), new { @class = "form-control" } )
+                                @Html.DropDownListFor(model => model.MinisterID, new SelectList(Model.MinisterList, "MinisterID", "FullName"), new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.MinisterID, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -82,7 +84,7 @@
                         <div class="form-group">
                             @Html.LabelFor(model => model.SermonDate, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
                             <div class="col-md-10">
-                                @Html.EditorFor(model => model.SermonDate, new { htmlAttributes = new { @class = "form-control",@style = "max-width: 175px;" } })
+                                @Html.EditorFor(model => model.SermonDate, new { htmlAttributes = new { @class = "form-control", @style = "max-width: 175px;" } })
                                 @Html.ValidationMessageFor(model => model.SermonDate, "", new { @class = "text-danger" })
                             </div>
                         </div>

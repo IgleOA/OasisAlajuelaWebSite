@@ -17,5 +17,15 @@ namespace BL
         {
             return MBL.AddNew(Detail, InsertUser);
         }
+
+        public Ministers Details(int MinisterID)
+        {
+            return MBL.Details(MinisterID);
+        }
+
+        public bool Update(Ministers Detail, string InsertUser)
+        {
+            return MBL.Update(Detail, InsertUser);
+        }
     }
 }

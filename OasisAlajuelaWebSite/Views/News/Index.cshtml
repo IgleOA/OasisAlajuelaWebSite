@@ -9,7 +9,7 @@
 </div>
 @if (ViewBag.Write == true)
 {
-    <script src="~/Scripts/jquery-3.5.1.min.js"></script>
+    <script src="~/Scripts/jquery-3.5.0.min.js"></script>
     <script type="text/javascript">
         function Desactivate(NewID) {
             var x = confirm("Esta seguro que quiere eliminar esta noticia???");
@@ -62,7 +62,7 @@
                     <div class="media services d-block text-justify">
                         <div class="media-body py-2 mt-3">
                             <div class="d-flex justify-content-between">
-                                <a href="#" onclick="AddNew()" title="Agregar nueva Noticia" class="btn btn-light" style="text-decoration: none;"><i class="fas fa-plus-square fa-1x"></i> Agregar nueva Noticia</a>
+                                <a href="#" onclick="AddNew()" title="Agregar nueva Noticia" class="btn btn-light mr-2" style="text-decoration: none;"><i class="fas fa-plus-square fa-1x"></i> Agregar nueva Noticia</a>
                                 <a href='@Url.Action("History")' target="_blank" title="Ver Historial" class="btn btn-light" style="text-decoration: none;"><i class="fas fa-history fa-1x"></i> Ver Historial</a>
                             </div>
                         </div>
@@ -95,8 +95,8 @@
                                     </div>
                                     <div class="row">
                                         <div class="px-4 py-0">
-                                            <a href="#" class="btn btn-light px-3" onclick="Desactivate(@item.NewID)" title="Deshabilitar"><i class="fas fa-trash-alt fa-1x" style="vertical-align: middle;"></i></a>
-                                            <a href="#" class="btn btn-light px-3" onclick="Edit(@item.NewID)" title="Editar"><i class="far fa-edit fa-1x" style="vertical-align: middle;"></i></a>
+                                            <a href="#" class="btn btn-light px-3" onclick="Desactivate(@item.NewID)" title="Deshabilitar"><i class="fas fa-trash-alt fa-1x" ></i></a>
+                                            <a href="#" class="btn btn-light px-3" onclick="Edit(@item.NewID)" title="Editar"><i class="far fa-edit fa-1x" ></i></a>
                                             @if (item.ShowFlag == false)
                                             {
                                                 <script type="text/javascript">
@@ -110,7 +110,7 @@
                                                         });
                                                     });
                                                 </script>
-                                                <a href="#" class="btn btn-light px-3" onclick="Enable(@item.NewID)" title="Visible en la barra de Anuncios"><i id="@Editflag" class="far fa-eye-slash fa-1x" style="vertical-align: middle;"></i></a>
+                                                <a href="#" class="btn btn-light px-3" onclick="Enable(@item.NewID)" title="Visible en la barra de Anuncios"><i id="@Editflag" class="far fa-eye-slash fa-1x" ></i></a>
                                             }
                                             else
                                             {
@@ -125,7 +125,7 @@
                                                         });
                                                     });
                                                 </script>
-                                                <a href="#" class="btn btn-light px-3" onclick="Disable(@item.NewID)" title="Invisible en la barra de Anuncios"><i id="@Editflag" class="far fa-eye fa-1x" style="vertical-align: middle;"></i></a>
+                                                <a href="#" class="btn btn-light px-3" onclick="Disable(@item.NewID)" title="Invisible en la barra de Anuncios"><i id="@Editflag" class="far fa-eye fa-1x" ></i></a>
                                             }
                                         </div>
                                     </div>

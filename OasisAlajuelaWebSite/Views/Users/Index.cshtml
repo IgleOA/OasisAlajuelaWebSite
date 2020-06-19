@@ -6,7 +6,7 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<script src="~/Scripts/jquery-3.5.1.min.js"></script>
+<script src="~/Scripts/jquery-3.5.0.min.js"></script>
 <script type="text/javascript">
     function Activate(UserID) {
         $.ajax({
@@ -131,7 +131,7 @@
                                                 });
                                     </script>
                                     <a href="#" class="card-link m-1" onclick="Activate(@item.UserID)" title="Habilitar" style="color: #444444 !important;">
-                                        <i id="@Editflag" class="fas fa-times-circle fa-1x DisactiveColor" style="vertical-align: middle;"></i> Inactivo
+                                        <i id="@Editflag" class="fas fa-times-circle fa-1x DisactiveColor" ></i> Inactivo
                                     </a>
                                 }
                                 else
@@ -148,7 +148,7 @@
                                                 });
                                     </script>
                                     <a href="#" class="card-link m-1" onclick="Desactivate(@item.UserID)" title="Deshabilitar" style="color: #444444 !important;">
-                                        <i id="@Editflag" class="fas fa-check-circle fa-1x ActiveColor" style="vertical-align: middle;"></i> Activo
+                                        <i id="@Editflag" class="fas fa-check-circle fa-1x ActiveColor" ></i> Activo
                                     </a>
                                 }
 

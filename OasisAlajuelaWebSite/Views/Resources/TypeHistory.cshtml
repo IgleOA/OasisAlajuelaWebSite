@@ -104,7 +104,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <script src="~/Scripts/jquery-3.5.1.min.js"></script>
+                                            <script src="~/Scripts/jquery-3.5.0.min.js"></script>
                                             <script src="~/Scripts/bootstrap.min.js"></script>
                                             <script type="text/javascript">
                                                         $('#@modalname').on('hidden.bs.modal', function (e) {
@@ -140,7 +140,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <script src="~/Scripts/jquery-3.5.1.min.js"></script>
+                                            <script src="~/Scripts/jquery-3.5.0.min.js"></script>
                                             <script src="~/Scripts/bootstrap.min.js"></script>
                                             <script type="text/javascript">
                                                         $('#@modalname').on('hidden.bs.modal', function (e) {
@@ -170,15 +170,15 @@
                                 <td class="text-center align-middle">
                                     @if (item.ActiveFlag == false)
                                     {
-                                        <a href="#" class="card-link" onclick="Activate(@item.ResourceID)" title="Habilitar"><i class="fas fa-check-circle fa-2x ActiveColor" style="vertical-align: middle;"></i></a>
+                                        <a href="#" class="card-link" onclick="Activate(@item.ResourceID)" title="Habilitar"><i class="fas fa-check-circle fa-2x ActiveColor" ></i></a>
                                     }
                                     else
                                     {
-                                        <a href="#" class="card-link" onclick="Desactivate(@item.ResourceID)" title="Deshabilitar"><i class="fas fa-times-circle fa-2x DisactiveColor" style="vertical-align: middle;"></i></a>
+                                        <a href="#" class="card-link" onclick="Desactivate(@item.ResourceID)" title="Deshabilitar"><i class="fas fa-times-circle fa-2x DisactiveColor" ></i></a>
                                     }
                                 </td>
                                 <td class="text-center align-middle">
-                                    <a href='#' target="_blank" class="card-link" onclick="Edit(@item.ResourceID)" title="Editar"><i class="fas fa-edit fa-2x text-black" style="vertical-align: middle;"></i></a>
+                                    <a href='#' target="_blank" class="card-link" onclick="Edit(@item.ResourceID)" title="Editar"><i class="fas fa-edit fa-2x text-black" ></i></a>
                                 </td>
                             </tr>
                         }

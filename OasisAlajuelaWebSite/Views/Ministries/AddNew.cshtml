@@ -1,17 +1,18 @@
 ﻿@model ET.Ministries
 
 @{
-    ViewBag.Title = "Agregar nuevo Ministerio";
+    ViewBag.Title = "Ministerios";
     Layout = "~/Views/Shared/_PupopLayout.cshtml";
 }
 
-<script src="~/Scripts/jquery-3.5.1.min.js"></script>
+<script src="~/Scripts/jquery-3.5.0.min.js"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {
         var flag = '@(Model.ActionType)';
         if (flag == "CREATE")
         {
+            opener.location.reload();
             window.close();
         }
     });
@@ -31,16 +32,18 @@
         });
     });
 </script>
+<div class="col text-center heading-section ftco-animate animated fadeInUp">
+    <h2 class="mb-0 mt-3"><span class="px-4">@ViewBag.Title</span></h2>
+    <span class="subheading">Agregar Nuevo Ministerio</span>
+</div>
 
-<div class="card bg-light">
-    <article class="card-body">
-        <h4 class="card-title mt-3 text-center font-weight-bold">@ViewBag.Title</h4>
+<div class="ftco-animate animated fadeInUp">
+    <article class="card-body py-0">        
         @using (Html.BeginForm("AddNew", "Ministries", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             @Html.AntiForgeryToken()
 
             <div class="form-horizontal">
-                <hr />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger m-0" })
                 <div class="row">
                     <div class="col-7">

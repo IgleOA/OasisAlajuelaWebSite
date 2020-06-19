@@ -142,7 +142,7 @@ namespace OasisAlajuelaWebSite.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddNew(Sermons MS)
         {
-            if (Convert.IsDBNull(MS.file))
+            if (!Convert.IsDBNull(MS.file))
             {                
                 String FileExt = Path.GetExtension(MS.file.FileName).ToUpper();
                 MS.BannerExt = FileExt;
