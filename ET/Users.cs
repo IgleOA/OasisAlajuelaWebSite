@@ -21,7 +21,8 @@ namespace ET
         public string UserName { get; set; }
 
         [Required(ErrorMessage = "Este campo es obligatorio")]
-        [DataType(DataType.EmailAddress, ErrorMessage ="Por favor ingrese un correo electrónico valido")]
+        [RegularExpression(@"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", ErrorMessage = "Formato de correo invalido. Por favor ingrese un correo electrónico valido")]
+        [DataType(DataType.EmailAddress)]
         [Display(Name = "Email")]
         public string Email { get; set; }
 

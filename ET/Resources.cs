@@ -79,7 +79,7 @@ namespace ET
         [Display(Name = "Nombre del Recurso")]
         public string FileName { get; set; }
 
-        [Display(Name = "Link del Video")]
+        [Display(Name = "YouTube o GoogleDrive Link")]
         public string FileURL { get; set; }
 
         [Required]

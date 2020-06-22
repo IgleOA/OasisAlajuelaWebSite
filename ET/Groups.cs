@@ -9,7 +9,7 @@ namespace ET
         public int GroupID { get; set; }
 
         [Required]
-        [Display(Name ="Nombre")]
+        [Display(Name ="Area")]
         public string GroupName { get; set; }
 
         [Required]
