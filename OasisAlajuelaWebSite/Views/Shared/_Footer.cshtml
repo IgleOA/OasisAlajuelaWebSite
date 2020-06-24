@@ -16,7 +16,7 @@
                 @Html.ActionLink("Ver más...", "History", "Home", null, htmlAttributes: new { @class = "" })
 
                 <h3 class="footer-heading mt-3 mb-2 text-white font-weight-bolder"><i class="fas fa-map-marker-alt"></i> Ubicación</h3>
-                <p class="mb-0">200 Sureste de la Arrocera,<br>Pacto de Jocote, El Coyol,<br>Alajuela, Costa Rica</p>
+                <p class="mb-0">100 mts Sur de la Arrocera Costa Rica,<br>Pacto del Jocote, El Coyol,<br>Alajuela, Costa Rica</p>
                 <a href="https://www.waze.com/ul?preview_venue_id=180748388.1807221737.2214951&navigate=yes" target="_blank" class="mb-0 text-decoration-none" title="Waze">
                     <i class="fab fa-waze" ></i> <u>Ubicanos por Waze</u>
                 </a>
@@ -37,12 +37,12 @@
                 <div class="col-md-12 p-0">
                     <h3 class="footer-heading my-2 text-white font-weight-bolder"><i class="far fa-clock"></i> Horario de Servicios</h3>
                     <p class="mb-0">
-                        Jueves 7:00 PM - 9:00 PM <br>
+                        Jueves 7:00 PM<br>
                         Viernes de Jovenes - 7:00 PM <br>
-                        Domingo 7:30 AM -9:30 AM <br>
-                        Domingo 10:00 AM - 12:00 AM <br />
+                        Domingo 7:30 AM<br>
+                        Domingo 10:00 AM<br />
                         <a href="@Url.Action("Index", "UpcommingEvents", new { id = "Public" })" class="mb-0 text-decoration-none" title="Próximos eventos">
-                            <i class="fas fa-calendar-alt" ></i> <u>Ver mas...</u>
+                            <i class="fas fa-calendar-alt" ></i> <u>Ver más...</u>
                         </a>
                     </p>
 
@@ -75,7 +75,16 @@
         <hr class="my-4" style="background: white;"/>
         <div class="row justify-content-center mt-3">
             <div class="col-md-12 text-center text-black">
-                <img src="~/Images/NuevoLogo_Horizontal.png" width="500" alt="Oasis Alajuela" style="max-width: 100%; height: auto;" />
+                @if (Request.Browser.IsMobileDevice)
+                {
+                    <img src="~/Images/NuevoLogo_Horizontal.png" width="500" alt="Oasis Alajuela" style="max-width: 100%; height: auto;" />
+                }
+                else
+                {
+                    <video autoplay muted loop style="max-width:100%;">
+                        <source src="~/Images/Loop Logo.mp4" type="video/mp4" />
+                    </video>
+                }
                 <p>
                     Oasis Alajuela &copy; @DateTime.Now.Year Derechos reservados
                 </p>

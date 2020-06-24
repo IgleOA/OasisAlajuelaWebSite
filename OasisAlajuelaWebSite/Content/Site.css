@@ -47,7 +47,7 @@ img > .d-block {
         right: 0;
         bottom: 0;
         opacity: 0.6;
-        background: #00CAEC;
+        background: #00ACEC;
     }
 
     .upevent-intro h2.subheading {
@@ -135,7 +135,7 @@ img > .d-block {
 
 
 #FootherBanner {
-    background-color: rgba(0,0,0,0.95);
+    background-color: #191b27;
     color: #a6a6a6;
     cursor: default;
     height: 3.25em;
@@ -443,7 +443,7 @@ img > .d-block {
 }
 
 .text-colorbase{
-    color: #00CAEC !important;
+    color: #00ACEC !important;
 }
 
 .prayerpanel {
@@ -495,7 +495,8 @@ img > .d-block {
 
 .ftco-footer {
     font-size: 16px;
-    background: #171717;
+    background: #191b27;
+    position: absolute;
 }
 
     .ftco-footer .ftco-footer-widget h2 {
@@ -653,8 +654,13 @@ h1, h2, h3, h4, h5,
     }
 
 .MainPageImg {
-    background-image: url(../Images/Imagen-Frontal.png);
-    height: 920px;
+    background-color: #000;
+    color: #bfbfbf;
+    background-image: url(../Images/FrontPage.png);
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    position: relative;
 }
 
 .slider-text h1 {
@@ -848,7 +854,7 @@ h1, h2, h3, h4, h5,
     width: 110px;
     height: 110px;
     position: relative;
-    background: black;
+    background: #191b27;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     -ms-border-radius: 50%;
@@ -865,7 +871,7 @@ h1, h2, h3, h4, h5,
     width: 80px;
     height: 80px;
     position: relative;
-    background: #CCE5FF;
+    background: #191b27;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     -ms-border-radius: 50%;
@@ -873,7 +879,7 @@ h1, h2, h3, h4, h5,
 }
 
     .servicesSmall .icon span {
-        color: #00CAEC;
+        color: white;
     }
 
 .zoom {
@@ -943,7 +949,7 @@ span.yr, span.mos {
 
 .topper {
     width: 100px;
-    background: #00CAEC;
+    background: #00ACEC;
 }
 
 @media (max-width: 767.98px) {
@@ -979,10 +985,10 @@ span.yr, span.mos {
 
 .site-footer {
     padding: 4em 0;
-    background-image: url('../Images/bg2.jpg');
+    /*background-image: url('../Images/footer.png');
     background-size: cover;
     background-position: center top;
-    background-repeat: no-repeat;
+    background-repeat: no-repeat;*/
     color: rgba(255, 255, 255, 0.5);
     position: relative;
 }
@@ -1047,5 +1053,29 @@ span.yr, span.mos {
 
     100% {
         left: -100%;
+    }
+}
+
+.btnRegister {
+    color: #00ACEC;
+    font-weight: bold;
+    font-size: 1.5em;
+    font-family: "Poppins", Arial, sans-serif;
+}
+@media (max-width: 767.98px) {
+    .btnRegister {
+        font-size: 1.25em;
+    }
+}
+
+@media (max-width: 600px) {
+    .btnRegister {
+        font-size: 1.0em;
+    }
+}
+
+@media (max-width: 400px) {
+    .btnRegister {
+        font-size: 0.75em;
     }
 }

@@ -1956,7 +1956,7 @@ input[type="reset"],
 input[type="button"],
 button,
 .button {
-    background-color: #00CAEC;
+    background-color: #00ACEC;
     color: #000 !important;
 }
 
@@ -3359,6 +3359,16 @@ table {
         position: relative;
     }
 
+    .wrapper.style5 {
+        background-color: #000;
+        color: #bfbfbf;
+        background-image: url(../../../images/FrontPage.png);
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center;
+        position: relative;
+    }
+
         .wrapper.style4 input, .wrapper.style4 select, .wrapper.style4 textarea {
             color: #ffffff;
         }
@@ -3960,8 +3970,8 @@ body.subpage {
 }
 
 #header {
-    background: rgba(0, 0, 0, 0.975);
-    /*background: #00CAEC;*/
+    background: #191b27;
+    /*background: #00ACEC;*/
     color: #a6a6a6;
     cursor: default;
     height: 3.25em;
@@ -4128,8 +4138,8 @@ body.subpage {
     -ms-transition: -ms-transform 0.5s ease, box-shadow 0.5s ease, visibility 0.5s;
     transition: transform 0.5s ease, box-shadow 0.5s ease, visibility 0.5s;
     -webkit-overflow-scrolling: touch;
-    background: rgba(0, 0, 0, 0.95);
-    /*background: #00CAEC;*/
+    background: rgba(27, 27, 39, 0.95);
+    /*background: #00ACEC;*/
     box-shadow: none;
     color: #000;
     height: 100%;

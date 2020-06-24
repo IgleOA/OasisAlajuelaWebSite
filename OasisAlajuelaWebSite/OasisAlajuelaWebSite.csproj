@@ -2046,6 +2046,9 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\bg3.jpg" />
+    <Content Include="Images\footer.png" />
+    <Content Include="Images\FrontPage.png" />
+    <Content Include="Images\Loop Logo.mp4" />
     <Content Include="Images\NuevoLogo_Horizontal.png" />
     <Content Include="Images\PasGM_Adorador.jpg" />
     <Content Include="Images\PasGM_Motivador.jpg" />

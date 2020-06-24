@@ -55,7 +55,7 @@ AS
 										--,S.[FileData]
 										,S.[FileExt]
 										,S.[FileName]
-										,[FileURL] = REPLACE(REPLACE(REPLACE(REPLACE(S.[FileURL],'https://youtu.be/','https://www.youtube.com/embed/'),'https://www.youtube.com/watch?v=','https://www.youtube.com/embed/'),'\',''),'view?usp=sharing','preview?rm=minimal')
+										,[FileURL] = REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(S.[FileURL],'https://youtu.be/','https://www.youtube.com/embed/'),'https://www.youtube.com/watch?v=','https://www.youtube.com/embed/'),'\',''),'view?usp=sharing','preview?rm=minimal'),'https://vimeo.com/','https://player.vimeo.com/video/')
 										,S.[Description]
 										,S.[EnableStart]
 										,S.[EnableEnd]
@@ -73,7 +73,7 @@ AS
 										--,S.[FileData]
 										,S.[FileExt]
 										,S.[FileName]
-										,[FileURL] = REPLACE(REPLACE(REPLACE(REPLACE(S.[FileURL],'https://youtu.be/','https://www.youtube.com/embed/'),'https://www.youtube.com/watch?v=','https://www.youtube.com/embed/'),'\',''),'view?usp=sharing','preview')
+										,[FileURL] = REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(S.[FileURL],'https://youtu.be/','https://www.youtube.com/embed/'),'https://www.youtube.com/watch?v=','https://www.youtube.com/embed/'),'\',''),'view?usp=sharing','preview?rm=minimal'),'https://vimeo.com/','https://player.vimeo.com/video/')
 										,S.[Description]
 										,S.[EnableStart]
 										,S.[EnableEnd]

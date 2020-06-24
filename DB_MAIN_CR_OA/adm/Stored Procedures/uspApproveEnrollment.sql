@@ -86,6 +86,14 @@ AS
 								AND R.[ApprovalFlag]  = 1
 								AND R.[ActiveFlag] = 1
 
+						INSERT INTO [adm].[utbUsersProfile] ([UserID],[Mobile])
+						SELECT DISTINCT [UserID],[PhoneNumber]
+						FROM	[config].[utbRegistrations] R
+						WHERE	R.[EnrollmentID] = @EnrollmentID	
+								AND R.[ApprovalFlag]  = 1
+								AND R.[ActiveFlag] = 1
+								AND R.[UserID] NOT IN (SELECT [UserID] FROM [adm].[utbUsersProfile])
+
 						-- INSERT USER GROUP
 						INSERT INTO [config].[utbUsersGroups] ([UserID],[GroupID])
 						SELECT	R.[UserID]

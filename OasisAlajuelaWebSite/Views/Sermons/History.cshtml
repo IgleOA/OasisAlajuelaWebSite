@@ -2,7 +2,7 @@
 @using PagedList.Mvc;
 
 @{
-    ViewBag.Title = "Prédicas Historial";
+    ViewBag.Title = "Prédicas - Historial";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
@@ -35,10 +35,25 @@
     }
 
 </script>
+<div id="header" class="headerFixed" style="z-index:-1;position:relative;">
+
+</div>
 <section class="hp-section">
     <div class="container">
+        <div class="col p-0 text-center heading-section ftco-animate animated fadeInUp">
+            <h2 class="mb-0"><span class="px-4">@ViewBag.Title.ToUpper()</span></h2>
+            <span class="subheading">Palabras dictadas directo del Corazón de Dios</span>
+        </div>
         <div class="row justify-content-start">
-            <h2 class="heading-section font-weight-bold my-2 p-0">@ViewBag.Title.ToUpper()</h2>
+            <div class="px-0">
+                <div class="media services d-block text-justify">
+                    <div class="media-body px-0 m-0">
+                        <div class="d-flex justify-content-between">
+                            <a href='#' title="Agregar Prédica" class="btn btn-light" style="text-decoration: none;" onclick="AddNew()"><i class="fas fa-plus-square fa-1x"></i> Agregar Prédica</a>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         @using (Html.BeginForm("History", "Sermons", FormMethod.Get))
         {
@@ -98,7 +113,7 @@
                                             });
                                         });
                                     </script>
-                                    <a href="#" class="card-link" onclick="Activate(@item.SermonID)" title="Habilitar"><i id="@Editflag" class="fas fa-times-circle fa-2x DisactiveColor" ></i></a>
+                                    <a href="#" class="card-link" onclick="Activate(@item.SermonID)" title="Habilitar"><i id="@Editflag" class="fas fa-times-circle fa-2x DisactiveColor" style="vertical-align: middle;"></i></a>
                                 }
                                 else
                                 {
@@ -113,7 +128,7 @@
                                             });
                                         });
                                     </script>
-                                    <a href="#" class="card-link" onclick="Desactivate(@item.SermonID)" title="Deshabilitar"><i id="@Editflag" class="fas fa-check-circle fa-2x ActiveColor" ></i></a>
+                                    <a href="#" class="card-link" onclick="Desactivate(@item.SermonID)" title="Deshabilitar"><i id="@Editflag" class="fas fa-check-circle fa-2x ActiveColor" style="vertical-align: middle;"></i></a>
                                 }
                             </td>
                             <td class="text-center align-middle">
@@ -128,18 +143,7 @@
             @if (Model.PageCount > 1)
             {
                 @Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter }), new PagedListRenderOptions() { ContainerDivClasses = new string[] { "p-0" }, UlElementClasses = new string[] { "pagination m-0" } })
-            }
-        </div>
-        <div class="row">
-            <div class="p-0">
-                <div class="media services d-block text-justify">
-                    <div class="media-body p-0 m-0">
-                        <div class="d-flex justify-content-between">
-                            <a href='#'title="Agregar Prédica" class="btn btn-light" style="text-decoration: none;" onclick="AddNew()"><i class="fas fa-plus-square fa-1x"></i> Agregar Prédica</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            }            
         </div>
     </div>
 </section>
