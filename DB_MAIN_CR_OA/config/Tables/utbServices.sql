@@ -6,6 +6,7 @@
     [Order]              INT           NOT NULL,	
 	[ControllerLink]	 VARCHAR (50)  NULL,
 	[ActionLink]		 VARCHAR (50)  NULL,
+	[Parameter]			 VARCHAR (50)  NULL,
     [ActiveFlag]         BIT           CONSTRAINT [utbServicesDefaultActiveFlagTrue] DEFAULT ((1)) NOT NULL,
     [InsertDate]         DATETIME      CONSTRAINT [utbServicesDefaultInsertDateSysDateTime] DEFAULT (sysdatetime()) NOT NULL,
     [InsertUser]         VARCHAR (100) CONSTRAINT [utbServicesDefaultInsertUserSuser_Sname] DEFAULT (suser_sname()) NOT NULL,

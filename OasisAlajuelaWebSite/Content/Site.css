@@ -1079,3 +1079,19 @@ span.yr, span.mos {
         font-size: 0.75em;
     }
 }
+
+.servicesSmall .icon:hover {
+    background: #00ACEC;
+}
+
+.servicesSmall .icon span:hover {
+    color: white;
+}
+
+.services .icon:hover {
+    background: #00ACEC;
+}
+
+.services .icon span:hover {
+    color: white;
+}

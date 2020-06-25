@@ -52,6 +52,7 @@
                             <th class="py-2 align-middle">@Html.DisplayNameFor(model => model.ServiceDescription)</th>
                             <th class="py-2 text-center align-middle">@Html.DisplayNameFor(model => model.ControllerLink)</th>
                             <th class="py-2 text-center align-middle">@Html.DisplayNameFor(model => model.ActionLink)</th>
+                            <th class="py-2 text-center align-middle">@Html.DisplayNameFor(model => model.Parameter)</th>
                             <th class="py-2 text-center align-middle">@Html.DisplayNameFor(model => model.ActiveFlag)</th>
                             <th class="py-2 text-center align-middle" colspan="2">Acción</th>
                         </tr>
@@ -82,6 +83,9 @@
                                 </td>
                                 <td class="text-center align-middle">
                                     @Html.DisplayFor(modelItem => item.ActionLink)
+                                </td>
+                                <td class="text-center align-middle">
+                                    @Html.DisplayFor(modelItem => item.Parameter)
                                 </td>
                                 <td class="text-center align-middle">
                                     @Html.DisplayFor(modelItem => Status)
