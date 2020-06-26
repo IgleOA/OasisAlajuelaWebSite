@@ -2,6 +2,7 @@
 using ET;
 using Microsoft.AspNet.Identity;
 using PagedList;
+using shortid;
 using System;
 using System.Configuration;
 using System.IO;
@@ -106,30 +107,40 @@ namespace OasisAlajuelaWebSite.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddNew(Blogs MS)
         {
-            String FileExt = Path.GetExtension(MS.file.FileName).ToUpper();
+            String FileExt = Path.GetExtension(MS.UploadFile.FileName).ToUpper();
 
-            MS.BannerExt = FileExt;
-
-            Stream str = MS.file.InputStream;
-            BinaryReader Br = new BinaryReader(str);
-            Byte[] FileDet = Br.ReadBytes((Int32)str.Length);
-
-            MS.BannerData = FileDet;
-            MS.InsertDate = DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"]));
-
-            string InsertUser = User.Identity.GetUserName();
-
-            var r = PBL.AddNew(MS, InsertUser);
-
-            if (!r)
+            if (FileExt == ".PNG" || FileExt == ".JPG" || FileExt == ".JPEG")
             {
-                ViewBag.Mensaje = "Ha ocurrido un error inesperado.";
-                return View("~/Views/Shared/Error.cshtml");
+                MS.InsertDate = DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"]));
+
+                string GUID = "IMG_Blog_" + ShortId.Generate(true, false, 12) + FileExt;
+
+                string ServerPath = Path.Combine(Server.MapPath("~/Files/Images"), GUID);
+
+                MS.UploadFile.SaveAs(ServerPath);
+
+                MS.BannerPath = "/Files/Images/" + GUID;
+
+                string InsertUser = User.Identity.GetUserName();
+
+                var r = PBL.AddNew(MS, InsertUser);
+
+                if (!r)
+                {
+                    ViewBag.Mensaje = "Ha ocurrido un error inesperado.";
+                    return View("~/Views/Shared/Error.cshtml");
+                }
+                else
+                {
+                    MS.ActionType = "CREATE";
+                    MS.Ministerlist = MBL.List(true);
+                    return View(MS);
+                }
             }
             else
             {
-                MS.ActionType = "CREATE";
                 MS.Ministerlist = MBL.List(true);
+                this.ModelState.AddModelError(String.Empty, "El formato de la imagen no es permitido.");
                 return View(MS);
             }
         }
@@ -172,19 +183,19 @@ namespace OasisAlajuelaWebSite.Controllers
         {
             string InsertUser = User.Identity.GetUserName();
 
-            if (MS.file != null)
+            if (MS.UploadFile != null)
             {
-                String FileExt = Path.GetExtension(MS.file.FileName).ToUpper();
-
-                MS.BannerExt = FileExt;
+                String FileExt = Path.GetExtension(MS.UploadFile.FileName).ToUpper();
 
                 if (FileExt == ".PNG" || FileExt == ".JPG" || FileExt == ".JPEG")
                 {
-                    Stream str = MS.file.InputStream;
-                    BinaryReader Br = new BinaryReader(str);
-                    Byte[] FileDet = Br.ReadBytes((Int32)str.Length);
+                    string GUID = "IMG_Blog_" + ShortId.Generate(true, false, 12) + FileExt;
 
-                    MS.BannerData = FileDet;
+                    string ServerPath = Path.Combine(Server.MapPath("~/Files/Images"), GUID);
+
+                    MS.UploadFile.SaveAs(ServerPath);
+
+                    MS.BannerPath = "/Files/Images/" + GUID;
 
                     var r = PBL.Update(MS, InsertUser);
 

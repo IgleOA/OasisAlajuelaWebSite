@@ -7,6 +7,7 @@ using OasisAlajuelaWebSite.Models;
 using Microsoft.AspNet.Identity;
 using System.IO;
 using System.Configuration;
+using shortid;
 
 namespace OasisAlajuelaWebSite.Controllers
 { 
@@ -83,17 +84,17 @@ namespace OasisAlajuelaWebSite.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddNew(Ministries Min)
         {
-            String FileExt = Path.GetExtension(Min.file.FileName).ToUpper();
-
-            Min.ImageExt = FileExt;
+            String FileExt = Path.GetExtension(Min.UploadFile.FileName).ToUpper();
 
             if (FileExt == ".PNG" || FileExt == ".JPG" || FileExt == ".JPEG")
             {
-                Stream str = Min.file.InputStream;
-                BinaryReader Br = new BinaryReader(str);
-                Byte[] FileDet = Br.ReadBytes((Int32)str.Length);
+                string GUID = "IMG_Ministry_" + ShortId.Generate(true, false, 12) + FileExt;
 
-                Min.Image = FileDet;
+                string ServerPath = Path.Combine(Server.MapPath("~/Files/Images"), GUID);
+
+                Min.UploadFile.SaveAs(ServerPath);
+
+                Min.ImagePath = "/Files/Images/" + GUID;
 
                 string InsertUser = User.Identity.GetUserName();
 
@@ -138,7 +139,7 @@ namespace OasisAlajuelaWebSite.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Ministries Min)
         {
-            if (Min.file == null)
+            if (Min.UploadFile == null)
             {
                 var r = MBL.Update(Min, User.Identity.GetUserName());
 
@@ -156,17 +157,17 @@ namespace OasisAlajuelaWebSite.Controllers
             }
             else
             {
-                String FileExt = Path.GetExtension(Min.file.FileName).ToUpper();
-
-                Min.ImageExt = FileExt;
+                String FileExt = Path.GetExtension(Min.UploadFile.FileName).ToUpper();
 
                 if (FileExt == ".PNG" || FileExt == ".JPG" || FileExt == ".JPEG")
                 {
-                    Stream str = Min.file.InputStream;
-                    BinaryReader Br = new BinaryReader(str);
-                    Byte[] FileDet = Br.ReadBytes((Int32)str.Length);
+                    string GUID = "IMG_Ministry_" + ShortId.Generate(true, false, 12) + FileExt;
 
-                    Min.Image = FileDet;
+                    string ServerPath = Path.Combine(Server.MapPath("~/Files/Images"), GUID);
+
+                    Min.UploadFile.SaveAs(ServerPath);
+
+                    Min.ImagePath = "/Files/Images/" + GUID;
 
                     var r = MBL.Update(Min, User.Identity.GetUserName());
 

@@ -2900,6 +2900,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Files\Audios\" />
+    <Folder Include="Files\Documents\" />
+    <Folder Include="Files\Images\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

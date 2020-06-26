@@ -26,8 +26,7 @@ AS
 				SELECT	[NewID]
 						,[Title]
 						,[Description]
-						,[BannerData]
-						,[BannerExt]
+						,[BannerPath]
 						,[ShowFlag]
 						,[ActiveFlag]
 						,[Date]			= CONVERT(DATE,ISNULL([LastModifyDate],[InsertDate]))

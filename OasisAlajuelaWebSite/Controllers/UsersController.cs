@@ -3,6 +3,7 @@ using ET;
 using Microsoft.AspNet.Identity;
 using OasisAlajuelaWebSite.Models;
 using PagedList;
+using shortid;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -106,7 +107,7 @@ namespace OasisAlajuelaWebSite.Controllers
             {
                 groups += l.GroupName + ",";
             }
-
+            
             ViewBag.Groups = groups;
 
             if (r.LastActivityDate.ToString().Length == 0)
@@ -144,7 +145,7 @@ namespace OasisAlajuelaWebSite.Controllers
             string insertuser = User.Identity.GetUserName();
 
             UP.ActionType = "CONTACT";
-            UP.PhotoData = null;
+            UP.Photo = null;
 
             var r = UPBL.Update(UP, insertuser);
 
@@ -166,7 +167,7 @@ namespace OasisAlajuelaWebSite.Controllers
             string insertuser = User.Identity.GetUserName();
 
             UP.ActionType = "SOCIALNET";
-            UP.PhotoData = null;
+            UP.Photo = null;
 
             var r = UPBL.Update(UP, insertuser);
 
@@ -193,12 +194,12 @@ namespace OasisAlajuelaWebSite.Controllers
             {
                 UP.ActionType = "PHOTO";
 
-                Stream str = UP.file.InputStream;
-                BinaryReader Br = new BinaryReader(str);
-                Byte[] FileDet = Br.ReadBytes((Int32)str.Length);
+                string GUID = "IMG_Profile_" + ShortId.Generate(true, false, 12) + UP.PhotoExt;
 
-                UP.PhotoData = FileDet;
+                string ServerPath = Path.Combine(Server.MapPath("~/Files/Images"), GUID);
 
+                UP.file.SaveAs(ServerPath);
+                UP.Photo = "/Files/Images/" + GUID;
                 var r = UPBL.Update(UP, insertuser);
 
                 if (!r)

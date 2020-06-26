@@ -15,8 +15,7 @@ CREATE PROCEDURE [adm].[uspAddBlog]
 	@Title			VARCHAR(30),
     @KeyWord        VARCHAR(30),
 	@Description	VARCHAR(200),
-	@BannerData		VARBINARY(MAX),
-	@BannerExt		VARCHAR(10),
+	@Banner 		VARCHAR(500),
 	@MinisterID		INT,
 	@InsertDate		DATETIME
 AS 
@@ -37,8 +36,8 @@ AS
                 END
 
             -- =======================================================
-				INSERT INTO [config].[utbBlogs] ([Title],[KeyWord],[Description],[BannerData],[BannerExt],[MinisterID],[InsertDate],[InsertUser],[LastModifyUser])
-				VALUES (@Title,@KeyWord,@Description,@BannerData,REPLACE(@BannerExt,'.',''),@MinisterID,@InsertDate,@InsertUser,@InsertUser)
+				INSERT INTO [config].[utbBlogs] ([Title],[KeyWord],[Description],[BannerPath],[MinisterID],[InsertDate],[InsertUser],[LastModifyUser])
+				VALUES (@Title,@KeyWord,@Description,@Banner,@MinisterID,@InsertDate,@InsertUser,@InsertUser)
 			-- =======================================================
 
         IF ( @@trancount > 0

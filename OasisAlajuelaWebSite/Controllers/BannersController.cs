@@ -7,6 +7,7 @@ using System.Linq;
 using PagedList;
 using System.IO;
 using System.Configuration;
+using shortid;
 
 namespace OasisAlajuelaWebSite.Controllers
 {
@@ -117,17 +118,16 @@ namespace OasisAlajuelaWebSite.Controllers
         public ActionResult AddNew(Banner MS)
         {
 
-            String FileExt = Path.GetExtension(MS.file.FileName).ToUpper();
-
-            MS.BannerExt = FileExt;
+            String FileExt = Path.GetExtension(MS.UploadFile.FileName).ToUpper();
 
             if (FileExt == ".PNG" || FileExt == ".JPG" || FileExt == ".JPEG")
             {
-                Stream str = MS.file.InputStream;
-                BinaryReader Br = new BinaryReader(str);
-                Byte[] FileDet = Br.ReadBytes((Int32)str.Length);
+                string GUID = "IMG_Banner_" + ShortId.Generate(true, false, 12) + FileExt;
 
-                MS.BannerData = FileDet;
+                string ServerPath = Path.Combine(Server.MapPath("~/Files/Images"), GUID);
+
+                MS.UploadFile.SaveAs(ServerPath);
+                MS.BannerPath = "/Files/Images/" + GUID;
 
                 string InsertUser = User.Identity.GetUserName();
 

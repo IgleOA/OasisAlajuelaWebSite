@@ -14,8 +14,7 @@ CREATE PROCEDURE [adm].[uspAddNew]
 	@InsertUser		VARCHAR(50),	
 	@Title			VARCHAR(30),
 	@Description	VARCHAR(200),
-	@BannerData		VARBINARY(MAX),
-	@BannerExt		VARCHAR(10),
+	@Banner 		VARCHAR(500),	
 	@InsertDate		DATETIME
 AS 
     BEGIN
@@ -35,8 +34,8 @@ AS
                 END
 
             -- =======================================================
-				INSERT INTO [config].[utbNews] ([Title],[Description],[BannerData],[BannerExt],[InsertDate],[InsertUser],[LastModifyUser])
-				VALUES (@Title,@Description,@BannerData,REPLACE(@BannerExt,'.',''),@InsertDate,@InsertUser,@InsertUser)
+				INSERT INTO [config].[utbNews] ([Title],[Description],[BannerPath],[InsertDate],[InsertUser],[LastModifyUser])
+				VALUES (@Title,@Description,@Banner,@InsertDate,@InsertUser,@InsertUser)
 			-- =======================================================
 
         IF ( @@trancount > 0

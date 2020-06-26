@@ -58,12 +58,9 @@
         <div class="row mt-2 justify-content-center">
             @foreach (var item in Model)
             {
-                var base64 = Convert.ToBase64String(item.TypeImage, 0, item.TypeImage.Length);
-                var imgSrc = string.Format("data:image/{0};base64,{1}", item.TypeImageExt, base64);
-
                 <div class="col-lg-4 d-flex">
                     <div class="blog-entry justify-content-end">
-                        <a href='@Url.Action("Type","Resources",new { id = item.ResourceTypeID })' target="_blank" class="block-20" style="background-image: url('@imgSrc')" title="@item.TypeName"></a>
+                        <a href='@Url.Action("Type","Resources",new { id = item.ResourceTypeID })' target="_blank" class="block-20" style="background-image: url('@item.TypeImagePath')" title="@item.TypeName"></a>
                         <div class="textBlog d-flex float-right d-block" style="background-color: linen;">
                             <div class="desc px-2">
                                 <div class="row">

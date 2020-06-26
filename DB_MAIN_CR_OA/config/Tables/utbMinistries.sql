@@ -2,8 +2,7 @@
     [MinistryID]     INT             IDENTITY (1, 1) NOT NULL,
     [Name]           VARCHAR (50)    NOT NULL,
     [Description]    VARCHAR (MAX)   NOT NULL,
-    [Image]          VARBINARY (MAX) NULL,
-    [ImageExt]       VARCHAR (10)    NULL,
+    [ImagePath]      VARCHAR (500)   NULL,
     [ActionLink]     VARCHAR (50)    NULL,
     [ActiveFlag]     BIT             CONSTRAINT [utbMinistriesDefaultActiveFlagIsTrue] DEFAULT ((1)) NOT NULL,
     [InsertDate]     DATETIME        CONSTRAINT [utbMinistriesDefaultInsertDatesysdatetime] DEFAULT (sysdatetime()) NOT NULL,
@@ -20,8 +19,8 @@ FOR INSERT,UPDATE
 AS
 	BEGIN
 		DECLARE @INSERTUPDATE VARCHAR(30)
-		DECLARE @StartValues	XML = (SELECT [MinistryID],[Name],[Description],[ImageExt],[ActionLink] FROM Deleted [Values] for xml AUTO, ELEMENTS XSINIL)
-		DECLARE @EndValues		XML = (SELECT [MinistryID],[Name],[Description],[ImageExt],[ActionLink] FROM Inserted [Values] for xml AUTO, ELEMENTS XSINIL)
+		DECLARE @StartValues	XML = (SELECT * FROM Deleted [Values] for xml AUTO, ELEMENTS XSINIL)
+		DECLARE @EndValues		XML = (SELECT * FROM Inserted [Values] for xml AUTO, ELEMENTS XSINIL)
 
 		CREATE TABLE #DBCC (EventType varchar(50), Parameters varchar(50), EventInfo nvarchar(max))
 

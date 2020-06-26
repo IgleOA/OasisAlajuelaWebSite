@@ -15,8 +15,7 @@ CREATE PROCEDURE [adm].[uspUpdateLeadership]
 	@LeaderID		INT,
 	@FullName		VARCHAR(100) = NULL,
 	@Description	VARCHAR(MAX) = NULL,
-	@Image			VARBINARY(MAX) = NULL,
-	@ImageExt		VARCHAR(10) = NULL,
+	@Image			VARCHAR(500) = NULL,
 	@Order			INT = NULL,
 	@ActionLink		VARCHAR(50) = NULL,
 	@UpdateType		VARCHAR(10) = NULL
@@ -51,8 +50,7 @@ AS
 						UPDATE	[config].[utbLeadership]
 						SET		[FullName] = @FullName
 								,[Description] = @Description
-								,[Image] = ISNULL(@Image,[Image])
-								,[ImageExt] = ISNULL(@ImageExt,[ImageExt])
+								,[ImagePath] = ISNULL(@Image,[ImagePath])
 								,[ActionLink] = @ActionLink
 								,[Order] = ISNULL(@Order,[Order])
 								,[LastModifyDate] = GETDATE()

@@ -18,8 +18,7 @@ CREATE PROCEDURE [adm].[uspUpdateNew]
 	@Title			VARCHAR(50) = NULL,
 	@ShowFlag		BIT = NULL,
 	@Description	VARCHAR(MAX) = NULL,
-	@BannerData		VARBINARY(MAX) = NULL,
-	@BannerExt		VARCHAR(10) = NULL	
+	@Banner			VARCHAR(500) = NULL
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -92,8 +91,7 @@ AS
 								UPDATE	[config].[utbNews] 
 								SET		 [Title]		= @Title
 										,[Description]	= @Description	
-										,[BannerData]	= @BannerData
-										,[BannerExt]	= REPLACE(@BannerExt,'.','')
+										,[BannerPath]	= @Banner
 										,[ShowFlag]		= @ShowFlag
 										,[ActiveFlag]	= 1
 										,[LastModifyDate]	= @InsertDate

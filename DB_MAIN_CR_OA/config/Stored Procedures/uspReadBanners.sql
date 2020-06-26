@@ -27,8 +27,7 @@ AS
 										    WHERE  [LocationName] = @pLocation)
 
 				SELECT	B.[BannerID]
-						,B.[BannerData]
-						,B.[BannerExt]
+						,B.[BannerPath]
 						,B.[BannerName]
 						,B.[LocationID]
 						,[Location]		=	L.[LocationName]

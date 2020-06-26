@@ -39,7 +39,7 @@ namespace ET
         public string RoleName { get; set; }
 
         [Display(Name = "Imagen")]
-        public byte[] PhotoData { get; set; }
+        public string Photo { get; set; }
 
         [DataType(DataType.Upload)]
         [AllowExtensions(Extensions = "png,jpg,jpeg,gif", ErrorMessage = "Por favor seleccione solo archivos soportados .png, .jpg, .jpeg, .gif")]

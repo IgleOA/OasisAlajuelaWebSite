@@ -2,8 +2,7 @@
     [ResourceTypeID] INT             IDENTITY (1, 1) NOT NULL,
     [TypeName]       VARCHAR (500)   NOT NULL,
     [Description]    VARCHAR (MAX)   NULL,
-    [TypeImage]      VARBINARY (MAX) NOT NULL,
-    [TypeImageExt]   VARCHAR (10)    NOT NULL,
+    [TypeImagePath]  VARCHAR (500)   NOT NULL,
     [IsPublic]       BIT             NULL,
     [ActiveFlag]     BIT             CONSTRAINT [utbResourceTypesDefaultActiveFlagTrue] DEFAULT ((1)) NOT NULL,
     [InsertDate]     DATETIME        CONSTRAINT [utbResourceTypesDefaultInsertDateSysDateTime] DEFAULT (sysdatetime()) NOT NULL,
@@ -22,8 +21,8 @@ FOR INSERT,UPDATE
 AS
 	BEGIN
 		DECLARE @INSERTUPDATE VARCHAR(30)
-		DECLARE @StartValues	XML = (SELECT [ResourceTypeID],[TypeName],[Description],[ActiveFlag] FROM Deleted [Values] for xml AUTO, ELEMENTS XSINIL)
-		DECLARE @EndValues		XML = (SELECT [ResourceTypeID],[TypeName],[Description],[ActiveFlag] FROM Inserted [Values] for xml AUTO, ELEMENTS XSINIL)
+		DECLARE @StartValues	XML = (SELECT * FROM Deleted [Values] for xml AUTO, ELEMENTS XSINIL)
+		DECLARE @EndValues		XML = (SELECT * FROM Inserted [Values] for xml AUTO, ELEMENTS XSINIL)
 
 		CREATE TABLE #DBCC (EventType varchar(50), Parameters varchar(50), EventInfo nvarchar(max))
 

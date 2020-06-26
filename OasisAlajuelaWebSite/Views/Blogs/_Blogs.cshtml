@@ -21,14 +21,10 @@
     <div class="carousel-inner">
         @foreach (var item in Model)
         {
-            var base64 = Convert.ToBase64String(item.BannerData, 0, item.BannerData.Length);
-            var imgSrc = string.Format("data:image/{0};base64,{1}", item.BannerExt, base64);
-            
-
             if (item.Slide == 0)
             {
                 <div class="carousel-item active animated fadeIn" style="-webkit-animation-duration: 5s; animation-duration: 5s;">
-                    <img src="@imgSrc" class="d-block w-100"  title="@item.Title" style="width: 100% !important; max-height: 500px !important; border-radius: 10px;">
+                    <img src="@item.BannerPath" class="d-block w-100"  title="@item.Title" style="width: 100% !important; max-height: 500px !important; border-radius: 10px;">
                     <div class="py-1 text-center">
                         <h4 class="mb-1 font-weight-bold">@item.Title</h4>
                         <p class="m-0">@item.Description</p>
@@ -38,7 +34,7 @@
             else
             {
                 <div class="carousel-item animated fadeIn" style="-webkit-animation-duration: 5s; animation-duration: 5s;">
-                    <img src="@imgSrc" class="d-block w-100"  title="@item.Title" style="width: 100% !important; max-height: 500px !important; border-radius: 10px;">
+                    <img src="@item.BannerPath" class="d-block w-100"  title="@item.Title" style="width: 100% !important; max-height: 500px !important; border-radius: 10px;">
                     <div class="py-1 text-center">
                         <h4 class="mb-1 font-weight-bold">@item.Title</h4>
                         <p class="m-0">@item.Description</p>

@@ -14,8 +14,7 @@ CREATE PROCEDURE [adm].[uspUpdateUserProfile]
 	@ActionType		VARCHAR(10)
 	,@InsertUser	VARCHAR(100)
 	,@UserID		INT
-	,@Photo			VARBINARY(MAX)	= NULL
-	,@PhotoExt		VARCHAR(10)		= NULL
+	,@Photo			VARCHAR(500)	= NULL
 	,@Phone			VARCHAR(50)		= NULL
 	,@Mobile		VARCHAR(50)		= NULL
 	,@Country		VARCHAR(100)	= NULL
@@ -48,8 +47,7 @@ AS
 						IF(@ActionType = 'PHOTO')
 							BEGIN
 								UPDATE	[adm].[utbUsersProfile]
-								SET		[Photo] = @Photo
-										,[PhotoExt] = REPLACE(@PhotoExt,'.','')
+								SET		[PhotoPath] = @Photo
 										,[LastModifyDate] = GETDATE()
 										,[LastModifyUser] = @InsertUser
 								WHERE	[UserID] = @UserID
@@ -86,8 +84,8 @@ AS
 					END
 				ELSE
 					BEGIN
-						INSERT INTO [adm].[utbUsersProfile]	([UserID],[Photo],[PhotoExt],[Phone],[Mobile],[Facebook],[Twitter],[Snapchat],[Instragram],[Country],[State],[City],[CreationUser],[LastModifyUser])
-						VALUES (@UserID,@Photo,@PhotoExt,@Phone,@Mobile,@Facebook,@Twitter,@Snapchat,@Instragram,@Country,@State,@City,@InsertUser,@InsertUser)	
+						INSERT INTO [adm].[utbUsersProfile]	([UserID],[PhotoPath],[Phone],[Mobile],[Facebook],[Twitter],[Snapchat],[Instragram],[Country],[State],[City],[CreationUser],[LastModifyUser])
+						VALUES (@UserID,@Photo,@Phone,@Mobile,@Facebook,@Twitter,@Snapchat,@Instragram,@Country,@State,@City,@InsertUser,@InsertUser)	
 						SELECT [UserID] = @UserID
 					END
 			-- =======================================================

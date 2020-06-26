@@ -12,6 +12,7 @@ using BL;
 using ET;
 using Microsoft.AspNet.Identity;
 using PagedList;
+using shortid;
 
 namespace OasisAlajuelaWebSite.Controllers
 {
@@ -142,20 +143,33 @@ namespace OasisAlajuelaWebSite.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddNew(Sermons MS)
         {
-            if (!Convert.IsDBNull(MS.file))
-            {                
-                String FileExt = Path.GetExtension(MS.file.FileName).ToUpper();
-                MS.BannerExt = FileExt;
-                Stream str = MS.file.InputStream;
-                BinaryReader Br = new BinaryReader(str);
-                Byte[] FileDet = Br.ReadBytes((Int32)str.Length);
-                MS.BannerData = FileDet;
+            if (MS.UploadFile != null)
+            {
+                String FileExt = Path.GetExtension(MS.UploadFile.FileName).ToUpper();
+
+                if (FileExt == ".PNG" || FileExt == ".JPG" || FileExt == ".JPEG")
+                {
+                    string GUID = "IMG_Sermon_" + ShortId.Generate(true, false, 12) + FileExt;
+
+                    string ServerPath = Path.Combine(Server.MapPath("~/Files/Images"), GUID);
+
+                    MS.UploadFile.SaveAs(ServerPath);
+
+                    MS.BannerPath = "/Files/Images/" + GUID;
+                }
             }
             else
             {
                 var Banner = ConvertURLtoBase(MS.SermonURL);
-                MS.BannerExt = Banner.BannerExt;
-                MS.BannerData = Banner.BannerData;
+                String FileExt = Path.GetExtension(Banner).ToUpper();
+                string GUID = "IMG_Sermon_" + ShortId.Generate(true, false, 12) + FileExt;
+                string ServerPath = Path.Combine(Server.MapPath("~/Files/Images"), GUID);
+                WebClient client = new WebClient();
+
+                client.DownloadFile(Banner, ServerPath);
+
+                MS.BannerPath = "/Files/Images/" + GUID;
+
             }
 
             string InsertUser = User.Identity.GetUserName();
@@ -167,33 +181,18 @@ namespace OasisAlajuelaWebSite.Controllers
             {
                 SermonEmail Res = SBL.DetailsForEmail(SermonID);
 
-                var uri = new Uri(Res.SermonURL);
-
-                // you can check host here => uri.Host <= "www.youtube.com"
-
-                var query = HttpUtility.ParseQueryString(uri.Query);
-
-                var videoId = string.Empty;
-
-                if (query.AllKeys.Contains("v"))
-                {
-                    videoId = query["v"];
-                }
-                else
-                {
-                    videoId = uri.Segments.Last();
-                }
-
-                Res.ImageURL = "https://i.ytimg.com/vi/" + videoId + "/mqdefault.jpg";
+                Res.ImageURL = "https://oasisalajuela.com/" + MS.BannerPath;
 
                 MailAddressCollection emailtoBCC = new MailAddressCollection();
                 List<Users> Subscribers = USBL.Subscribers(0, true);
 
-                foreach (var item in Subscribers)
+                if (Subscribers.Count() > 0)
                 {
-                    emailtoBCC.Add(item.Email);
+                    foreach (var item in Subscribers)
+                    {
+                        emailtoBCC.Add(item.Email);
+                    }
                 }
-
                 #region Email
                 Emails Email = new Emails()
                 {
@@ -214,7 +213,10 @@ namespace OasisAlajuelaWebSite.Controllers
                 mm.Subject = Email.SubjectEmail;
                 mm.Body = Email.BodyEmail;
                 mm.IsBodyHtml = true;
-                mm.Bcc.Add(emailtoBCC.ToString());
+                if (Subscribers.Count() > 0)
+                {
+                    mm.Bcc.Add(emailtoBCC.ToString());
+                }
 
                 SmtpClient smtp = new SmtpClient();
                 smtp.Send(mm);
@@ -233,9 +235,8 @@ namespace OasisAlajuelaWebSite.Controllers
         }
 
         [Authorize]
-        public ActionResult ChangeStatus(int id)
+        public void ChangeStatus(int id)
         {
-            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
             string InsertUser = User.Identity.GetUserName();
 
             Sermons New = new Sermons()
@@ -244,17 +245,7 @@ namespace OasisAlajuelaWebSite.Controllers
                 SermonDate = DateTime.Today
             };
 
-            var r = SBL.Update(New, InsertUser);
-
-            if (!r)
-            {
-                ViewBag.Mensaje = "Ha ocurrido un error inesperado.";
-                return View("~/Views/Shared/Error.cshtml");
-            }
-            else
-            {
-                return this.RedirectToAction("Index");
-            }
+            SBL.Update(New, InsertUser);
         }
 
         [Authorize]
@@ -281,19 +272,19 @@ namespace OasisAlajuelaWebSite.Controllers
         {
             string InsertUser = User.Identity.GetUserName();
 
-            if (MS.file != null)
+            if (MS.UploadFile != null)
             {
-                String FileExt = Path.GetExtension(MS.file.FileName).ToUpper();
-
-                MS.BannerExt = FileExt;
+                String FileExt = Path.GetExtension(MS.UploadFile.FileName).ToUpper();
 
                 if (FileExt == ".PNG" || FileExt == ".JPG" || FileExt == ".JPEG")
                 {
-                    Stream str = MS.file.InputStream;
-                    BinaryReader Br = new BinaryReader(str);
-                    Byte[] FileDet = Br.ReadBytes((Int32)str.Length);
+                    string GUID = "IMG_Sermon_" + ShortId.Generate(true, false, 12) + FileExt;
 
-                    MS.BannerData = FileDet;
+                    string ServerPath = Path.Combine(Server.MapPath("~/Files/Images"), GUID);
+
+                    MS.UploadFile.SaveAs(ServerPath);
+
+                    MS.BannerPath = "/Files/Images/" + GUID;
 
                     var r = SBL.Update(MS, InsertUser);
 
@@ -357,7 +348,7 @@ namespace OasisAlajuelaWebSite.Controllers
             return new JsonResult { Data = YouTubeVideo, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
         }
 
-        public YouTubeBanner ConvertURLtoBase(string YouTubeLink)
+        public string ConvertURLtoBase(string YouTubeLink)
         {
             var uri = new Uri(YouTubeLink);
 
@@ -378,50 +369,52 @@ namespace OasisAlajuelaWebSite.Controllers
 
             var YouTubeVideo = YBL.YoutubeVideoValidation(videoId);
 
-            //StringBuilder sb = new StringBuilder();
+            return YouTubeVideo.BannerLink;
 
-            Stream stream = null;
-            //create a byte[] object. It serves as a buffer.
-            YouTubeBanner Banner = new YouTubeBanner();
-            try
-            {
-                //Create a new WebProxy object.
-                WebProxy myProxy = new WebProxy();
-                //create a HttpWebRequest object and initialize it by passing the colleague api url to a create method.
-                HttpWebRequest req = (HttpWebRequest)WebRequest.Create(YouTubeVideo.BannerLink);
-                //Create a HttpWebResponse object and initilize it
-                HttpWebResponse response = (HttpWebResponse)req.GetResponse();
-                //get the response stream
-                stream = response.GetResponseStream();
+            ////StringBuilder sb = new StringBuilder();
 
-                using (BinaryReader br = new BinaryReader(stream))
-                {
-                    //get the content length in integer
-                    int len = (int)(response.ContentLength);
-                    //Read bytes
-                    Banner.BannerData = (br.ReadBytes(len));
-                    //close the binary reader
-                    br.Close();
-                }
-                //close the stream object
-                stream.Close();
-                //close the response object 
-                response.Close();
-            }
-            catch (Exception exp)
-            {
-                //set the buffer to null
-                Console.Write(exp);
-                Banner.BannerData = null;
-            }
-            //return the buffer
+            //Stream stream = null;
+            ////create a byte[] object. It serves as a buffer.
+            //YouTubeBanner Banner = new YouTubeBanner();
+            //try
+            //{
+            //    //Create a new WebProxy object.
+            //    WebProxy myProxy = new WebProxy();
+            //    //create a HttpWebRequest object and initialize it by passing the colleague api url to a create method.
+            //    HttpWebRequest req = (HttpWebRequest)WebRequest.Create(YouTubeVideo.BannerLink);
+            //    //Create a HttpWebResponse object and initilize it
+            //    HttpWebResponse response = (HttpWebResponse)req.GetResponse();
+            //    //get the response stream
+            //    stream = response.GetResponseStream();
 
-            //sb.Append(Convert.ToBase64String(buf, 0, buf.Length));
+            //    using (BinaryReader br = new BinaryReader(stream))
+            //    {
+            //        //get the content length in integer
+            //        int len = (int)(response.ContentLength);
+            //        //Read bytes
+            //        Banner.BannerData = (br.ReadBytes(len));
+            //        //close the binary reader
+            //        br.Close();
+            //    }
+            //    //close the stream object
+            //    stream.Close();
+            //    //close the response object 
+            //    response.Close();
+            //}
+            //catch (Exception exp)
+            //{
+            //    //set the buffer to null
+            //    Console.Write(exp);
+            //    Banner.BannerData = null;
+            //}
+            ////return the buffer
 
-            //var result =  string.Format(@"data:image/jpg;base64, {0}", sb.ToString());
-            Banner.BannerExt = Path.GetExtension(@YouTubeVideo.BannerLink.Split('?')[0]).ToUpper();
+            ////sb.Append(Convert.ToBase64String(buf, 0, buf.Length));
 
-            return Banner;
+            ////var result =  string.Format(@"data:image/jpg;base64, {0}", sb.ToString());
+            //Banner.BannerExt = Path.GetExtension(@YouTubeVideo.BannerLink.Split('?')[0]).ToUpper();
+
+            //return Banner;
         }
 
         public ActionResult EmailNewSermon(int id)

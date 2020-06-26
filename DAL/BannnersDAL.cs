@@ -47,8 +47,7 @@ namespace DAL
                         var banner = new Banner
                         {
                             BannerID = Convert.ToInt32(dr["BannerID"]),
-                            BannerData = (byte[])dr["BannerData"],
-                            BannerExt = dr["BannerExt"].ToString(),
+                            BannerPath = dr["BannerPath"].ToString(),
                             BannerName = dr["BannerName"].ToString(),
                             LocationID = Convert.ToInt32(dr["LocationID"]),
                             LocationBanner = dr["Location"].ToString(),
@@ -118,8 +117,7 @@ namespace DAL
             {
                 DynamicParameters Parm = new DynamicParameters();
                 Parm.Add("@InsertUser", InserUser);
-                Parm.Add("@Banner", NewBanner.BannerData);
-                Parm.Add("@BannerExt", NewBanner.BannerExt);
+                Parm.Add("@Banner", NewBanner.BannerPath);
                 Parm.Add("@BannerName", NewBanner.BannerName.Trim());
                 Parm.Add("@LocationID", NewBanner.LocationID);
 

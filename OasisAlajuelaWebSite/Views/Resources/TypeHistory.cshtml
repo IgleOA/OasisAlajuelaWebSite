@@ -133,9 +133,7 @@
                                                                     @item.Description
                                                                 </p>
                                                             </div>
-                                                            <audio controls>
-                                                                <source src='@Url.Action("GetFile", new { id = item.ResourceID })' type=@filetype />
-                                                            </audio>
+                                                            <audio src="@item.FilePath" controls></audio>
                                                         </div>
                                                     </div>
                                                 </div>

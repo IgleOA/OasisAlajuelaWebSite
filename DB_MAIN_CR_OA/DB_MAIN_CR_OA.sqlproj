@@ -212,5 +212,6 @@
   <ItemGroup>
     <None Include="DB_MAIN_CR_OA_DEV.publish.xml" />
     <None Include="DB_MAIN_CR_OA_PROD.publish.xml" />
+    <None Include="DB_MAIN_CR_OA_NewServer.publish.xml" />
   </ItemGroup>
 </Project>
