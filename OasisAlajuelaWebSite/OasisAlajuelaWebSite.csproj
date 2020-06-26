@@ -2068,6 +2068,7 @@
     <Content Include="Images\Resena_header.png" />
     <Content Include="Images\Reseña-Histórica.png" />
     <Content Include="logo-OasisAlajuela-Black.ico" />
+    <Content Include="OaisisNuevoLogo-FondoBlanco.ico" />
     <Content Include="Scripts\aos.js" />
     <Content Include="Scripts\bootstrap-select.js" />
     <Content Include="Scripts\bootstrap-select.min.js" />
@@ -2254,6 +2255,7 @@
     <Content Include="Content\font-awesome\fonts\FontAwesome.otf" />
     <Content Include="Content\bootstrap-select.css.map" />
     <None Include="Properties\PublishProfiles\IgleOA - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\IgleOANew - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\IgleOAUAT - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\PROD_FTP_Server.pubxml" />
     <None Include="Properties\Settings.settings">
