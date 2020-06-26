@@ -118,6 +118,7 @@
     <Compile Include="BlogsDAL.cs" />
     <Compile Include="EnrollmentsDAL.cs" />
     <Compile Include="GroupsDAL.cs" />
+    <Compile Include="HelpersDAL.cs" />
     <Compile Include="HomeDAL.cs" />
     <Compile Include="LeadershipDAL.cs" />
     <Compile Include="MinistersDAL.cs" />

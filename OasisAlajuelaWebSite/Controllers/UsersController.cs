@@ -23,6 +23,7 @@ namespace OasisAlajuelaWebSite.Controllers
         private UserProfileBL UPBL = new UserProfileBL();
         private RolesBL RBL = new RolesBL();
         private GroupsBL GBL = new GroupsBL();
+        private HelpersBL HBL = new HelpersBL();
 
         public ActionResult Index(string currentFilter, string searchString, int? page)
         {
@@ -198,8 +199,10 @@ namespace OasisAlajuelaWebSite.Controllers
 
                 string ServerPath = Path.Combine(Server.MapPath("~/Files/Images"), GUID);
 
-                UP.file.SaveAs(ServerPath);
+                HBL.ResizeAndSaveImage(350, UP.file.InputStream, ServerPath);
+
                 UP.Photo = "/Files/Images/" + GUID;
+
                 var r = UPBL.Update(UP, insertuser);
 
                 if (!r)

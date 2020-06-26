@@ -17,6 +17,7 @@ namespace OasisAlajuelaWebSite.Controllers
         private LeadershipBL LBL = new LeadershipBL();
         private RightsBL RRBL = new RightsBL();
         private UsersBL UBL = new UsersBL();
+        private HelpersBL HBL = new HelpersBL();
 
         public ActionResult Index()
         {
@@ -141,7 +142,8 @@ namespace OasisAlajuelaWebSite.Controllers
 
                     string ServerPath = Path.Combine(Server.MapPath("~/Files/Images"), GUID);
 
-                    Min.UploadFile.SaveAs(ServerPath);
+                    //Min.UploadFile.SaveAs(ServerPath);
+                    HBL.ResizeAndSaveImage(850, Min.UploadFile.InputStream, ServerPath);
 
                     Min.ImagePath = "/Files/Images/" + GUID;
 
@@ -219,7 +221,8 @@ namespace OasisAlajuelaWebSite.Controllers
 
                     string ServerPath = Path.Combine(Server.MapPath("~/Files/Images"), GUID);
 
-                    Min.UploadFile.SaveAs(ServerPath);
+                    //Min.UploadFile.SaveAs(ServerPath);
+                    HBL.ResizeAndSaveImage(850, Min.UploadFile.InputStream, ServerPath);
 
                     Min.ImagePath = "/Files/Images/" + GUID;
 

@@ -8,6 +8,8 @@ using PagedList;
 using System.IO;
 using System.Configuration;
 using shortid;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace OasisAlajuelaWebSite.Controllers
 {
@@ -18,6 +20,7 @@ namespace OasisAlajuelaWebSite.Controllers
         private BannersLocationBL BLBL = new BannersLocationBL();
         private RightsBL RRBL = new RightsBL();
         private UsersBL UBL = new UsersBL();
+        private HelpersBL HBL = new HelpersBL();
 
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
@@ -126,7 +129,8 @@ namespace OasisAlajuelaWebSite.Controllers
 
                 string ServerPath = Path.Combine(Server.MapPath("~/Files/Images"), GUID);
 
-                MS.UploadFile.SaveAs(ServerPath);
+                HBL.ResizeAndSaveImage(2000, MS.UploadFile.InputStream, ServerPath);
+
                 MS.BannerPath = "/Files/Images/" + GUID;
 
                 string InsertUser = User.Identity.GetUserName();
@@ -151,6 +155,6 @@ namespace OasisAlajuelaWebSite.Controllers
                 MS.LList = BLBL.List();
                 return View(MS);
             }
-        }
+        }       
     }
 }

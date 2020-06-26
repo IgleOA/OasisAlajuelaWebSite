@@ -24,7 +24,8 @@ namespace OasisAlajuelaWebSite.Controllers
         private RightsBL RRBL = new RightsBL();
         private UsersBL USBL = new UsersBL();
         private MinistersBL MBL = new MinistersBL();
-
+        private HelpersBL HBL = new HelpersBL();
+        
         private String UploadedVideoId { get; set; }
 
         public ActionResult Index(string currentFilter, string searchString, int? page)
@@ -153,7 +154,8 @@ namespace OasisAlajuelaWebSite.Controllers
 
                     string ServerPath = Path.Combine(Server.MapPath("~/Files/Images"), GUID);
 
-                    MS.UploadFile.SaveAs(ServerPath);
+                    //MS.UploadFile.SaveAs(ServerPath);
+                    HBL.ResizeAndSaveImage(300, MS.UploadFile.InputStream, ServerPath);
 
                     MS.BannerPath = "/Files/Images/" + GUID;
                 }
@@ -282,7 +284,8 @@ namespace OasisAlajuelaWebSite.Controllers
 
                     string ServerPath = Path.Combine(Server.MapPath("~/Files/Images"), GUID);
 
-                    MS.UploadFile.SaveAs(ServerPath);
+                    //MS.UploadFile.SaveAs(ServerPath);
+                    HBL.ResizeAndSaveImage(300, MS.UploadFile.InputStream, ServerPath);
 
                     MS.BannerPath = "/Files/Images/" + GUID;
 

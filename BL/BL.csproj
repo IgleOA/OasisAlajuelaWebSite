@@ -52,6 +52,7 @@
     <Compile Include="BlogsBL.cs" />
     <Compile Include="EnrollmentsBL.cs" />
     <Compile Include="GroupsBL.cs" />
+    <Compile Include="HelpersBL.cs" />
     <Compile Include="HomeBL.cs" />
     <Compile Include="LeadershipBL.cs" />
     <Compile Include="MinistersBL.cs" />

@@ -25,6 +25,7 @@ namespace OasisAlajuelaWebSite.Controllers
         private ResourcesBL RBL = new ResourcesBL();
         private YouTubeBL YBL = new YouTubeBL();
         private GroupsBL GBL = new GroupsBL();
+        private HelpersBL HBL = new HelpersBL();
 
         public ActionResult Index()
         {
@@ -195,7 +196,8 @@ namespace OasisAlajuelaWebSite.Controllers
 
                 string ServerPath = Path.Combine(Server.MapPath("~/Files/Images"), GUID);
 
-                RT.UploadFile.SaveAs(ServerPath);
+                //RT.UploadFile.SaveAs(ServerPath);
+                HBL.ResizeAndSaveImage(850, RT.UploadFile.InputStream, ServerPath);
 
                 RT.TypeImagePath = "/Files/Images/" + GUID;
 
