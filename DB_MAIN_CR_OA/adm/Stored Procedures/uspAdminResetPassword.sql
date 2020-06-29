@@ -33,6 +33,7 @@ AS
             -- =======================================================
 				UPDATE	[adm].[utbUsers]
 				SET		[PasswordHash]		=	HASHBYTES('SHA2_512','!234s6789'),
+                        [NeedResetPwd]      =   1,
 						[LastModifyDate]	=	GETDATE(),
 						[LastModifyUser]	=	@InsertUser
 				WHERE	[UserID] = @UserID

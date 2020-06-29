@@ -2899,6 +2899,7 @@
     <Content Include="Views\Blogs\_Blogs.cshtml" />
     <Content Include="Views\Ministers\Edit.cshtml" />
     <Content Include="Views\Ministers\Index.cshtml" />
+    <Content Include="Views\Account\ResetPwd.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

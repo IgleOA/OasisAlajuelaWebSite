@@ -38,6 +38,7 @@ namespace ET
         [Compare("Password", ErrorMessage = "La contraseña y su confirmación no coinciden.")]
         public string ConfirmPassword { get; set; }
 
+
         [Display(Name = "Rol")]
         public int RoleID { get; set; }
 
@@ -46,6 +47,8 @@ namespace ET
 
         [Display(Name = "Suscriptor")]
         public bool Subscriber { get; set; }
+
+        public bool NeedResetPwd { get; set; }
 
         [Display(Name = "Status")]
         public bool ActiveFlag { get; set; }
@@ -136,6 +139,8 @@ namespace ET
         public string ConfirmPassword { get; set; }
 
         public string GUID { get; set; }
+
+        public int UserID { get; set; }
     }
 
     public class LoginRecord

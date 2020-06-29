@@ -160,6 +160,7 @@ namespace DAL
                     if (dr.HasRows)
                     {
                         LoginUser.UserID = Convert.ToInt32(dr["UserID"]);
+                        LoginUser.NeedResetPwd = Convert.ToBoolean(dr["NeedResetPwd"]);
                         LoginUser.UserName = dr["UserName"].ToString();
                     }
                 }
@@ -289,7 +290,7 @@ namespace DAL
 
         public bool ResetPassword(ResetPasswordModel Model)
         {
-            bool rpta = false;
+            bool rpta;
             try
             {
                 SqlCon.Open();
@@ -299,14 +300,6 @@ namespace DAL
                 };
 
                 //Insert Parameters
-                SqlParameter ParGUID = new SqlParameter
-                {
-                    ParameterName = "@GUID",
-                    SqlDbType = SqlDbType.VarChar,
-                    Value = Model.GUID
-                };
-                SqlCmd.Parameters.Add(ParGUID);
-
                 SqlParameter ParPassword = new SqlParameter
                 {
                     ParameterName = "@Password",
@@ -315,6 +308,27 @@ namespace DAL
                     Value = Model.Password.Trim()
                 };
                 SqlCmd.Parameters.Add(ParPassword);
+
+                if (Model.UserID > 0)
+                {
+                    SqlParameter pUserID = new SqlParameter
+                    {
+                        ParameterName = "@UserID",
+                        SqlDbType = SqlDbType.Int,
+                        Value = Model.UserID
+                    };
+                    SqlCmd.Parameters.Add(pUserID);
+                }
+                else
+                {
+                    SqlParameter ParGUID = new SqlParameter
+                    {
+                        ParameterName = "@GUID",
+                        SqlDbType = SqlDbType.VarChar,
+                        Value = Model.GUID
+                    };
+                    SqlCmd.Parameters.Add(ParGUID);
+                }                
 
                 //EXEC Command
                 SqlCmd.ExecuteNonQuery();
