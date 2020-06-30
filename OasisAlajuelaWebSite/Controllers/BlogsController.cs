@@ -114,7 +114,7 @@ namespace OasisAlajuelaWebSite.Controllers
             {
                 MS.InsertDate = DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"]));
 
-                string GUID = "IMG_Blog_" + ShortId.Generate(true, false, 12) + FileExt;
+                string GUID = "IMG_Blog_" + ShortId.Generate(true, false, 12) + ".JPG";
 
                 string ServerPath = Path.Combine(Server.MapPath("~/Files/Images"), GUID);
 

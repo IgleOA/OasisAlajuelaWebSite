@@ -195,9 +195,11 @@ namespace OasisAlajuelaWebSite.Controllers
             {
                 UP.ActionType = "PHOTO";
 
-                string GUID = "IMG_Profile_" + ShortId.Generate(true, false, 12) + UP.PhotoExt;
+                string GUID = "IMG_Profile_" + ShortId.Generate(true, false, 12) + ".JPG";
 
                 string ServerPath = Path.Combine(Server.MapPath("~/Files/Images"), GUID);
+                
+                UP.PhotoExt = ".JPG";
 
                 HBL.ResizeAndSaveAzure(350, UP.file, ServerPath);
 

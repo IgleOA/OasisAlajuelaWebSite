@@ -41,7 +41,7 @@ namespace DAL
                 var newHeight = (int)(newWidth * scaleFactor);
                 img.Resize(newWidth, newHeight);
             }
-            img.Save(targetPath, img.ImageFormat);
+            img.Save(targetPath,"jpg");
 
 
             string connStr = ConfigurationManager.AppSettings["AzureStorageKey"].ToString();
@@ -58,18 +58,13 @@ namespace DAL
             String FileExt = Path.GetExtension(targetPath).ToUpper();
 
             CloudBlockBlob blob = container.GetBlockBlobReference(FileName);
-            if (FileExt == ".PNG")
-            {
-                blob.Properties.ContentType = "image/png";
-            }
-            else
-            {
-                blob.Properties.ContentType = "image/jpeg";
-            }
+            
+            blob.Properties.ContentType = "image/jpeg";
+            
             blob.UploadFromFile(targetPath);
 
             System.IO.File.Delete(targetPath);
-            //}
+            
         }
 
         public void URLResizeAndSaveAzure(int newWidth, string URL, string targetPath)
@@ -85,7 +80,7 @@ namespace DAL
                 var newHeight = (int)(newWidth * scaleFactor);
                 img.Resize(newWidth, newHeight);
             }
-            img.Save(targetPath, img.ImageFormat);
+            img.Save(targetPath, "jpg");
 
 
             string connStr = ConfigurationManager.AppSettings["AzureStorageKey"].ToString();
@@ -102,14 +97,9 @@ namespace DAL
             String FileExt = Path.GetExtension(targetPath).ToUpper();
 
             CloudBlockBlob blob = container.GetBlockBlobReference(FileName);
-            if (FileExt == ".PNG")
-            {
-                blob.Properties.ContentType = "image/png";
-            }
-            else
-            {
-                blob.Properties.ContentType = "image/jpeg";
-            }
+            
+            blob.Properties.ContentType = "image/jpeg";
+            
             blob.UploadFromFile(targetPath);
 
             System.IO.File.Delete(targetPath);

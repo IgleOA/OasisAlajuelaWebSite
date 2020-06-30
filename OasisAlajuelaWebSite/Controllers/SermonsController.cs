@@ -150,7 +150,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
                 if (FileExt == ".PNG" || FileExt == ".JPG" || FileExt == ".JPEG")
                 {
-                    string GUID = "IMG_Sermon_" + ShortId.Generate(true, false, 12) + FileExt;
+                    string GUID = "IMG_Sermon_" + ShortId.Generate(true, false, 12) + ".JPG";
 
                     string ServerPath = Path.Combine(Server.MapPath("~/Files/Images"), GUID);
 
@@ -164,7 +164,7 @@ namespace OasisAlajuelaWebSite.Controllers
             {
                 var Banner = ConvertURLtoBase(MS.SermonURL);
                 String FileExt = Path.GetExtension(Banner).ToUpper();
-                string GUID = "IMG_Sermon_" + ShortId.Generate(true, false, 12) + FileExt;
+                string GUID = "IMG_Sermon_" + ShortId.Generate(true, false, 12) + ".JPG";
                 string ServerPath = Path.Combine(Server.MapPath("~/Files/Images"), GUID);
 
                 HBL.URLResizeAndSaveAzure(300, Banner, ServerPath);
@@ -282,7 +282,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
                 if (FileExt == ".PNG" || FileExt == ".JPG" || FileExt == ".JPEG")
                 {
-                    string GUID = "IMG_Sermon_" + ShortId.Generate(true, false, 12) + FileExt;
+                    string GUID = "IMG_Sermon_" + ShortId.Generate(true, false, 12) + ".JPG";
 
                     string ServerPath = Path.Combine(Server.MapPath("~/Files/Images"), GUID);
 
