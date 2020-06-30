@@ -155,9 +155,9 @@ namespace OasisAlajuelaWebSite.Controllers
                     string ServerPath = Path.Combine(Server.MapPath("~/Files/Images"), GUID);
 
                     //MS.UploadFile.SaveAs(ServerPath);
-                    HBL.ResizeAndSaveImage(300, MS.UploadFile.InputStream, ServerPath);
+                    HBL.ResizeAndSaveAzure(300, MS.UploadFile, ServerPath);
 
-                    MS.BannerPath = "/Files/Images/" + GUID;
+                    MS.BannerPath = ConfigurationManager.AppSettings["AzureStorage"].ToString() + "images/" + GUID;
                 }
             }
             else
@@ -166,11 +166,13 @@ namespace OasisAlajuelaWebSite.Controllers
                 String FileExt = Path.GetExtension(Banner).ToUpper();
                 string GUID = "IMG_Sermon_" + ShortId.Generate(true, false, 12) + FileExt;
                 string ServerPath = Path.Combine(Server.MapPath("~/Files/Images"), GUID);
-                WebClient client = new WebClient();
 
-                client.DownloadFile(Banner, ServerPath);
+                HBL.URLResizeAndSaveAzure(300, Banner, ServerPath);
+                //WebClient client = new WebClient();
 
-                MS.BannerPath = "/Files/Images/" + GUID;
+                //client.DownloadFile(Banner, ServerPath);
+
+                MS.BannerPath = ConfigurationManager.AppSettings["AzureStorage"].ToString() + "images/" + GUID;
 
             }
 
@@ -285,9 +287,9 @@ namespace OasisAlajuelaWebSite.Controllers
                     string ServerPath = Path.Combine(Server.MapPath("~/Files/Images"), GUID);
 
                     //MS.UploadFile.SaveAs(ServerPath);
-                    HBL.ResizeAndSaveImage(300, MS.UploadFile.InputStream, ServerPath);
+                    HBL.ResizeAndSaveAzure(300, MS.UploadFile, ServerPath);
 
-                    MS.BannerPath = "/Files/Images/" + GUID;
+                    MS.BannerPath = ConfigurationManager.AppSettings["AzureStorage"].ToString() + "images/" + GUID;
 
                     var r = SBL.Update(MS, InsertUser);
 

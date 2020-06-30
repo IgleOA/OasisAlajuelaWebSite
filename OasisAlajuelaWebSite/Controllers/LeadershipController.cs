@@ -143,9 +143,9 @@ namespace OasisAlajuelaWebSite.Controllers
                     string ServerPath = Path.Combine(Server.MapPath("~/Files/Images"), GUID);
 
                     //Min.UploadFile.SaveAs(ServerPath);
-                    HBL.ResizeAndSaveImage(850, Min.UploadFile.InputStream, ServerPath);
+                    HBL.ResizeAndSaveAzure(850, Min.UploadFile, ServerPath);
 
-                    Min.ImagePath = "/Files/Images/" + GUID;
+                    Min.ImagePath = ConfigurationManager.AppSettings["AzureStorage"].ToString() + "images/" + GUID;
 
                     string InsertUser = User.Identity.GetUserName();
 
@@ -222,9 +222,9 @@ namespace OasisAlajuelaWebSite.Controllers
                     string ServerPath = Path.Combine(Server.MapPath("~/Files/Images"), GUID);
 
                     //Min.UploadFile.SaveAs(ServerPath);
-                    HBL.ResizeAndSaveImage(850, Min.UploadFile.InputStream, ServerPath);
+                    HBL.ResizeAndSaveAzure(850, Min.UploadFile, ServerPath);
 
-                    Min.ImagePath = "/Files/Images/" + GUID;
+                    Min.ImagePath = ConfigurationManager.AppSettings["AzureStorage"].ToString() + "images/" + GUID;
 
                     var r = LBL.Update(Min, User.Identity.GetUserName());
 

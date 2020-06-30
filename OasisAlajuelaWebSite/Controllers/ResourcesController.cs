@@ -197,9 +197,9 @@ namespace OasisAlajuelaWebSite.Controllers
                 string ServerPath = Path.Combine(Server.MapPath("~/Files/Images"), GUID);
 
                 //RT.UploadFile.SaveAs(ServerPath);
-                HBL.ResizeAndSaveImage(850, RT.UploadFile.InputStream, ServerPath);
+                HBL.ResizeAndSaveAzure(850, RT.UploadFile, ServerPath);
 
-                RT.TypeImagePath = "/Files/Images/" + GUID;
+                RT.TypeImagePath = ConfigurationManager.AppSettings["AzureStorage"].ToString() + "images/" + GUID;
 
                 string InsertUser = User.Identity.GetUserName();
 

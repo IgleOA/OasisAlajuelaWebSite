@@ -8,14 +8,19 @@ namespace BL
     {
         private HelpersDAL HDAL = new HelpersDAL();
 
-        public void ResizeAndSaveImage(int newWidth, Stream sourcePath, string targetPath)
+        //public void ResizeAndSaveImage(int newWidth, Stream sourcePath, string targetPath)
+        //{
+        //    HDAL.ResizeAndSaveImage(newWidth, sourcePath, targetPath);
+        //}
+
+        public void ResizeAndSaveAzure(int newWidth, HttpPostedFileBase File, string targetPath)
         {
-            HDAL.ResizeAndSaveImage(newWidth, sourcePath, targetPath);
+            HDAL.ResizeAndSaveAzure(newWidth, File, targetPath);
         }
 
-        public void ResizeAndSaveAzure(int newWidth, Stream sourcePath, string targetPath)
+        public void URLResizeAndSaveAzure(int newWidth, string File, string targetPath)
         {
-            HDAL.ResizeAndSaveAzure(newWidth, sourcePath, targetPath);
+            HDAL.URLResizeAndSaveAzure(newWidth, File, targetPath);
         }
 
         public void SaveAzure(string FileType, HttpPostedFileBase File, string FileName)
