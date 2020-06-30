@@ -129,9 +129,11 @@ namespace OasisAlajuelaWebSite.Controllers
 
                 string ServerPath = Path.Combine(Server.MapPath("~/Files/Images"), GUID);
 
-                HBL.ResizeAndSaveImage(2000, MS.UploadFile.InputStream, ServerPath);
+                HBL.ResizeAndSaveAzure(2000, MS.UploadFile.InputStream, ServerPath);
 
-                MS.BannerPath = "/Files/Images/" + GUID;
+                //MS.BannerPath = "/Files/Images/" + GUID;
+
+                MS.BannerPath = "https://oasisalajuelawebiste.blob.core.windows.net/images/" + GUID;
 
                 string InsertUser = User.Identity.GetUserName();
 
