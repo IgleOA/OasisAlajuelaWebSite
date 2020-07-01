@@ -186,10 +186,77 @@ namespace DAL
                         };
                         List.Add(detail);
                     }
-                }         
-                foreach(var item in List)
+                }
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+                foreach (var item in List)
                 {
                     item.GroupList = GDAL.ListbyRT(item.ResourceTypeID);
+                    item.TopResources = TopResourceList(item.ResourceTypeID);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            return List;
+        }
+
+        public List<Resources> TopResourceList(int ResourceTypeID)
+        {
+            List<Resources> List = new List<Resources>();
+
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[config].[uspReadResources]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                SqlParameter pResourceTypeID = new SqlParameter
+                {
+                    ParameterName = "@ResourceTypeID",
+                    SqlDbType = SqlDbType.Int,
+                    Value = ResourceTypeID
+                };
+                SqlCmd.Parameters.Add(pResourceTypeID);
+
+                SqlParameter pDate = new SqlParameter
+                {
+                    ParameterName = "@Date",
+                    SqlDbType = SqlDbType.DateTime,
+                    Value = DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"]))
+                };
+                SqlCmd.Parameters.Add(pDate);
+
+                SqlParameter pTopFlag = new SqlParameter
+                {
+                    ParameterName = "@TopFlag",
+                    SqlDbType = SqlDbType.Bit,
+                    Value = true
+                };
+                SqlCmd.Parameters.Add(pTopFlag);
+
+                using (var dr = SqlCmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        var detail = new Resources
+                        {
+                            ResourceID = Convert.ToInt32(dr["ResourceID"]),
+                            ResourceTypeID = Convert.ToInt32(dr["ResourceTypeID"]),
+                            TypeName = dr["TypeName"].ToString(),
+                            FileType = dr["FileType"].ToString(),
+                            FilePath = dr["FilePath"].ToString(),
+                            FileExt = Path.GetExtension(dr["FilePath"].ToString()).ToUpper(),
+                            FileName = dr["FileName"].ToString(),
+                            FileURL = dr["FileURL"].ToString(),
+                            Description = dr["Description"].ToString(),
+                            ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"])
+                        };
+                        List.Add(detail);
+                    }
                 }
             }
             catch (Exception ex)

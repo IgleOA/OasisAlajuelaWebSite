@@ -34,6 +34,8 @@ namespace ET
 
         public List<Groups> GroupList { get; set; }
 
+        public List<Resources> TopResources { get; set; }
+
     }
 
     public class ResourcesGroups

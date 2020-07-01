@@ -29,6 +29,11 @@
         }
     }
 </script>
+<style>
+    .text-colorbase:hover{
+        color: black!important;
+    }
+</style>
 
 <div id="header" class="headerFixed" style="z-index:-1;position:relative;">
 
@@ -61,7 +66,7 @@
                 <div class="col-lg-4 d-flex">
                     <div class="blog-entry justify-content-end">
                         <a href='@Url.Action("Type","Resources",new { id = item.ResourceTypeID })' target="_blank" class="block-20" style="background-image: url('@item.TypeImagePath')" title="@item.TypeName"></a>
-                        <div class="textBlog d-flex float-right d-block" style="background-color: linen;">
+                        <div class="textBlog d-flex float-right d-block pb-2 mb-2" style="background-color: linen;">
                             <div class="desc px-2">
                                 <div class="row">
                                     <h3 class="heading my-auto mt-2">
@@ -69,7 +74,88 @@
                                     </h3>
                                     <p class="my-auto mb-2">@item.Description</p>
                                 </div>
+
                             </div>
+                        </div>
+                        <div class="blog-entry justify-content-end bg-light py-2 m-0">
+                            @if (item.TopResources.Count > 0)
+                            {
+                                <h4 class="font-weight-bolder px-2 m-0 py-2 text-capitalize">últimos recursos ingresados</h4>
+                                <ul class="px-2 m-0">
+                                    @foreach (var res in item.TopResources)
+                                    {
+                                        var modalName = "ModalCenter" + res.ResourceID.ToString();
+                                        switch (res.FileType)
+                                        {
+                                            case "Video":
+                                                <li>
+                                                    <a href="#" data-toggle="modal" data-target="#@modalName" class="align-self-center text-colorbase"><i class="fas fa-arrow-right"></i><span class="ml-2">@res.FileType - @res.FileName</span></a>
+                                                    <div class="modal fade" id="@modalName">
+                                                        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-body">
+                                                                    <iframe src="@res.FileURL" class="modalvideo" frameborder="0" allowfullscreen></iframe>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <script src="~/Scripts/jquery-3.5.0.min.js"></script>
+                                                    <script src="~/Scripts/bootstrap.min.js"></script>
+                                                    <script type="text/javascript">
+                                                            $('#@modalName').on('hidden.bs.modal', function (e) {
+                                                                $("#@modalName iframe").attr("src", $("#@modalName iframe").attr("src"));
+                                                            });
+                                                    </script>
+                                                </li>
+                                                break;
+                                            case "Audio":
+                                                <li>
+                                                    <a href="#" data-toggle="modal" data-target="#@modalName" class="align-self-center text-colorbase"><i class="fas fa-arrow-right"></i><span class="ml-2">@res.FileType - @res.FileName</span></a>
+                                                    <div class="modal fade" id="@modalName">
+                                                        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                                                            <div class="modal-content" style="background:#f8f9fa!important;">
+                                                                <div class="modal-body">
+                                                                    <div class="col pl-md-4 justify-content-start">
+                                                                        <h3 class="mb-2">
+                                                                            <a class="font-weight-bold">@res.FileName</a>
+                                                                        </h3>
+                                                                        <p class="mb-2 justify-content-start">
+                                                                            @res.Description
+                                                                        </p>
+                                                                        <div class="mb-2 mt-2">
+                                                                            <div class="tagcloud">
+                                                                                <a>@res.FileType</a>
+                                                                                @if (ViewBag.Write == true)
+                                                                                {
+                                                                                    <a href="#" onclick='Edit(@res.ResourceID)' class="text-decoration-none"><span class="fas fa-pencil-alt fa-1x"></span> Editar</a>
+                                                                                    <a href="#" onclick='Disable(@res.ResourceID)' class="text-decoration-none"><span class="far fa-times-circle fa-1x"></span> Eliminar</a>
+                                                                                }
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <audio src="@res.FilePath" controls></audio>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <script src="~/Scripts/jquery-3.5.0.min.js"></script>
+                                                    <script src="~/Scripts/bootstrap.min.js"></script>
+                                                    <script type="text/javascript">
+                                                        $('#@modalName').on('hidden.bs.modal', function (e) {
+                                                            $(this).find('audio')[0].pause();
+                                                        });
+                                                    </script>
+                                                </li>
+                                                break;
+                                            default:
+                                                <li>
+                                                    <a href="@res.FilePath" target="_blank" class="align-self-center text-colorbase"><i class="fas fa-arrow-right"></i><span class="ml-2">@res.FileType - @res.FileName</span></a>
+                                                </li>
+                                                break;
+                                        }
+                                    }
+                                </ul>
+                            }
                         </div>
                         @if (ViewBag.Write == true)
                         {
