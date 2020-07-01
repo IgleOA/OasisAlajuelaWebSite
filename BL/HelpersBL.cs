@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Web;
 using DAL;
+using ET;
 
 namespace BL
 {
@@ -23,9 +24,9 @@ namespace BL
             HDAL.URLResizeAndSaveAzure(newWidth, File, targetPath);
         }
 
-        public void SaveAzure(string FileType, HttpPostedFileBase File, string FileName)
+        public void SaveAzure(AzureStorage File)
         {
-            HDAL.SaveAzure(FileType, File, FileName);
+            HDAL.SaveAzure(File);
         }
     }
 }

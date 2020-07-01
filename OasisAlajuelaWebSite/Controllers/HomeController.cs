@@ -168,5 +168,29 @@ namespace OasisAlajuelaWebSite.Controllers
         {
             return View();
         }
+
+        public ActionResult Seedling()
+        {
+            if (Request.IsAuthenticated)
+            {
+                var user = UsBL.List().Where(x => x.UserName == User.Identity.GetUserName()).FirstOrDefault();
+
+                if (user.RoleName.Contains("Admin"))
+                {
+                    ViewBag.Layout = "~/Views/Shared/_AdminLayout.cshtml";
+                }
+                else
+                {
+                    ViewBag.Layout = "~/Views/Shared/_MainLayout.cshtml";
+                }
+
+                return View();
+            }
+            else
+            {
+                ViewBag.Layout = "~/Views/Shared/_MainLayout.cshtml";
+                return View();
+            }
+        }
     }
 }

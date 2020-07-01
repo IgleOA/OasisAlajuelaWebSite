@@ -2900,6 +2900,7 @@
     <Content Include="Views\Ministers\Edit.cshtml" />
     <Content Include="Views\Ministers\Index.cshtml" />
     <Content Include="Views\Account\ResetPwd.cshtml" />
+    <Content Include="Views\Home\Seedling.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

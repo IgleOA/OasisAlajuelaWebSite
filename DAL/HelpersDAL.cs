@@ -1,9 +1,8 @@
-﻿using Microsoft.Azure.Storage;
+﻿using ET;
+using Microsoft.Azure.Storage;
 using Microsoft.Azure.Storage.Blob;
 using System;
 using System.Configuration;
-using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.IO;
 using System.Net;
 using System.Web;
@@ -94,8 +93,7 @@ namespace DAL
             container.CreateIfNotExists();
 
             String FileName = Path.GetFileName(targetPath);
-            String FileExt = Path.GetExtension(targetPath).ToUpper();
-
+            
             CloudBlockBlob blob = container.GetBlockBlobReference(FileName);
             
             blob.Properties.ContentType = "image/jpeg";
@@ -106,7 +104,7 @@ namespace DAL
             
         }
 
-        public void SaveAzure(string FileType, HttpPostedFileBase File, string FileName)
+        public void SaveAzure(AzureStorage File)
         {
             string connStr = ConfigurationManager.AppSettings["AzureStorageKey"].ToString();
 
@@ -114,13 +112,15 @@ namespace DAL
 
             CloudBlobClient client = account.CreateCloudBlobClient();
 
-            CloudBlobContainer container = client.GetContainerReference(FileType);
+            CloudBlobContainer container = client.GetContainerReference(File.FileType);
 
             container.CreateIfNotExists();
 
-            CloudBlockBlob blob = container.GetBlockBlobReference(FileName);
+            CloudBlockBlob blob = container.GetBlockBlobReference(File.FileName);
 
-            blob.UploadFromStream(File.InputStream);                
+            blob.Properties.ContentType = File.ContentType;
+
+            blob.UploadFromStream(File.File.InputStream);                
             
         }
     }

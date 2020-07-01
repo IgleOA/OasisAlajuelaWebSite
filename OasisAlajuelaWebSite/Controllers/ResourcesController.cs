@@ -296,18 +296,47 @@ namespace OasisAlajuelaWebSite.Controllers
 
                 else
                 {
+                    AzureStorage AzureFile = new AzureStorage()
+                    {
+                        File = MS.UploadFile
+                    };
+
                     string GUID = "DOC_Resource_" + ShortId.Generate(true, false, 12) + FileExt;
-                    string ServerPath = Path.Combine(Server.MapPath("~/Files/Documents"), GUID);
-                    MS.FilePath = "/Files/Documents/" + GUID;
+                    //string ServerPath = Path.Combine(Server.MapPath("~/Files/Documents"), GUID);
+                    //MS.FilePath = "/Files/Documents/" + GUID;
+                    
+                    AzureFile.FileName = GUID;
+                    AzureFile.FileType = "files";
+
+                    MS.FilePath = ConfigurationManager.AppSettings["AzureStorage"].ToString() + "files/" + GUID;
 
                     if (MS.FileType == "Audio")
                     {
                         GUID = "AUD_Resource_" + ShortId.Generate(true, false, 12) + FileExt;
-                        ServerPath = Path.Combine(Server.MapPath("~/Files/Audios"), GUID);
-                        MS.FilePath = "/Files/Audios/" + GUID;
+
+                        AzureFile.FileName = GUID;
+                        AzureFile.FileType = "audios";
+                        
+                        MS.FilePath = ConfigurationManager.AppSettings["AzureStorage"].ToString() + "audios/" + GUID;
+                        //MS.FilePath = "/Files/Audios/" + GUID;
                     }
 
-                    MS.UploadFile.SaveAs(ServerPath);                    
+                    switch(FileExt)
+                    {
+                        case ".PDF": AzureFile.ContentType = "application/pdf";
+                            break;
+                        case ".DOCX": AzureFile.ContentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+                            break;
+                        case ".DOC": AzureFile.ContentType = "application/msword";
+                            break;
+                        case ".TXT": AzureFile.ContentType = "text/plain";
+                            break;
+                        default: AzureFile.ContentType = "audio/mpeg";
+                            break;
+                    }                    
+
+                    HBL.SaveAzure(AzureFile);
+                    //MS.UploadFile.SaveAs(ServerPath);                    
                 }
             }
 
@@ -386,24 +415,24 @@ namespace OasisAlajuelaWebSite.Controllers
             }
         }
 
-        [HttpGet]
-        public FileResult DownLoadFile(int id)
-        {
-            var FileById = RBL.ResourceDetails(id);
-            var FileType = "application/" + FileById.FileExt;
-            var FileName = FileById.FileName.Replace(" ", "_") + "." + FileById.FileExt;
+        //[HttpGet]
+        //public FileResult DownLoadFile(int id)
+        //{
+        //    var FileById = RBL.ResourceDetails(id);
+        //    var FileType = "application/" + FileById.FileExt;
+        //    var FileName = FileById.FileName.Replace(" ", "_") + "." + FileById.FileExt;
 
-            return File(FileById.FilePath, FileType, FileName);
-        }
+        //    return File(FileById.FilePath, FileType, FileName);
+        //}
 
-        public ActionResult GetFile(int id)
-        {
-            var FileById = RBL.ResourceDetails(id);
+        //public ActionResult GetFile(int id)
+        //{
+        //    var FileById = RBL.ResourceDetails(id);
 
-            string strFile = FileById.FileName.Replace(" ", "_") + ".";// + FileById.FileExt;
+        //    string strFile = FileById.FileName.Replace(" ", "_") + ".";// + FileById.FileExt;
 
-            return File(FileById.FilePath, System.Net.Mime.MediaTypeNames.Application.Octet, strFile);
-        }
+        //    return File(FileById.FilePath, System.Net.Mime.MediaTypeNames.Application.Octet, strFile);
+        //}
 
         public ActionResult Edit(int id = 0)
         {
@@ -495,7 +524,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
             if (FileType == "Audio")
             {
-                Extensions = "MP3,AAC,OGG,WAV";
+                Extensions = "MP3";
                 List<string> allowedExtensions = Extensions.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
                 isValid = allowedExtensions.Any(x => FileExt.EndsWith(x));
             }

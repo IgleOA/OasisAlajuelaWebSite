@@ -119,7 +119,7 @@ namespace OasisAlajuelaWebSite.Controllers
                 string ServerPath = Path.Combine(Server.MapPath("~/Files/Images"), GUID);
 
                 //MS.UploadFile.SaveAs(ServerPath);
-                HBL.ResizeAndSaveAzure(350, MS.UploadFile, ServerPath);
+                HBL.ResizeAndSaveAzure(800, MS.UploadFile, ServerPath);
 
                 MS.BannerPath = ConfigurationManager.AppSettings["AzureStorage"].ToString() + "images/" + GUID;
 
@@ -191,13 +191,14 @@ namespace OasisAlajuelaWebSite.Controllers
 
                 if (FileExt == ".PNG" || FileExt == ".JPG" || FileExt == ".JPEG")
                 {
-                    string GUID = "IMG_Blog_" + ShortId.Generate(true, false, 12) + FileExt;
+                    string GUID = "IMG_Blog_" + ShortId.Generate(true, false, 12) + ".JPG";
 
                     string ServerPath = Path.Combine(Server.MapPath("~/Files/Images"), GUID);
 
-                    MS.UploadFile.SaveAs(ServerPath);
+                    //MS.UploadFile.SaveAs(ServerPath);
+                    HBL.ResizeAndSaveAzure(800, MS.UploadFile, ServerPath);
 
-                    MS.BannerPath = "/Files/Images/" + GUID;
+                    MS.BannerPath = ConfigurationManager.AppSettings["AzureStorage"].ToString() + "images/" + GUID;
 
                     var r = PBL.Update(MS, InsertUser);
 
