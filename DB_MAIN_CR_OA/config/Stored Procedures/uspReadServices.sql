@@ -29,6 +29,7 @@ AS
 						,[Order]
 						,[ControllerLink]
 						,[ActionLink]
+                        ,[Parameter]
 						,[ActiveFlag]						
 				FROM	[config].[utbServices]
 				WHERE	[ActiveFlag]  = ISNULL(@pActiveFlag,[ActiveFlag])

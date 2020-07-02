@@ -1,7 +1,6 @@
 ﻿CREATE TABLE [config].[utbBanners] (
     [BannerID]       INT             IDENTITY (1, 1) NOT NULL,
-    [BannerData]     VARBINARY (MAX) NOT NULL,
-    [BannerExt]      VARCHAR (10)    NOT NULL,
+    [BannerPath]	 VARCHAR (500)    NOT NULL,
     [BannerName]     VARCHAR (200)   NOT NULL,
     [LocationID]     INT             NOT NULL,
     [ActiveFlag]     BIT             CONSTRAINT [utbBannersDefaultActiveFlagTrue] DEFAULT ((1)) NOT NULL,
@@ -22,8 +21,8 @@ FOR INSERT,UPDATE
 AS
 	BEGIN
 		DECLARE @INSERTUPDATE VARCHAR(30)
-		DECLARE @StartValues	XML = (SELECT [BannerID],[BannerExt],[BannerName],[LocationID],[ActiveFlag],[InsertDate],[InsertUser],[LastModifyDate],[LastModifyUser] FROM Deleted [Values] for xml AUTO, ELEMENTS XSINIL)
-		DECLARE @EndValues		XML = (SELECT [BannerID],[BannerExt],[BannerName],[LocationID],[ActiveFlag],[InsertDate],[InsertUser],[LastModifyDate],[LastModifyUser] FROM Inserted [Values] for xml AUTO, ELEMENTS XSINIL)
+		DECLARE @StartValues	XML = (SELECT * FROM Deleted [Values] for xml AUTO, ELEMENTS XSINIL)
+		DECLARE @EndValues		XML = (SELECT * FROM Inserted [Values] for xml AUTO, ELEMENTS XSINIL)
 
 		CREATE TABLE #DBCC (EventType varchar(50), Parameters varchar(50), EventInfo nvarchar(max))
 

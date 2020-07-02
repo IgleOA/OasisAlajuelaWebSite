@@ -73,6 +73,13 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    @Html.LabelFor(model => model.Parameter, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Parameter, new { htmlAttributes = new { @class = "form-control", placeholder = "Si aplica" } })
+                        @Html.ValidationMessageFor(model => model.Parameter, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
                     @Html.LabelFor(model => model.Order, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
                     <div class="col-md-10">
                         @Html.EditorFor(model => model.Order, new { htmlAttributes = new { @class = "form-control" } })

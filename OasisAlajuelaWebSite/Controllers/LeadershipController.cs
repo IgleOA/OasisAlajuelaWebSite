@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using ET;
 using BL;
@@ -9,6 +7,7 @@ using OasisAlajuelaWebSite.Models;
 using Microsoft.AspNet.Identity;
 using System.IO;
 using System.Configuration;
+using shortid;
 
 namespace OasisAlajuelaWebSite.Controllers
 {
@@ -18,6 +17,7 @@ namespace OasisAlajuelaWebSite.Controllers
         private LeadershipBL LBL = new LeadershipBL();
         private RightsBL RRBL = new RightsBL();
         private UsersBL UBL = new UsersBL();
+        private HelpersBL HBL = new HelpersBL();
 
         public ActionResult Index()
         {
@@ -134,17 +134,18 @@ namespace OasisAlajuelaWebSite.Controllers
         {
             if (ModelState.IsValid)
             {
-                String FileExt = Path.GetExtension(Min.file.FileName).ToUpper();
-
-                Min.ImageExt = FileExt;
+                String FileExt = Path.GetExtension(Min.UploadFile.FileName).ToUpper();
 
                 if (FileExt == ".PNG" || FileExt == ".JPG" || FileExt == ".JPEG")
                 {
-                    Stream str = Min.file.InputStream;
-                    BinaryReader Br = new BinaryReader(str);
-                    Byte[] FileDet = Br.ReadBytes((Int32)str.Length);
+                    string GUID = "IMG_Leadership_" + ShortId.Generate(true, false, 12) + ".JPG";
 
-                    Min.Image = FileDet;
+                    string ServerPath = Path.Combine(Server.MapPath("~/Files/Images"), GUID);
+
+                    //Min.UploadFile.SaveAs(ServerPath);
+                    HBL.ResizeAndSaveAzure(850, Min.UploadFile, ServerPath);
+
+                    Min.ImagePath = ConfigurationManager.AppSettings["AzureStorage"].ToString() + "images/" + GUID;
 
                     string InsertUser = User.Identity.GetUserName();
 
@@ -194,7 +195,7 @@ namespace OasisAlajuelaWebSite.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Leadership Min)
         {
-            if (Min.file == null)
+            if (Min.UploadFile == null)
             {
                 var r = LBL.Update(Min, User.Identity.GetUserName());
 
@@ -212,17 +213,18 @@ namespace OasisAlajuelaWebSite.Controllers
             }
             else
             {
-                String FileExt = Path.GetExtension(Min.file.FileName).ToUpper();
-
-                Min.ImageExt = FileExt;
+                String FileExt = Path.GetExtension(Min.UploadFile.FileName).ToUpper();
 
                 if (FileExt == ".PNG" || FileExt == ".JPG" || FileExt == ".JPEG")
                 {
-                    Stream str = Min.file.InputStream;
-                    BinaryReader Br = new BinaryReader(str);
-                    Byte[] FileDet = Br.ReadBytes((Int32)str.Length);
+                    string GUID = "IMG_Leadership_" + ShortId.Generate(true, false, 12) + ".JPG";
 
-                    Min.Image = FileDet;
+                    string ServerPath = Path.Combine(Server.MapPath("~/Files/Images"), GUID);
+
+                    //Min.UploadFile.SaveAs(ServerPath);
+                    HBL.ResizeAndSaveAzure(850, Min.UploadFile, ServerPath);
+
+                    Min.ImagePath = ConfigurationManager.AppSettings["AzureStorage"].ToString() + "images/" + GUID;
 
                     var r = LBL.Update(Min, User.Identity.GetUserName());
 

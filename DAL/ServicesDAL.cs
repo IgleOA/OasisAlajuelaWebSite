@@ -47,7 +47,8 @@ namespace DAL
                             ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]),
                             Order = Convert.ToInt32(dr["Order"]),
                             ControllerLink = dr["ControllerLink"].ToString(),
-                            ActionLink = dr["ActionLink"].ToString()
+                            ActionLink = dr["ActionLink"].ToString(),
+                            Parameter = dr["Parameter"].ToString()
                         };
                         List.Add(detail);
                     }
@@ -90,6 +91,7 @@ namespace DAL
                         detail.Order = Convert.ToInt32(dr["Order"]);
                         detail.ControllerLink = dr["ControllerLink"].ToString();
                         detail.ActionLink = dr["ActionLink"].ToString();
+                        detail.Parameter = dr["Parameter"].ToString();
                     }
                 }
             }
@@ -192,6 +194,15 @@ namespace DAL
                 };
                 SqlCmd.Parameters.Add(SVActionLink);
 
+                SqlParameter pParameter = new SqlParameter
+                {
+                    ParameterName = "@Parameter",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 50,
+                    Value = Service.Parameter
+                };
+                SqlCmd.Parameters.Add(pParameter);
+
                 //EXEC Command
                 SqlCmd.ExecuteNonQuery();
 
@@ -219,6 +230,7 @@ namespace DAL
                 Parm.Add("@SVCOrder", Service.Order);
                 Parm.Add("@ControllerLink", Service.ControllerLink);
                 Parm.Add("@ActionLink", Service.ActionLink);
+                Parm.Add("@Parameter", Service.Parameter);
                 SqlCon.Open();
 
                 SqlCon.Execute("[adm].[uspAddServices]", Parm, commandType: CommandType.StoredProcedure);

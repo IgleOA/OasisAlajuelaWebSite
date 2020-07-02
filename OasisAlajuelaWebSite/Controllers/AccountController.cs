@@ -182,7 +182,15 @@ namespace OasisAlajuelaWebSite.Controllers
                 UBL.AddLogin(login);
 
                 ViewBag.UserName = LoginUser.UserName;
-                return RedirectToAction("Index", "Home");
+
+                if (LoginUser.NeedResetPwd == true)
+                {
+                    return RedirectToAction("ResetPwd", "Account", new { id = LoginUser.UserID });
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
             else
             {
@@ -292,6 +300,36 @@ namespace OasisAlajuelaWebSite.Controllers
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public ActionResult ResetPassword(ResetPasswordModel model)
+        {
+            var r = UBL.ResetPassword(model);
+
+            if (!r)
+            {
+                ViewBag.Mensaje = "Ha ocurrido un error inesperado.";
+                return View("~/Views/Shared/Error.cshtml");
+            }
+            else
+            {
+                return this.RedirectToAction("ResetPasswordConfirmation", "Account");
+            }
+
+        }
+
+        public ActionResult ResetPwd(int id)
+        {
+            ResetPasswordModel model = new ResetPasswordModel
+            {
+                UserID = id
+            };
+            
+            return View(model);
+        }
+
+        //
+        // POST: /Account/ResetPassword
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ResetPwd(ResetPasswordModel model)
         {
             var r = UBL.ResetPassword(model);
 

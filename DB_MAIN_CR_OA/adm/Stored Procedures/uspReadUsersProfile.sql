@@ -30,8 +30,7 @@ AS
 						,[LastActivityDate]	= ISNULL(U.[LastActivityDate],U.[CreationDate])
 						,U.[CreationDate]
 						,[RoleName]			= CASE WHEN R.[RoleName] = 'Nuevo Usuario' THEN 'Usuario' ELSE R.[RoleName] END
-						,UP.[Photo]
-						,UP.[PhotoExt]
+						,UP.[PhotoPath]
 						,UP.[Phone]
 						,UP.[Mobile]
 						,UP.[Facebook]

@@ -167,9 +167,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <audio controls>
-                                            <source src='@Url.Action("GetFile", new { id = item.ResourceID })' type=@filetype />
-                                        </audio>
+                                        <audio src="@item.FilePath" controls></audio>
                                     </div>
                                 </div>
                             </div>
@@ -187,7 +185,7 @@
                         <div class="row mb-2">
                             <div class="justify-content-center my-auto servicesSmall">
                                 <div class="icon d-flex justify-content-center mb-3">
-                                    <a href='@Url.Action("DownloadFile", new { id = item.ResourceID })' class="align-self-center">
+                                    <a href='@item.FilePath' target="_blank" class="align-self-center">
                                         <span class="align-self-center fas fa-file-download fa-3x"></span>
                                     </a>
                                 </div>

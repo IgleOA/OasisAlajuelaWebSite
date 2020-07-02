@@ -14,8 +14,7 @@ CREATE PROCEDURE [adm].[uspAddLeadership]
 	@InsertUser		VARCHAR(50),
 	@FullName		VARCHAR(100),
 	@Description	VARCHAR(MAX),
-	@Image			VARBINARY(MAX),
-	@ImageExt		VARCHAR(10),
+	@Image			VARCHAR(500),
 	@Order			INT,
 	@ActionLink		VARCHAR(50) = NULL
 AS 
@@ -36,8 +35,8 @@ AS
                 END
 
             -- =======================================================
-				INSERT INTO [config].[utbLeadership] ([FullName],[Description],[Image],[ImageExt],[Order],[ActionLink],[InsertUser],[LastModifyUser])
-				VALUES (@FullName, @Description, @Image, @ImageExt, @Order, @ActionLink, @InsertUser, @InsertUser)
+				INSERT INTO [config].[utbLeadership] ([FullName],[Description],[ImagePath],[Order],[ActionLink],[InsertUser],[LastModifyUser])
+				VALUES (@FullName, @Description, @Image, @Order, @ActionLink, @InsertUser, @InsertUser)
 			-- =======================================================
 
         IF ( @@trancount > 0

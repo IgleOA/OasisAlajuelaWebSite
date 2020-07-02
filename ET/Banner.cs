@@ -14,13 +14,13 @@ namespace ET
 
         [Display(Name ="Imagen")]
         [Required]
-        public byte[] BannerData { get; set; }
+        public string BannerPath { get; set; }
 
         [Required(ErrorMessage = "Por favor seleccione el archivo")]
         [DataType(DataType.Upload)]
         [AllowExtensions(Extensions = "png,jpg,jpeg,gif", ErrorMessage = "Por favor seleccione solo archivos soportados .png, .jpg, .jpeg, .gif")]
         [Display(Name = "Archivo")]
-        public HttpPostedFileBase file { get; set; }
+        public HttpPostedFileBase UploadFile { get; set; }
 
         [Required]
         public string  BannerExt { get; set; }

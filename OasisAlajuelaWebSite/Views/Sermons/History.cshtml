@@ -74,7 +74,7 @@
                         <th class="text-center py-2 align-middle">@Html.DisplayNameFor(model => model.FirstOrDefault().SermonDate)</th>
                         <th class="py-2 align-middle">@Html.DisplayNameFor(model => model.FirstOrDefault().Title)</th>
                         <th class="text-center align-middle py-2">@Html.DisplayNameFor(model => model.FirstOrDefault().MinisterID)</th>
-                        <th class="text-center align-middle py-2">@Html.DisplayNameFor(model => model.FirstOrDefault().file)</th>
+                        <th class="text-center align-middle py-2">@Html.DisplayNameFor(model => model.FirstOrDefault().UploadFile)</th>
                         <th class="py-2 align-middle">@Html.DisplayNameFor(model => model.FirstOrDefault().Tags)</th>
                         <th class="text-center py-2">@Html.DisplayNameFor(model => model.FirstOrDefault().ActiveFlag)</th>
                         <th class="text-center py-2" colspan="2">Acción</th>
@@ -86,12 +86,7 @@
                             <td class="text-center align-middle">@Html.DisplayFor(modelItem => item.SermonDate)</td>
                             <td class="align-middle">@Html.DisplayFor(modelItem => item.Title)</td>
                             <td class="align-middle">@Html.DisplayFor(modelItem => item.MinisterName)</td>
-                            @{
-                                var base64 = Convert.ToBase64String(item.BannerData, 0, item.BannerData.Length);
-                                var imgSrc = string.Format("data:image/{0};base64,{1}", item.BannerExt, base64);
-                                var text = imgSrc;
-                            }
-                            <td class="text-center align-middle"><img src="@imgSrc" class="zoom" title="@item.Title" /></td>
+                            <td class="text-center align-middle"><img src="@item.BannerPath" class="zoom" title="@item.Title" /></td>
                             <td class="text-center align-middle">@Html.DisplayFor(modelItem => item.Tags)</td>
                             @{
                                 var isActive = (item.ActiveFlag ? "Activo" : "Inactivo");

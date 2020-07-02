@@ -53,13 +53,9 @@
             <div class="row d-flex mt-3 ftco-animate animated fadeInUp">
                 @foreach (var item in Model)
                 {
-                    var base64 = Convert.ToBase64String(item.BannerData, 0, item.BannerData.Length);
-                    var imgSrc = string.Format("data:image/{0};base64,{1}", item.BannerExt, base64);
-                    var Editflag = "EditFlag" + item.BlogID.ToString();
-
                     <div class="col-lg-4 d-flex podcast">
                         <div class="blog-entry justify-content-end">
-                            <a class="block-20" style="background-image: url('@imgSrc')"></a>
+                            <a class="block-20" style="background-image: url('@item.BannerPath')"></a>
                             <div class="textBlog d-flex float-right d-block">
                                 <div class="topper text-center pt-4 px-3">
                                     <span class="dayBlog">@item.NewDay</span>
@@ -108,12 +104,9 @@ else
                 {
                     foreach (var item in Model)
                     {
-                        var base64 = Convert.ToBase64String(item.BannerData, 0, item.BannerData.Length);
-                        var imgSrc = string.Format("data:image/{0};base64,{1}", item.BannerExt, base64);
-
-                        <div class="col-lg-4 d-flex">
+                       <div class="col-lg-4 d-flex">
                             <div class="blog-entry justify-content-end">
-                                <a class="block-20" style="background-image: url('@imgSrc')"></a>
+                                <a class="block-20" style="background-image: url('@item.BannerPath')"></a>
                                 <div class="textBlog d-flex float-right d-block">
                                     <div class="topper text-center pt-4 px-3">
                                         <span class="dayBlog">@item.NewDay</span>

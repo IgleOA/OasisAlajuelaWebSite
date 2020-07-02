@@ -11,8 +11,9 @@
 -- ======================================================================
 
 CREATE PROCEDURE [adm].[uspResetPassword]
-	@GUID		VARCHAR(MAX),
-	@Password	VARCHAR(50)
+	@Password	VARCHAR(50),
+    @GUID		VARCHAR(MAX) = NULL,	
+    @UserID		INT = NULL
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -31,26 +32,41 @@ AS
                 END
 
             -- =======================================================
-				DECLARE @UserID		INT
 				DECLARE	@UserName	VARCHAR(50)
-				
-				SELECT	@UserID		=	RR.[UserID],
-						@UserName	=	U.UserName						
-				FROM	[adm].[utbResetPasswords]  RR
-						LEFT JOIN [adm].[utbUsers] U ON U.[UserID] = RR.UserID
-				WHERE	RR.[GUID] = @GUID
-				
-				UPDATE	[adm].[utbUsers]
-				SET		[PasswordHash]		=	HASHBYTES('SHA2_512',@Password),
-						[LastModifyDate]	=	GETDATE(),
-						[LastModifyUser]	=	@UserName
-				WHERE	[UserID] = @UserID
 
-				UPDATE 	[adm].[utbResetPasswords]
-				SET		[ActiveFlag]	=	0,
-						[LastModifyDate]	=	GETDATE(),
-						[LastModifyUser]	=	@UserName
-				WHERE	[GUID] = @GUID
+                IF (@UserID IS NULL)
+                    BEGIN
+				        SELECT	@UserID		=	RR.[UserID],
+						        @UserName	=	U.UserName						
+				        FROM	[adm].[utbResetPasswords]  RR
+						        LEFT JOIN [adm].[utbUsers] U ON U.[UserID] = RR.UserID
+				        WHERE	RR.[GUID] = @GUID
+				
+				        UPDATE	[adm].[utbUsers]
+				        SET		[PasswordHash]		=	HASHBYTES('SHA2_512',@Password),
+                                [LastModifyDate]	=	GETDATE(),
+						        [LastModifyUser]	=	@UserName
+				        WHERE	[UserID] = @UserID
+
+				        UPDATE 	[adm].[utbResetPasswords]
+				        SET		[ActiveFlag]	=	0,
+						        [LastModifyDate]	=	GETDATE(),
+						        [LastModifyUser]	=	@UserName
+				        WHERE	[GUID] = @GUID
+                    END
+                ELSE
+                    BEGIN
+                        SELECT	@UserName	=	[UserName]	
+				        FROM	[adm].[utbUsers]  
+                        WHERE	[UserID] = @UserID
+
+                        UPDATE	[adm].[utbUsers]
+				        SET		[PasswordHash]		=	HASHBYTES('SHA2_512',@Password),
+                                [NeedResetPwd]      =   0,
+                                [LastModifyDate]	=	GETDATE(),
+						        [LastModifyUser]	=	@UserName
+				        WHERE	[UserID] = @UserID
+                    END
 			-- =======================================================
 
         IF ( @@trancount > 0

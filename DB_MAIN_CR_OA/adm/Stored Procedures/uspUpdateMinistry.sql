@@ -15,8 +15,7 @@ CREATE PROCEDURE [adm].[uspUpdateMinistry]
 	@MinistryID		INT,
 	@Name			VARCHAR(50) = NULL,
 	@Description	VARCHAR(MAX) = NULL,
-	@Image			VARBINARY(MAX) = NULL,
-	@ImageExt		VARCHAR(10) = NULL,
+	@Image			VARCHAR(500) = NULL,
 	@ActionLink		VARCHAR(50) = NULL,
 	@UpdateType		VARCHAR(10) = NULL
 AS 
@@ -50,8 +49,7 @@ AS
 						UPDATE	[config].[utbMinistries]
 						SET		[Name] =	@Name
 								,[Description] = @Description
-								,[Image] = ISNULL(@Image,[Image])
-								,[ImageExt] = ISNULL(@ImageExt,[ImageExt])
+								,[ImagePath] = ISNULL(@Image,[ImagePath])
 								,[ActionLink] = @ActionLink
 								,[LastModifyDate] = GETDATE()
 								,[LastModifyUser] = @InsertUser

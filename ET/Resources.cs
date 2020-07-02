@@ -14,13 +14,11 @@ namespace ET
         [Display(Name ="Tipo de Recurso")]
         public string TypeName { get; set; }
         
-        public byte[] TypeImage { get; set; }
+        public string TypeImagePath { get; set; }
 
         [DataType(DataType.Upload)]
         [Display(Name = "Imagen de Fondo")]
-        public HttpPostedFileBase file { get; set; }
-
-        public string TypeImageExt { get; set; }
+        public HttpPostedFileBase UploadFile { get; set; }
 
         [Required]
         [Display(Name = "Descripción")]
@@ -35,6 +33,8 @@ namespace ET
         public string ActionType { get; set; }
 
         public List<Groups> GroupList { get; set; }
+
+        public List<Resources> TopResources { get; set; }
 
     }
 
@@ -67,19 +67,19 @@ namespace ET
         [Display(Name = "Tipo de archivo")]
         public string  FileType { get; set; }
 
-        public byte[] FileData { get; set; }
-                
-        [DataType(DataType.Upload)]
-        [Display(Name = "Archivo")]
-        public HttpPostedFileBase file { get; set; }
+        public string FilePath { get; set; }
 
         public string FileExt { get; set; }
+
+        [DataType(DataType.Upload)]
+        [Display(Name = "Archivo")]
+        public HttpPostedFileBase UploadFile { get; set; }
 
         [Required]
         [Display(Name = "Nombre del Recurso")]
         public string FileName { get; set; }
 
-        [Display(Name = "YouTube o GoogleDrive Link")]
+        [Display(Name = "Link del Video")]
         public string FileURL { get; set; }
 
         [Required]

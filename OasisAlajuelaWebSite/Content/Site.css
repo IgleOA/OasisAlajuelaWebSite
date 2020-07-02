@@ -452,6 +452,12 @@ img > .d-block {
     background-position-y: top !important;
 }
 
+.seedlingpanel {
+    background-image: url("https://oasisalajuelawebiste.blob.core.windows.net/images/Seedling.jpg") !important;
+    background-position-x: center !important;
+    background-position-y: top !important;
+}
+
 .icon-bar {
     position: fixed;
     top: 80%;
@@ -468,6 +474,7 @@ img > .d-block {
         transition: all 0.3s ease;
         color: white;
         font-size: 24px;
+        border-radius: 0 10px 10px 0; 
     } 
 
         @media (max-width: 380px) {
@@ -478,7 +485,7 @@ img > .d-block {
         }
 
         .icon-bar a:hover {
-            background-color: #000;
+            background-color: #00ACEC !important;
         }
 
 /************* NEW LAYOUT ************/
@@ -1062,20 +1069,56 @@ span.yr, span.mos {
     font-size: 1.5em;
     font-family: "Poppins", Arial, sans-serif;
 }
+
+.responsiveShow {
+    display: none;
+}
+
+.imgSeedling {
+    height: calc(100vw*0.42);
+}
+
 @media (max-width: 767.98px) {
     .btnRegister {
         font-size: 1.25em;
     }
+    .responsiveHidden {
+        display: none;
+    }
+
+    .responsiveShow {
+        display: block;
+    }
+
+    
 }
 
 @media (max-width: 600px) {
     .btnRegister {
         font-size: 1.0em;
     }
+    
 }
 
 @media (max-width: 400px) {
     .btnRegister {
         font-size: 0.75em;
-    }
+    }    
 }
+
+.servicesSmall .icon:hover {
+    background: #00ACEC;
+}
+
+.servicesSmall .icon span:hover {
+    color: white;
+}
+
+.services .icon:hover {
+    background: #00ACEC;
+}
+
+.services .icon span:hover {
+    color: white;
+}
+

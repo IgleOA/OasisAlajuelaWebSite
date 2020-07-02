@@ -1,7 +1,6 @@
 ﻿CREATE TABLE [adm].[utbUsersProfile] (
     [UserID]         INT             NOT NULL,
-    [Photo]          VARBINARY (MAX) NULL,
-    [PhotoExt]       VARCHAR (10)    NULL,
+    [PhotoPath]		 VARCHAR (500)   NULL,
     [Phone]          VARCHAR (50)    NULL,
     [Mobile]         VARCHAR (50)    NULL,
     [Facebook]       VARCHAR (100)   NULL,
@@ -27,8 +26,8 @@ FOR INSERT,UPDATE
 AS
 	BEGIN
 		DECLARE @INSERTUPDATE VARCHAR(30)
-		DECLARE @StartValues	XML = (SELECT [UserID],[PhotoExt],[Phone],[Mobile],[Facebook],[Twitter],[Snapchat],[Instragram],[Country],[State],[City],[ActiveFlag],[CreationDate],[CreationUser],[LastModifyDate],[LastModifyUser] FROM Deleted [Values] for xml AUTO, ELEMENTS XSINIL)
-		DECLARE @EndValues		XML = (SELECT [UserID],[PhotoExt],[Phone],[Mobile],[Facebook],[Twitter],[Snapchat],[Instragram],[Country],[State],[City],[ActiveFlag],[CreationDate],[CreationUser],[LastModifyDate],[LastModifyUser] FROM Inserted [Values] for xml AUTO, ELEMENTS XSINIL)
+		DECLARE @StartValues	XML = (SELECT * FROM Deleted [Values] for xml AUTO, ELEMENTS XSINIL)
+		DECLARE @EndValues		XML = (SELECT * FROM Inserted [Values] for xml AUTO, ELEMENTS XSINIL)
 
 		CREATE TABLE #DBCC (EventType varchar(50), Parameters varchar(50), EventInfo nvarchar(max))
 

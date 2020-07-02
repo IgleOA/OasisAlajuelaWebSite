@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,8 +26,7 @@ namespace DAL
                 DynamicParameters Parm = new DynamicParameters();
                 Parm.Add("@InsertUser", InsertUser);
                 Parm.Add("@TypeName", RT.TypeName.Trim());
-                Parm.Add("@TypeImage", RT.TypeImage);
-                Parm.Add("@TypeImageExt", RT.TypeImageExt);
+                Parm.Add("@TypeImage", RT.TypeImagePath);
                 Parm.Add("@Description", RT.Description.Trim());
                 Parm.Add("@IsPublic", RT.IsPublic);
 
@@ -92,20 +92,12 @@ namespace DAL
 
                 SqlParameter pFileData = new SqlParameter
                 {
-                    ParameterName = "@FileData",
-                    SqlDbType = SqlDbType.VarBinary,
-                    Value = RT.FileData
+                    ParameterName = "@File",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 500,
+                    Value = RT.FilePath
                 };
                 SqlCmd.Parameters.Add(pFileData);
-
-                SqlParameter pFileExt = new SqlParameter
-                {
-                    ParameterName = "@FileExt",
-                    SqlDbType = SqlDbType.VarChar,
-                    Size = 10,
-                    Value = RT.FileExt
-                };
-                SqlCmd.Parameters.Add(pFileExt);
 
                 SqlParameter pFileName = new SqlParameter
                 {
@@ -188,17 +180,83 @@ namespace DAL
                             ResourceTypeID = Convert.ToInt32(dr["ResourceTypeID"]),
                             TypeName = dr["TypeName"].ToString(),
                             Description = dr["Description"].ToString(),
-                            TypeImage = (byte[])dr["TypeImage"],
-                            TypeImageExt = dr["TypeImageExt"].ToString(),
+                            TypeImagePath = dr["TypeImagePath"].ToString(),
                             ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]),
                             IsPublic = Convert.ToBoolean(dr["IsPublic"])
                         };
                         List.Add(detail);
                     }
-                }         
-                foreach(var item in List)
+                }
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+                foreach (var item in List)
                 {
                     item.GroupList = GDAL.ListbyRT(item.ResourceTypeID);
+                    item.TopResources = TopResourceList(item.ResourceTypeID);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            return List;
+        }
+
+        public List<Resources> TopResourceList(int ResourceTypeID)
+        {
+            List<Resources> List = new List<Resources>();
+
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[config].[uspReadResources]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                SqlParameter pResourceTypeID = new SqlParameter
+                {
+                    ParameterName = "@ResourceTypeID",
+                    SqlDbType = SqlDbType.Int,
+                    Value = ResourceTypeID
+                };
+                SqlCmd.Parameters.Add(pResourceTypeID);
+
+                SqlParameter pDate = new SqlParameter
+                {
+                    ParameterName = "@Date",
+                    SqlDbType = SqlDbType.DateTime,
+                    Value = DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"]))
+                };
+                SqlCmd.Parameters.Add(pDate);
+
+                SqlParameter pTopFlag = new SqlParameter
+                {
+                    ParameterName = "@TopFlag",
+                    SqlDbType = SqlDbType.Bit,
+                    Value = true
+                };
+                SqlCmd.Parameters.Add(pTopFlag);
+
+                using (var dr = SqlCmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        var detail = new Resources
+                        {
+                            ResourceID = Convert.ToInt32(dr["ResourceID"]),
+                            ResourceTypeID = Convert.ToInt32(dr["ResourceTypeID"]),
+                            TypeName = dr["TypeName"].ToString(),
+                            FileType = dr["FileType"].ToString(),
+                            FilePath = dr["FilePath"].ToString(),
+                            FileExt = Path.GetExtension(dr["FilePath"].ToString()).ToUpper(),
+                            FileName = dr["FileName"].ToString(),
+                            FileURL = dr["FileURL"].ToString(),
+                            Description = dr["Description"].ToString(),
+                            ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"])
+                        };
+                        List.Add(detail);
+                    }
                 }
             }
             catch (Exception ex)
@@ -247,7 +305,8 @@ namespace DAL
                             ResourceTypeID = Convert.ToInt32(dr["ResourceTypeID"]),
                             TypeName = dr["TypeName"].ToString(),
                             FileType = dr["FileType"].ToString(),
-                            FileExt = dr["FileExt"].ToString(),
+                            FilePath = dr["FilePath"].ToString(),
+                            FileExt = Path.GetExtension(dr["FilePath"].ToString()).ToUpper(),
                             FileName = dr["FileName"].ToString(),
                             FileURL = dr["FileURL"].ToString(),
                             Description = dr["Description"].ToString(),
@@ -290,7 +349,7 @@ namespace DAL
                             ResourceTypeID = Convert.ToInt32(dr["ResourceTypeID"]),
                             TypeName = dr["TypeName"].ToString(),
                             FileType = dr["FileType"].ToString(),
-                            FileExt = dr["FileExt"].ToString(),
+                            FilePath = dr["FilePath"].ToString(),
                             FileName = dr["FileName"].ToString(),
                             FileURL = dr["FileURL"].ToString(),
                             Description = dr["Description"].ToString(),
@@ -349,15 +408,13 @@ namespace DAL
                         details.ResourceTypeID = Convert.ToInt32(dr["ResourceTypeID"]);
                         details.TypeName = dr["TypeName"].ToString();
                         details.FileType = dr["FileType"].ToString();
-                        details.FileExt = dr["FileExt"].ToString();
+                        details.FilePath = dr["FilePath"].ToString();
+                        details.FileExt = Path.GetExtension(dr["FilePath"].ToString()).ToUpper();
                         details.FileName = dr["FileName"].ToString();
                         details.FileURL = dr["FileURL"].ToString();
                         details.Description = dr["Description"].ToString();
                         details.ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]);
-                        if(!Convert.IsDBNull(dr["FileData"]))
-                        {
-                            details.FileData = (byte[])dr["FileData"];                           
-                        }
+                        
                         if (!Convert.IsDBNull(dr["EnableStart"]))
                         {
                             details.EnableStart = Convert.ToDateTime(dr["EnableStart"]);

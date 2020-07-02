@@ -17,8 +17,7 @@ CREATE PROCEDURE [adm].[uspUpdateSermon]
 	@Description	VARCHAR(MAX) = NULL,
 	@Tags			VARCHAR(MAX) = NULL,
 	@MinisterID		INT = NULL,
-	@BannerData		VARBINARY(MAX) = NULL,
-	@BannerExt		VARCHAR(10) = NULL,
+	@Banner			VARCHAR(500) = NULL,
 	@SermonDate		DATETIME = NULL,
 	@SermonURL		VARCHAR(500) = NULL	
 AS 
@@ -71,8 +70,7 @@ AS
 								,[Tags]			= @Tags
 								,[MinisterID]	= @MinisterID
 								,[SermonDate]	= @SermonDate
-								,[BackgroundImage]	= @BannerData
-								,[BackgroundExt]	= REPLACE(@BannerExt,'.','')
+								,[ImagePath]	= @Banner
 								,[ActiveFlag]		= 1
 								,[LastModifyDate]	= GETDATE()
 								,[LastModifyUser]	= @User

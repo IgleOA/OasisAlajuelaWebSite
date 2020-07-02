@@ -58,12 +58,9 @@
             <div class="row d-flex mt-3">
                 @foreach (var item in Model)
                 {
-                    var base64 = Convert.ToBase64String(item.Image, 0, item.Image.Length);
-                    var imgSrc = string.Format("data:image/{0};base64,{1}", item.ImageExt, base64);
-
                     <div class="col-lg-4 d-flex ftco-animate animated fadeInUp">
                         <div class="blog-entry justify-content-end mb-2">
-                            <a class="block-20 zoom125x" style="background-image: url('@imgSrc')"></a>
+                            <a class="block-20 zoom125x" style="background-image: url('@item.ImagePath')"></a>
                             <div class="textBlog d-flex float-right d-block">
                                 <div class="topper text-center pt-4 px-3" style="background: #00ACEC !important;">
 
@@ -109,12 +106,9 @@ else
             <div class="row d-flex mt-3">
                 @foreach (var item in Model)
                 {
-                    var base64 = Convert.ToBase64String(item.Image, 0, item.Image.Length);
-                    var imgSrc = string.Format("data:image/{0};base64,{1}", item.ImageExt, base64);
-
                     <div class="col-lg-4 d-flex ftco-animate animated fadeInUp">
                         <div class="blog-entry justify-content-end mb-2">
-                            <a class="block-20 zoom125x" style="background-image: url('@imgSrc')"></a>
+                            <a class="block-20 zoom125x" style="background-image: url('@item.ImagePath')"></a>
                             <div class="textBlog d-flex float-right d-block">
                                 <div class="topper text-center pt-4 px-3" style="background: #00ACEC !important;">
 

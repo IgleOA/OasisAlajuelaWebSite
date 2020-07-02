@@ -44,6 +44,7 @@
         {
             @Html.AntiForgeryToken()
             @Html.HiddenFor(model => model.MinistryID)
+            @Html.HiddenFor(model => model.ImagePath)
             <div class="form-horizontal">
                 @Html.ValidationSummary(true, "", new { @class = "text-danger m-0" })
                 <div class="row">
@@ -72,16 +73,12 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            @Html.LabelFor(model => model.file, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
+                            @Html.LabelFor(model => model.UploadFile, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
                             <div class="profile-img">
-                                @{
-                                    var base64 = Convert.ToBase64String(Model.Image, 0, Model.Image.Length);
-                                    var imgSrc = string.Format("data:image/{0};base64,{1}", Model.ImageExt, base64);
-                                }
-                                <img src="@imgSrc" class="avatar img-thumbnail w-75" alt="avatar" />
+                                <img src="@Model.ImagePath" class="avatar img-thumbnail w-75" alt="avatar" />
                                 <div class="file btn btn-lg btn-primary profile-img w-75">
                                     Agregar Imagen
-                                    <input id="file" type="file" name="file" class="file-upload">
+                                    <input id="UploadFile" type="file" name="UploadFile" class="file-upload">
                                 </div>
                                 <p>La imagen debe ser tipo estandarte y solo en los formatos PNG, JPG y JPEG.</p>
                             </div>

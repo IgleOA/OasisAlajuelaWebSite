@@ -32,6 +32,9 @@ namespace ET
         [Display(Name = "Acción")]
         public string ActionLink { get; set; }
 
+        [Display(Name = "Parametro")]
+        public string Parameter { get; set; }
+
         public string ActionType { get; set; }
     }
 }

@@ -69,12 +69,7 @@
                             <tr>
                                 <td class="text-center align-middle">@Html.DisplayFor(modelItem => item.LocationBanner)</td>
                                 <td class="text-center align-middle">@Html.DisplayFor(modelItem => item.BannerName)</td>
-                                @{
-                                    var base64 = Convert.ToBase64String(item.BannerData, 0, item.BannerData.Length);
-                                    var imgSrc = string.Format("data:image/{0};base64,{1}", item.BannerExt, base64);
-                                    var text = imgSrc;
-                                }
-                                <td class="text-center align-middle"><img src="@imgSrc" class="zoom" title="@item.BannerName" /></td>
+                                <td class="text-center align-middle"><img src="@item.BannerPath" class="zoom" title="@item.BannerName" /></td>
                                 @{
                                     var isActive = (item.ActiveFlag ? "Activo" : "Inactivo");
                                     var Editflag = "EditFlag" + item.BannerID.ToString();
@@ -163,12 +158,7 @@ else
                             <tr>
                                 <td class="text-center align-middle">@Html.DisplayFor(modelItem => item.LocationBanner)</td>
                                 <td class="text-center align-middle">@Html.DisplayFor(modelItem => item.BannerName)</td>
-                                @{
-                                    var base64 = Convert.ToBase64String(item.BannerData, 0, item.BannerData.Length);
-                                    var imgSrc = string.Format("data:image/{0};base64,{1}", item.BannerExt, base64);
-                                    var text = imgSrc;
-                                }
-                                <td class="text-center align-middle"><img src="@imgSrc" class="zoom" title="@item.BannerName" /></td>
+                                <td class="text-center align-middle"><img src="@item.BannerPath" class="zoom" title="@item.BannerName" /></td>
                                 @{
                                     var isActive = (item.ActiveFlag ? "Activo" : "Inactivo");
                                 }

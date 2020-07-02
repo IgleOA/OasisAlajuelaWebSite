@@ -43,8 +43,7 @@ namespace DAL
                             NewID = Convert.ToInt32(dr["NewID"]),
                             Title = dr["Title"].ToString(),
                             Description = dr["Description"].ToString(),
-                            BannerData = (byte[])dr["BannerData"],
-                            BannerExt = dr["BannerExt"].ToString(),
+                            BannerPath = dr["BannerPath"].ToString(),
                             ShowFlag = Convert.ToBoolean(dr["ShowFlag"]),
                             ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]),
                             InsertDate = Convert.ToDateTime(dr["Date"]),
@@ -74,8 +73,7 @@ namespace DAL
                 Parm.Add("@InsertUser", InserUser);
                 Parm.Add("@Title", NewMS.Title.Trim());
                 Parm.Add("@Description", NewMS.Description.Trim());
-                Parm.Add("@BannerData", NewMS.BannerData);
-                Parm.Add("@BannerExt", NewMS.BannerExt);
+                Parm.Add("@Banner", NewMS.BannerPath);
                 Parm.Add("@InsertDate", NewMS.InsertDate);
 
                 SqlCon.Open();
@@ -158,20 +156,12 @@ namespace DAL
 
                 SqlParameter Photo = new SqlParameter
                 {
-                    ParameterName = "@BannerData",
-                    SqlDbType = SqlDbType.VarBinary,
-                    Value = NewMS.BannerData
+                    ParameterName = "@Banner",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 500,
+                    Value = NewMS.BannerPath
                 };
                 SqlCmd.Parameters.Add(Photo);
-
-                SqlParameter pPhotoExt = new SqlParameter
-                {
-                    ParameterName = "@BannerExt",
-                    SqlDbType = SqlDbType.VarChar,
-                    Size = 10,
-                    Value = NewMS.BannerExt
-                };
-                SqlCmd.Parameters.Add(pPhotoExt);
 
                 SqlParameter ShowFlag = new SqlParameter
                 {
@@ -222,8 +212,7 @@ namespace DAL
                         details.NewID = Convert.ToInt32(dr["NewID"]);
                         details.Title = dr["Title"].ToString();
                         details.Description = dr["Description"].ToString();
-                        details.BannerData = (byte[])dr["BannerData"];
-                        details.BannerExt = dr["BannerExt"].ToString();
+                        details.BannerPath = dr["BannerPath"].ToString();
                         details.ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]);
                         details.InsertDate = Convert.ToDateTime(dr["Date"]);
                         details.NewYear = dr["Year"].ToString();

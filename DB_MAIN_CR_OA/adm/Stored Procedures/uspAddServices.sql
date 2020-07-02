@@ -17,7 +17,8 @@ CREATE PROCEDURE [adm].[uspAddServices]
 	@SVCDescription	VARCHAR(MAX),
 	@SVCOrder		INT,
 	@ControllerLink	VARCHAR(50) = NULL,
-	@ActionLink		VARCHAR(50) = NULL
+	@ActionLink		VARCHAR(50) = NULL,
+    @Parameter		VARCHAR(50) = NULL
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -36,8 +37,8 @@ AS
                 END
 
             -- =======================================================
-				INSERT INTO [config].[utbServices] ([ServiceName],[ServiceDescription],[ServiceIcon],[ActiveFlag],[Order],[ControllerLink],[ActionLink],[InsertUser],[LastModifyUser])
-				VALUES (@SVCName, @SVCDescription, @SVCIcon, 1, @SVCOrder, @ControllerLink, @ActionLink, @InsertUser, @InsertUser)
+				INSERT INTO [config].[utbServices] ([ServiceName],[ServiceDescription],[ServiceIcon],[ActiveFlag],[Order],[ControllerLink],[ActionLink],[Parameter],[InsertUser],[LastModifyUser])
+				VALUES (@SVCName, @SVCDescription, @SVCIcon, 1, @SVCOrder, @ControllerLink, @ActionLink,@Parameter, @InsertUser, @InsertUser)
 			-- =======================================================
 
         IF ( @@trancount > 0

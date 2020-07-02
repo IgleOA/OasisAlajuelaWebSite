@@ -43,16 +43,14 @@ namespace ET
 
         [Display(Name = "Imagen de Fondo")]
         [Required]
-        public byte[] BannerData { get; set; }
+        public string BannerPath { get; set; }
 
-        [Required]
-        public string BannerExt { get; set; }
 
         [Required(ErrorMessage = "Por favor seleccione un archivo")]
         [DataType(DataType.Upload)]
         [AllowExtensions(Extensions = "png,jpg,jpeg,gif", ErrorMessage = "Por favor seleccione solo archivos soportados .png, .jpg, .jpeg, .gif")]
         [Display(Name = "Banner")]
-        public HttpPostedFileBase file { get; set; }
+        public HttpPostedFileBase UploadFile { get; set; }
 
         [Required(ErrorMessage = "Por favor seleccione un archivo")]
         [DataType(DataType.Upload)]

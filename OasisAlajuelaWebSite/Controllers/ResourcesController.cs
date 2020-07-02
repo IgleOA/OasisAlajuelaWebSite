@@ -13,6 +13,7 @@ using OasisAlajuelaWebSite.Models;
 using System.Configuration;
 using System.Text;
 using System.Net.Mail;
+using shortid;
 
 namespace OasisAlajuelaWebSite.Controllers
 {
@@ -24,6 +25,7 @@ namespace OasisAlajuelaWebSite.Controllers
         private ResourcesBL RBL = new ResourcesBL();
         private YouTubeBL YBL = new YouTubeBL();
         private GroupsBL GBL = new GroupsBL();
+        private HelpersBL HBL = new HelpersBL();
 
         public ActionResult Index()
         {
@@ -186,17 +188,18 @@ namespace OasisAlajuelaWebSite.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddNewRT(ResourceTypes RT)
         {
-            String FileExt = Path.GetExtension(RT.file.FileName).ToUpper();
-
-            RT.TypeImageExt = FileExt;
+            String FileExt = Path.GetExtension(RT.UploadFile.FileName).ToUpper();
 
             if (FileExt == ".PNG" || FileExt == ".JPG" || FileExt == ".JPEG")
             {
-                Stream str = RT.file.InputStream;
-                BinaryReader Br = new BinaryReader(str);
-                Byte[] FileDet = Br.ReadBytes((Int32)str.Length);
+                string GUID = "IMG_ResourceType_" + ShortId.Generate(true, false, 12) + ".JPG";
 
-                RT.TypeImage = FileDet;
+                string ServerPath = Path.Combine(Server.MapPath("~/Files/Images"), GUID);
+
+                //RT.UploadFile.SaveAs(ServerPath);
+                HBL.ResizeAndSaveAzure(850, RT.UploadFile, ServerPath);
+
+                RT.TypeImagePath = ConfigurationManager.AppSettings["AzureStorage"].ToString() + "images/" + GUID;
 
                 string InsertUser = User.Identity.GetUserName();
 
@@ -209,14 +212,13 @@ namespace OasisAlajuelaWebSite.Controllers
                 }
                 else
                 {
-
                     RT.ActionType = "CREATE";
                     return View(RT);
                 }
             }
             else
             {
-                this.ModelState.AddModelError(String.Empty, "La imagen selecciona es de un formato invalido o no aceptado.");
+                this.ModelState.AddModelError(String.Empty, "La imagen seleccionada es de un formato invalido o no aceptado.");
                 return View(RT);
             }
         }
@@ -271,17 +273,15 @@ namespace OasisAlajuelaWebSite.Controllers
                                select rd;
 
                     MS.TypeList = data.ToList();
-                    this.ModelState.AddModelError(String.Empty, "El video proporcionado no existe en YouTube o GoogleDrive o es incorrecto.");
+                    this.ModelState.AddModelError(String.Empty, "El video proporcionado no existe en YouTube, GoogleDrive, Vimeo o es incorrecto.");
                     return View(MS);
                 }
             }
             else
             {
-                String FileExt = Path.GetExtension(MS.file.FileName).ToUpper();
+                String FileExt = Path.GetExtension(MS.UploadFile.FileName).ToUpper();
 
-                MS.FileExt = FileExt;
-
-                var valformat = ValidationFormat(MS.FileType, MS.FileExt);
+                var valformat = ValidationFormat(MS.FileType, FileExt);
 
                 if (!valformat)
                 {
@@ -296,11 +296,47 @@ namespace OasisAlajuelaWebSite.Controllers
 
                 else
                 {
-                    Stream str = MS.file.InputStream;
-                    BinaryReader Br = new BinaryReader(str);
-                    Byte[] FileDet = Br.ReadBytes((Int32)str.Length);
+                    AzureStorage AzureFile = new AzureStorage()
+                    {
+                        File = MS.UploadFile
+                    };
 
-                    MS.FileData = FileDet;
+                    string GUID = "DOC_Resource_" + ShortId.Generate(true, false, 12) + FileExt;
+                    //string ServerPath = Path.Combine(Server.MapPath("~/Files/Documents"), GUID);
+                    //MS.FilePath = "/Files/Documents/" + GUID;
+                    
+                    AzureFile.FileName = GUID;
+                    AzureFile.FileType = "files";
+
+                    MS.FilePath = ConfigurationManager.AppSettings["AzureStorage"].ToString() + "files/" + GUID;
+
+                    if (MS.FileType == "Audio")
+                    {
+                        GUID = "AUD_Resource_" + ShortId.Generate(true, false, 12) + FileExt;
+
+                        AzureFile.FileName = GUID;
+                        AzureFile.FileType = "audios";
+                        
+                        MS.FilePath = ConfigurationManager.AppSettings["AzureStorage"].ToString() + "audios/" + GUID;
+                        //MS.FilePath = "/Files/Audios/" + GUID;
+                    }
+
+                    switch(FileExt)
+                    {
+                        case ".PDF": AzureFile.ContentType = "application/pdf";
+                            break;
+                        case ".DOCX": AzureFile.ContentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+                            break;
+                        case ".DOC": AzureFile.ContentType = "application/msword";
+                            break;
+                        case ".TXT": AzureFile.ContentType = "text/plain";
+                            break;
+                        default: AzureFile.ContentType = "audio/mpeg";
+                            break;
+                    }                    
+
+                    HBL.SaveAzure(AzureFile);
+                    //MS.UploadFile.SaveAs(ServerPath);                    
                 }
             }
 
@@ -321,41 +357,48 @@ namespace OasisAlajuelaWebSite.Controllers
 
             if (ResourceID > 0)
             {
-                Resources Res = RBL.ResourceDetails(ResourceID);
-                MailAddressCollection emailtoBCC = new MailAddressCollection();
-                List<Users> Subscribers = USBL.Subscribers(ResourceID,false);
-
-                foreach (var item in Subscribers)
+                if (MS.EnableStart == null || MS.EnableStart >= DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])))
                 {
-                    emailtoBCC.Add(item.Email);
+                    Resources Res = RBL.ResourceDetails(ResourceID);
+                    MailAddressCollection emailtoBCC = new MailAddressCollection();
+                    List<Users> Subscribers = USBL.Subscribers(ResourceID, false);
+
+                    if (Subscribers.Count() > 0)
+                    {
+                        foreach (var item in Subscribers)
+                        {
+                            emailtoBCC.Add(item.Email);
+                        }
+                    }
+
+                    #region Email
+                    Emails Email = new Emails()
+                    {
+                        FromEmail = ConfigurationManager.AppSettings["AdminEmail"].ToString(),
+                        ToEmail = ConfigurationManager.AppSettings["Subscribers"].ToString(),
+                        SubjectEmail = "Oasis Alajuela ha subido un Recurso"
+                    };
+
+                    StringBuilder mailBody = new StringBuilder();
+
+                    var strg = ViewToStringRenderer.RenderViewToString(this.ControllerContext, "~/Views/Resources/EmailNewResource.cshtml", Res);
+
+                    mailBody.AppendFormat(strg);
+
+                    Email.BodyEmail = mailBody.ToString();
+
+                    MailMessage mm = new MailMessage(Email.FromEmail, Email.ToEmail);
+                    mm.Subject = Email.SubjectEmail;
+                    mm.Body = Email.BodyEmail;
+                    mm.IsBodyHtml = true;
+                    if (Subscribers.Count() > 0)
+                    {
+                        mm.Bcc.Add(emailtoBCC.ToString());
+                    }
+                    SmtpClient smtp = new SmtpClient();
+                    smtp.Send(mm);
+                    #endregion
                 }
-                
-                #region Email
-                Emails Email = new Emails()
-                {
-                    FromEmail = ConfigurationManager.AppSettings["AdminEmail"].ToString(),
-                    ToEmail = ConfigurationManager.AppSettings["Subscribers"].ToString(),
-                    SubjectEmail = "Oasis Alajuela ha subido un Recurso"
-                };
-
-                StringBuilder mailBody = new StringBuilder();
-
-                var strg = ViewToStringRenderer.RenderViewToString(this.ControllerContext, "~/Views/Resources/EmailNewResource.cshtml", Res);
-
-                mailBody.AppendFormat(strg);
-
-                Email.BodyEmail = mailBody.ToString();
-
-                MailMessage mm = new MailMessage(Email.FromEmail,Email.ToEmail);
-                mm.Subject = Email.SubjectEmail;
-                mm.Body = Email.BodyEmail;
-                mm.IsBodyHtml = true;
-                mm.Bcc.Add(emailtoBCC.ToString());
-
-                SmtpClient smtp = new SmtpClient();
-                smtp.Send(mm);
-                #endregion
-
                 MS.ActionType = "CREATE";
 
                 var data = from rd in RBL.TypeList(User.Identity.GetUserName())
@@ -372,24 +415,24 @@ namespace OasisAlajuelaWebSite.Controllers
             }
         }
 
-        [HttpGet]
-        public FileResult DownLoadFile(int id)
-        {
-            var FileById = RBL.ResourceDetails(id);
-            var FileType = "application/" + FileById.FileExt;
-            var FileName = FileById.FileName.Replace(" ", "_") + "." + FileById.FileExt;
+        //[HttpGet]
+        //public FileResult DownLoadFile(int id)
+        //{
+        //    var FileById = RBL.ResourceDetails(id);
+        //    var FileType = "application/" + FileById.FileExt;
+        //    var FileName = FileById.FileName.Replace(" ", "_") + "." + FileById.FileExt;
 
-            return File(FileById.FileData, FileType, FileName);
-        }
+        //    return File(FileById.FilePath, FileType, FileName);
+        //}
 
-        public ActionResult GetFile(int id)
-        {
-            var FileById = RBL.ResourceDetails(id);
+        //public ActionResult GetFile(int id)
+        //{
+        //    var FileById = RBL.ResourceDetails(id);
 
-            string strFile = FileById.FileName.Replace(" ", "_") + "." + FileById.FileExt;
+        //    string strFile = FileById.FileName.Replace(" ", "_") + ".";// + FileById.FileExt;
 
-            return File(FileById.FileData, System.Net.Mime.MediaTypeNames.Application.Octet, strFile);
-        }
+        //    return File(FileById.FilePath, System.Net.Mime.MediaTypeNames.Application.Octet, strFile);
+        //}
 
         public ActionResult Edit(int id = 0)
         {
@@ -481,7 +524,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
             if (FileType == "Audio")
             {
-                Extensions = "MP3,AAC,OGG,WAV";
+                Extensions = "MP3";
                 List<string> allowedExtensions = Extensions.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
                 isValid = allowedExtensions.Any(x => FileExt.EndsWith(x));
             }

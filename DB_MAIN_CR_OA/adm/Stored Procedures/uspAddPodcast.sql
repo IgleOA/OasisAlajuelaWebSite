@@ -14,8 +14,7 @@ CREATE PROCEDURE [adm].[uspAddPodcast]
 	@InsertUser		VARCHAR(50),	
 	@Title			VARCHAR(30),
 	@Description	VARCHAR(200),
-	@BannerData		VARBINARY(MAX),
-	@BannerExt		VARCHAR(10),
+	@Banner 		VARCHAR(500),
 	@MinisterID		INT,
 	@InsertDate		DATETIME
 AS 
@@ -36,8 +35,8 @@ AS
                 END
 
             -- =======================================================
-				INSERT INTO [config].[utbPodcasts] ([Title],[Description],[BannerData],[BannerExt],[MinisterID],[InsertDate],[InsertUser],[LastModifyUser])
-				VALUES (@Title,@Description,@BannerData,REPLACE(@BannerExt,'.',''),@MinisterID,@InsertDate,@InsertUser,@InsertUser)
+				INSERT INTO [config].[utbPodcasts] ([Title],[Description],[BannerPath],[MinisterID],[InsertDate],[InsertUser],[LastModifyUser])
+				VALUES (@Title,@Description,@Banner,@MinisterID,@InsertDate,@InsertUser,@InsertUser)
 			-- =======================================================
 
         IF ( @@trancount > 0

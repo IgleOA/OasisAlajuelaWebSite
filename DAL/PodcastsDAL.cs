@@ -34,8 +34,7 @@ namespace DAL
                             PodcastID = Convert.ToInt32(dr["PodcastID"]),
                             Title = dr["Title"].ToString(),
                             Description = dr["Description"].ToString(),
-                            BannerData = (byte[])dr["BannerData"],
-                            BannerExt = dr["BannerExt"].ToString(),
+                            BannerPath = dr["BannerPath"].ToString(),
                             MinisterID = Convert.ToInt32(dr["MinisterID"]),
                             MinisterName = dr["MinisterName"].ToString(),
                             ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]),
@@ -67,8 +66,7 @@ namespace DAL
                 Parm.Add("@InsertUser", InserUser);
                 Parm.Add("@Title", NewPodcast.Title.Trim());
                 Parm.Add("@Description", NewPodcast.Description.Trim());
-                Parm.Add("@BannerData", NewPodcast.BannerData);
-                Parm.Add("@BannerExt", NewPodcast.BannerExt);
+                Parm.Add("@Banner", NewPodcast.BannerPath);
                 Parm.Add("@MinisterID", NewPodcast.MinisterID);
                 Parm.Add("@InsertDate", NewPodcast.InsertDate);
 
@@ -152,20 +150,12 @@ namespace DAL
 
                 SqlParameter Photo = new SqlParameter
                 {
-                    ParameterName = "@BannerData",
-                    SqlDbType = SqlDbType.VarBinary,
-                    Value = NewPodcast.BannerData
+                    ParameterName = "@Banner",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 500,
+                    Value = NewPodcast.BannerPath
                 };
                 SqlCmd.Parameters.Add(Photo);
-
-                SqlParameter pPhotoExt = new SqlParameter
-                {
-                    ParameterName = "@BannerExt",
-                    SqlDbType = SqlDbType.VarChar,
-                    Size = 10,
-                    Value = NewPodcast.BannerExt
-                };
-                SqlCmd.Parameters.Add(pPhotoExt);
 
                 SqlParameter pMinisterID = new SqlParameter
                 {
@@ -216,8 +206,7 @@ namespace DAL
                         details.PodcastID = Convert.ToInt32(dr["PodcastID"]);
                         details.Title = dr["Title"].ToString();
                         details.Description = dr["Description"].ToString();
-                        details.BannerData = (byte[])dr["BannerData"];
-                        details.BannerExt = dr["BannerExt"].ToString();
+                        details.BannerPath = dr["BannerPath"].ToString();
                         details.MinisterID = Convert.ToInt32(dr["MinisterID"]);
                         details.MinisterName = dr["MinisterName"].ToString();
                         details.ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]);

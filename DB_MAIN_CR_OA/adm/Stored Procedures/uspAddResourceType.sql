@@ -13,8 +13,7 @@ CREATE PROCEDURE [adm].[uspAddResourceType]
 	@InsertUser		VARCHAR(50),	
 	@TypeName		VARCHAR(500),
 	@Description	VARCHAR(MAX),	
-	@TypeImage		VARBINARY(MAX),
-	@TypeImageExt	VARCHAR(10),
+	@TypeImage		VARCHAR(500),	
 	@IsPublic		BIT
 AS 
     BEGIN
@@ -34,8 +33,8 @@ AS
                 END
 
             -- =======================================================
-				INSERT INTO [config].[utbResourceTypes] ([TypeName],[TypeImage],[TypeImageExt],[Description],[IsPublic],[InsertUser],[LastModifyUser])
-				VALUES (@TypeName,@TypeImage,REPLACE(@TypeImageExt,'.',''),@Description,@IsPublic,@InsertUser,@InsertUser)
+				INSERT INTO [config].[utbResourceTypes] ([TypeName],[TypeImagePath],[Description],[IsPublic],[InsertUser],[LastModifyUser])
+				VALUES (@TypeName,@TypeImage,@Description,@IsPublic,@InsertUser,@InsertUser)
 			-- =======================================================
 
         IF ( @@trancount > 0

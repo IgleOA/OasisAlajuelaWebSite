@@ -37,6 +37,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -52,6 +53,7 @@
     <Compile Include="BlogsBL.cs" />
     <Compile Include="EnrollmentsBL.cs" />
     <Compile Include="GroupsBL.cs" />
+    <Compile Include="HelpersBL.cs" />
     <Compile Include="HomeBL.cs" />
     <Compile Include="LeadershipBL.cs" />
     <Compile Include="MinistersBL.cs" />

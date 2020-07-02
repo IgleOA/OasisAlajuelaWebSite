@@ -6,8 +6,7 @@
     [MinisterID]      INT             NOT NULL,
     [SermonDate]      DATETIME        NOT NULL,
     [SermonURL]       VARCHAR (500)   NOT NULL,
-    [BackgroundImage] VARBINARY (MAX) NOT NULL,
-    [BackgroundExt]   VARCHAR (10)    NOT NULL,
+    [ImagePath]		  VARCHAR (500)   NOT NULL,
     [ActiveFlag]      BIT             CONSTRAINT [utbSermonsDefaultActiveFlagIsTrue] DEFAULT ((1)) NOT NULL,
     [InsertDate]      DATETIME        CONSTRAINT [utbSermonsDefaultInsertDatesysdatetime] DEFAULT (sysdatetime()) NOT NULL,
     [InsertUser]      VARCHAR (100)   CONSTRAINT [utbSermonsDefaultInsertUsersuser_sname] DEFAULT (suser_sname()) NOT NULL,
@@ -24,8 +23,8 @@ FOR INSERT,UPDATE
 AS
 	BEGIN
 		DECLARE @INSERTUPDATE VARCHAR(30)
-		DECLARE @StartValues	XML = (SELECT [SermonID],[Title],[Description],[Tags],[MinisterID],[SermonDate],[SermonURL],[BackgroundExt],[ActiveFlag] FROM Deleted [Values] for xml AUTO, ELEMENTS XSINIL)
-		DECLARE @EndValues		XML = (SELECT [SermonID],[Title],[Description],[Tags],[MinisterID],[SermonDate],[SermonURL],[BackgroundExt],[ActiveFlag] FROM Inserted [Values] for xml AUTO, ELEMENTS XSINIL)
+		DECLARE @StartValues	XML = (SELECT * FROM Deleted [Values] for xml AUTO, ELEMENTS XSINIL)
+		DECLARE @EndValues		XML = (SELECT * FROM Inserted [Values] for xml AUTO, ELEMENTS XSINIL)
 
 		CREATE TABLE #DBCC (EventType varchar(50), Parameters varchar(50), EventInfo nvarchar(max))
 

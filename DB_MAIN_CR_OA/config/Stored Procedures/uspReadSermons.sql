@@ -31,8 +31,7 @@ AS
 						,S.[SermonDate]
 						--,S.[SermonURL]
 						,[SermonURL]	=	REPLACE(REPLACE(REPLACE(S.[SermonURL],'https://youtu.be/','https://www.youtube.com/embed/'),'https://www.youtube.com/watch?v=','https://www.youtube.com/embed/'),'\','')
-						,S.[BackgroundImage]
-						,S.[BackgroundExt]
+						,S.[ImagePath]
 						,S.[ActiveFlag]
 				FROM	[config].[utbSermons] S
 						LEFT JOIN [config].[utbMinisters] M ON M.[MinisterID] = S.[MinisterID]
