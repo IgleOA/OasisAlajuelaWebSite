@@ -10,7 +10,7 @@
                 <div class="icon d-flex justify-content-center mb-3">
                     @if (item.ControllerLink.Length > 0)
                     {
-                        <a href='@Url.Action(item.ActionLink, item.ControllerLink, new { id = item.Parameter })' target="_blank" class="text-decoration-none my-auto"><span class='align-self-center @item.ServiceIcon fa-4x'></span></a>
+                        <a href='@Url.Action(item.ActionLink, item.ControllerLink, new { id = item.Parameter })' class="text-decoration-none my-auto"><span class='align-self-center @item.ServiceIcon fa-4x'></span></a>
                     }
                     else
                     {

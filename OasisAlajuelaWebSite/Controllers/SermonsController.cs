@@ -426,24 +426,24 @@ namespace OasisAlajuelaWebSite.Controllers
         {
             SermonEmail Res = SBL.DetailsForEmail(id);
 
-            var uri = new Uri(Res.SermonURL);
+            //var uri = new Uri(Res.SermonURL);
 
-            // you can check host here => uri.Host <= "www.youtube.com"
+            //// you can check host here => uri.Host <= "www.youtube.com"
 
-            var query = HttpUtility.ParseQueryString(uri.Query);
+            //var query = HttpUtility.ParseQueryString(uri.Query);
 
-            var videoId = string.Empty;
+            //var videoId = string.Empty;
 
-            if (query.AllKeys.Contains("v"))
-            {
-                videoId = query["v"];
-            }
-            else
-            {
-                videoId = uri.Segments.Last();
-            }
+            //if (query.AllKeys.Contains("v"))
+            //{
+            //    videoId = query["v"];
+            //}
+            //else
+            //{
+            //    videoId = uri.Segments.Last();
+            //}
 
-            Res.ImageURL = "https://i.ytimg.com/vi/" + videoId + "/mqdefault.jpg";
+            //Res.ImageURL = "https://i.ytimg.com/vi/" + videoId + "/mqdefault.jpg";
 
             return View(Res);
         }

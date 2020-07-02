@@ -2033,7 +2033,6 @@
     <Content Include="Content\jquery.seat-charts.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\Reservations.css" />
-    <Content Include="CreatePackage.txt" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\flaticon\backup.txt" />
     <Content Include="fonts\flaticon\font\flaticon.css" />
@@ -2046,8 +2045,10 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\bg3.jpg" />
+    <Content Include="Images\facebook.png" />
     <Content Include="Images\footer.png" />
     <Content Include="Images\FrontPage.png" />
+    <Content Include="Images\instagram.png" />
     <Content Include="Images\Loop Logo.mp4" />
     <Content Include="Images\NuevoLogo_Horizontal.png" />
     <Content Include="Images\PasGM_Adorador.jpg" />
@@ -2067,6 +2068,8 @@
     <Content Include="Images\Prayer.jpg" />
     <Content Include="Images\Resena_header.png" />
     <Content Include="Images\Reseña-Histórica.png" />
+    <Content Include="Images\twitter.png" />
+    <Content Include="Images\youtube.png" />
     <Content Include="logo-OasisAlajuela-Black.ico" />
     <Content Include="OaisisNuevoLogo-FondoBlanco.ico" />
     <Content Include="Scripts\aos.js" />
@@ -2932,7 +2935,7 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>logo-OasisAlajuela-Black.ico</ApplicationIcon>
+    <ApplicationIcon>OaisisNuevoLogo-FondoBlanco.ico</ApplicationIcon>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
