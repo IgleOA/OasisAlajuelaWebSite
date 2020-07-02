@@ -1,7 +1,7 @@
 ﻿@model ET.UpcommingEvents
 
 @{
-    ViewBag.Title = "Editar Evento";
+    ViewBag.Title = "Eventos";
     Layout = "~/Views/Shared/_PupopLayout.cshtml";
 }
 
@@ -28,7 +28,7 @@
         var flag = document.getElementById("ReservationFlag");
         var CDIV = document.getElementById("CapacityDiv");
         var DDIV = document.getElementById("DistanceDiv");
-        
+
         if (flag.value == "true") {
             CDIV.style.display = "block";
             DDIV.style.display = "block";
@@ -87,15 +87,22 @@
     }
 </script>
 
-<div class="card bg-light">
-    <article class="card-body">
-        <h4 class="card-title mt-3 font-weight-bold">@ViewBag.Title del <span style="color: blue;">@Model.EventDay de @Model.EventMonth</span></h4>
+<div class="col text-center heading-section ftco-animate animated fadeInUp">
+    <h2 class="mb-0 mt-3"><span class="px-4"><i class="fas fa-calendar-alt"></i> @ViewBag.Title</span></h2>
+    <span class="subheading">Editar información</span>
+</div>
+<div class="ftco-animate animated fadeInUp">
+    <article class="card-body py-0">
+        <h3 class="mt-3">
+            <i class="fa fa-tags"></i>
+            Evento:
+            <span style="color:blue">@Model.EventDay de @Model.EventMonth</span>
+        </h3>
         @using (Html.BeginForm("Edit", "UpcommingEvents", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             @Html.AntiForgeryToken()
 
             <div class="form-horizontal">
-                <hr />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger m-0" })
                 @Html.HiddenFor(model => model.EventID)
                 <div class="form-group">
@@ -143,11 +150,11 @@
                             ReservationRequire.Add(new SelectListItem() { Text = "Si", Value = "true" });
                             ReservationRequire.Add(new SelectListItem() { Text = "No", Value = "false" });
                         }
-                        @Html.DropDownListFor(model => model.ReservationFlag, ReservationRequire, new { @class = "custom-select" , style = "max-width: 70px;", @onchange = "Reservation()" })
+                        @Html.DropDownListFor(model => model.ReservationFlag, ReservationRequire, new { @class = "custom-select", style = "max-width: 70px;", @onchange = "Reservation()" })
                         @Html.ValidationMessageFor(model => model.ReservationFlag, "", new { @class = "text-danger" })
-                    </div>               
+                    </div>
                 </div>
-                 <div id="DistanceDiv" class="form-group" style="display: none;">
+                <div id="DistanceDiv" class="form-group" style="display: none;">
                     <div class="input-group m-3 w-100">
                         <div class="input-group-prepend">
                             <span class="input-group-text font-weight-bold" id="inputGroup-sizing-default">Distanciamiento</span>
@@ -159,9 +166,9 @@
                             DistanceOptions.Add(new SelectListItem() { Text = "2 Sillas - C.M: aprox. 150 espacios", Value = "2" });
                             DistanceOptions.Add(new SelectListItem() { Text = "3 Sillas - C.M: aprox. 100 espacios", Value = "3" });
                         }
-                        @Html.DropDownListFor(model => model.SocialDistance, DistanceOptions, new { @class = "custom-select" , style = "margin-right: 2rem;", @onchange = "UpdateCM()" })
+                        @Html.DropDownListFor(model => model.SocialDistance, DistanceOptions, new { @class = "custom-select", style = "margin-right: 2rem;", @onchange = "UpdateCM()" })
                         @Html.ValidationMessageFor(model => model.SocialDistance, "", new { @class = "text-danger" })
-                    </div>               
+                    </div>
                 </div>
                 <div id="CapacityDiv" class="form-group" style="display: none;">
                     <div class="input-group m-3 w-100">
@@ -172,7 +179,7 @@
                         @Html.ValidationMessageFor(model => model.Capacity, "", new { @class = "text-danger" })
                     </div>
                 </div>
-               
+
                 <div class="form-group">
                     @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
                     <div class="col-md-10">

@@ -3,6 +3,7 @@ using ET;
 using Microsoft.AspNet.Identity;
 using OasisAlajuelaWebSite.Models;
 using PagedList;
+using shortid;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -22,6 +23,7 @@ namespace OasisAlajuelaWebSite.Controllers
         private UserProfileBL UPBL = new UserProfileBL();
         private RolesBL RBL = new RolesBL();
         private GroupsBL GBL = new GroupsBL();
+        private HelpersBL HBL = new HelpersBL();
 
         public ActionResult Index(string currentFilter, string searchString, int? page)
         {
@@ -106,7 +108,7 @@ namespace OasisAlajuelaWebSite.Controllers
             {
                 groups += l.GroupName + ",";
             }
-
+            
             ViewBag.Groups = groups;
 
             if (r.LastActivityDate.ToString().Length == 0)
@@ -144,7 +146,7 @@ namespace OasisAlajuelaWebSite.Controllers
             string insertuser = User.Identity.GetUserName();
 
             UP.ActionType = "CONTACT";
-            UP.PhotoData = null;
+            UP.Photo = null;
 
             var r = UPBL.Update(UP, insertuser);
 
@@ -166,7 +168,7 @@ namespace OasisAlajuelaWebSite.Controllers
             string insertuser = User.Identity.GetUserName();
 
             UP.ActionType = "SOCIALNET";
-            UP.PhotoData = null;
+            UP.Photo = null;
 
             var r = UPBL.Update(UP, insertuser);
 
@@ -193,11 +195,15 @@ namespace OasisAlajuelaWebSite.Controllers
             {
                 UP.ActionType = "PHOTO";
 
-                Stream str = UP.file.InputStream;
-                BinaryReader Br = new BinaryReader(str);
-                Byte[] FileDet = Br.ReadBytes((Int32)str.Length);
+                string GUID = "IMG_Profile_" + ShortId.Generate(true, false, 12) + ".JPG";
 
-                UP.PhotoData = FileDet;
+                string ServerPath = Path.Combine(Server.MapPath("~/Files/Images"), GUID);
+                
+                UP.PhotoExt = ".JPG";
+
+                HBL.ResizeAndSaveAzure(350, UP.file, ServerPath);
+
+                UP.Photo = ConfigurationManager.AppSettings["AzureStorage"].ToString() + "images/" + GUID;
 
                 var r = UPBL.Update(UP, insertuser);
 

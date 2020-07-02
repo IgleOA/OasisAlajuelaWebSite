@@ -3,8 +3,7 @@
 	[PodcastID]      INT             IDENTITY (1, 1) NOT NULL,
     [Title]          VARCHAR (30)    NOT NULL,
     [Description]    VARCHAR (200)   NOT NULL,
-    [BannerData]     VARBINARY (MAX) NOT NULL,
-    [BannerExt]      VARCHAR (5)     NOT NULL,
+    [BannerPath]	 VARCHAR (500)   NOT NULL,
 	[MinisterID]     INT             NOT NULL,
     [ActiveFlag]     BIT             CONSTRAINT [utbPodcastsDefaultActiveFlagIsTrue] DEFAULT ((1)) NOT NULL,
     [InsertDate]     DATETIME        CONSTRAINT [utbPodcastsDefaultInsertDatesysdatetime] DEFAULT (sysdatetime()) NOT NULL,
@@ -23,8 +22,8 @@ FOR INSERT,UPDATE
 AS
 	BEGIN
 		DECLARE @INSERTUPDATE VARCHAR(30)
-		DECLARE @StartValues	XML = (SELECT [PodcastID],[Title],[Description],[BannerExt],[MinisterID],[ActiveFlag],[InsertDate],[InsertUser],[LastModifyDate],[LastModifyUser] FROM Deleted [Values] for xml AUTO, ELEMENTS XSINIL)
-		DECLARE @EndValues		XML = (SELECT [PodcastID],[Title],[Description],[BannerExt],[MinisterID],[ActiveFlag],[InsertDate],[InsertUser],[LastModifyDate],[LastModifyUser] FROM Inserted [Values] for xml AUTO, ELEMENTS XSINIL)
+		DECLARE @StartValues	XML = (SELECT * FROM Deleted [Values] for xml AUTO, ELEMENTS XSINIL)
+		DECLARE @EndValues		XML = (SELECT * FROM Inserted [Values] for xml AUTO, ELEMENTS XSINIL)
 
 		CREATE TABLE #DBCC (EventType varchar(50), Parameters varchar(50), EventInfo nvarchar(max))
 

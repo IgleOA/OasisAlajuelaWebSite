@@ -10,15 +10,15 @@ namespace BL
     {
         private YouTubeDAL YDAL = new YouTubeDAL();
 
-        public List<YouTubeVideo> Youtubelist(int maxresults)
-        {
-            return YDAL.Youtubelist(maxresults);
-        }
+        //public List<YouTubeVideo> Youtubelist(int maxresults)
+        //{
+        //    return YDAL.Youtubelist(maxresults);
+        //}
 
-        public async Task<string> Insert(YouTubeVideo video)
-        {
-            return await YDAL.InsertAsync(video);
-        }
+        //public async Task<string> Insert(YouTubeVideo video)
+        //{
+        //    return await YDAL.InsertAsync(video);
+        //}
 
         public YouTubeVideo YoutubeVideoValidation(string YouTubeID)
         {

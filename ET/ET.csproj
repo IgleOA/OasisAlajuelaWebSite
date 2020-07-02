@@ -75,10 +75,12 @@
     <Compile Include="AuditoriumLayout.cs" />
     <Compile Include="Banner.cs" />
     <Compile Include="BannersLocation.cs" />
+    <Compile Include="Blogs.cs" />
     <Compile Include="Emails.cs" />
     <Compile Include="Enrollments.cs" />
     <Compile Include="Geolocation.cs" />
     <Compile Include="Groups.cs" />
+    <Compile Include="Helpers.cs" />
     <Compile Include="HomePage.cs" />
     <Compile Include="Leadership.cs" />
     <Compile Include="Ministers.cs" />

@@ -18,11 +18,11 @@ namespace ET
         [UIHint("tinymce_jquery_full"), AllowHtml]
         public string Description { get; set; }
 
-        public byte[] Image { get; set; }
+        public string ImagePath { get; set; }
 
         [DataType(DataType.Upload)]
         [Display(Name = "Imagen de Fondo")]
-        public HttpPostedFileBase file { get; set; }
+        public HttpPostedFileBase UploadFile { get; set; }
 
         public string ImageExt { get; set; }
 

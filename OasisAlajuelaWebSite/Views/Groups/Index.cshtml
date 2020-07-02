@@ -58,10 +58,15 @@
         }
     }
 </script>
+<div id="header" class="headerFixed" style="z-index:-1;position:relative;">
+
+</div>
+
 <section class="hp-section">
     <div class="container">
-        <div class="row justify-content-start">
-            <h2 class="heading-section font-weight-bold my-2 p-0">@ViewBag.Title</h2>
+        <div class="col p-0 text-center heading-section ftco-animate animated fadeInUp">
+            <h2 class="mb-0"><span class="px-4">@ViewBag.Title.ToUpper()</span></h2>
+            <span class="subheading">Módulo de Manejos de Equipos de Trabajo y Cursos</span>
         </div>
         <div class="row justify-content-start">
             <table class="table-responsive-xl align-content-center p-0">
@@ -99,7 +104,7 @@
                                 <td class="align-middle text-center px-0">
                                     <a href="#" class="card-link m-0" onclick="Edit(@item.GroupID)" title="Editar">
                                         <i class="far fa-edit fa-2x mx-2" style="vertical-align: middle; color: #444444;"></i>
-                                    </a>                                    
+                                    </a>
                                 </td>
                                 <td class="align-middle text-center px-0">
                                     <a href="#" class="card-link m-0" onclick="Remove(@item.GroupID)" title="Eliminar">
@@ -161,6 +166,7 @@
                                             <a href='#' title="Agregar Involucrado" class="btn btn-light" style="text-decoration: none;" onclick='AddNewUG(@item.GroupID)'><i class="fas fa-plus-square fa-1x"></i> Agregar Involucrado</a>
                                         </div>
                                     }
+                                    <a href="#" class="text-decoration-none my-2 float-right" style="font-size: 12px;" data-dismiss="modal"><i class="fas fa-times"></i> Cerrar</a>
                                 </article>
                             </div>
                         </div>
@@ -199,6 +205,7 @@
                                             <a href='#' title="Agregar Involucrado" class="btn btn-light" style="text-decoration: none;" onclick='AddNewRG(@item.GroupID)'><i class="fas fa-plus-square fa-1x"></i> Agregar Recurso</a>
                                         </div>
                                     }
+                                    <a href="#" class="text-decoration-none my-2 float-right" style="font-size: 12px;" data-dismiss="modal"><i class="fas fa-times"></i> Cerrar</a>
                                 </article>
                             </div>
                         </div>

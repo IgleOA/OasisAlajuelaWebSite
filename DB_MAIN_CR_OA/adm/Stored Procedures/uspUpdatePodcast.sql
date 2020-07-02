@@ -17,8 +17,7 @@ CREATE PROCEDURE [adm].[uspUpdatePodcast]
 	@ActionType		VARCHAR(10) = NULL,
 	@Title			VARCHAR(50) = NULL,
 	@Description	VARCHAR(MAX) = NULL,
-	@BannerData		VARBINARY(MAX) = NULL,
-	@BannerExt		VARCHAR(10) = NULL,
+	@Banner			VARCHAR(500) = NULL,
 	@MinisterID		INT = NULL
 AS 
     BEGIN
@@ -67,8 +66,7 @@ AS
 						UPDATE	[config].[utbPodcasts] 
 						SET		 [Title]		= ISNULL(@Title,[Title])
 								,[Description]	= ISNULL(@Description,[Description])
-								,[BannerData]	= @BannerData
-								,[BannerExt]	= REPLACE(@BannerExt,'.','')
+								,[BannerPath]	= @Banner
 								,[MinisterID]	= ISNULL(@MinisterID,[MinisterID])
 								,[ActiveFlag]	= 1
 								,[LastModifyDate]	= @InsertDate

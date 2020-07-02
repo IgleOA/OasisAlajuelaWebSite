@@ -1,7 +1,7 @@
 ﻿@model ET.ResourceTypes
 
 @{
-    ViewBag.Title = "Nuevo Tipo de Recurso";
+    ViewBag.Title = "Recursos";
     Layout = "~/Views/Shared/_PupopLayout.cshtml";
 }
 
@@ -32,16 +32,17 @@
         });
     });
 </script>
-
-<div class="card bg-light">
+<div class="col text-center heading-section ftco-animate animated fadeInUp">
+    <h2 class="mb-0 mt-3"><span class="px-4">@ViewBag.Title</span></h2>
+    <span class="subheading">Agregar Nueva Categoria</span>
+</div>
+<div class="ftco-animate animated fadeInUp">
     <article class="card-body">
-        <h4 class="card-title mt-3 text-center font-weight-bold">@ViewBag.Title.ToUpper()</h4>
         @using (Html.BeginForm("AddNewRT", "Resources", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             @Html.AntiForgeryToken()
 
             <div class="form-horizontal">
-                <hr />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger m-0" })
                 <div class="form-group">
                     @Html.LabelFor(model => model.TypeName, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
@@ -72,12 +73,12 @@
                         </div>
                     </div>
                 <div class="form-group">
-                     @Html.LabelFor(model => model.file, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
+                     @Html.LabelFor(model => model.UploadFile, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
                      <div class="profile-img">
                          <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-thumbnail w-75" alt="avatar" />
                          <div class="file btn btn-lg btn-primary profile-img w-75">
                              Agregar Imagen
-                             <input id="file" type="file" name="file" class="file-upload">
+                             <input id="UploadFile" type="file" name="UploadFile" class="file-upload">
                          </div>
                      </div>
                 </div>

@@ -1,6 +1,7 @@
 ﻿using BL;
 using ET;
 using Microsoft.AspNet.Identity;
+using shortid;
 using System;
 using System.Configuration;
 using System.IO;
@@ -44,154 +45,156 @@ namespace OasisAlajuelaWebSite.Controllers
             }
         }
 
-        [Authorize]
-        public ActionResult AddNew()
-        {
-            var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
-            if (validation.WriteRight == false)
-            {
-                ViewBag.Mensaje = "Usted no esta autorizado para ingresar a esta seccion, si necesita acceso contacte con un administrador.";
-                return View("~/Views/Shared/Error.cshtml");
-            }
-            else
-            {
-                Podcasts MS = new Podcasts()
-                {
-                    Ministerlist = MBL.List(true)
-                };
+        //[Authorize]
+        //public ActionResult AddNew()
+        //{
+        //    var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
+        //    if (validation.WriteRight == false)
+        //    {
+        //        ViewBag.Mensaje = "Usted no esta autorizado para ingresar a esta seccion, si necesita acceso contacte con un administrador.";
+        //        return View("~/Views/Shared/Error.cshtml");
+        //    }
+        //    else
+        //    {
+        //        Podcasts MS = new Podcasts()
+        //        {
+        //            Ministerlist = MBL.List(true)
+        //        };
 
-                USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
-                return View(MS);
-            }
-        }
+        //        USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
+        //        return View(MS);
+        //    }
+        //}
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult AddNew(Podcasts MS)
-        {
-            String FileExt = Path.GetExtension(MS.file.FileName).ToUpper();
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult AddNew(Podcasts MS)
+        //{
+        //    String FileExt = Path.GetExtension(MS.UploadFile.FileName).ToUpper();
 
-            MS.BannerExt = FileExt;
+        //    string GUID = "IMG_Podcas_" + ShortId.Generate(true, false, 12) + FileExt;
 
-            Stream str = MS.file.InputStream;
-            BinaryReader Br = new BinaryReader(str);
-            Byte[] FileDet = Br.ReadBytes((Int32)str.Length);
+        //    string ServerPath = Path.Combine(Server.MapPath("~/Files/Images"), GUID);
 
-            MS.BannerData = FileDet;
-            MS.InsertDate = DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"]));
+        //    Min.UploadFile.SaveAs(ServerPath);
 
-            string InsertUser = User.Identity.GetUserName();
+        //    Min.ImagePath = "/Files/Images/" + GUID;
 
-            var r = PBL.AddNew(MS, InsertUser);
 
-            if (!r)
-            {
-                ViewBag.Mensaje = "Ha ocurrido un error inesperado.";
-                return View("~/Views/Shared/Error.cshtml");
-            }
-            else
-            {
-                MS.ActionType = "CREATE";
-                MS.Ministerlist = MBL.List(true);
-                return View(MS);
-            }
-        }
+        //    MS.InsertDate = DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"]));
 
-        [Authorize]
-        public void ChangeStatus(int id)
-        {
-            Podcasts New = new Podcasts()
-            {
-                PodcastID = id,
-                InsertDate = DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])),
-                ActionType = "CHGST"
-            };
+        //    string InsertUser = User.Identity.GetUserName();
 
-            PBL.Update(New, User.Identity.GetUserName());
-            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));           
-        }
+        //    var r = PBL.AddNew(MS, InsertUser);
 
-        [Authorize]
-        public ActionResult Edit(int id)
-        {
-            var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
-            if (validation.ReadRight == false)
-            {
-                ViewBag.Mensaje = "Usted no esta autorizado para ingresar a esta seccion, si necesita acceso contacte con un administrador.";
-                return View("~/Views/Shared/Error.cshtml");
-            }
-            else
-            {
-                Podcasts Event = PBL.Details(id);
-                Event.Ministerlist = MBL.List(true);
-                USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
-                return View(Event);
-            }
-        }
+        //    if (!r)
+        //    {
+        //        ViewBag.Mensaje = "Ha ocurrido un error inesperado.";
+        //        return View("~/Views/Shared/Error.cshtml");
+        //    }
+        //    else
+        //    {
+        //        MS.ActionType = "CREATE";
+        //        MS.Ministerlist = MBL.List(true);
+        //        return View(MS);
+        //    }
+        //}
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(Podcasts MS)
-        {
-            string InsertUser = User.Identity.GetUserName();
+        //[Authorize]
+        //public void ChangeStatus(int id)
+        //{
+        //    Podcasts New = new Podcasts()
+        //    {
+        //        PodcastID = id,
+        //        InsertDate = DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])),
+        //        ActionType = "CHGST"
+        //    };
 
-            if (MS.file != null)
-            {
-                String FileExt = Path.GetExtension(MS.file.FileName).ToUpper();
+        //    PBL.Update(New, User.Identity.GetUserName());
+        //    USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));           
+        //}
 
-                MS.BannerExt = FileExt;
+        //[Authorize]
+        //public ActionResult Edit(int id)
+        //{
+        //    var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
+        //    if (validation.ReadRight == false)
+        //    {
+        //        ViewBag.Mensaje = "Usted no esta autorizado para ingresar a esta seccion, si necesita acceso contacte con un administrador.";
+        //        return View("~/Views/Shared/Error.cshtml");
+        //    }
+        //    else
+        //    {
+        //        Podcasts Event = PBL.Details(id);
+        //        Event.Ministerlist = MBL.List(true);
+        //        USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
+        //        return View(Event);
+        //    }
+        //}
 
-                if (FileExt == ".PNG" || FileExt == ".JPG" || FileExt == ".JPEG")
-                {
-                    Stream str = MS.file.InputStream;
-                    BinaryReader Br = new BinaryReader(str);
-                    Byte[] FileDet = Br.ReadBytes((Int32)str.Length);
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Edit(Podcasts MS)
+        //{
+        //    string InsertUser = User.Identity.GetUserName();
 
-                    MS.BannerData = FileDet;
+        //    if (MS.UploadFile != null)
+        //    {
+        //        String FileExt = Path.GetExtension(MS.UploadFile.FileName).ToUpper();
 
-                    var r = PBL.Update(MS, InsertUser);
+        //        MS.BannerExt = FileExt;
 
-                    if (!r)
-                    {
-                        ViewBag.Mensaje = "Ha ocurrido un error inesperado.";
-                        return View("~/Views/Shared/Error.cshtml");
-                    }
-                    else
-                    {
-                        MS.ActionType = "UPDATE";
-                        MS.Ministerlist = MBL.List(true);
-                        return View(MS);
-                    }
-                }
-                else
-                {
-                    this.ModelState.AddModelError(String.Empty, "Por favor seleccione un banner en formato JPG, JPEG o PNG.");
-                    MS.Ministerlist = MBL.List(true);
-                    return View(MS);
-                }
-            }
-            else
-            {
-                var r = PBL.Update(MS, InsertUser);
+        //        if (FileExt == ".PNG" || FileExt == ".JPG" || FileExt == ".JPEG")
+        //        {
+        //            //Stream str = MS.file.InputStream;
+        //            //BinaryReader Br = new BinaryReader(str);
+        //            //Byte[] FileDet = Br.ReadBytes((Int32)str.Length);
 
-                if (!r)
-                {
-                    ViewBag.Mensaje = "Ha ocurrido un error inesperado.";
-                    return View("~/Views/Shared/Error.cshtml");
-                }
-                else
-                {
-                    MS.ActionType = "UPDATE";
-                    MS.Ministerlist = MBL.List(true);
-                    return View(MS);
-                }
-            }
-        }
+        //            //MS.Banner = FileDet;
 
-        public ActionResult _Podcast()
-        {
-            var list = PBL.List().Take(5);
-            return View(list);
-        }
+        //            var r = PBL.Update(MS, InsertUser);
+
+        //            if (!r)
+        //            {
+        //                ViewBag.Mensaje = "Ha ocurrido un error inesperado.";
+        //                return View("~/Views/Shared/Error.cshtml");
+        //            }
+        //            else
+        //            {
+        //                MS.ActionType = "UPDATE";
+        //                MS.Ministerlist = MBL.List(true);
+        //                return View(MS);
+        //            }
+        //        }
+        //        else
+        //        {
+        //            this.ModelState.AddModelError(String.Empty, "Por favor seleccione un banner en formato JPG, JPEG o PNG.");
+        //            MS.Ministerlist = MBL.List(true);
+        //            return View(MS);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        var r = PBL.Update(MS, InsertUser);
+
+        //        if (!r)
+        //        {
+        //            ViewBag.Mensaje = "Ha ocurrido un error inesperado.";
+        //            return View("~/Views/Shared/Error.cshtml");
+        //        }
+        //        else
+        //        {
+        //            MS.ActionType = "UPDATE";
+        //            MS.Ministerlist = MBL.List(true);
+        //            return View(MS);
+        //        }
+        //    }
+        //}
+
+        //public ActionResult _Podcast()
+        //{
+        //    var list = PBL.List().Take(5);
+        //    return View(list);
+        //}
     }
 }

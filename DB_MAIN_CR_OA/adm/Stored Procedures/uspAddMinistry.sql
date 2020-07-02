@@ -14,8 +14,7 @@ CREATE PROCEDURE [adm].[uspAddMinistry]
 	@InsertUser		VARCHAR(50),
 	@Name			VARCHAR(50),
 	@Description	VARCHAR(MAX),
-	@Image			VARBINARY(MAX),
-	@ImageExt		VARCHAR(10),
+	@Image			VARCHAR(500),
 	@ActionLink		VARCHAR(50) = NULL
 AS 
     BEGIN
@@ -35,8 +34,8 @@ AS
                 END
 
             -- =======================================================
-				INSERT INTO [config].[utbMinistries]([Name],[Description],[Image],[ImageExt],[ActionLink],[InsertUser],[LastModifyUser])
-				VALUES (@Name, @Description, @Image, @ImageExt, @ActionLink, @InsertUser, @InsertUser)
+				INSERT INTO [config].[utbMinistries]([Name],[Description],[ImagePath],[ActionLink],[InsertUser],[LastModifyUser])
+				VALUES (@Name, @Description, @Image, @ActionLink, @InsertUser, @InsertUser)
 			-- =======================================================
 
         IF ( @@trancount > 0

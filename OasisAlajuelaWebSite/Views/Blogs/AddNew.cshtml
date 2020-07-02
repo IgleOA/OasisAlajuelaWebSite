@@ -1,0 +1,112 @@
+﻿@model ET.Blogs
+
+@{
+    ViewBag.Title = "Oasis Blog";
+    Layout = "~/Views/Shared/_PupopLayout.cshtml";
+}
+
+<script src="~/Scripts/jquery-3.5.0.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var flag = '@(Model.ActionType)';
+        if (flag == "CREATE")
+        {
+            opener.location.reload();
+            window.close();
+        }
+    });
+    $(document).ready(function () {
+        var readURL = function (input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('.avatar').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $(".file-upload").on('change', function () {
+            readURL(this);
+        });
+    });
+    function Create() {
+        var url = '@Url.Action("AddNew", "Ministers")';
+        window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
+    }
+</script>
+
+<div class="col text-center heading-section ftco-animate animated fadeInUp">
+    <h2 class="mb-0 mt-3"><span class="px-4">@ViewBag.Title</span></h2>
+    <span class="subheading">Agregar un nuevo Blog</span>
+</div>
+<div class="ftco-animate animated fadeInUp">
+    <article class="card-body py-0">
+        @using (Html.BeginForm("AddNew", "Blogs", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger m-0" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.KeyWord, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.KeyWord, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.KeyWord, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col d-flex justify-content-between">
+                        @Html.LabelFor(model => model.MinisterID, htmlAttributes: new { @class = "control-label m-0", @style = "float: left;" })
+                        <a href="#" onclick="Create();" title="Agregar Predicador"><i class="fas fa-user-plus"></i></a>
+                    </div>
+                    <div class="col">
+                        @Html.DropDownListFor(model => model.MinisterID, new SelectList(Model.Ministerlist, "MinisterID", "FullName"), new { @class = "custom-select" })
+                        @Html.ValidationMessageFor(model => model.MinisterID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.Description, 5, 1, new { @class = "form-control", @maxlength = 500 })
+                        <span id="charsLeft">Máximo 500 carácteres. </span>
+                        <script type="text/javascript">
+                            $(function () {
+                                $("#Description").keyup(function () {
+                                    var charsLeft = $(this).attr("maxlength") - $(this).val().length;
+                                    $("#charsLeft").text("Quedan " + charsLeft + " carácteres.");
+                                });
+                            });
+                        </script>
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.UploadFile, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
+                    <div class="profile-img">
+                        <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-thumbnail w-75" alt="avatar" />
+                        <div class="file btn btn-lg btn-primary w-75">
+                            Seleccionar Banner
+                            <input id="UploadFile" type="file" name="UploadFile" class="file-upload">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Guardar" class="btn btn-dark alt mt-0 mb-2" />
+                        <input type="button" value="Cancelar" class="btn btn-dark alt mt-0 mb-2" onclick="javascript: window.close();" />
+                    </div>
+                </div>
+            </div>
+        }
+    </article>
+</div>

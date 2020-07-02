@@ -2,12 +2,18 @@
     ViewBag.Title = "Confirmación";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
+<div id="header" class="headerFixed" style="z-index:-1;position:relative;">
 
-<div class="card bg-light ftco-animate animated fadeInUp">
+</div>
+<div class="col text-center heading-section ftco-animate animated fadeInUp">
+    <h2 class="mb-0 mt-3"><span class="px-4">@ViewBag.Title</span></h2>
+    <span class="subheading">Remover Suscripción</span>
+</div>
+<div class="ftco-animate animated fadeInUp">
     <article class="card-body mx-auto">
-        <h4 class="card-title mt-3 text-center font-weight-bold text-uppercase">Listo!!!</h4>
         <p class="text-center mt-3 mb-0">Su cuenta fue eliminada de las notificaciones automaticas</p>
         <p class="text-center m-0">De igual manera puedes accesar a todo el contenido en la página.</p>
         <p class="text-center">Bendiciones...</p>
     </article>
 </div>
+

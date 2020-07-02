@@ -3,9 +3,11 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="~/Images/LOGO PNG-FONDO BLANCO.png" />
+    <link rel="icon" type="image/png" href="~/Images/OasisNuevoLogo-FondoBlanco.png" />
     <title>@ViewBag.Title</title>
-
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,400i" rel="stylesheet">
     <link href="~/Content/bootstrap.css" rel="stylesheet" />
     <link href="~/Content/font-awesome/css/all.css" rel="stylesheet" />
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
@@ -14,10 +16,10 @@
     <link href="~/Content/font-awesome/css/fontawesome.min.css" rel="stylesheet" />
     <link href="~/Content/Site.css" rel="stylesheet" />
     <link href="~/Content/flaticon.css" rel="stylesheet" />
-    <link href="~/Content/PagedList.css" rel="stylesheet" />
     <link href="~/Content/animate.css" rel="stylesheet" />
-
+    <link href="~/Content/PagedList.css" rel="stylesheet" />
     @Scripts.Render("~/bundles/modernizr")
+    
 </head>
 
 <body>
@@ -25,30 +27,25 @@
     <header id="header" class="headerFixed">
         <div class="logo">
             <a href="@Url.Action("Index","Home")">
-                <img src="~/Images/LOGO PNG-FONDO AZUL.png" class="align-middle" style="height: -webkit-fill-available; height:95%;"/>
+                <img src="~/Images/OasisAlajuela_Blanco.png" class="align-middle" style="height: -webkit-fill-available; height:100%;" />
             </a>
         </div>
-        <a href="#menu" class="align-middle"><i class="fas fa-bars"></i> Menu</a>
+        <a href="https://www.facebook.com/OasisAlajuela/" target="_blank" class="align-middle pl-0 pr-1 header-menu-links" title="Facebook"><i class="fab fa-facebook-square" style="font-size: 1.5em; vertical-align:middle;"></i></a>
+        <a href="https://www.youtube.com/channel/UCsWIb3EobSzS-pNrPXvq7_A" target="_blank" class="align-middle pl-0 pr-1 header-menu-links" title="YouTube"><i class="fab fa-youtube-square" style="font-size: 1.5em; vertical-align:middle;"></i></a>
+        <a href="https://twitter.com/oasisalajuela" target="_blank" class="align-middle pl-0 pr-1 header-menu-links" title="Twitter"><i class="fab fa-twitter-square" style="font-size: 1.5em; vertical-align:middle;"></i></a>
+        <a href="https://www.instagram.com/aes_oasis/" target="_blank" class="align-middle pl-0 pr-1 header-menu-links" title="Instagram"><i class="fab fa-instagram-square" style="font-size: 1.5em; vertical-align:middle;"></i></a>
+        <a href="#menu" class="align-middle pl-0 header-menu-links"><i class="fas fa-bars"></i> Menu</a>
     </header>
     <nav id="menu" name="menu">
         @Html.Action("_Menu", "Home")
     </nav>
-    <!-- Two -->
-    <section id="two" class="wrapper style3">
-        <div class="inner">
-            <header class="align-center">
-                <p class="mt-2">Audiotorio del Espíritu Santo</p>
-                <h2 class="m-0 font-weight-bolder">Oasis Alajuela</h2>
-            </header>
-        </div>
-    </section>
     <!-- Body -->
     <section id="three" class="container body-content" style="padding: 0 !important; margin:0 !important; width: 100% !important;">
         @RenderBody()
     </section>
 
     <!-- Footer -->
-    <footer>
+    <footer class="ftco-footer w-100">
         @Html.Partial("_AdminFooter")
     </footer>
 

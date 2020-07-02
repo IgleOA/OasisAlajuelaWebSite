@@ -7,6 +7,9 @@ using System.Linq;
 using PagedList;
 using System.IO;
 using System.Configuration;
+using shortid;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace OasisAlajuelaWebSite.Controllers
 {
@@ -17,6 +20,7 @@ namespace OasisAlajuelaWebSite.Controllers
         private BannersLocationBL BLBL = new BannersLocationBL();
         private RightsBL RRBL = new RightsBL();
         private UsersBL UBL = new UsersBL();
+        private HelpersBL HBL = new HelpersBL();
 
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
@@ -117,17 +121,19 @@ namespace OasisAlajuelaWebSite.Controllers
         public ActionResult AddNew(Banner MS)
         {
 
-            String FileExt = Path.GetExtension(MS.file.FileName).ToUpper();
-
-            MS.BannerExt = FileExt;
+            String FileExt = Path.GetExtension(MS.UploadFile.FileName).ToUpper();
 
             if (FileExt == ".PNG" || FileExt == ".JPG" || FileExt == ".JPEG")
             {
-                Stream str = MS.file.InputStream;
-                BinaryReader Br = new BinaryReader(str);
-                Byte[] FileDet = Br.ReadBytes((Int32)str.Length);
+                string GUID = "IMG_Banner_" + ShortId.Generate(true, false, 12) + ".JPG";
 
-                MS.BannerData = FileDet;
+                string ServerPath = Path.Combine(Server.MapPath("~/Files/Images"), GUID);
+
+                HBL.ResizeAndSaveAzure(2000, MS.UploadFile, ServerPath);
+
+                //MS.BannerPath = "/Files/Images/" + GUID;
+
+                MS.BannerPath = ConfigurationManager.AppSettings["AzureStorage"].ToString() + "images/" + GUID;
 
                 string InsertUser = User.Identity.GetUserName();
 
@@ -151,6 +157,6 @@ namespace OasisAlajuelaWebSite.Controllers
                 MS.LList = BLBL.List();
                 return View(MS);
             }
-        }
+        }       
     }
 }

@@ -4,7 +4,7 @@
 
 
 /* Reset */
-html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+html, div, applet, object, iframe, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
     margin: 0;
     padding: 0;
     border: 0;
@@ -1956,7 +1956,7 @@ input[type="reset"],
 input[type="button"],
 button,
 .button {
-    background-color: #f2f2f2;
+    background-color: #00ACEC;
     color: #000 !important;
 }
 
@@ -1965,7 +1965,7 @@ button,
     input[type="button"]:hover,
     button:hover,
     .button:hover {
-        background-color: white;
+        background-color: #c3bfbf;
     }
 
     input[type="submit"]:active,
@@ -3359,6 +3359,16 @@ table {
         position: relative;
     }
 
+    .wrapper.style5 {
+        background-color: #000;
+        color: #bfbfbf;
+        background-image: url(../../../images/FrontPage.png);
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center;
+        position: relative;
+    }
+
         .wrapper.style4 input, .wrapper.style4 select, .wrapper.style4 textarea {
             color: #ffffff;
         }
@@ -3960,8 +3970,8 @@ body.subpage {
 }
 
 #header {
-    /*background: rgba(0, 0, 0, 0.975);*/
-    background: #0a3e77;
+    background: #191b27;
+    /*background: #00ACEC;*/
     color: #a6a6a6;
     cursor: default;
     height: 3.25em;
@@ -4128,8 +4138,8 @@ body.subpage {
     -ms-transition: -ms-transform 0.5s ease, box-shadow 0.5s ease, visibility 0.5s;
     transition: transform 0.5s ease, box-shadow 0.5s ease, visibility 0.5s;
     -webkit-overflow-scrolling: touch;
-    /*background: rgba(0, 0, 0, 0.95);*/
-    background: #0a3e77;
+    background: rgba(27, 27, 39, 0.95);
+    /*background: #00ACEC;*/
     box-shadow: none;
     color: #000;
     height: 100%;
@@ -4212,20 +4222,14 @@ body.subpage {
         }
 
         #menu .close:before {
-            /*content: url("../../../Images/Remove.png") " ";
-            height: 5px;
-            width: 5px;
-            font-size: 1.25rem;*/
-            background-image: url("../../../Images/Remove.png");
-            background-size: 20px 20px;
             display: inline-block;
             width: 20px;
             height: 20px;
-            content: "";
+            content: "\f00d";
         }
 
         #menu .close:hover {
-            color: #000;
+            color: white;
         }
 
 @media screen and (max-width: 736px) {

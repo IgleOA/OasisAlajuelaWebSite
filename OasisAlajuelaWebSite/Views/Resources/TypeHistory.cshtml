@@ -133,9 +133,7 @@
                                                                     @item.Description
                                                                 </p>
                                                             </div>
-                                                            <audio controls>
-                                                                <source src='@Url.Action("GetFile", new { id = item.ResourceID })' type=@filetype />
-                                                            </audio>
+                                                            <audio src="@item.FilePath" controls></audio>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -170,15 +168,15 @@
                                 <td class="text-center align-middle">
                                     @if (item.ActiveFlag == false)
                                     {
-                                        <a href="#" class="card-link" onclick="Activate(@item.ResourceID)" title="Habilitar"><i class="fas fa-check-circle fa-2x ActiveColor" style="vertical-align: middle;"></i></a>
+                                        <a href="#" class="card-link" onclick="Activate(@item.ResourceID)" title="Habilitar"><i class="fas fa-check-circle fa-2x ActiveColor" ></i></a>
                                     }
                                     else
                                     {
-                                        <a href="#" class="card-link" onclick="Desactivate(@item.ResourceID)" title="Deshabilitar"><i class="fas fa-times-circle fa-2x DisactiveColor" style="vertical-align: middle;"></i></a>
+                                        <a href="#" class="card-link" onclick="Desactivate(@item.ResourceID)" title="Deshabilitar"><i class="fas fa-times-circle fa-2x DisactiveColor" ></i></a>
                                     }
                                 </td>
                                 <td class="text-center align-middle">
-                                    <a href='#' target="_blank" class="card-link" onclick="Edit(@item.ResourceID)" title="Editar"><i class="fas fa-edit fa-2x text-black" style="vertical-align: middle;"></i></a>
+                                    <a href='#' target="_blank" class="card-link" onclick="Edit(@item.ResourceID)" title="Editar"><i class="fas fa-edit fa-2x text-black" ></i></a>
                                 </td>
                             </tr>
                         }

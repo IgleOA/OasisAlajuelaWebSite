@@ -1,7 +1,7 @@
 ﻿@model ET.Users
 
 @{
-    ViewBag.Title = "Agregar nuevo Usuario";
+    ViewBag.Title = "Usuarios";
     Layout = "~/Views/Shared/_PupopLayout.cshtml";
 }
 
@@ -17,50 +17,51 @@
         }
     });
 </script>
-
-<div class="card bg-light">
-    <article class="card-body">
-        <h4 class="card-title mt-3 text-center font-weight-bold">@ViewBag.Title</h4>
-        @using (Html.BeginForm("AddNew", "Users", FormMethod.Post, new { enctype = "multipart/form-data" }))
-        {
-            @Html.AntiForgeryToken()
-            @Html.ValidationSummary("", new { @class = "text-danger" })
-            <div class="form-group input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fas fa-user"></i></span>
-                </div>
-                @Html.TextBoxFor(m => m.FullName, new { @class = "form-control", @placeholder = "Nombre Completo" })
-                @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
-            </div>
-            <div class="form-group input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="far fa-user"></i></span>
-                </div>
-                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @placeholder = "Usuario" })
-                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
-            </div>
-            <div class="form-group input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                </div>
-                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Correo Electrónico" })
-                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-            </div>
-            <div class="form-group input-group">
-                <div class="input-group-prepend">
-                    <label class="input-group-text m-0" for="RoleID"><span><i class=" fas fa-user-tag"></i></span></label>
-                </div>
-                @Html.DropDownListFor(model => model.RoleID, new SelectList(Model.RolesList, "RoleID", "RoleName"),"Seleccione un Rol", new { @class = "custom-select" })
-                @Html.ValidationMessageFor(model => model.RoleID, "", new { @class = "text-danger" })
-            </div>
-            <div class="form-group">
-                <input type="submit" class="btn btn-dark alt mt-0 mb-2" value="Crear Cuenta" />
-                <input type="button" value="Cancelar" class="btn btn-dark alt mt-0 mb-2" onclick="javascript: window.close();" />
-
-            </div>
-        }
-    </article>
+<div class="col text-center heading-section ftco-animate animated fadeInUp">
+    <h2 class="mb-0 mt-3"><span class="px-4"><i class="fas fa-users"></i> @ViewBag.Title</span></h2>
+    <span class="subheading">Agregar Nuevo Usuario</span>
 </div>
+
+<article class="card-body py-0">
+    @using (Html.BeginForm("AddNew", "Users", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <div class="form-group input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-user"></i></span>
+            </div>
+            @Html.TextBoxFor(m => m.FullName, new { @class = "form-control", @placeholder = "Nombre Completo" })
+            @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="far fa-user"></i></span>
+            </div>
+            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @placeholder = "Usuario" })
+            @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            </div>
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Correo Electrónico" })
+            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group input-group">
+            <div class="input-group-prepend">
+                <label class="input-group-text m-0" for="RoleID"><span><i class=" fas fa-user-tag"></i></span></label>
+            </div>
+            @Html.DropDownListFor(model => model.RoleID, new SelectList(Model.RolesList, "RoleID", "RoleName"),"Seleccione un Rol", new { @class = "custom-select" })
+            @Html.ValidationMessageFor(model => model.RoleID, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            <input type="submit" class="btn btn-dark alt mt-0 mb-2" value="Crear Cuenta" />
+            <input type="button" value="Cancelar" class="btn btn-dark alt mt-0 mb-2" onclick="javascript: window.close();" />
+
+        </div>
+    }
+</article>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

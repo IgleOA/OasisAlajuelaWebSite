@@ -42,7 +42,6 @@ namespace DAL
                         detail.ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]);
                         detail.CreationDate = Convert.ToDateTime(dr["CreationDate"]);
                         detail.RoleName = dr["RoleName"].ToString();
-                        detail.PhotoExt = dr["PhotoExt"].ToString();
                         detail.Phone = dr["Phone"].ToString();
                         detail.Mobile = dr["Mobile"].ToString();
                         detail.Facebook = dr["Facebook"].ToString();
@@ -53,15 +52,7 @@ namespace DAL
                         detail.State = dr["State"].ToString();
                         detail.City = dr["City"].ToString();
                         detail.LastActivityDate = Convert.ToDateTime(dr["LastActivityDate"]);
-                        
-                        if (!Convert.IsDBNull(dr["Photo"]))
-                        {
-                            detail.PhotoData = (byte[])dr["Photo"];
-                        }
-                        else
-                        {
-                            detail.PhotoData = null;
-                        }
+                        detail.Photo = dr["PhotoPath"].ToString();                        
                     }
                 }                
             }
@@ -75,8 +66,7 @@ namespace DAL
 
         public bool Update(UserProfile UP, string InsertUser)
         {
-            bool rpta = false;
-
+            bool rpta;
             try
             {
                 SqlCon.Open();
@@ -115,19 +105,11 @@ namespace DAL
                 SqlParameter Photo = new SqlParameter
                 {
                     ParameterName = "@Photo",
-                    SqlDbType = SqlDbType.VarBinary,
-                    Value = UP.PhotoData
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 500,
+                    Value = UP.Photo
                 };
                 SqlCmd.Parameters.Add(Photo);
-
-                SqlParameter pPhotoExt = new SqlParameter
-                {
-                    ParameterName = "@PhotoExt",
-                    SqlDbType = SqlDbType.VarChar,
-                    Size = 10,
-                    Value = UP.PhotoExt
-                };
-                SqlCmd.Parameters.Add(pPhotoExt);
 
                 SqlParameter pPhone = new SqlParameter
                 {

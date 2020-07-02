@@ -26,8 +26,7 @@ AS
 						SELECT	[ResourceTypeID]
 								,[TypeName]
 								,[Description]
-								,[TypeImage]
-								,[TypeImageExt]
+								,[TypeImagePath]
 								,[IsPublic]
 								,[ActiveFlag]  
 						FROM	[config].[utbResourceTypes]
@@ -38,20 +37,18 @@ AS
 					BEGIN
 						DECLARE @WriteFlag	BIT
 								,@PasFlag	BIT
-						DECLARE @Data	TABLE ( [ResourceTypeID] INT
-												,[TypeName] VARCHAR(100)
-												,[Description] VARCHAR(MAX)
-												,[TypeImage] VARBINARY(MAX)
-												,[TypeImageExt] VARCHAR(10)
-												,[IsPublic]	BIT
-												,[ActiveFlag] BIT )
+						DECLARE @Data	TABLE ( [ResourceTypeID]	INT
+												,[TypeName]			VARCHAR(100)
+												,[Description]		VARCHAR(MAX)
+												,[TypeImagePath]	VARCHAR(500)
+												,[IsPublic]			BIT
+												,[ActiveFlag]		BIT )
 
 						INSERT INTO @Data
 						SELECT	[ResourceTypeID]
 								,[TypeName]
 								,[Description]
-								,[TypeImage]
-								,[TypeImageExt]
+								,[TypeImagePath]
 								,[IsPublic]
 								,[ActiveFlag]  
 						FROM	[config].[utbResourceTypes]
@@ -85,8 +82,7 @@ AS
 								SELECT	[ResourceTypeID]
 										,[TypeName]
 										,[Description]
-										,[TypeImage]
-										,[TypeImageExt]
+										,[TypeImagePath]
 										,[IsPublic]
 										,[ActiveFlag]     
 								FROM	[config].[utbResourceTypes]
@@ -99,8 +95,7 @@ AS
 								SELECT	RT.[ResourceTypeID]
 										,RT.[TypeName]
 										,RT.[Description]
-										,RT.[TypeImage]
-										,RT.[TypeImageExt]
+										,RT.[TypeImagePath]
 										,RT.[IsPublic]
 										,RT.[ActiveFlag]      
 								FROM	[config].[utbResourceTypes] RT
@@ -115,8 +110,7 @@ AS
 								[ResourceTypeID]
 								,[TypeName]
 								,[Description]
-								,[TypeImage]
-								,[TypeImageExt]
+								,[TypeImagePath]
 								,[IsPublic]
 								,[ActiveFlag]   
 						FROM	@Data

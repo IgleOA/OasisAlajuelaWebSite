@@ -2,8 +2,7 @@
 (
 	[LeaderID]	     INT			 IDENTITY (1, 1) NOT NULL,
     [FullName]       VARCHAR (100)	 NOT NULL,
-	[Image]          VARBINARY (MAX) NOT NULL,
-    [ImageExt]       VARCHAR (10)    NOT NULL,
+	[ImagePath]      VARCHAR (500)	 NOT NULL,
 	[Description]	 VARCHAR (MAX)   NOT NULL,
     [ActionLink]     VARCHAR (50)    NULL,
 	[Order]			 INT			 NOT NULL,
@@ -22,8 +21,8 @@ FOR INSERT,UPDATE
 AS
 	BEGIN
 		DECLARE @INSERTUPDATE VARCHAR(30)
-		DECLARE @StartValues	XML = (SELECT [LeaderID], [FullName], [ImageExt], [Description], [ActionLink], [Order], [InsertDate], [InsertUser], [LastModifyDate], [LastModifyUser] FROM Deleted [Values] for xml AUTO, ELEMENTS XSINIL)
-		DECLARE @EndValues		XML = (SELECT [LeaderID], [FullName], [ImageExt], [Description], [ActionLink], [Order], [InsertDate], [InsertUser], [LastModifyDate], [LastModifyUser] FROM Inserted [Values] for xml AUTO, ELEMENTS XSINIL)
+		DECLARE @StartValues	XML = (SELECT * FROM Deleted [Values] for xml AUTO, ELEMENTS XSINIL)
+		DECLARE @EndValues		XML = (SELECT * FROM Inserted [Values] for xml AUTO, ELEMENTS XSINIL)
 
 		CREATE TABLE #DBCC (EventType varchar(50), Parameters varchar(50), EventInfo nvarchar(max))
 

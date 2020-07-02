@@ -5,13 +5,10 @@
 
 @foreach (var item in Model)
 {
-    var base64 = Convert.ToBase64String(item.BannerData, 0, item.BannerData.Length);
-    var imgSrc = string.Format("data:image/{0};base64,{1}", item.BannerExt, base64);
-    var text = imgSrc;
     var modalname = "ModalCenter" + item.SermonID.ToString();
     <div class="col-md-4">
         <div class="sermons">
-            <a class="img mb-3 d-flex justify-content-center align-items-center" style="background-image: url(@imgSrc);">
+            <a class="img mb-3 d-flex justify-content-center align-items-center" style="background-image: url(@item.BannerPath);">
                 <div class="icon d-flex justify-content-center align-items-center">
                     <span class="far fa-play-circle fa-5x" data-toggle="modal" data-target='#@modalname' style="color: azure;"></span>
                 </div>

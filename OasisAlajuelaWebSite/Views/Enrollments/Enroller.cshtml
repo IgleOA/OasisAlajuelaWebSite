@@ -1,13 +1,18 @@
 ﻿@model ET.EnrolledUsers
 
 @{
-    ViewBag.Title = "Inscripción a Cursos";
+    ViewBag.Title = "Inscripción";
     Layout = ViewBag.Layout;
 }
-<div class="card bg-light ftco-animate animated fadeInUp">
-    <article class="card-body mx-auto" style="max-width: 700px;">
-        <h4 class="card-title mt-3 text-center font-weight-bold text-uppercase">@ViewBag.Title</h4>
-        <hr />
+<div id="header" class="headerFixed" style="z-index:-1;position:relative;">
+
+</div>
+<div class="col text-center heading-section ftco-animate animated fadeInUp">
+    <h2 class="mb-0 mt-3"><span class="px-4"> @ViewBag.Title</span></h2>
+    <span class="subheading">Cursos llenos de Palabra y Guía del Espíritu Santo</span>
+</div>
+<div class="ftco-animate animated fadeInUp">
+    <article class="card-body mx-auto py-0" style="max-width: 400px;">
         @if (Model.Courses.Count > 0)
         {
             using (Html.BeginForm("Enroller", "Enrollments", FormMethod.Post, new { role = "form" }))
@@ -19,22 +24,22 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-user"></i></span>
                     </div>
-                    @Html.TextBoxFor(m => m.FullName, new { @class = "form-control", @placeholder = "Nombre Completo*" })                    
+                    @Html.TextBoxFor(m => m.FullName, new { @class = "form-control", @placeholder = "Nombre Completo*" })
                 </div>
                 <div class="form-group input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-phone"></i></span>
                     </div>
-                    @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", @placeholder = "Teléfono o Celular*" })                    
+                    @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", @placeholder = "Teléfono o Celular*" })
                 </div>
                 <div class="form-group input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                     </div>
-                    @Html.DropDownListFor(model => model.EnrollmentID, new SelectList(Model.Courses, "EnrollmentID", "GroupName"), "Seleccione el Curso*", new { @class = "custom-select" })                    
+                    @Html.DropDownListFor(model => model.EnrollmentID, new SelectList(Model.Courses, "EnrollmentID", "GroupName"), "Seleccione el Curso*", new { @class = "custom-select" })
                 </div>
                 <div class="form-group input-group">
-                    <p class="m-0">*Campo Obligatorio</p>                    
+                    <p class="m-0">*Campo Obligatorio</p>
                 </div>
                 <div class="form-group text-center">
                     <input type="submit" class="btn btn-dark alt mt-0 mb-2" value="Guardar" />

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\EntityFramework.6.4.0\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.props')" />
@@ -380,6 +380,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\BannersController.cs" />
+    <Compile Include="Controllers\BlogsController.cs" />
     <Compile Include="Controllers\EnrollmentsController.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -2028,10 +2029,10 @@
     <Content Include="Content\font-awesome\webfonts\fa-brands-400.svg" />
     <Content Include="Content\font-awesome\webfonts\fa-regular-400.svg" />
     <Content Include="Content\font-awesome\webfonts\fa-solid-900.svg" />
+    <Content Include="Content\ionicons.min.css" />
     <Content Include="Content\jquery.seat-charts.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\Reservations.css" />
-    <Content Include="CreatePackage.txt" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\flaticon\backup.txt" />
     <Content Include="fonts\flaticon\font\flaticon.css" />
@@ -2043,49 +2044,34 @@
     <Content Include="fonts\open-iconic\open-iconic.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Images\AM.png" />
-    <Content Include="Images\bg.jpg" />
-    <Content Include="Images\bg2.jpg" />
     <Content Include="Images\bg3.jpg" />
-    <Content Include="Images\bg4.jpg" />
-    <Content Include="Images\bg_4.jpg" />
-    <Content Include="Images\detail.jpg" />
-    <Content Include="Images\Edit.png" />
-    <Content Include="Images\EmptyStar.png" />
+    <Content Include="Images\facebook.png" />
+    <Content Include="Images\footer.png" />
+    <Content Include="Images\FrontPage.png" />
+    <Content Include="Images\instagram.png" />
+    <Content Include="Images\Loop Logo.mp4" />
+    <Content Include="Images\NuevoLogo_Horizontal.png" />
+    <Content Include="Images\PasGM_Adorador.jpg" />
+    <Content Include="Images\PasGM_Motivador.jpg" />
+    <Content Include="Images\PasGM_Pastor.png" />
     <Content Include="Images\familiaPastoral.jpeg" />
-    <Content Include="Images\fondo.png" />
-    <Content Include="Images\FullyStar.png" />
-    <Content Include="Images\HolySpirit.jpg" />
-    <Content Include="Images\Icon_Delete.png" />
-    <Content Include="Images\Icon_Delete_View.png" />
-    <Content Include="Images\Icon_Download.png" />
-    <Content Include="Images\Icon_Off.png" />
-    <Content Include="Images\Icon_On.png" />
-    <Content Include="Images\Icon_Sound.png" />
-    <Content Include="Images\Icon_Zoom.png" />
-    <Content Include="Images\IES.jpeg" />
-    <Content Include="Images\igleoa1.jpg" />
-    <Content Include="Images\igleoa3.png" />
-    <Content Include="Images\LOGO PNG-FONDO AZUL.png" />
-    <Content Include="Images\LOGO PNG-FONDO BLANCO.png" />
-    <Content Include="Images\LOGO PNG-FONDO NEGRO.png" />
-    <Content Include="Images\logo-OasisAlajuela-Black.png" />
-    <Content Include="Images\logo-OasisAlajuela-White.png" />
+    <Content Include="Images\HomePageMain.jpg" />
+    <Content Include="Images\Imagen-Frontal.png" />
+    <Content Include="Images\NuevoLogo-OA.png" />
+    <Content Include="Images\OasisAlajuela_Blanco.png" />
+    <Content Include="Images\OasisAlajuela_Negro.png" />
+    <Content Include="Images\OasisAlajuela_TransparenteBlanco.png" />
+    <Content Include="Images\OasisNuevoLogo-FondoBlanco.png" />
+    <Content Include="Images\OasisNuevoLogo-FondoNegro.png" />
+    <Content Include="Images\OasisNuevoLogo_Blanco.png" />
     <Content Include="Images\Pastores.jpg" />
-    <Content Include="Images\pic01.jpg" />
-    <Content Include="Images\pic02.jpg" />
-    <Content Include="Images\pic03.jpg" />
-    <Content Include="Images\pic04.jpg" />
-    <Content Include="Images\pic05.jpg" />
     <Content Include="Images\Prayer.jpg" />
-    <Content Include="Images\profile.png" />
-    <Content Include="Images\Remove.png" />
-    <Content Include="Images\slide01.jpg" />
-    <Content Include="Images\slide02.jpg" />
-    <Content Include="Images\slide03.jpg" />
-    <Content Include="Images\slide04.jpg" />
-    <Content Include="Images\slide05.jpg" />
+    <Content Include="Images\Resena_header.png" />
+    <Content Include="Images\Reseña-Histórica.png" />
+    <Content Include="Images\twitter.png" />
+    <Content Include="Images\youtube.png" />
     <Content Include="logo-OasisAlajuela-Black.ico" />
+    <Content Include="OaisisNuevoLogo-FondoBlanco.ico" />
     <Content Include="Scripts\aos.js" />
     <Content Include="Scripts\bootstrap-select.js" />
     <Content Include="Scripts\bootstrap-select.min.js" />
@@ -2270,13 +2256,10 @@
     <Content Include="Content\font-awesome\fonts\fontawesome-webfont.woff" />
     <Content Include="Content\font-awesome\fonts\fontawesome-webfont.woff2" />
     <Content Include="Content\font-awesome\fonts\FontAwesome.otf" />
-    <Content Include="Content\client_secret.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Content\bootstrap-select.css.map" />
     <None Include="Properties\PublishProfiles\IgleOA - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\IgleOANew - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\IgleOAUAT - Web Deploy.pubxml" />
-    <None Include="Properties\PublishProfiles\OasisAlajuela - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\PROD_FTP_Server.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -2407,6 +2390,8 @@
     <Content Include="Scripts\src\utils\setAttributes.js" />
     <Content Include="Scripts\src\utils\setStyles.js" />
     <Content Include="Scripts\src\utils\setupEventListeners.js" />
+    <Content Include="Scripts\tinymce\icons\default\icons.js" />
+    <Content Include="Scripts\tinymce\icons\default\icons.min.js" />
     <Content Include="Scripts\tinymce\jquery.tinymce.js" />
     <Content Include="Scripts\tinymce\jquery.tinymce.min.js" />
     <Content Include="Scripts\tinymce\langs\en.js" />
@@ -2748,6 +2733,7 @@
     <Content Include="Scripts\tinymce\themes\simple\skins\o2k7\content.css" />
     <Content Include="Scripts\tinymce\themes\simple\skins\o2k7\img\button_bg.png" />
     <Content Include="Scripts\tinymce\themes\simple\skins\o2k7\ui.css" />
+    <Content Include="Scripts\tinymce\tinymce.js" />
     <Content Include="Scripts\tinymce\tinymce.min.js" />
     <Content Include="Scripts\tinymce\tiny_mce.js" />
     <Content Include="Scripts\tinymce\tiny_mce_popup.js" />
@@ -2909,9 +2895,21 @@
     <Content Include="Views\Podcasts\Edit.cshtml" />
     <Content Include="Views\Podcasts\_Podcast.cshtml" />
     <Content Include="Views\Resources\TypeHistory.cshtml" />
+    <Content Include="Views\Blogs\AddNew.cshtml" />
+    <Content Include="Views\Blogs\Edit.cshtml" />
+    <Content Include="Views\Blogs\History.cshtml" />
+    <Content Include="Views\Blogs\Index.cshtml" />
+    <Content Include="Views\Blogs\_Blogs.cshtml" />
+    <Content Include="Views\Ministers\Edit.cshtml" />
+    <Content Include="Views\Ministers\Index.cshtml" />
+    <Content Include="Views\Account\ResetPwd.cshtml" />
+    <Content Include="Views\Home\Seedling.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Files\Audios\" />
+    <Folder Include="Files\Documents\" />
+    <Folder Include="Files\Images\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -2937,7 +2935,7 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>logo-OasisAlajuela-Black.ico</ApplicationIcon>
+    <ApplicationIcon>OaisisNuevoLogo-FondoBlanco.ico</ApplicationIcon>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
@@ -2971,8 +2969,8 @@
     <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.3.5.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.3.5.0\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.0\build\EntityFramework.props'))" />
     <Error Condition="!Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.0\build\EntityFramework.targets'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
   </Target>
   <Import Project="..\packages\EntityFramework.6.4.0\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.targets')" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

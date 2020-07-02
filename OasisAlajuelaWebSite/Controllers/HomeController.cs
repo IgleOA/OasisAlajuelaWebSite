@@ -25,7 +25,7 @@ namespace OasisAlajuelaWebSite.Controllers
         private UsersBL UsBL = new UsersBL();
         private RightsBL RRBL = new RightsBL();
         private UserNotesBL UNBL = new UserNotesBL();
-        private PodcastsBL PBL = new PodcastsBL();
+        private BlogsBL PBL = new BlogsBL();
 
         public ActionResult Index()
         {
@@ -41,10 +41,10 @@ namespace OasisAlajuelaWebSite.Controllers
                     ViewBag.Note = true;
                 }
             }
-            List<Podcasts> Casts = PBL.List();
+            List<Blogs> Casts = PBL.List();
             if(Casts.Count() > 0)
             {
-                ViewBag.Podcasts = true;
+                ViewBag.Blogs = true;
             }
             return View(Home);
         }
@@ -138,14 +138,14 @@ namespace OasisAlajuelaWebSite.Controllers
             return View(data.ToList());
         }
 
-        public ActionResult _YouTubeVideos()
-        {
-            var data = (from d in YBL.Youtubelist(5)
-                        orderby d.PublishedAt descending
-                        select d).Take(3);
+        //public ActionResult _YouTubeVideos()
+        //{
+        //    var data = (from d in YBL.Youtubelist(5)
+        //                orderby d.PublishedAt descending
+        //                select d).Take(3);
 
-            return View(data.ToList());
-        }
+        //    return View(data.ToList());
+        //}
 
         public ActionResult _News()
         {
@@ -167,6 +167,30 @@ namespace OasisAlajuelaWebSite.Controllers
         public ActionResult Error()
         {
             return View();
+        }
+
+        public ActionResult Seedling()
+        {
+            if (Request.IsAuthenticated)
+            {
+                var user = UsBL.List().Where(x => x.UserName == User.Identity.GetUserName()).FirstOrDefault();
+
+                if (user.RoleName.Contains("Admin"))
+                {
+                    ViewBag.Layout = "~/Views/Shared/_AdminLayout.cshtml";
+                }
+                else
+                {
+                    ViewBag.Layout = "~/Views/Shared/_MainLayout.cshtml";
+                }
+
+                return View();
+            }
+            else
+            {
+                ViewBag.Layout = "~/Views/Shared/_MainLayout.cshtml";
+                return View();
+            }
         }
     }
 }

@@ -39,11 +39,25 @@ AS
             -- =======================================================
 				IF(@ActionType = 'CHGST')
 					BEGIN
-						UPDATE	[config].[utbResources]
-						SET		[ActiveFlag] = 0
-								,[LastModifyDate] = GETDATE()
-								,[LastModifyUser] = @InsertUser
-						WHERE	[ResourceID] = @ResourceID
+                        DECLARE @Status BIT = ( SELECT  [ActiveFlag] 
+                                                FROM    [config].[utbResources]
+                                                WHERE   [ResourceID] = @ResourceID)
+                        IF(@Status = 1)
+                            BEGIN
+						        UPDATE	[config].[utbResources]
+						        SET		[ActiveFlag] = 0
+								        ,[LastModifyDate] = GETDATE()
+								        ,[LastModifyUser] = @InsertUser
+						        WHERE	[ResourceID] = @ResourceID
+                            END
+                        ELSE
+                            BEGIN
+						        UPDATE	[config].[utbResources]
+						        SET		[ActiveFlag] = 1
+								        ,[LastModifyDate] = GETDATE()
+								        ,[LastModifyUser] = @InsertUser
+						        WHERE	[ResourceID] = @ResourceID
+                            END
 						
 					END
 				ELSE	

@@ -23,12 +23,14 @@ AS
 
             -- =======================================================
 				DECLARE @UserID	INT,
-						@UserName VARCHAR(50)
+						@UserName VARCHAR(50),
+						@NeedResetPwd BIT
 
 				IF EXISTS(SELECT * FROM [adm].[utbUsers] WHERE [UserName] = @TxtName OR [Email] = @TxtName)
 					BEGIN
 						SELECT	@UserID = [UserID]
 								,@UserName = [UserName]
+								,@NeedResetPwd = [NeedResetPwd]
 						FROM	[adm].[utbUsers] 
 						WHERE	([UserName] = @TxtName 
 								 OR [Email] = @TxtName)
@@ -36,11 +38,13 @@ AS
 								AND [ActiveFlag] = 1
 						
 						SELECT	[UserID] = ISNULL(@UserID,-1),
+								[NeedResetPwd] = ISNULL(@NeedResetPwd,0),
 								[UserName] = @UserName
 					END
 				ELSE
 					BEGIN
 						SELECT	[UserID] = 0 /*Usuario No registrado*/
+								,[NeedResetPwd] = 0
 								,[UserName] = @UserName
 					END	
 			-- =======================================================

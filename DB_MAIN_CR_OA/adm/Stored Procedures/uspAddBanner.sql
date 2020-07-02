@@ -12,8 +12,7 @@
 
 CREATE PROCEDURE [adm].[uspAddBanner]
 	@InsertUser		VARCHAR(50),
-	@Banner			VARBINARY(MAX),
-	@BannerExt		VARCHAR(10),
+	@Banner			VARCHAR(500),
 	@BannerName		VARCHAR(200),
 	@LocationID		INT
 AS 
@@ -34,8 +33,8 @@ AS
                 END
 
             -- =======================================================
-				INSERT INTO [config].[utbBanners] ([BannerData],[BannerExt],[BannerName],[LocationID],[InsertUser],[LastModifyUser]) 
-				VALUES (@Banner,REPLACE(@BannerExt,'.',''),@BannerName,@LocationID,@InsertUser,@InsertUser)
+				INSERT INTO [config].[utbBanners] ([BannerPath],[BannerName],[LocationID],[InsertUser],[LastModifyUser]) 
+				VALUES (@Banner,@BannerName,@LocationID,@InsertUser,@InsertUser)
 			-- =======================================================
 
         IF ( @@trancount > 0

@@ -2,8 +2,7 @@
     [ResourceID]     INT             IDENTITY (1, 1) NOT NULL,
     [ResourceTypeID] INT             NOT NULL,
     [FileType]       VARCHAR (100)   NOT NULL,
-    [FileData]       VARBINARY (MAX) NULL,
-    [FileExt]        VARCHAR (10)    NULL,
+    [FilePath]		 VARCHAR (500)   NULL,
     [FileName]       VARCHAR (500)   NOT NULL,
     [FileURL]        VARCHAR (MAX)   NULL,
     [Description]    VARCHAR (MAX)   NOT NULL,
@@ -27,8 +26,8 @@ FOR INSERT,UPDATE
 AS
 	BEGIN
 		DECLARE @INSERTUPDATE VARCHAR(30)
-		DECLARE @StartValues	XML = (SELECT [ResourceID],[ResourceTypeID],[FileExt],[FileName],[FileURL],[Description],[ActiveFlag],[InsertDate],[InsertUser],[LastModifyDate],[LastModifyUser] FROM Deleted [Values] for xml AUTO, ELEMENTS XSINIL)
-		DECLARE @EndValues		XML = (SELECT [ResourceID],[ResourceTypeID],[FileExt],[FileName],[FileURL],[Description],[ActiveFlag],[InsertDate],[InsertUser],[LastModifyDate],[LastModifyUser] FROM Inserted [Values] for xml AUTO, ELEMENTS XSINIL)
+		DECLARE @StartValues	XML = (SELECT * FROM Deleted [Values] for xml AUTO, ELEMENTS XSINIL)
+		DECLARE @EndValues		XML = (SELECT * FROM Inserted [Values] for xml AUTO, ELEMENTS XSINIL)
 
 		CREATE TABLE #DBCC (EventType varchar(50), Parameters varchar(50), EventInfo nvarchar(max))
 

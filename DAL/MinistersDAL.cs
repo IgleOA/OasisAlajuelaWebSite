@@ -22,13 +22,16 @@ namespace DAL
                     CommandType = CommandType.StoredProcedure
                 };
 
-                SqlParameter parStatus = new SqlParameter
+                if (ActiveFlag == true)
                 {
-                    ParameterName = "@pActiveFlag",
-                    SqlDbType = SqlDbType.Bit,
-                    Value = ActiveFlag
-                };
-                SqlCmd.Parameters.Add(parStatus);
+                    SqlParameter parStatus = new SqlParameter
+                    {
+                        ParameterName = "@pActiveFlag",
+                        SqlDbType = SqlDbType.Bit,
+                        Value = ActiveFlag
+                    };
+                    SqlCmd.Parameters.Add(parStatus);
+                }
 
                 using (var dr = SqlCmd.ExecuteReader())
                 {
@@ -55,7 +58,7 @@ namespace DAL
 
         public bool AddNew(Ministers Detail, string InsertUser)
         {
-            bool rpta = false;
+            bool rpta;
             try
             {
                 SqlCon.Open();
@@ -102,6 +105,105 @@ namespace DAL
                 throw ex;
             }
             if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            return rpta;
+        }
+
+        public Ministers Details(int MiniterID)
+        {
+            var Detail = new Ministers();
+
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[config].[uspReadMinisters]", SqlCon);
+                SqlCmd.CommandType = CommandType.StoredProcedure;
+
+                SqlParameter pID = new SqlParameter
+                {
+                    ParameterName = "@MinisterID",
+                    SqlDbType = SqlDbType.Int,
+                    Value = MiniterID
+                };
+                SqlCmd.Parameters.Add(pID);
+
+                using (var dr = SqlCmd.ExecuteReader())
+                {
+                    dr.Read();
+                    if (dr.HasRows)
+                    {
+                        Detail.MinisterID = Convert.ToInt32(dr["MinisterID"]);
+                        Detail.FullName = dr["FullName"].ToString();
+                        Detail.Title = dr["Title"].ToString();
+                        Detail.ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]);                        
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            return Detail;
+        }
+
+        public bool Update(Ministers Detail, string InsertUser)
+        {
+            bool rpta;
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[adm].[uspUpdateMinister]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                //Insert Parameters
+                SqlParameter pID = new SqlParameter
+                {
+                    ParameterName = "@MinisterID",
+                    SqlDbType = SqlDbType.Int,
+                    Value = Detail.MinisterID
+                };
+                SqlCmd.Parameters.Add(pID);
+
+                SqlParameter Title = new SqlParameter
+                {
+                    ParameterName = "@Title",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 50,
+                    Value = Detail.Title.Trim()
+                };
+                SqlCmd.Parameters.Add(Title);
+
+                SqlParameter pFullName = new SqlParameter
+                {
+                    ParameterName = "@FullName",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 100,
+                    Value = Detail.FullName.Trim()
+                };
+                SqlCmd.Parameters.Add(pFullName);
+
+                SqlParameter ParInsertUser = new SqlParameter
+                {
+                    ParameterName = "@InsertUser",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 50,
+                    Value = InsertUser
+                };
+                SqlCmd.Parameters.Add(ParInsertUser);
+
+                //Exec Command
+                SqlCmd.ExecuteNonQuery();
+
+                rpta = true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+
             return rpta;
         }
     }

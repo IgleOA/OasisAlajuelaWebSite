@@ -16,8 +16,7 @@ CREATE PROCEDURE [adm].[uspAddSermon]
 	@Description	VARCHAR(MAX),
 	@Tags			VARCHAR(MAX),
 	@MinisterID		INT,
-	@BannerData		VARBINARY(MAX),
-	@BannerExt		VARCHAR(10),
+	@Banner		    VARCHAR(500),	
 	@SermonDate		DATETIME,
 	@SermonURL		VARCHAR(500)
 AS 
@@ -38,8 +37,8 @@ AS
                 END
 
             -- =======================================================
-				INSERT INTO [config].[utbSermons] ([Title],[Description],[Tags],[MinisterID],[SermonDate],[SermonURL],[BackgroundImage],[BackgroundExt],[InsertUser],[LastModifyUser])
-				VALUES (@Title,@Description,@Tags,@MinisterID,@SermonDate,@SermonURL,@BannerData,REPLACE(@BannerExt,'.',''),@InsertUser,@InsertUser)
+				INSERT INTO [config].[utbSermons] ([Title],[Description],[Tags],[MinisterID],[SermonDate],[SermonURL],[ImagePath],[InsertUser],[LastModifyUser])
+				VALUES (@Title,@Description,@Tags,@MinisterID,@SermonDate,@SermonURL,@Banner,@InsertUser,@InsertUser)
 
 				SELECT [SermonID] = SCOPE_IDENTITY()
 			-- =======================================================

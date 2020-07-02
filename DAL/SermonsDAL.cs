@@ -49,8 +49,7 @@ namespace DAL
                             MinisterName = dr["MinisterName"].ToString(),
                             SermonDate = Convert.ToDateTime(dr["SermonDate"]),
                             SermonURL = dr["SermonURL"].ToString(),
-                            BannerData = (byte[])dr["BackgroundImage"],
-                            BannerExt = dr["BackgroundExt"].ToString(),
+                            BannerPath = dr["ImagePath"].ToString(),
                             ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]),                            
                         };
                         List.Add(detail);
@@ -74,8 +73,7 @@ namespace DAL
                 Parm.Add("@InsertUser", InserUser);
                 Parm.Add("@Title", NewMS.Title.Trim());
                 Parm.Add("@Description", NewMS.Description.Trim());
-                Parm.Add("@BannerData", NewMS.BannerData);
-                Parm.Add("@BannerExt", NewMS.BannerExt);
+                Parm.Add("@Banner", NewMS.BannerPath);
                 Parm.Add("@Tags", NewMS.Tags.Trim());
                 Parm.Add("@SermonDate", NewMS.SermonDate);
                 Parm.Add("@SermonURL", NewMS.SermonURL.Trim());
@@ -97,8 +95,7 @@ namespace DAL
 
         public bool Update(Sermons NewMS, string InsertUser)
         {
-            bool rpta = false;
-
+            bool rpta;
             try
             {
                 SqlCon.Open();
@@ -133,56 +130,50 @@ namespace DAL
                 };
                 SqlCmd.Parameters.Add(pSermonDate);
 
-                SqlParameter pTitle = new SqlParameter
+                if (!string.IsNullOrEmpty(NewMS.Title))
                 {
-                    ParameterName = "@Title",
-                    SqlDbType = SqlDbType.VarChar,
-                    Size = 100,
-                    Value = NewMS.Title.Trim()
-                };
-                SqlCmd.Parameters.Add(pTitle);
+                    SqlParameter pTitle = new SqlParameter
+                    {
+                        ParameterName = "@Title",
+                        SqlDbType = SqlDbType.VarChar,
+                        Size = 100,
+                        Value = NewMS.Title.Trim()
+                    };
+                    SqlCmd.Parameters.Add(pTitle);
 
-                SqlParameter pDescription = new SqlParameter
-                {
-                    ParameterName = "@Description",
-                    SqlDbType = SqlDbType.VarChar,
-                    Value = NewMS.Description.Trim()
-                };
-                SqlCmd.Parameters.Add(pDescription);
+                    SqlParameter pDescription = new SqlParameter
+                    {
+                        ParameterName = "@Description",
+                        SqlDbType = SqlDbType.VarChar,
+                        Value = NewMS.Description.Trim()
+                    };
+                    SqlCmd.Parameters.Add(pDescription);
 
-                SqlParameter Photo = new SqlParameter
-                {
-                    ParameterName = "@BannerData",
-                    SqlDbType = SqlDbType.VarBinary,
-                    Value = NewMS.BannerData
-                };
-                SqlCmd.Parameters.Add(Photo);
+                    SqlParameter Photo = new SqlParameter
+                    {
+                        ParameterName = "@Banner",
+                        SqlDbType = SqlDbType.VarChar,
+                        Size = 500,
+                        Value = NewMS.BannerPath
+                    };
+                    SqlCmd.Parameters.Add(Photo);
 
-                SqlParameter pPhotoExt = new SqlParameter
-                {
-                    ParameterName = "@BannerExt",
-                    SqlDbType = SqlDbType.VarChar,
-                    Size = 10,
-                    Value = NewMS.BannerExt
-                };
-                SqlCmd.Parameters.Add(pPhotoExt);
+                    SqlParameter pMinisterID = new SqlParameter
+                    {
+                        ParameterName = "@MinisterID",
+                        SqlDbType = SqlDbType.Int,
+                        Value = NewMS.MinisterID
+                    };
+                    SqlCmd.Parameters.Add(pMinisterID);
 
-                SqlParameter pMinisterID = new SqlParameter
-                {
-                    ParameterName = "@MinisterID",
-                    SqlDbType = SqlDbType.Int,
-                    Value = NewMS.MinisterID
-                };
-                SqlCmd.Parameters.Add(pMinisterID);
-
-                SqlParameter pTags = new SqlParameter
-                {
-                    ParameterName = "@Tags",
-                    SqlDbType = SqlDbType.VarChar,
-                    Value = NewMS.Tags.Trim()
-                };
-                SqlCmd.Parameters.Add(pTags);
-
+                    SqlParameter pTags = new SqlParameter
+                    {
+                        ParameterName = "@Tags",
+                        SqlDbType = SqlDbType.VarChar,
+                        Value = NewMS.Tags.Trim()
+                    };
+                    SqlCmd.Parameters.Add(pTags);
+                }
                 //EXEC Command
                 SqlCmd.ExecuteNonQuery();
 
@@ -225,8 +216,7 @@ namespace DAL
                         details.Title = dr["Title"].ToString();
                         details.Description = dr["Description"].ToString();
                         details.Tags = dr["Tags"].ToString();
-                        details.BannerData = (byte[])dr["BackgroundImage"];
-                        details.BannerExt = dr["BackgroundExt"].ToString();
+                        details.BannerPath = dr["ImagePath"].ToString();
                         details.ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]);
                         details.SermonDate = Convert.ToDateTime(dr["SermonDate"]);
                         details.SermonURL = dr["SermonURL"].ToString();
@@ -273,6 +263,7 @@ namespace DAL
                         details.Description = dr["Description"].ToString();
                         details.Tags = dr["Tags"].ToString();
                         details.SermonDate = Convert.ToDateTime(dr["SermonDate"]);
+                        details.ImageURL = dr["ImagePath"].ToString();
                         details.SermonURL = dr["SermonURL"].ToString();
                         details.MinisterName = dr["MinisterName"].ToString();
                     }

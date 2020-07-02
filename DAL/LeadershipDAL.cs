@@ -34,8 +34,7 @@ namespace DAL
                             LeaderID = Convert.ToInt32(dr["LeaderID"]),
                             FullName = dr["FullName"].ToString(),
                             Description = dr["Description"].ToString(),
-                            Image = (byte[])dr["Image"],
-                            ImageExt = dr["ImageExt"].ToString(),
+                            ImagePath = dr["ImagePath"].ToString(),
                             Order = Convert.ToInt32(dr["Order"]),
                             ActionLink = dr["ActionLink"].ToString()
                         };
@@ -83,18 +82,11 @@ namespace DAL
                 SqlParameter pImage = new SqlParameter
                 {
                     ParameterName = "@Image",
-                    SqlDbType = SqlDbType.VarBinary,
-                    Value = Detail.Image
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 500,
+                    Value = Detail.ImagePath
                 };
                 SqlCmd.Parameters.Add(pImage);
-
-                SqlParameter pImageExt = new SqlParameter
-                {
-                    ParameterName = "@ImageExt",
-                    SqlDbType = SqlDbType.VarChar,
-                    Value = Detail.ImageExt
-                };
-                SqlCmd.Parameters.Add(pImageExt);
 
                 SqlParameter Link = new SqlParameter
                 {
@@ -164,8 +156,7 @@ namespace DAL
                         ET.LeaderID = Convert.ToInt32(dr["LeaderID"]);
                         ET.FullName = dr["FullName"].ToString();
                         ET.Description = dr["Description"].ToString();
-                        ET.Image = (byte[])dr["Image"];
-                        ET.ImageExt = dr["ImageExt"].ToString();
+                        ET.ImagePath = dr["ImagePath"].ToString();
                         ET.ActionLink = dr["ActionLink"].ToString();
                         ET.Order = Convert.ToInt32(dr["Order"]);
                     }
@@ -219,18 +210,11 @@ namespace DAL
                 SqlParameter pImage = new SqlParameter
                 {
                     ParameterName = "@Image",
-                    SqlDbType = SqlDbType.VarBinary,
-                    Value = Detail.Image
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 500,
+                    Value = Detail.ImagePath
                 };
                 SqlCmd.Parameters.Add(pImage);
-
-                SqlParameter pImageExt = new SqlParameter
-                {
-                    ParameterName = "@ImageExt",
-                    SqlDbType = SqlDbType.VarChar,
-                    Value = Detail.ImageExt
-                };
-                SqlCmd.Parameters.Add(pImageExt);
 
                 SqlParameter Actionlink = new SqlParameter
                 {

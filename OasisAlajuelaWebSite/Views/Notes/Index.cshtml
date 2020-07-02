@@ -29,11 +29,15 @@
     }
 </script>
 
+<div id="header" class="headerFixed" style="z-index:-1;position:relative;">
+
+</div>
+<div class="col text-center heading-section ftco-animate animated fadeInUp">
+    <h2 class="mb-0 mt-3"><span class="px-4"><i class="fas fa-envelope"></i> @ViewBag.Title</span></h2>
+</div>
+
 <section class="hp-section">
     <div class="container">
-        <div class="row justify-content-start">
-            <h2 class="heading-section font-weight-bold my-2 p-0">@ViewBag.Title</h2>
-        </div>
         @using (Html.BeginForm("Index", "Notes", FormMethod.Get))
         {
             <div class="row justify-content-start">

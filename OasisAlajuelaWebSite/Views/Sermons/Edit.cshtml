@@ -1,7 +1,7 @@
 ﻿@model ET.Sermons
 
 @{
-    ViewBag.Title = "Editar Prédica";
+    ViewBag.Title = "Prédicas";
     Layout = "~/Views/Shared/_PupopLayout.cshtml";
 }
 
@@ -34,19 +34,20 @@
     });
 </script>
 
-<div class="card bg-light">
-    <article class="card-body">
-        <h4 class="card-title mt-3 text-center font-weight-bold">@ViewBag.Title</h4>
+<div class="col text-center heading-section ftco-animate animated fadeInUp">
+    <h2 class="mb-0 mt-3"><span class="px-4">@ViewBag.Title</span></h2>
+    <span class="subheading">Editar Información</span>
+</div>
+<div class="ftco-animate animated fadeInUp">
+    <article class="card-body py-0">
         @using (Html.BeginForm("Edit", "Sermons", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             @Html.AntiForgeryToken()
 
             <div class="form-horizontal">
-                <hr />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger m-0" })
                 @Html.HiddenFor(model => model.SermonID)
-                @Html.HiddenFor(model => model.BannerData)
-                @Html.HiddenFor(model => model.BannerExt)
+                @Html.HiddenFor(model => model.BannerPath)
                 <div class="row">
                     <div class="col-md-7">
                         <div class="form-group">
@@ -59,7 +60,7 @@
                         <div class="form-group">
                             @Html.LabelFor(model => model.MinisterID, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
                             <div class="col">
-                                @Html.DropDownListFor(model => model.MinisterID, new SelectList(Model.MinisterList,"MinisterID","FullName"), new { @class = "form-control" } )
+                                @Html.DropDownListFor(model => model.MinisterID, new SelectList(Model.MinisterList, "MinisterID", "FullName"), new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.MinisterID, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -82,21 +83,17 @@
                         <div class="form-group">
                             @Html.LabelFor(model => model.SermonDate, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
                             <div class="col-md-10">
-                                @Html.EditorFor(model => model.SermonDate, new { htmlAttributes = new { @class = "form-control",@style = "max-width: 175px;" } })
+                                @Html.EditorFor(model => model.SermonDate, new { htmlAttributes = new { @class = "form-control", @style = "max-width: 175px;" } })
                                 @Html.ValidationMessageFor(model => model.SermonDate, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="form-group">
-                            @Html.LabelFor(model => model.file, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
+                            @Html.LabelFor(model => model.UploadFile, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
                             <div class="profile-img">
-                                @{
-                                    var base64 = Convert.ToBase64String(Model.BannerData, 0, Model.BannerData.Length);
-                                    var imgSrc = string.Format("data:image/{0};base64,{1}", Model.BannerExt, base64);
-                                }
-                                <img src="@imgSrc" class="avatar img-thumbnail w-75" alt="avatar" />
+                                <img src="@Model.BannerPath" class="avatar img-thumbnail w-75" alt="avatar" />
                                 <div class="file btn btn-lg btn-primary w-75">
                                     Cambiar
-                                    <input id="file" type="file" name="file" class="file-upload">
+                                    <input id="UploadFile" type="file" name="UploadFile" class="file-upload">
                                 </div>
                             </div>
                         </div>

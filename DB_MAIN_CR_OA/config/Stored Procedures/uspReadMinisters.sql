@@ -11,7 +11,8 @@
 -- ======================================================================
 
 CREATE PROCEDURE [config].[uspReadMinisters]
-	@pActiveFlag BIT = NULL
+	@pActiveFlag    BIT = NULL,
+    @MinisterID     INT = NULL
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -27,6 +28,7 @@ AS
 						,[ActiveFlag]						
 				FROM	[config].[utbMinisters]
 				WHERE	[ActiveFlag]  = ISNULL(@pActiveFlag,[ActiveFlag])
+                        AND [MinisterID] = ISNULL(@MinisterID,[MinisterID])
 				ORDER BY [FullName]
 			-- =======================================================
 

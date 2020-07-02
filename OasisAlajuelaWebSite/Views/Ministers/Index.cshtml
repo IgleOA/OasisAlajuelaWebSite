@@ -1,0 +1,88 @@
+﻿@model PagedList.IPagedList<ET.Ministers>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Ministros";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<script src="~/Scripts/jquery-3.5.0.min.js"></script>
+<script type="text/javascript">
+    function AddNew() {
+        var url = '@Url.Action("AddNew")';
+        window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
+    }
+
+    function Edit(ID) {
+        var url = '@Url.Action("Edit", new { id = "MinisterID" })';
+        url = url.replace("MinisterID", ID);
+        window.open(url, '_blank' , 'left=100,top=100,width=500,height=650,toolbar=1,resizable=0');
+    }
+
+</script>
+
+<div id="header" class="headerFixed" style="z-index:-1;position:relative;">
+
+</div>
+<section class="hp-section ftco-animate animated fadeInUp">
+    <div class="container">
+        <div class="col p-0 text-center heading-section ftco-animate animated fadeInUp">
+            <h2 class="mb-0"><span class="px-4">@ViewBag.Title.ToUpper()</span></h2>
+            <span class="subheading">Módulo para el control y mantenimiento de los Ministros.</span>
+        </div>
+        @using (Html.BeginForm("Index", "Ministers", FormMethod.Get))
+        {
+            <div class="row justify-content-start">
+                <div class="form-group input-group p-0 searchfield w-50" style="max-width: 240px;">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text w"><i class="fas fa-search"></i></span>
+                    </div>
+                    @Html.TextBox("SearchString", null, new { @class = "form-control", @placeholder = "Buscar" })
+                </div>
+                <input type="submit" value="Buscar" class="btn btn-dark alt mt-0 mb-2" style="height: 2.75rem !important;" />
+            </div>
+        }
+        <div class="row justify-content-start">
+            <table class="table-responsive-xl align-content-center p-0 m-0">
+                <tbody>
+                    <tr class="align-middle">
+                        <th class="py-2 align-middle">@Html.DisplayNameFor(model => model.FirstOrDefault().Title)</th>
+                        <th class="py-2 align-middle">@Html.DisplayNameFor(model => model.FirstOrDefault().FullName)</th>
+                        @if (ViewBag.WriteRight == true)
+                        {
+                            <th class="text-center py-2 align-middle">Acción</th>
+                        }
+                    </tr>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="align-middle">@Html.DisplayFor(modelItem => item.Title)</td>
+                            <td class="align-middle">@Html.DisplayFor(modelItem => item.FullName)</td>
+                            @if (ViewBag.WriteRight == true)
+                            {
+                               <td class="text-center align-middle px-0">
+                                    <a href="#" class="card-link m-0" onclick="Edit(@item.MinisterID)" title="Editar">
+                                        <i class="fas fa-user-edit fa-1x mx-2" style="vertical-align: middle; color: #444444;"></i>
+                                    </a>
+                                </td>                                
+                            }
+                        </tr>
+
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="row justify-content-start my-2">
+            @if (Model.PageCount > 1)
+            {
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter }), new PagedListRenderOptions() { ContainerDivClasses = new string[] { "p-0" }, UlElementClasses = new string[] { "pagination m-0" } })
+            }
+            @if (ViewBag.WriteRight == true)
+            {
+                <a href="#" onclick="AddNew()" title="Agregar Nuevo" class="btn btn-light" style="text-decoration: none; padding: 6px 12px;"><i class="fas fa-plus-square fa-1x"></i> Agregar Nuevo</a>
+            }
+        </div>
+        
+    </div>
+</section>
