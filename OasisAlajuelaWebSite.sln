@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BL", "BL\BL.csproj", "{28B1
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "DB_MAIN_CR_OA", "DB_MAIN_CR_OA\DB_MAIN_CR_OA.sqlproj", "{CA106203-E83F-4953-B8E4-6B4704F9ACE1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OasisAlajuelaAPI", "OasisAlajuelaAPI\OasisAlajuelaAPI.csproj", "{34449ADC-6A04-474C-9377-42F5987B6EF0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,10 @@ Global
 		{CA106203-E83F-4953-B8E4-6B4704F9ACE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA106203-E83F-4953-B8E4-6B4704F9ACE1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CA106203-E83F-4953-B8E4-6B4704F9ACE1}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{34449ADC-6A04-474C-9377-42F5987B6EF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34449ADC-6A04-474C-9377-42F5987B6EF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34449ADC-6A04-474C-9377-42F5987B6EF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34449ADC-6A04-474C-9377-42F5987B6EF0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
