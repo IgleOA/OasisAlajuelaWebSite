@@ -2,10 +2,14 @@
     ViewBag.Title = "Error";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
+<div id="header" class="headerFixed" style="z-index:-1;position:relative;">
 
-<div class="card bg-light">
+</div>
+<div class="card bg-light ftco-animate animated fadeInUp">
     <article class="card-body mx-auto">
-        <h4 class="card-title mt-3 text-center font-weight-bold">Error</h4>
+        <div class="col p-0 text-center heading-section ftco-animate animated fadeInUp">
+            <h2 class="mb-0"><span class="px-4">@ViewBag.Title.ToUpper()</span></h2>
+        </div>
         <p class="text-center m-0">@ViewBag.Mensaje</p>
     </article>
 </div>

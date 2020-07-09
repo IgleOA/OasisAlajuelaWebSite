@@ -17,7 +17,6 @@ using shortid;
 
 namespace OasisAlajuelaWebSite.Controllers
 {
-    [Authorize]
     public class ResourcesController : Controller
     {
         private RightsBL RRBL = new RightsBL();
@@ -29,57 +28,105 @@ namespace OasisAlajuelaWebSite.Controllers
 
         public ActionResult Index()
         {
-            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
-
-            var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString());
-            if (validation.ReadRight == false)
+            if (Request.IsAuthenticated)
             {
-                ViewBag.Mensaje = "Usted no esta autorizado para ingresar a esta seccion, si necesita acceso contacte con un administrador.";
-                return View("~/Views/Shared/Error.cshtml");
-            }
-            else
-            {
-                Users user = USBL.List().Where(x => x.UserName == User.Identity.GetUserName()).FirstOrDefault();
+                USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
 
-                if (user.RoleName.Contains("Admin"))
+                var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString());
+                if (validation.ReadRight == false)
                 {
-                    ViewBag.Layout = "~/Views/Shared/_AdminLayout.cshtml";
+                    ViewBag.Mensaje = "Usted no esta autorizado para ingresar a esta seccion, si necesita acceso contacte con un administrador.";
+                    return View("~/Views/Shared/Error.cshtml");
                 }
                 else
                 {
-                    ViewBag.Layout = "~/Views/Shared/_MainLayout.cshtml";
+                    Users user = USBL.List().Where(x => x.UserName == User.Identity.GetUserName()).FirstOrDefault();
+
+                    if (user.RoleName.Contains("Admin"))
+                    {
+                        ViewBag.Layout = "~/Views/Shared/_AdminLayout.cshtml";
+                    }
+                    else
+                    {
+                        ViewBag.Layout = "~/Views/Shared/_MainLayout.cshtml";
+                    }
+
+                    var data = RBL.TypeList(User.Identity.GetUserName());
+                    ViewBag.Write = validation.WriteRight;
+                    return View(data.ToList());
+
                 }
-
-                var data = RBL.TypeList(User.Identity.GetUserName());
-                ViewBag.Write = validation.WriteRight;
+            }
+            else
+            {
+                var data = RBL.TypeList(string.Empty);
+                ViewBag.Write = false;
+                ViewBag.Layout = "~/Views/Shared/_MainLayout.cshtml";
                 return View(data.ToList());
-
             }
         }
 
         public ActionResult Type(int id, string currentFilter, string searchString, int? page)
         {
-            USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
+            ResourceTypes TypeData = RBL.ResourceTypeDetail(id);
 
-            var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
-            if (validation.ReadRight == false)
-            {
-                ViewBag.Mensaje = "Usted no esta autorizado para ingresar a esta seccion, si necesita acceso contacte con un administrador.";
-                return View("~/Views/Shared/Error.cshtml");
-            }
-            else
-            {
-                Users user = USBL.List().Where(x => x.UserName == User.Identity.GetUserName()).FirstOrDefault();
+            ViewBag.Resource = TypeData.TypeName;
+            ViewBag.ResourceTypeID = TypeData.ResourceTypeID;
 
-                if (user.RoleName.Contains("Admin"))
+            if (Request.IsAuthenticated)
+            {
+
+                USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
+
+                var validation = RRBL.ValidationRights(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), "Index");
+                if (validation.ReadRight == false)
                 {
-                    ViewBag.Layout = "~/Views/Shared/_AdminLayout.cshtml";
+                    ViewBag.Mensaje = "Usted no esta autorizado para ingresar a esta seccion, si necesita acceso contacte con un administrador.";
+                    return View("~/Views/Shared/Error.cshtml");
                 }
                 else
                 {
-                    ViewBag.Layout = "~/Views/Shared/_MainLayout.cshtml";
-                }
+                    Users user = USBL.List().Where(x => x.UserName == User.Identity.GetUserName()).FirstOrDefault();
 
+                    if (user.RoleName.Contains("Admin"))
+                    {
+                        ViewBag.Layout = "~/Views/Shared/_AdminLayout.cshtml";
+                    }
+                    else
+                    {
+                        ViewBag.Layout = "~/Views/Shared/_MainLayout.cshtml";
+                    }
+
+                    if (searchString != null)
+                    {
+                        page = 1;
+                    }
+                    else
+                    {
+                        searchString = currentFilter;
+                    }
+
+                    ViewBag.CurrentFilter = searchString;
+
+                    var list = from l in RBL.ResourceList(id, DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])))
+                               select l;
+
+                    if (!String.IsNullOrEmpty(searchString))
+                    {
+                        list = list.Where(b => b.FileName.Contains(searchString) || b.Description.Contains(searchString));
+                    }
+                    int pageSize = 10;
+                    int pageNumber = (page ?? 1);
+                    ViewBag.Write = validation.WriteRight;
+                    ViewBag.CountResults = list.Count();
+
+                    return View(list.ToPagedList(pageNumber, pageSize));
+                }
+            }
+            else if(TypeData.IsPublic)
+            {
+                ViewBag.Layout = "~/Views/Shared/_MainLayout.cshtml";
+                ViewBag.Write = false;
                 if (searchString != null)
                 {
                     page = 1;
@@ -100,23 +147,18 @@ namespace OasisAlajuelaWebSite.Controllers
                 }
                 int pageSize = 10;
                 int pageNumber = (page ?? 1);
-
-                ResourceTypes TypeData = (from r in RBL.TypeList(User.Identity.GetUserName())
-                                          where r.ResourceTypeID == id
-                                          select r).FirstOrDefault();
-
-                ViewBag.Resource = TypeData.TypeName;
-                ViewBag.ResourceTypeID = TypeData.ResourceTypeID;
-
-                ViewBag.Write = validation.WriteRight;
                 ViewBag.CountResults = list.Count();
-
                 return View(list.ToPagedList(pageNumber, pageSize));
-
+            }
+            else
+            {
+                ViewBag.Mensaje = "Este es un recurso de Acceso Restringido y necesita estar logeado para poder validar sus derechos.";
+                return View("~/Views/Shared/Error.cshtml");
             }
 
         }
 
+        [Authorize]
         public ActionResult TypeHistory(int id, string currentFilter, string searchString, int? page)
         {
             USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
@@ -166,6 +208,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
         }
 
+        [Authorize]
         public ActionResult AddNewRT()
         {
             USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
@@ -223,6 +266,7 @@ namespace OasisAlajuelaWebSite.Controllers
             }
         }
 
+        [Authorize]
         public ActionResult AddNewResource(int id = 0)
         {
             USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
@@ -434,6 +478,7 @@ namespace OasisAlajuelaWebSite.Controllers
         //    return File(FileById.FilePath, System.Net.Mime.MediaTypeNames.Application.Octet, strFile);
         //}
 
+        [Authorize]
         public ActionResult Edit(int id = 0)
         {
             USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
@@ -506,6 +551,7 @@ namespace OasisAlajuelaWebSite.Controllers
             }
         }
 
+        [Authorize]
         public void ChangeStatus(int id = 0)
         {
             USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
@@ -586,6 +632,7 @@ namespace OasisAlajuelaWebSite.Controllers
             return isValid;
         }
 
+        [Authorize]
         public ActionResult AddGroup(int id)
         {
             USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
@@ -647,6 +694,7 @@ namespace OasisAlajuelaWebSite.Controllers
             return this.View(model);
         }
 
+        [Authorize]
         public ActionResult RemoveURG(int ResourceTypeID, int GroupID)
         {
             USBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
@@ -695,6 +743,7 @@ namespace OasisAlajuelaWebSite.Controllers
             return lstobj;
         }
 
+        [Authorize]
         public ActionResult EmailNewResource(int id)
         {
             Resources Res = RBL.ResourceDetails(id);

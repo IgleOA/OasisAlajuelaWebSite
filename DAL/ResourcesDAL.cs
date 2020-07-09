@@ -202,6 +202,52 @@ namespace DAL
             return List;
         }
 
+        public ResourceTypes TypeDetail(int TypeID)
+        {
+            ResourceTypes detail = new ResourceTypes();
+
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[config].[uspReadResourceTypes]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                SqlParameter pTypeID = new SqlParameter
+                {
+                    ParameterName = "@TypeID",
+                    SqlDbType = SqlDbType.Int,
+                    Value = TypeID
+                };
+                SqlCmd.Parameters.Add(pTypeID);
+
+                using (var dr = SqlCmd.ExecuteReader())
+                {
+                    dr.Read();
+                    if (dr.HasRows)
+                    {
+                        detail.ResourceTypeID = Convert.ToInt32(dr["ResourceTypeID"]);
+                        detail.TypeName = dr["TypeName"].ToString();
+                        detail.Description = dr["Description"].ToString();
+                        detail.TypeImagePath = dr["TypeImagePath"].ToString();
+                        detail.ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]);
+                        detail.IsPublic = Convert.ToBoolean(dr["IsPublic"]);                        
+                    }
+                }
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+                
+                detail.GroupList = GDAL.ListbyRT(detail.ResourceTypeID);
+                
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            return detail;
+        }
+
         public List<Resources> TopResourceList(int ResourceTypeID)
         {
             List<Resources> List = new List<Resources>();
@@ -434,7 +480,7 @@ namespace DAL
 
                 if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
 
-                details.TypeData = TypeList("").Where(x => x.ResourceTypeID == details.ResourceTypeID).FirstOrDefault();
+                details.TypeData = TypeDetail(details.ResourceTypeID);
             }
             catch (Exception ex)
             {

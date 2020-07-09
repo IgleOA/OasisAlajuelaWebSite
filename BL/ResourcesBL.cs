@@ -19,6 +19,11 @@ namespace BL
             return RDAL.AddNewResource(RT, InsertUser);
         }
 
+        public ResourceTypes ResourceTypeDetail(int TypeID)
+        {
+            return RDAL.TypeDetail(TypeID);
+        }
+
         public List<ResourceTypes> TypeList(string UserName)
         {
             return RDAL.TypeList(UserName);

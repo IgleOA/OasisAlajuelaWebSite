@@ -1,21 +1,11 @@
-﻿@model ET.SermonEmail
-
-@{
-    Layout = null;
-}
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml">
+﻿<!DOCTYPE html>
+<html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Email confirmation</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
-
 </head>
-
 <body style="margin: 0; padding: 0;">
     <table border="0" cellpadding="0" cellspacing="0" width="100%">
         <tr>
@@ -30,50 +20,43 @@
                         <td bgcolor="#ffffff" style="padding: 20px 30px 20px 30px;">
                             <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                 <tr>
-                                    <td align="center">
-                                        <h4 style="text-transform: uppercase; font-weight:700!important; font-size:1.5rem!important; margin:0.5rem!important">Nueva Prédica Disponible</h4>
+                                    <td>
+                                        <h3>Confirmación de Registro</h3>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Hola {FullName}! Gracias por registrarse y por tener el sentir de hacerte parte de esta familia. Dios trae cosas grandes para esta casa y ahora seras parte de ellas. Desde ya puedes ver el contenido completo de nuestro website:
                                     </td>
                                 </tr>
                                 <tr>
                                     <td align="center">
-                                        <table style="margin-top: 1rem !important; width: 100%!important;">
-                                            <tbody>
-                                                <tr>
-                                                    <td align="center" style="padding:0!important; width:100%!important">
-                                                       
-                                                        
-                                                        <hr style="margin:0 0 0.5rem 0!important;" />                                                        
-                                                            <div style="display: flex;
-                                                                        flex-wrap: wrap;
-                                                                        margin-right: -15px;
-                                                                        margin-left: -15px;
-                                                                        margin-bottom: 0.5rem!important;">
-                                                                <div style="flex-basis: 0;
-                                                                            flex-grow:1;
-                                                                            max-width:100%;
-                                                                            justify-content:flex-start!important;
-                                                                            margin:auto!important;">
-                                                                    <h3 style="margin-bottom:0.5rem!important">
-                                                                        <a href="https://oasisalajuela.com/Sermons/" target="_blank" style="font-weight:700!important;font-size: 1.75rem; color: #00ACEC;">@Model.Title</a>
-                                                                    </h3>
-                                                                    <h4 style="margin:0!important; font-weight:700!important;font-size: 1.25rem;">@Model.MinisterName</h4>
-                                                                    <p style="margin-bottom: 0.5rem!important; justify-content:flex-start; margin-top: 1rem;">
-                                                                        @Model.Description
-                                                                    </p>
-                                                                </div>
-                                                            </div>                                                                
-                                                        <hr style="margin:0!important;" />
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="p-0 justify-content-start">
-                                                        <p class="my-2 w-100 text-justify" style="font-size: 10px;">
-                                                            Te enviamos este correo electrónico con las novedades de Oasis Alajuela. Si no deseas seguir recibiendo estas novedades, puedes <a href="https://oasisalajuela.com/Account/RemoveSubscriber/" target="_blank">anular la suscripción aquí</a>.
-                                                        </p>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                        <p>
+                                            <a href="http://OasisAlajuela.com/" target="_blank" title="Oasis Alajuela" style="font-weight: bold; color:#00ACEC;">www.OasisAlajuela.com</a>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Nombre de Usuario: <strong>{UserName}</strong><br />
+                                        Contraseña: <strong>{Password}</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>
+                                            Cuando inicie seción con su cuenta, podrá hacer lo siguiente:
+                                            <ul>
+                                                <li>Ver todas las prédicas en el momento que usted desee.</li>
+                                                <li>Disponer de recursos impartidos por nuestra casa para el crecimiento espiritual.</li>
+                                                <li>Muchas otras cosas mas de bendición que vienen de camino.</li>
+                                            </ul>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>Bendiciones...</p>
                                     </td>
                                 </tr>
                             </table>
