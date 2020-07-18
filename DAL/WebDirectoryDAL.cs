@@ -10,7 +10,7 @@ namespace DAL
     public class WebDirectoryDAL
     {
         private SqlConnection SqlCon = new SqlConnection(ConfigurationManager.ConnectionStrings["DB_MAIN_CR_OA_Connection"].ToString());
-        public List<WebDirectory> List()
+        public List<WebDirectory> List(int AppID)
         {
             List<WebDirectory> List = new List<WebDirectory>();
 
@@ -21,6 +21,8 @@ namespace DAL
                 {
                     CommandType = CommandType.StoredProcedure
                 };
+
+                SqlCmd.Parameters.AddWithValue("@AppID", AppID);
 
                 using (var dr = SqlCmd.ExecuteReader())
                 {

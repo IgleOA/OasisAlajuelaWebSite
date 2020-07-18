@@ -46,14 +46,14 @@ namespace OasisAlajuelaAPI.Controllers
             return Details;
         }
 
-        [ApiKeyAuthentication]
+        
         [System.Web.Http.Route("api/Account/CheckAvailability")]
         public bool Get(string id)
         {
             return UBL.CheckAvailability(id);
         }
 
-        [ApiKeyAuthentication]
+        
         [System.Web.Http.Route("api/Account/ForgotPassword")]
         public string Post([FromBody] ForgotPasswordModel model)
         {
@@ -96,7 +96,7 @@ namespace OasisAlajuelaAPI.Controllers
             }
         }
 
-        [ApiKeyAuthentication]
+        
         [System.Web.Http.Route("api/Account/ResetPassword")]
         public IHttpActionResult Put([FromBody] ResetPasswordModel model)
         {
@@ -112,7 +112,6 @@ namespace OasisAlajuelaAPI.Controllers
             }
         }
 
-        [ApiKeyAuthentication]
         [System.Web.Http.Route("api/Account/Register")]
         public IHttpActionResult Post([FromBody] Users model)
         {

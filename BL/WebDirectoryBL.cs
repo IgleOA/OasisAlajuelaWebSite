@@ -9,9 +9,9 @@ namespace BL
     {
         private WebDirectoryDAL WDAL = new WebDirectoryDAL();
 
-        public List<WebDirectory> List()
+        public List<WebDirectory> List(int AppID)
         {
-            return WDAL.List();
+            return WDAL.List(AppID);
         }
 
         public bool AddNew(WebDirectory detail, string insertuser)
