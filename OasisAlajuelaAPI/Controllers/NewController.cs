@@ -13,18 +13,18 @@ namespace OasisAlajuelaAPI.Controllers
     {
         private NewsBL NBL = new NewsBL();
 
-        public IEnumerable<News> Get(int id)
+        public News Get(int id)
         {
-            if (id == 0)
-            {
-                return NBL.List(false);
-            }
-            else
-            {
-                return NBL.List(false).Where(x => x.NewID == id);
-            }
+            return NBL.Details(id);
+            
         }
 
-        
+        [Route("api/New/List")]
+        public IEnumerable<News> Get(bool id)
+        {
+            return NBL.List(id);            
+        }
+
+
     }
 }

@@ -163,6 +163,8 @@
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Controllers\MinistryController.cs" />
     <Compile Include="Controllers\NewController.cs" />
+    <Compile Include="Controllers\PrayerController.cs" />
+    <Compile Include="Controllers\ResourcesController.cs" />
     <Compile Include="Controllers\SermonsController.cs" />
     <Compile Include="Controllers\ServicesController.cs" />
     <Compile Include="Controllers\UpcommingEventsController.cs" />

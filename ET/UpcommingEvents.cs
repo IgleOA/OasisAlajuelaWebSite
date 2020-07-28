@@ -5,6 +5,15 @@ using System.Configuration;
 
 namespace ET
 {
+    public class UpcommingEventsRequest
+    {
+        [Required]
+        public DateTime Startdate { get; set; }
+        [Required]
+        public bool UpCommingFlag { get; set; }
+        [Required]
+        public bool ActiveFlag { get; set; }
+    }
     public class UpcommingEvents
     {
         [Key]

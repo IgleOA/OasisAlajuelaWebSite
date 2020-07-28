@@ -69,7 +69,7 @@ AS
 
 						SET DATEFIRST 7
 						SET DATEFORMAT mdy
-						SET LANGUAGE US_ENGLISH
+						SET LANGUAGE Spanish
 
 						DECLARE @CutoffDate DATE	=	DATEADD(MONTH, @NumberOfMonths, @StartDate)
 

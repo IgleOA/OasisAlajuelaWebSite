@@ -10,17 +10,14 @@ namespace OasisAlajuelaAPI.Controllers
     {
         private LeadershipBL LBL = new LeadershipBL();
 
-        [AllowAnonymous]
-        public IEnumerable<Leadership> Get(int id)
+        public IEnumerable<Leadership> Get()
         {
-            if (id == 0)
-            {
-                return LBL.List().Where(x => x.ActionLink.Length > 0);
-            } 
-            else 
-            { 
-                return LBL.List();
-            }
-        }        
+            return LBL.List();            
+        }
+        
+        public Leadership Get(int id)
+        {
+            return LBL.Details(id);
+        }
     }
 }

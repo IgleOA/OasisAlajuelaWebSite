@@ -1,14 +1,19 @@
 ﻿using BL;
 using ET;
+using Newtonsoft.Json;
 using OasisAlajuelaAPI.Filters;
 using System;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Net.Mail;
 using System.Text;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.Controllers;
+using System.Web.Http.Description;
 using System.Web.Mvc;
 
 namespace OasisAlajuelaAPI.Controllers
@@ -19,16 +24,21 @@ namespace OasisAlajuelaAPI.Controllers
         private UsersBL UBL = new UsersBL();
         private RolesBL RBL = new RolesBL();
         private GroupsBL GBL = new GroupsBL();
+        private static string API_KEY = ConfigurationManager.AppSettings["APIStack_KEY"].ToString();
+        private static string API_URL = ConfigurationManager.AppSettings["APIStack_URL"].ToString();
 
         [BasicAuthentication]
         [System.Web.Http.Route("api/Account/Login")]
-        public Users Get()
+        [ResponseType(typeof(Users))]
+        public HttpResponseMessage Get()
         {
             var authenticationToken = Request.Headers.Authorization.Parameter;
             var decodedAuthenticationToken = Encoding.UTF8.GetString(Convert.FromBase64String(authenticationToken));
             var usernamePasswordArray = decodedAuthenticationToken.Split(':');
             var userName = usernamePasswordArray[0];
             var password = usernamePasswordArray[1];
+
+            var IP = Request.Headers.GetValues("IP").First();
 
             Login login = new Login()
             {
@@ -37,13 +47,33 @@ namespace OasisAlajuelaAPI.Controllers
             };
 
             Users LoginUser = UBL.Login(login);
+            
+            if (LoginUser.UserID > 0)
+            {
+                GeolocationStack location = GetGeolocation(IP);
+                LoginRecord loginRecord = new LoginRecord()
+                {
+                    UserID = LoginUser.UserID,
+                    IP = location.Ip,
+                    Country = location.CountryName,
+                    Region = location.RegionName,
+                    City = location.City
+                };
 
-            Users Details = UBL.Details(LoginUser.UserID);
+                UBL.AddLogin(loginRecord);
 
-            Details.RolesData = RBL.List().Where(x => x.RoleID == Details.RoleID).FirstOrDefault();
-            Details.GroupList = GBL.ListbyUser(Details.UserID);
+                Users Details = UBL.Details(LoginUser.UserID);
 
-            return Details;
+                Details.RolesData = RBL.List().Where(x => x.RoleID == Details.RoleID).FirstOrDefault();
+                Details.GroupList = GBL.ListbyUser(Details.UserID);
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, Details);
+            }
+
+            else
+            {
+                return this.Request.CreateResponse(HttpStatusCode.Unauthorized);
+            }
         }
 
         
@@ -155,7 +185,25 @@ namespace OasisAlajuelaAPI.Controllers
             }
         }
 
-        
+        static GeolocationStack GetGeolocation(string IP)
+        {
+
+            string url = API_URL + IP + $"?access_key={API_KEY}";
+            string resultData = string.Empty;
+
+            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+
+            using (HttpWebResponse response = (HttpWebResponse)req.GetResponse())
+            using (Stream stream = response.GetResponseStream())
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                resultData = reader.ReadToEnd();
+            }
+
+            GeolocationStack location = JsonConvert.DeserializeObject<GeolocationStack>(resultData);
+
+            return location;
+        }
 
     }
 }
