@@ -2,6 +2,7 @@
 using System.Web.Http;
 using ET;
 using BL;
+using System.Reflection;
 
 namespace OasisAlajuelaAPI.Controllers
 {
@@ -13,6 +14,14 @@ namespace OasisAlajuelaAPI.Controllers
         {
             return RBL.TypeList(id);
         }
-        
+
+        public ResourceTypes Post([FromBody] ResourceRequest model)
+        {
+            ResourceTypes Type = RBL.ResourceTypeDetail(model.ResourceTypeID);
+
+            Type.TopResources = RBL.ResourceList(model.ResourceTypeID, model.StartDate);
+
+            return Type;
+        }
     }
 }

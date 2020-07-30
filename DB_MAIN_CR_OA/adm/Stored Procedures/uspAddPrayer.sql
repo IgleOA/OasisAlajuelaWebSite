@@ -15,7 +15,7 @@ CREATE PROCEDURE [adm].[uspAddPrayer]
 	@Email			VARCHAR(50),
 	@PhoneNumber	VARCHAR(50) = NULL,
 	@Reason			VARCHAR(1000),
-	@IP				VARCHAR(10) = NULL,
+	@IP				VARCHAR(20) = NULL,
 	@Country		VARCHAR(50) = NULL,
 	@Region			VARCHAR(50) = NULL,
 	@City			VARCHAR(50) = NULL
