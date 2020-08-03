@@ -50,6 +50,8 @@ namespace ET
 
         public bool NeedResetPwd { get; set; }
 
+        public string Token { get; set; }
+
         [Display(Name = "Status")]
         public bool ActiveFlag { get; set; }
 

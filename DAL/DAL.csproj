@@ -142,6 +142,7 @@
     <Compile Include="RolesDAL.cs" />
     <Compile Include="SermonsDAL.cs" />
     <Compile Include="ServicesDAL.cs" />
+    <Compile Include="TokensDAL.cs" />
     <Compile Include="UpcommingEventsDAL.cs" />
     <Compile Include="UserNotesDAL.cs" />
     <Compile Include="UserProfileDAL.cs" />

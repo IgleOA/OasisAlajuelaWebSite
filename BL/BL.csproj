@@ -68,6 +68,7 @@
     <Compile Include="RolesBL.cs" />
     <Compile Include="SermonsBL.cs" />
     <Compile Include="ServicesBL.cs" />
+    <Compile Include="TokensBL.cs" />
     <Compile Include="UpcommingEventsBL.cs" />
     <Compile Include="UserNotesBL.cs" />
     <Compile Include="UserProfileBL.cs" />

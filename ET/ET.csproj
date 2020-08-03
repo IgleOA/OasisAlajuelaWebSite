@@ -95,6 +95,7 @@
     <Compile Include="Roles.cs" />
     <Compile Include="Sermons.cs" />
     <Compile Include="Services.cs" />
+    <Compile Include="Token.cs" />
     <Compile Include="UpcommingEvents.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserNotes.cs" />

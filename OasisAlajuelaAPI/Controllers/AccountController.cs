@@ -1,34 +1,38 @@
 ﻿using BL;
 using ET;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using OasisAlajuelaAPI.Filters;
 using System;
 using System.Configuration;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Mail;
+using System.Security.Claims;
 using System.Text;
 using System.Web;
 using System.Web.Http;
-using System.Web.Http.Controllers;
 using System.Web.Http.Description;
-using System.Web.Mvc;
 
 namespace OasisAlajuelaAPI.Controllers
 {
-    
+
     public class AccountController : ApiController
     {
         private UsersBL UBL = new UsersBL();
         private RolesBL RBL = new RolesBL();
         private GroupsBL GBL = new GroupsBL();
+        private TokensBL TBL = new TokensBL();
         private static string API_KEY = ConfigurationManager.AppSettings["APIStack_KEY"].ToString();
         private static string API_URL = ConfigurationManager.AppSettings["APIStack_URL"].ToString();
+        private static string SecretKey = ConfigurationManager.AppSettings["JWT_SECRET_KEY"].ToString();
+        private static int expireTime = Convert.ToInt32(ConfigurationManager.AppSettings["JWT_EXPIRE_MINUTES"]);
 
         [BasicAuthentication]
-        [System.Web.Http.Route("api/Account/Login")]
+        [Route("api/Account/Login")]
         [ResponseType(typeof(Users))]
         public HttpResponseMessage Get()
         {
@@ -64,10 +68,20 @@ namespace OasisAlajuelaAPI.Controllers
 
                 Users Details = UBL.Details(LoginUser.UserID);
 
-                Details.RolesData = RBL.List().Where(x => x.RoleID == Details.RoleID).FirstOrDefault();
-                Details.GroupList = GBL.ListbyUser(Details.UserID);
+                //Details.RolesData = RBL.List().Where(x => x.RoleID == Details.RoleID).FirstOrDefault();
+                //Details.GroupList = GBL.ListbyUser(Details.UserID);
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, Details);
+                var token = GenerateToken(LoginUser.UserID);
+
+                if (token == "error")
+                {
+                    return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
+                }
+                else
+                {
+                    Details.Token = token;
+                    return this.Request.CreateResponse(HttpStatusCode.OK, Details);
+                }
             }
 
             else
@@ -77,14 +91,14 @@ namespace OasisAlajuelaAPI.Controllers
         }
 
         
-        [System.Web.Http.Route("api/Account/CheckAvailability")]
+        [Route("api/Account/CheckAvailability")]
         public bool Get(string id)
         {
             return UBL.CheckAvailability(id);
         }
 
         
-        [System.Web.Http.Route("api/Account/ForgotPassword")]
+        [Route("api/Account/ForgotPassword")]
         public string Post([FromBody] ForgotPasswordModel model)
         {
             Users User = UBL.List().Where(x => x.Email == model.Email).FirstOrDefault();
@@ -127,7 +141,7 @@ namespace OasisAlajuelaAPI.Controllers
         }
 
         
-        [System.Web.Http.Route("api/Account/ResetPassword")]
+        [Route("api/Account/ResetPassword")]
         public IHttpActionResult Put([FromBody] ResetPasswordModel model)
         {
             int validation = UBL.ValidateGUID(model.GUID);
@@ -142,7 +156,7 @@ namespace OasisAlajuelaAPI.Controllers
             }
         }
 
-        [System.Web.Http.Route("api/Account/Register")]
+        [Route("api/Account/Register")]
         public IHttpActionResult Post([FromBody] Users model)
         {
             model.RoleID = 1; /*New User*/
@@ -203,6 +217,47 @@ namespace OasisAlajuelaAPI.Controllers
             GeolocationStack location = JsonConvert.DeserializeObject<GeolocationStack>(resultData);
 
             return location;
+        }
+
+        public string GenerateToken(int UserID)
+        {
+            Users Details = UBL.Details(UserID);
+            var SecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecretKey));
+            var tokenExpires = DateTime.UtcNow.AddMinutes(expireTime);
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim("UserID",Details.UserID.ToString()),
+                    new Claim("UserName",Details.UserName),
+                    new Claim("NeedResetPwd",Details.NeedResetPwd.ToString()),
+                    new Claim("Role",Details.RoleName)
+                }),
+                Expires = tokenExpires,
+                SigningCredentials = new SigningCredentials(SecurityKey, SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+
+            var tokenid = tokenHandler.WriteToken(token);
+
+            var r = TBL.AddNew(new Token()
+            {
+                TokenID = tokenid,
+                UserID = UserID,
+                ExpiresDate = tokenExpires
+            });
+
+            if (!r)
+            {
+                return "error";
+            }
+            else
+            {
+                return tokenid;
+            }
         }
 
     }
