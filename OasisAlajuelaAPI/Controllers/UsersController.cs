@@ -13,6 +13,8 @@ namespace OasisAlajuelaAPI.Controllers
     {
         private RightsBL RRBL = new RightsBL();
         private TokensBL TBL = new TokensBL();
+        private UserProfileBL UPBL = new UserProfileBL();
+        private GroupsBL GBL = new GroupsBL();
 
         [ApiKeyAuthentication]
         [Route("api/Users/RightsValidation")]
@@ -35,6 +37,30 @@ namespace OasisAlajuelaAPI.Controllers
             Token r = TBL.ValidateToken(token);
 
             return this.Request.CreateResponse(HttpStatusCode.OK,r);
+        }
+
+        [ApiKeyAuthentication]
+        [Route("api/Users/Profile/")]
+        [ResponseType(typeof(UserProfile))]
+        public HttpResponseMessage Post([FromBody] int id)
+        {
+            UserProfile r = UPBL.Detail(id);
+
+            if (r.UserID >= 1)
+            {
+                r.GroupList = GBL.ListbyUser(id);
+
+                if (r.LastActivityDate.ToString().Length == 0)
+                {
+                    r.LastActivityDate = r.CreationDate;
+                }
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, r);
+            }
+            else
+            {
+                return this.Request.CreateResponse(HttpStatusCode.NotFound);
+            }
         }
     }
 }
