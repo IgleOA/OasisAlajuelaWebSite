@@ -42,8 +42,21 @@ namespace OasisAlajuelaAPI.Filters
                 ValidateIssuerSigningKey = true
             };
 
-            ClaimsPrincipal principal = new JwtSecurityTokenHandler().ValidateToken(token, validparams, out validatedToken);
-
+            try
+            {
+                ClaimsPrincipal principal = new JwtSecurityTokenHandler().ValidateToken(token, validparams, out validatedToken);
+            }
+            catch(Exception ex)
+            {
+                if (ex.Message.Contains("Lifetime validation failed"))
+                {
+                    actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.GatewayTimeout);
+                }
+                else
+                {
+                    HandleUnathorized(actionContext);
+                }
+            }
             var r = TBL.ValidateToken(token);
 
             if(r.ExpiresDate > DateTime.Now)

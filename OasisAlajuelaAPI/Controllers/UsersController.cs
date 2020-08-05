@@ -62,5 +62,23 @@ namespace OasisAlajuelaAPI.Controllers
                 return this.Request.CreateResponse(HttpStatusCode.NotFound);
             }
         }
+
+        [ApiKeyAuthentication]
+        [Route("api/Users/Profile/Update")]
+        [ResponseType(typeof(bool))]
+        public HttpResponseMessage Post([FromBody] UserProfile model)
+        {
+            var r = UPBL.Update(model, model.UserName);
+
+            if (!r)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
+            }
+            else
+            {
+                
+                return this.Request.CreateResponse(HttpStatusCode.OK, r);
+            }
+        }
     }
 }

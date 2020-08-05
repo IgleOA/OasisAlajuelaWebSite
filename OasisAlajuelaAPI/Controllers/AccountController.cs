@@ -73,14 +73,16 @@ namespace OasisAlajuelaAPI.Controllers
 
                 var token = GenerateToken(LoginUser.UserID);
 
-                if (token == "error")
+                if (token.TokenID.Length > 0)
                 {
-                    return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
+                    Details.Token = token.TokenID;
+                    Details.TokenExpires = token.ExpiresDate;
+                    return this.Request.CreateResponse(HttpStatusCode.OK, Details);
+                    
                 }
                 else
                 {
-                    Details.Token = token;
-                    return this.Request.CreateResponse(HttpStatusCode.OK, Details);
+                    return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
                 }
             }
 
@@ -219,7 +221,7 @@ namespace OasisAlajuelaAPI.Controllers
             return location;
         }
 
-        public string GenerateToken(int UserID)
+        public Token GenerateToken(int UserID)
         {
             Users Details = UBL.Details(UserID);
             var SecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecretKey));
@@ -243,20 +245,22 @@ namespace OasisAlajuelaAPI.Controllers
 
             var tokenid = tokenHandler.WriteToken(token);
 
-            var r = TBL.AddNew(new Token()
+            Token NewToken = new Token()
             {
                 TokenID = tokenid,
                 UserID = UserID,
                 ExpiresDate = tokenExpires
-            });
+            };
+
+            var r = TBL.AddNew(NewToken);
 
             if (!r)
             {
-                return "error";
+                return new Token();
             }
             else
             {
-                return tokenid;
+                return NewToken;
             }
         }
 
