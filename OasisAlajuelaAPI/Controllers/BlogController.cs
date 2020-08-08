@@ -9,12 +9,14 @@ namespace OasisAlajuelaAPI.Controllers
     {
         private BlogsBL BBL = new BlogsBL();
                 
-        public IEnumerable<Blogs> Get()
+        [HttpGet]
+        public IEnumerable<Blogs> List()
         {
             return BBL.List();
         }
 
-        public Blogs Get(int id)
+        [HttpGet]
+        public Blogs Details(int id)
         {
             return BBL.Details(id);
         }

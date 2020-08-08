@@ -54,6 +54,8 @@ namespace ET
 
         public DateTime TokenExpires { get; set; }
 
+        public int TokenExpiresMin { get; set; }
+
         [Display(Name = "Status")]
         public bool ActiveFlag { get; set; }
 

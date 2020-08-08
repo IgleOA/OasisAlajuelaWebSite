@@ -10,12 +10,14 @@ namespace OasisAlajuelaAPI.Controllers
     {
         private LeadershipBL LBL = new LeadershipBL();
 
-        public IEnumerable<Leadership> Get()
+        [HttpGet]
+        public IEnumerable<Leadership> List()
         {
             return LBL.List();            
         }
         
-        public Leadership Get(int id)
+        [HttpGet]
+        public Leadership Details(int id)
         {
             return LBL.Details(id);
         }

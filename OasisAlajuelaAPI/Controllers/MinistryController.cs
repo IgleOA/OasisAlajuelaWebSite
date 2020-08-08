@@ -10,8 +10,9 @@ namespace OasisAlajuelaAPI.Controllers
     {
         private MinistriesBL MBL = new MinistriesBL();
 
+        [HttpGet]
         [AllowAnonymous]
-        public IEnumerable<Ministries> Get(int id)
+        public IEnumerable<Ministries> List(int id)
         {
             if (id == 0)
             {

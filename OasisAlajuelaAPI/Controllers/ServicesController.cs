@@ -9,12 +9,14 @@ namespace OasisAlajuelaAPI.Controllers
     {
         private ServicesBL SBL = new ServicesBL();
 
-        public IEnumerable<Services> Get()
+        [HttpGet]
+        public IEnumerable<Services> List()
         {
             return SBL.List(false);
         }
 
-        public Services Get(int id)
+        [HttpGet]
+        public Services Details(int id)
         {
             return SBL.Details(id);
         }

@@ -18,8 +18,9 @@ namespace OasisAlajuelaAPI.Controllers
         private static string API_KEY = ConfigurationManager.AppSettings["APIStack_KEY"].ToString();
         private static string API_URL = ConfigurationManager.AppSettings["APIStack_URL"].ToString();
 
+        [HttpGet]
         [Route("api/Prayer/New")]
-        public HttpResponseMessage Post([FromBody] Prayers Detail)
+        public HttpResponseMessage AddNew([FromBody] Prayers Detail)
         {
             GeolocationStack location = GetGeolocation(Detail.IP);
 

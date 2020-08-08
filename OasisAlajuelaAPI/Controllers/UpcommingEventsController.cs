@@ -14,14 +14,15 @@ namespace OasisAlajuelaAPI.Controllers
     {
         private UpcommingEventsBL UBL = new UpcommingEventsBL();
 
-
-        public IEnumerable<UpcommingEvents> post([FromBody] UpcommingEventsRequest Request)
+        [HttpPost]
+        public IEnumerable<UpcommingEvents> List([FromBody] UpcommingEventsRequest Request)
         {
             return UBL.List(Request.Startdate, Request.UpCommingFlag, Request.ActiveFlag);
         }
 
+        [HttpGet]
         [Route("api/UpcommingEvents/Next")]
-        public UpcommingEvents Get(DateTime id)
+        public UpcommingEvents NextEvent(DateTime id)
         {
             return UBL.List(id, false, true).Take(1).FirstOrDefault();
         }

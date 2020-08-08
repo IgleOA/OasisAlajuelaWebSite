@@ -31,10 +31,11 @@ namespace OasisAlajuelaAPI.Controllers
         private static string SecretKey = ConfigurationManager.AppSettings["JWT_SECRET_KEY"].ToString();
         private static int expireTime = Convert.ToInt32(ConfigurationManager.AppSettings["JWT_EXPIRE_MINUTES"]);
 
+        [HttpGet]
         [BasicAuthentication]
         [Route("api/Account/Login")]
         [ResponseType(typeof(Users))]
-        public HttpResponseMessage Get()
+        public HttpResponseMessage Login()
         {
             var authenticationToken = Request.Headers.Authorization.Parameter;
             var decodedAuthenticationToken = Encoding.UTF8.GetString(Convert.FromBase64String(authenticationToken));
@@ -77,6 +78,7 @@ namespace OasisAlajuelaAPI.Controllers
                 {
                     Details.Token = token.TokenID;
                     Details.TokenExpires = token.ExpiresDate;
+                    Details.TokenExpiresMin = expireTime;
                     return this.Request.CreateResponse(HttpStatusCode.OK, Details);
                     
                 }
@@ -92,16 +94,16 @@ namespace OasisAlajuelaAPI.Controllers
             }
         }
 
-        
+        [HttpGet]
         [Route("api/Account/CheckAvailability")]
-        public bool Get(string id)
+        public bool CheckAvailability(string id)
         {
             return UBL.CheckAvailability(id);
         }
 
-        
+        [HttpPost]
         [Route("api/Account/ForgotPassword")]
-        public string Post([FromBody] ForgotPasswordModel model)
+        public string ForgotPassword([FromBody] ForgotPasswordModel model)
         {
             Users User = UBL.List().Where(x => x.Email == model.Email).FirstOrDefault();
 
@@ -143,8 +145,9 @@ namespace OasisAlajuelaAPI.Controllers
         }
 
         
+        [HttpPut]
         [Route("api/Account/ResetPassword")]
-        public IHttpActionResult Put([FromBody] ResetPasswordModel model)
+        public IHttpActionResult ResetPassword([FromBody] ResetPasswordModel model)
         {
             int validation = UBL.ValidateGUID(model.GUID);
             if (validation == 0)
@@ -158,8 +161,9 @@ namespace OasisAlajuelaAPI.Controllers
             }
         }
 
+        [HttpPost]
         [Route("api/Account/Register")]
-        public IHttpActionResult Post([FromBody] Users model)
+        public IHttpActionResult Register([FromBody] Users model)
         {
             model.RoleID = 1; /*New User*/
             var r = UBL.AddUser(model, model.FullName);

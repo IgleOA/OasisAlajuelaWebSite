@@ -11,6 +11,9 @@ using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 using ET;
 using BL;
+using System.Security.Principal;
+using System.Threading;
+using System.Web.Security;
 
 namespace OasisAlajuelaAPI.Filters
 {
@@ -19,6 +22,7 @@ namespace OasisAlajuelaAPI.Filters
 
         private static string SecretKey = ConfigurationManager.AppSettings["JWT_SECRET_KEY"].ToString();
         private TokensBL TBL = new TokensBL();
+        private UsersBL UBL = new UsersBL();
 
         private static void HandleUnathorized(HttpActionContext actionContext)
         {
@@ -60,7 +64,7 @@ namespace OasisAlajuelaAPI.Filters
             var r = TBL.ValidateToken(token);
 
             if(r.ExpiresDate > DateTime.Now)
-            {
+            {                
                 return;
             }
 

@@ -16,20 +16,21 @@ namespace OasisAlajuelaAPI.Controllers
         private UserProfileBL UPBL = new UserProfileBL();
         private GroupsBL GBL = new GroupsBL();
 
+        [HttpPost]
         [ApiKeyAuthentication]
         [Route("api/Users/RightsValidation")]
         [ResponseType(typeof(AccessRights))]
-        public HttpResponseMessage Post([FromBody] AccessRightsRequest model)
+        public HttpResponseMessage RightsValidation([FromBody] AccessRightsRequest model)
         {
             AccessRights Result = RRBL.ValidationRights(model.UserName, model.Controller, model.Action);
             
             return this.Request.CreateResponse(HttpStatusCode.OK, Result);
         }
 
-
+        [HttpPost]
         [Route("api/Users/TokenValidation")]
         [ResponseType(typeof(Token))]
-        public HttpResponseMessage Post(string AccessType)
+        public HttpResponseMessage TokenValidation(string AccessType)
         {
             var authHeader = this.ActionContext.Request.Headers.GetValues(AccessType).FirstOrDefault();
             var token = authHeader.Substring("Bearer ".Length);
@@ -39,10 +40,11 @@ namespace OasisAlajuelaAPI.Controllers
             return this.Request.CreateResponse(HttpStatusCode.OK,r);
         }
 
+        [HttpPost]
         [ApiKeyAuthentication]
         [Route("api/Users/Profile/")]
         [ResponseType(typeof(UserProfile))]
-        public HttpResponseMessage Post([FromBody] int id)
+        public HttpResponseMessage Profile([FromBody] int id)
         {
             UserProfile r = UPBL.Detail(id);
 
@@ -63,10 +65,11 @@ namespace OasisAlajuelaAPI.Controllers
             }
         }
 
+        [HttpPost]
         [ApiKeyAuthentication]
         [Route("api/Users/Profile/Update")]
         [ResponseType(typeof(bool))]
-        public HttpResponseMessage Post([FromBody] UserProfile model)
+        public HttpResponseMessage UpdateProfile([FromBody] UserProfile model)
         {
             var r = UPBL.Update(model, model.UserName);
 

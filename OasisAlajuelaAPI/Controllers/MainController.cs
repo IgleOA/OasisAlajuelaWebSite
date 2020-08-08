@@ -15,9 +15,9 @@ namespace OasisAlajuelaAPI.Controllers
         private UsersBL UBL = new UsersBL();
         private HomeBL HBL = new HomeBL();
 
-        // GET api/<controller>
+        [HttpGet]
         [AllowAnonymous]
-        public IEnumerable<WebDirectory> Get(int id)
+        public IEnumerable<WebDirectory> List(int id)
         {
             string username = "";
 
@@ -29,8 +29,9 @@ namespace OasisAlajuelaAPI.Controllers
             return WBL.WDByUser(username);
         }
 
+        [HttpGet]
         [Route("api/Main/Home")]
-        public HomePage Get()
+        public HomePage HomePage()
         {
             return HBL.Home();
         }

@@ -10,12 +10,14 @@ namespace OasisAlajuelaAPI.Controllers
     {
         private ResourcesBL RBL = new ResourcesBL();
 
-        public IEnumerable<ResourceTypes> Get(string id)
+        [HttpGet]
+        public IEnumerable<ResourceTypes> List(string id)
         {
             return RBL.TypeList(id);
         }
 
-        public ResourceTypes Post([FromBody] ResourceRequest model)
+        [HttpPost]
+        public ResourceTypes ResourcesList([FromBody] ResourceRequest model)
         {
             ResourceTypes Type = RBL.ResourceTypeDetail(model.ResourceTypeID);
 

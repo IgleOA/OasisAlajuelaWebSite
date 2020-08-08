@@ -13,12 +13,14 @@ namespace OasisAlajuelaAPI.Controllers
     {
         private SermonsBL SBL = new SermonsBL();
 
-        public IEnumerable<Sermons> Get()
+        [HttpGet]
+        public IEnumerable<Sermons> List()
         {
             return SBL.List(false);
         }
 
-        public Sermons Get(int id)
+        [HttpGet]
+        public Sermons Details(int id)
         {
             return SBL.Details(id);
         }
