@@ -16,6 +16,7 @@ namespace OasisAlajuelaAPI.Controllers
     public class RolesController : ApiController
     {
         private RolesBL RBL = new RolesBL();
+        private RightsBL RRBL = new RightsBL();
 
         [HttpGet]
         [ResponseType(typeof(List<Roles>))]
@@ -47,6 +48,48 @@ namespace OasisAlajuelaAPI.Controllers
             var UserName = tokenS.Claims.First(claim => claim.Type == "UserName").Value;
 
             var r = RBL.AddNew(model, UserName);
+
+            if (r)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.OK, r);
+            }
+            else
+            {
+                return this.Request.CreateResponse(HttpStatusCode.NotFound);
+            }
+        }
+
+        [HttpGet]
+        [Route("api/Roles/Rights")]
+        [ResponseType(typeof(List<Rights>))]
+        public HttpResponseMessage Rights(int id)
+        {
+            var r = RRBL.List(id);
+
+            if (r.Count() > 0)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.OK, r);
+            }
+            else
+            {
+                return this.Request.CreateResponse(HttpStatusCode.NotFound);
+            }
+        }
+
+        [HttpPost]
+        [Route("api/Roles/UpdateRight")]
+        [ResponseType(typeof(bool))]
+        public HttpResponseMessage UpdateRight([FromBody] Rights model)
+        {
+            var authHeader = this.Request.Headers.GetValues("Authorization").FirstOrDefault();
+            var token = authHeader.Substring("Bearer ".Length);
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(token);
+            var tokenS = handler.ReadToken(token) as JwtSecurityToken;
+
+            var UserName = tokenS.Claims.First(claim => claim.Type == "UserName").Value;
+
+            var r = RRBL.Update(model, UserName);
 
             if (r)
             {
