@@ -76,7 +76,7 @@ namespace DAL
                     ParameterName = "@Controller",
                     SqlDbType = SqlDbType.VarChar,
                     Size = 50,
-                    Value = Detail.Controller.Trim()
+                    Value = Detail.Controller
                 };
                 SqlCmd.Parameters.Add(Controller);
 
@@ -85,7 +85,7 @@ namespace DAL
                     ParameterName = "@Action",
                     SqlDbType = SqlDbType.VarChar,
                     Size = 50,
-                    Value = Detail.Action.Trim()
+                    Value = Detail.Action
                 };
                 SqlCmd.Parameters.Add(Action);
 
@@ -110,7 +110,7 @@ namespace DAL
                     ParameterName = "@DisplayName",
                     SqlDbType = SqlDbType.VarChar,
                     Size = 50,
-                    Value = Detail.DisplayName.Trim()
+                    Value = Detail.DisplayName
                 };
                 SqlCmd.Parameters.Add(DisplayName);
 

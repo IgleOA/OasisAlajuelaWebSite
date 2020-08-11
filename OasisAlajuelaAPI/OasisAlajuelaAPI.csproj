@@ -177,10 +177,12 @@
     <Compile Include="Controllers\NewController.cs" />
     <Compile Include="Controllers\PrayerController.cs" />
     <Compile Include="Controllers\ResourcesController.cs" />
+    <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SermonsController.cs" />
     <Compile Include="Controllers\ServicesController.cs" />
     <Compile Include="Controllers\UpcommingEventsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="Controllers\WebDirectoryController.cs" />
     <Compile Include="Filters\ApiKeyAuthenticationAttribute.cs" />
     <Compile Include="Filters\BasicAuthenticationAttribute.cs" />
     <Compile Include="Global.asax.cs">
@@ -246,6 +248,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
     <Folder Include="Views\Account\" />
+    <Folder Include="Views\WebDirectory\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
