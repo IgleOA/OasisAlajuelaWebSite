@@ -382,12 +382,7 @@ namespace DAL
                         List.Add(detail);
                     }
                 }
-                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
-
-                foreach (var item in List)
-                {
-                    item.GroupList = GDAL.ListbyUser(item.UserID);
-                }
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();                
             }
             catch (Exception ex)
             {
