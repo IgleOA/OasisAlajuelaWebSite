@@ -170,6 +170,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BannersController.cs" />
     <Compile Include="Controllers\BlogController.cs" />
+    <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LeadershipController.cs" />
     <Compile Include="Controllers\MainController.cs" />

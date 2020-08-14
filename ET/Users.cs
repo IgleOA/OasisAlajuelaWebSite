@@ -90,6 +90,8 @@ namespace ET
         public string FullName { get; set; }
 
         public List<Groups> GroupList { get; set; }
+
+        public string ActionType { get; set; }
         
     }
 

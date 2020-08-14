@@ -102,6 +102,23 @@ namespace OasisAlajuelaAPI.Controllers
         }
 
         [HttpPost]
+        [Route("api/Account/CheckGUID/")]
+        [ResponseType(typeof(int))]
+        public HttpResponseMessage CheckGUID(string GUID)
+        {
+            var r = UBL.ValidateGUID(GUID);
+
+            if (r > 0)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.OK,r);
+            }
+            else
+            {
+                return this.Request.CreateResponse(HttpStatusCode.NotFound);
+            }
+        }
+
+        [HttpPost]
         [Route("api/Account/ForgotPassword")]
         public string ForgotPassword([FromBody] ForgotPasswordModel model)
         {
@@ -145,19 +162,20 @@ namespace OasisAlajuelaAPI.Controllers
         }
 
         
-        [HttpPut]
+        [HttpPost]
         [Route("api/Account/ResetPassword")]
-        public IHttpActionResult ResetPassword([FromBody] ResetPasswordModel model)
+        [ResponseType(typeof(bool))]
+        public HttpResponseMessage ResetPassword([FromBody] ResetPasswordModel model)
         {
             int validation = UBL.ValidateGUID(model.GUID);
             if (validation == 0)
             {
-                return StatusCode(System.Net.HttpStatusCode.NotFound);
+                return this.Request.CreateResponse(HttpStatusCode.NotFound);
             }
             else
             {
                 var r = UBL.ResetPassword(model);
-                return Ok(r);
+                return this.Request.CreateResponse(HttpStatusCode.OK, r);
             }
         }
 
