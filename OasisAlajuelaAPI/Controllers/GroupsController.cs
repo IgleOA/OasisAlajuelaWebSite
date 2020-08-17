@@ -18,6 +18,29 @@ namespace OasisAlajuelaAPI.Controllers
         private GroupsBL GBL = new GroupsBL();
 
         [HttpPost]
+        //[Route("api/Groups/ByUser")]
+        [ResponseType(typeof(List<Groups>))]
+        public HttpResponseMessage FullList()
+        {
+            var r = GBL.FullList();
+
+            return this.Request.CreateResponse(HttpStatusCode.OK, r);
+        }
+
+        [HttpPost]
+        [Route("api/Groups/MissingListByUser")]
+        [ResponseType(typeof(List<Groups>))]
+        public HttpResponseMessage MissingListByUser(int id)
+        {
+            var data = from r in GBL.List()
+                       where !(from d in GBL.ListbyUser(id)
+                               select d.GroupID).Contains(r.GroupID)
+                       select r;
+
+            return this.Request.CreateResponse(HttpStatusCode.OK, data);
+        }
+
+        [HttpPost]
         [Route("api/Groups/ByUser")]
         [ResponseType(typeof(List<Groups>))]
         public HttpResponseMessage ByUser(int id)
@@ -27,10 +50,11 @@ namespace OasisAlajuelaAPI.Controllers
             return this.Request.CreateResponse(HttpStatusCode.OK, r);
         }
 
+
         [HttpPost]
         [Route("api/Groups/UserGroup")]
         [ResponseType(typeof(bool))]
-        public HttpResponseMessage UserGroup([FromBody] UsersGroups model)
+        public HttpResponseMessage UserGroup([FromBody] UsersGroupsRequest model)
         {
             var authHeader = this.Request.Headers.GetValues("Authorization").FirstOrDefault();
             var token = authHeader.Substring("Bearer ".Length);
@@ -44,11 +68,31 @@ namespace OasisAlajuelaAPI.Controllers
 
             if (model.ActionType == "ADD")
             {
-                r = GBL.AddUserGroup(model, UserName);
+                foreach(var item in model.GroupID)
+                {
+                    UsersGroups UG = new UsersGroups()
+                    {
+                        UserID = model.UserID,
+                        ActionType = model.ActionType,
+                        GroupID = item
+                    };
+                    r = GBL.AddUserGroup(UG, UserName);
+                }
+                
             }
             else
             {
-                r = GBL.RemoveUG(model, UserName);
+                foreach (var item in model.GroupID)
+                {
+                    UsersGroups UG = new UsersGroups()
+                    {
+                        UserID = model.UserID,
+                        ActionType = model.ActionType,
+                        GroupID = item
+                    };
+                    r = GBL.RemoveUG(UG, UserName);
+                }
+                
             }
 
             if(r)

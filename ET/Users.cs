@@ -95,6 +95,13 @@ namespace ET
         
     }
 
+    public class UsersGroupsRequest
+    {
+        public string ActionType { get; set; }
+        public int UserID { get; set; }
+        public List<int> GroupID { get; set; }
+    }
+
     public class Login
     {
         [Required]

@@ -176,6 +176,7 @@
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Controllers\MinistryController.cs" />
     <Compile Include="Controllers\NewController.cs" />
+    <Compile Include="Controllers\NotesController.cs" />
     <Compile Include="Controllers\PrayerController.cs" />
     <Compile Include="Controllers\ResourcesController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
