@@ -16,6 +16,7 @@ namespace OasisAlajuelaAPI.Controllers
     public class GroupsController : ApiController
     {
         private GroupsBL GBL = new GroupsBL();
+        private UsersBL UBL = new UsersBL();
 
         [HttpPost]
         //[Route("api/Groups/ByUser")]
@@ -25,6 +26,32 @@ namespace OasisAlajuelaAPI.Controllers
             var r = GBL.FullList();
 
             return this.Request.CreateResponse(HttpStatusCode.OK, r);
+        }
+
+        [HttpPost]
+        //[Route("api/Groups/ByUser")]
+        [ResponseType(typeof(Groups))]
+        public HttpResponseMessage Details(int id)
+        {
+            var r = GBL.Details(id);
+
+            r.UserList = GBL.UserList(id);
+            r.RTypesList = GBL.RTList(id);
+
+            return this.Request.CreateResponse(HttpStatusCode.OK, r);
+        }
+
+        [HttpPost]
+        [Route("api/Groups/MissingUsersByGroup")]
+        [ResponseType(typeof(List<Users>))]
+        public HttpResponseMessage MissingUsersByGroup(int id)
+        {
+            var data = from r in UBL.List()
+                       where !(from d in GBL.UserList(id)
+                               select d.UserID).Contains(r.UserID)
+                       select r;
+
+            return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
         [HttpPost]

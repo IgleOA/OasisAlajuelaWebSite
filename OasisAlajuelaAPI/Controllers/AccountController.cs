@@ -187,7 +187,7 @@ namespace OasisAlajuelaAPI.Controllers
             var r = UBL.AddUser(model, model.FullName);
             if (!r)
             {                
-                return StatusCode(System.Net.HttpStatusCode.BadRequest);
+                return StatusCode(HttpStatusCode.BadRequest);
             }
             else
             {

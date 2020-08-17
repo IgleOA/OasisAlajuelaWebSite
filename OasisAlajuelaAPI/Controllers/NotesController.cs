@@ -19,7 +19,7 @@ namespace OasisAlajuelaAPI.Controllers
 
         [HttpPost]
         [Route("api/Notes/AddUserNote")]
-        [ResponseType(typeof(Boolean))]
+        [ResponseType(typeof(bool))]
         public HttpResponseMessage AddUserNote([FromBody] UserNoteRequest model)
         {
             var authHeader = this.Request.Headers.GetValues("Authorization").FirstOrDefault();

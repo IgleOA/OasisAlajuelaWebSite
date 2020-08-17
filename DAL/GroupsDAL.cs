@@ -76,11 +76,11 @@ namespace DAL
 
                 if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
 
-                foreach (var item in List)
-                {
-                    item.UserList = UserList(item.GroupID);
-                    item.RTypesList = RTList(item.GroupID);
-                }
+                //foreach (var item in List)
+                //{
+                //    item.UserList = UserList(item.GroupID);
+                //    item.RTypesList = RTList(item.GroupID);
+                //}
             }
             catch (Exception ex)
             {

@@ -212,5 +212,62 @@ namespace OasisAlajuelaAPI.Controllers
                 return this.Request.CreateResponse(HttpStatusCode.OK, r);
             }
         }
+
+        [HttpPost]
+        [ApiKeyAuthentication]
+        [Route("api/Users/AddUser/")]
+        [ResponseType(typeof(bool))]
+        public HttpResponseMessage AddUser([FromBody] Users model)
+        {
+            var authHeader = this.Request.Headers.GetValues("Authorization").FirstOrDefault();
+            var token = authHeader.Substring("Bearer ".Length);
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(token);
+            var tokenS = handler.ReadToken(token) as JwtSecurityToken;
+
+            var UserName = tokenS.Claims.First(claim => claim.Type == "UserName").Value;
+
+            model.Password = "Wxyz1234";
+
+            var r = UBL.AddUser(model, UserName);
+
+            if (!r)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+            else
+            {
+                string body = string.Empty;
+                using (StreamReader reader = new StreamReader(HttpContext.Current.Server.MapPath("~/Views/EmailTemplates/NewUser.html")))
+                {
+                    body = reader.ReadToEnd();
+                }
+                body = body.Replace("{FullName}", model.FullName);
+                body = body.Replace("{UserName}", model.UserName);
+                body = body.Replace("{Password}", model.Password);
+
+                Emails Email = new Emails()
+                {
+                    FromEmail = ConfigurationManager.AppSettings["AdminEmail"].ToString(),
+                    ToEmail = model.Email,
+                    SubjectEmail = "Oasis Alajuela - Registro satisfactorio",
+                    BodyEmail = body
+                };
+
+                MailMessage mm = new MailMessage(Email.FromEmail, Email.ToEmail)
+                {
+                    Subject = Email.SubjectEmail,
+                    Body = Email.BodyEmail,
+                    IsBodyHtml = true,
+                    BodyEncoding = Encoding.GetEncoding("utf-8")
+                };
+
+                SmtpClient smtp = new SmtpClient();
+                smtp.Send(mm);
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, r);
+            }
+            
+        }
     }
 }
