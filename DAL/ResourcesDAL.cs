@@ -160,7 +160,7 @@ namespace DAL
                     CommandType = CommandType.StoredProcedure
                 };
 
-                if (UserName.Length >= 1)
+                if (UserName.Length > 1)
                 {
                     SqlParameter pUserName = new SqlParameter
                     {
@@ -168,6 +168,16 @@ namespace DAL
                         SqlDbType = SqlDbType.VarChar,
                         Size = 100,
                         Value = UserName
+                    };
+                    SqlCmd.Parameters.Add(pUserName);
+                }
+                else
+                {
+                    SqlParameter pUserName = new SqlParameter
+                    {
+                        ParameterName = "@FullListFlag",
+                        SqlDbType = SqlDbType.Bit,
+                        Value = 1
                     };
                     SqlCmd.Parameters.Add(pUserName);
                 }

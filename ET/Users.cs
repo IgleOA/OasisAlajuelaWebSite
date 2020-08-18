@@ -95,11 +95,27 @@ namespace ET
         
     }
 
-    public class UsersGroupsRequest
+    public class GroupsbyUserRequest
     {
         public string ActionType { get; set; }
         public int UserID { get; set; }
         public List<int> GroupID { get; set; }
+    }
+
+    public class UsersbyGroupRequest
+    {
+        public int UserGroupID { get; set; }
+        public string ActionType { get; set; }
+        public List<int> UserID { get; set; }
+        public int GroupID { get; set; }
+    }
+
+    public class RTypesbyGroupRequest
+    {
+        public int ResourceGroupID { get; set; }
+        public string ActionType { get; set; }
+        public List<int> ResourceTypeID { get; set; }
+        public int GroupID { get; set; }
     }
 
     public class Login

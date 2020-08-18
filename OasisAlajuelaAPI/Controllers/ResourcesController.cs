@@ -16,6 +16,12 @@ namespace OasisAlajuelaAPI.Controllers
             return RBL.TypeList(id);
         }
 
+        [HttpGet]
+        public IEnumerable<ResourceTypes> FullList()
+        {
+            return RBL.TypeList(string.Empty);
+        }
+
         [HttpPost]
         public ResourceTypes ResourcesList([FromBody] ResourceRequest model)
         {

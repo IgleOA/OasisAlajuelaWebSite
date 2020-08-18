@@ -11,8 +11,9 @@
 -- ======================================================================
 
 CREATE PROCEDURE [config].[uspReadResourceTypes]
-	@UserName	VARCHAR(100) = NULL,
-	@TypeID		INT	= NULL
+	@UserName		VARCHAR(100) = NULL,
+	@TypeID			INT	= NULL,
+	@FullListFlag	BIT = NULL
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -22,7 +23,7 @@ AS
             DECLARE @lErrorState INT
 
             -- =======================================================
-				IF(@TypeID IS NOT NULL)
+				IF(@FullListFlag = 1)
 					BEGIN
 						SELECT	[ResourceTypeID]
 								,[TypeName]
@@ -31,11 +32,11 @@ AS
 								,[IsPublic]
 								,[ActiveFlag]  
 						FROM	[config].[utbResourceTypes]
-						WHERE	[ResourceTypeID] = @TypeID
-					END	
+						WHERE	[ActiveFlag] = 1
+					END
 				ELSE
 					BEGIN
-						IF(@UserName IS NULL)
+						IF(@TypeID IS NOT NULL)
 							BEGIN
 								SELECT	[ResourceTypeID]
 										,[TypeName]
@@ -44,92 +45,106 @@ AS
 										,[IsPublic]
 										,[ActiveFlag]  
 								FROM	[config].[utbResourceTypes]
-								WHERE	[ActiveFlag] = 1
-										AND [IsPublic] = 1
-							END
+								WHERE	[ResourceTypeID] = @TypeID
+							END	
 						ELSE
 							BEGIN
-								DECLARE @WriteFlag	BIT
-										,@PasFlag	BIT
-								DECLARE @Data	TABLE ( [ResourceTypeID]	INT
-														,[TypeName]			VARCHAR(100)
-														,[Description]		VARCHAR(MAX)
-														,[TypeImagePath]	VARCHAR(500)
-														,[IsPublic]			BIT
-														,[ActiveFlag]		BIT )
-
-								INSERT INTO @Data
-								SELECT	[ResourceTypeID]
-										,[TypeName]
-										,[Description]
-										,[TypeImagePath]
-										,[IsPublic]
-										,[ActiveFlag]  
-								FROM	[config].[utbResourceTypes]
-								WHERE	[IsPublic] = 1
-										AND [ActiveFlag] = 1
-
-								SELECT	@WriteFlag = ISNULL(RR.[Write],0)
-								FROM	[adm].[utbUsers] U
-										OUTER APPLY (SELECT R.[Write]
-													 FROM	[adm].[utbRightsbyRole] R 
-															LEFT JOIN [adm].[utbWebDirectory] WD ON WD.[WebID] = R.[WebID]
-													 WHERE	U.[RoleID] = R.[RoleID]
-															AND R.[ActiveFlag] = 1
-															AND WD.[Controller] = 'Resources') RR
-								WHERE	U.[UserName] = @UserName		
-
-								SELECT	@PasFlag = ISNULL(R.[ActiveFlag],0)
-								FROM	[adm].[utbUsers] U
-										OUTER APPLY (SELECT UG.[ActiveFlag]
-													 FROM	[config].[utbUsersGroups] UG 
-															LEFT JOIN [config].[utbGroups] G ON G.[GroupID] = UG.[GroupID] 
-													 WHERE	U.[UserID] = UG.[UserID]
-															AND UG.[ActiveFlag] = 1
-															AND G.[ActiveFlag] = 1
-															AND G.[GroupName] = 'Cuerpo Pastoral') R
-								WHERE	U.[UserName] = @UserName
-
-								IF (@WriteFlag = 1 OR @PasFlag = 1)
+								IF(@UserName IS NULL)
 									BEGIN
+										SELECT	[ResourceTypeID]
+												,[TypeName]
+												,[Description]
+												,[TypeImagePath]
+												,[IsPublic]
+												,[ActiveFlag]  
+										FROM	[config].[utbResourceTypes]
+										WHERE	[ActiveFlag] = 1
+												AND [IsPublic] = 1
+									END
+								ELSE
+									BEGIN
+										DECLARE @WriteFlag	BIT
+												,@PasFlag	BIT
+										DECLARE @Data	TABLE ( [ResourceTypeID]	INT
+																,[TypeName]			VARCHAR(100)
+																,[Description]		VARCHAR(MAX)
+																,[TypeImagePath]	VARCHAR(500)
+																,[IsPublic]			BIT
+																,[ActiveFlag]		BIT )
+
 										INSERT INTO @Data
 										SELECT	[ResourceTypeID]
 												,[TypeName]
 												,[Description]
 												,[TypeImagePath]
 												,[IsPublic]
-												,[ActiveFlag]     
+												,[ActiveFlag]  
 										FROM	[config].[utbResourceTypes]
-										WHERE	[IsPublic] = 0
+										WHERE	[IsPublic] = 1
 												AND [ActiveFlag] = 1
-									END
-								ELSE
-									BEGIN
-										INSERT INTO @Data
-										SELECT	RT.[ResourceTypeID]
-												,RT.[TypeName]
-												,RT.[Description]
-												,RT.[TypeImagePath]
-												,RT.[IsPublic]
-												,RT.[ActiveFlag]      
-										FROM	[config].[utbResourceTypes] RT
-												INNER JOIN [config].[utbResourcesGroups] RG ON RG.[ResourceTypeID] = RT.[ResourceTypeID] AND RG.[ActiveFlag] = 1
-												INNER JOIN [config].[utbUsersGroups] UG ON UG.[GroupID] = RG.[GroupID] AND UG.[ActiveFlag] = 1
-												INNER JOIN [adm].[utbUsers] U ON U.[UserID] = UG.[UserID] AND U.[UserName] = @UserName
-										WHERE	RT.[IsPublic] = 0
-												AND RT.[ActiveFlag] = 1
-									END
 
-								SELECT	DISTINCT
-										[ResourceTypeID]
-										,[TypeName]
-										,[Description]
-										,[TypeImagePath]
-										,[IsPublic]
-										,[ActiveFlag]   
-								FROM	@Data
-							END
-						END
+										SELECT	@WriteFlag = ISNULL(RR.[Write],0)
+										FROM	[adm].[utbUsers] U
+												OUTER APPLY (SELECT R.[Write]
+															 FROM	[adm].[utbRightsbyRole] R 
+																	LEFT JOIN [adm].[utbWebDirectory] WD ON WD.[WebID] = R.[WebID]
+															 WHERE	U.[RoleID] = R.[RoleID]
+																	AND R.[ActiveFlag] = 1
+																	AND WD.[Controller] = 'Resources') RR
+										WHERE	U.[UserName] = @UserName		
+
+										SELECT	@PasFlag = ISNULL(R.[ActiveFlag],0)
+										FROM	[adm].[utbUsers] U
+												OUTER APPLY (SELECT UG.[ActiveFlag]
+															 FROM	[config].[utbUsersGroups] UG 
+																	LEFT JOIN [config].[utbGroups] G ON G.[GroupID] = UG.[GroupID] 
+															 WHERE	U.[UserID] = UG.[UserID]
+																	AND UG.[ActiveFlag] = 1
+																	AND G.[ActiveFlag] = 1
+																	AND G.[GroupName] = 'Cuerpo Pastoral') R
+										WHERE	U.[UserName] = @UserName
+
+										IF (@WriteFlag = 1 OR @PasFlag = 1)
+											BEGIN
+												INSERT INTO @Data
+												SELECT	[ResourceTypeID]
+														,[TypeName]
+														,[Description]
+														,[TypeImagePath]
+														,[IsPublic]
+														,[ActiveFlag]     
+												FROM	[config].[utbResourceTypes]
+												WHERE	[IsPublic] = 0
+														AND [ActiveFlag] = 1
+											END
+										ELSE
+											BEGIN
+												INSERT INTO @Data
+												SELECT	RT.[ResourceTypeID]
+														,RT.[TypeName]
+														,RT.[Description]
+														,RT.[TypeImagePath]
+														,RT.[IsPublic]
+														,RT.[ActiveFlag]      
+												FROM	[config].[utbResourceTypes] RT
+														INNER JOIN [config].[utbResourcesGroups] RG ON RG.[ResourceTypeID] = RT.[ResourceTypeID] AND RG.[ActiveFlag] = 1
+														INNER JOIN [config].[utbUsersGroups] UG ON UG.[GroupID] = RG.[GroupID] AND UG.[ActiveFlag] = 1
+														INNER JOIN [adm].[utbUsers] U ON U.[UserID] = UG.[UserID] AND U.[UserName] = @UserName
+												WHERE	RT.[IsPublic] = 0
+														AND RT.[ActiveFlag] = 1
+											END
+
+										SELECT	DISTINCT
+												[ResourceTypeID]
+												,[TypeName]
+												,[Description]
+												,[TypeImagePath]
+												,[IsPublic]
+												,[ActiveFlag]   
+										FROM	@Data
+									END
+								END
+					END			
 			-- =======================================================
 
         END TRY

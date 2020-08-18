@@ -17,6 +17,7 @@ namespace OasisAlajuelaAPI.Controllers
     {
         private GroupsBL GBL = new GroupsBL();
         private UsersBL UBL = new UsersBL();
+        private ResourcesBL RBL = new ResourcesBL();
 
         [HttpPost]
         //[Route("api/Groups/ByUser")]
@@ -55,6 +56,19 @@ namespace OasisAlajuelaAPI.Controllers
         }
 
         [HttpPost]
+        [Route("api/Groups/MissingRTByGroup")]
+        [ResponseType(typeof(List<ResourceTypes>))]
+        public HttpResponseMessage MissingRTByGroup(int id)
+        {
+            var data = from r in RBL.TypeList(string.Empty)
+                       where !(from d in GBL.RTList(id)
+                               select d.ResourceTypeID).Contains(r.ResourceTypeID)
+                       select r;
+
+            return this.Request.CreateResponse(HttpStatusCode.OK, data);
+        }
+
+        [HttpPost]
         [Route("api/Groups/MissingListByUser")]
         [ResponseType(typeof(List<Groups>))]
         public HttpResponseMessage MissingListByUser(int id)
@@ -79,9 +93,9 @@ namespace OasisAlajuelaAPI.Controllers
 
 
         [HttpPost]
-        [Route("api/Groups/UserGroup")]
+        [Route("api/Groups/GroupsbyUser")]
         [ResponseType(typeof(bool))]
-        public HttpResponseMessage UserGroup([FromBody] UsersGroupsRequest model)
+        public HttpResponseMessage GroupsbyUser([FromBody] GroupsbyUserRequest model)
         {
             var authHeader = this.Request.Headers.GetValues("Authorization").FirstOrDefault();
             var token = authHeader.Substring("Bearer ".Length);
@@ -92,37 +106,159 @@ namespace OasisAlajuelaAPI.Controllers
             var UserName = tokenS.Claims.First(claim => claim.Type == "UserName").Value;
 
             Boolean r = false;
+            try
+            {
+                if (model.ActionType == "ADD")
+                {
+                    foreach (var item in model.GroupID)
+                    {
+                        UsersGroups UG = new UsersGroups()
+                        {
+                            UserID = model.UserID,
+                            ActionType = model.ActionType,
+                            GroupID = item
+                        };
+                        r = GBL.AddUserGroup(UG, UserName);
+                    }
 
-            if (model.ActionType == "ADD")
-            {
-                foreach(var item in model.GroupID)
-                {
-                    UsersGroups UG = new UsersGroups()
-                    {
-                        UserID = model.UserID,
-                        ActionType = model.ActionType,
-                        GroupID = item
-                    };
-                    r = GBL.AddUserGroup(UG, UserName);
                 }
-                
+                else
+                {
+                    foreach (var item in model.GroupID)
+                    {
+                        UsersGroups UG = new UsersGroups()
+                        {
+                            UserID = model.UserID,
+                            ActionType = model.ActionType,
+                            GroupID = item
+                        };
+                        r = GBL.RemoveUG(UG, UserName);
+                    }
+
+                }
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, r);
             }
-            else
+            catch (Exception ex)
             {
-                foreach (var item in model.GroupID)
+                Console.WriteLine(ex);
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
+            }
+
+        }
+
+        [HttpPost]
+        [Route("api/Groups/UsersbyGroup")]
+        [ResponseType(typeof(bool))]
+        public HttpResponseMessage UsersbyGroup([FromBody] UsersbyGroupRequest model)
+        {
+            var authHeader = this.Request.Headers.GetValues("Authorization").FirstOrDefault();
+            var token = authHeader.Substring("Bearer ".Length);
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(token);
+            var tokenS = handler.ReadToken(token) as JwtSecurityToken;
+
+            var UserName = tokenS.Claims.First(claim => claim.Type == "UserName").Value;
+
+            Boolean r = false;
+            try
+            {
+                if (model.ActionType == "ADD")
+                {
+                    foreach (var item in model.UserID)
+                    {
+                        UsersGroups UG = new UsersGroups()
+                        {
+                            UserID = item,
+                            ActionType = model.ActionType,
+                            GroupID = model.GroupID
+                        };
+                        r = GBL.AddUserGroup(UG, UserName);
+                    }
+
+                }
+                else
                 {
                     UsersGroups UG = new UsersGroups()
                     {
-                        UserID = model.UserID,
-                        ActionType = model.ActionType,
-                        GroupID = item
+                        UserGroupID = model.UserGroupID,
+                        ActionType = model.ActionType
                     };
                     r = GBL.RemoveUG(UG, UserName);
                 }
-                
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, r);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
             }
 
-            if(r)
+        }
+
+        [HttpPost]
+        [Route("api/Groups/RTypesbyGroup")]
+        [ResponseType(typeof(bool))]
+        public HttpResponseMessage RTypesbyGroup([FromBody] RTypesbyGroupRequest model)
+        {
+            var authHeader = this.Request.Headers.GetValues("Authorization").FirstOrDefault();
+            var token = authHeader.Substring("Bearer ".Length);
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(token);
+            var tokenS = handler.ReadToken(token) as JwtSecurityToken;
+
+            var UserName = tokenS.Claims.First(claim => claim.Type == "UserName").Value;
+
+            Boolean r = false;
+            try
+            {
+                if (model.ActionType == "ADD")
+                {
+                    foreach (var item in model.ResourceTypeID)
+                    {
+                        ResourcesGroups UG = new ResourcesGroups
+                        {
+                            ResourceTypeID = item,
+                            GroupID = model.GroupID
+                        };
+                        r = GBL.AddRTGroup(UG, UserName);
+                    }
+                }
+                else
+                {
+                    ResourcesGroups UG = new ResourcesGroups()
+                    {
+                        ResourceGroupID = model.ResourceGroupID
+                    };
+                    r = GBL.RemoveRG(UG, UserName);
+                }
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, r);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpPost]
+        [Route("api/Groups/Edit")]
+        [ResponseType(typeof(bool))]
+        public HttpResponseMessage Edit([FromBody] Groups model)
+        {
+            var authHeader = this.Request.Headers.GetValues("Authorization").FirstOrDefault();
+            var token = authHeader.Substring("Bearer ".Length);
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(token);
+            var tokenS = handler.ReadToken(token) as JwtSecurityToken;
+
+            var UserName = tokenS.Claims.First(claim => claim.Type == "UserName").Value;
+
+            var r = GBL.Update(model, UserName);
+
+            if (r)
             {
                 return this.Request.CreateResponse(HttpStatusCode.OK, r);
             }
@@ -130,8 +266,31 @@ namespace OasisAlajuelaAPI.Controllers
             {
                 return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
             }
-            
-        }       
+        }
 
+        [HttpPost]
+        [Route("api/Groups/AddNew")]
+        [ResponseType(typeof(bool))]
+        public HttpResponseMessage AddNew([FromBody] Groups model)
+        {
+            var authHeader = this.Request.Headers.GetValues("Authorization").FirstOrDefault();
+            var token = authHeader.Substring("Bearer ".Length);
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(token);
+            var tokenS = handler.ReadToken(token) as JwtSecurityToken;
+
+            var UserName = tokenS.Claims.First(claim => claim.Type == "UserName").Value;
+
+            var r = GBL.AddNew(model, UserName);
+
+            if (r)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.OK, r);
+            }
+            else
+            {
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
+            }
+        }
     }
 }
