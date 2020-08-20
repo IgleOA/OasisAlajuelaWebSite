@@ -1,37 +1,38 @@
-﻿using ET;
-using BL;
-using System.Collections.Generic;
-using System.Web.Http;
-using System.Web.Http.Description;
-using System.Net.Http;
-using System.Net;
+﻿using BL;
+using ET;
 using OasisAlajuelaAPI.Filters;
+using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using System.Web.Http.Description;
 
 namespace OasisAlajuelaAPI.Controllers
 {
-    public class ServicesController : ApiController
+    public class MinistersController : ApiController
     {
-        private ServicesBL SBL = new ServicesBL();
+        private MinistersBL MBL = new MinistersBL();
 
         [HttpPost]
-        [ResponseType(typeof(List<Services>))]
+        [ResponseType(typeof(List<Ministers>))]
         public HttpResponseMessage List()
         {
-            var r = SBL.List(false);
+            var r = MBL.List(false);
 
             return this.Request.CreateResponse(HttpStatusCode.OK, r);
         }
 
         [HttpPost]
         [ApiKeyAuthentication]
-        [ResponseType(typeof(Services))]
+        [ResponseType(typeof(Ministers))]
         public HttpResponseMessage Details(int id)
         {
-            var r = SBL.Details(id);
+            var r = MBL.Details(id);
 
-            if (r.ServiceID > 0)
+            if (r.MinisterID > 0)
             {
                 return this.Request.CreateResponse(HttpStatusCode.OK, r);
             }
@@ -43,9 +44,9 @@ namespace OasisAlajuelaAPI.Controllers
 
         [HttpPost]
         [ApiKeyAuthentication]
-        [Route("api/Services/Update")]
+        [Route("api/Ministers/Update")]
         [ResponseType(typeof(bool))]
-        public HttpResponseMessage Update([FromBody] Services model)
+        public HttpResponseMessage Update([FromBody] Ministers model)
         {
             var authHeader = this.Request.Headers.GetValues("Authorization").FirstOrDefault();
             var token = authHeader.Substring("Bearer ".Length);
@@ -55,7 +56,7 @@ namespace OasisAlajuelaAPI.Controllers
 
             var UserName = tokenS.Claims.First(claim => claim.Type == "UserName").Value;
 
-            var r = SBL.Update(model, UserName);
+            var r = MBL.Update(model, UserName);
 
             if (!r)
             {
@@ -69,9 +70,9 @@ namespace OasisAlajuelaAPI.Controllers
 
         [HttpPost]
         [ApiKeyAuthentication]
-        [Route("api/Services/AddNew")]
+        [Route("api/Ministers/AddNew")]
         [ResponseType(typeof(bool))]
-        public HttpResponseMessage AddNew([FromBody] Services model)
+        public HttpResponseMessage AddNew([FromBody] Ministers model)
         {
             var authHeader = this.Request.Headers.GetValues("Authorization").FirstOrDefault();
             var token = authHeader.Substring("Bearer ".Length);
@@ -81,7 +82,7 @@ namespace OasisAlajuelaAPI.Controllers
 
             var UserName = tokenS.Claims.First(claim => claim.Type == "UserName").Value;
 
-            var r = SBL.AddNew(model, UserName);
+            var r = MBL.AddNew(model, UserName);
 
             if (!r)
             {
