@@ -183,7 +183,7 @@ namespace DAL
                     ParameterName = "@Name",
                     SqlDbType = SqlDbType.VarChar,
                     Size = 50,
-                    Value = Event.Name.Trim()
+                    Value = Event.Name
                 };
                 SqlCmd.Parameters.Add(Name);
 
@@ -191,7 +191,7 @@ namespace DAL
                 {
                     ParameterName = "@Description",
                     SqlDbType = SqlDbType.VarChar,
-                    Value = Event.Description.Trim()
+                    Value = Event.Description
                 };
                 SqlCmd.Parameters.Add(Description);
 

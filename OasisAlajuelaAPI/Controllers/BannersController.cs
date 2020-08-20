@@ -45,8 +45,6 @@ namespace OasisAlajuelaAPI.Controllers
 
             if (!r)
             {
-                
-
                 return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
             }
             else
