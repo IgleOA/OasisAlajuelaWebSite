@@ -15,6 +15,10 @@ namespace ET
         [Display(Name ="Nombre")]
         public string FullName { get; set; }
 
+        [Required]
+        [Display(Name = "Foto")]
+        public string Photo { get; set; }
+
         [Display(Name ="Status")]
         public bool ActiveFlag { get; set; }
 

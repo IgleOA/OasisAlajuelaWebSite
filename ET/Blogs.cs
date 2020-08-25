@@ -42,6 +42,8 @@ namespace ET
 
         public string MinisterName { get; set; }
 
+        public string MinisterPhoto { get; set; }
+
         [Required]
         [Display(Name = "Fecha")]
         [DataType(DataType.Date)]

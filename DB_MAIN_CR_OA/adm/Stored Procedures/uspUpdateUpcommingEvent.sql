@@ -52,6 +52,7 @@ AS
 					BEGIN
 						UPDATE	[config].[utbUpcomingEvents]
 						SET		[Title]	=	@Title
+                                ,[ActiveFlag] = 1
 								,[MinisterID] = @MinisterID
 								,[Description] = @Description
 								,[ScheduledDate] = @ScheduleDate

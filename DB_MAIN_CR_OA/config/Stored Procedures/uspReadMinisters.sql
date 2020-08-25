@@ -25,6 +25,7 @@ AS
 				SELECT	[MinisterID]
 						,[Title]
 						,[FullName]
+                        ,[Photo]
 						,[ActiveFlag]						
 				FROM	[config].[utbMinisters]
 				WHERE	[ActiveFlag]  = ISNULL(@pActiveFlag,[ActiveFlag])

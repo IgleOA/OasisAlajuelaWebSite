@@ -41,6 +41,7 @@ namespace DAL
                             BannerPath = dr["BannerPath"].ToString(),
                             MinisterID = Convert.ToInt32(dr["MinisterID"]),
                             MinisterName = dr["MinisterName"].ToString(),
+                            MinisterPhoto = dr["MinisterPhoto"].ToString(),
                             ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]),
                             InsertDate = Convert.ToDateTime(dr["Date"]),
                             NewYear = dr["Year"].ToString(),
@@ -87,6 +88,7 @@ namespace DAL
                             BannerPath = dr["BannerPath"].ToString(),
                             MinisterID = Convert.ToInt32(dr["MinisterID"]),
                             MinisterName = dr["MinisterName"].ToString(),
+                            MinisterPhoto = dr["MinisterPhoto"].ToString(),
                             ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]),
                             InsertDate = Convert.ToDateTime(dr["Date"]),
                             NewYear = dr["Year"].ToString(),
@@ -268,6 +270,7 @@ namespace DAL
                         details.BannerPath = dr["BannerPath"].ToString();
                         details.MinisterID = Convert.ToInt32(dr["MinisterID"]);
                         details.MinisterName = dr["MinisterName"].ToString();
+                        details.MinisterPhoto = dr["MinisterPhoto"].ToString();
                         details.ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]);
                         details.InsertDate = Convert.ToDateTime(dr["Date"]);
                         details.NewYear = dr["Year"].ToString();

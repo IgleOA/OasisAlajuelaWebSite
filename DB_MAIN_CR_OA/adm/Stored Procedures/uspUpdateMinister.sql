@@ -14,7 +14,8 @@ CREATE PROCEDURE [adm].[uspUpdateMinister]
 	@InsertUser		VARCHAR(50),
 	@MinisterID		INT,
     @Title  		VARCHAR(50),
-	@FullName		VARCHAR(50)	
+	@FullName		VARCHAR(50),
+    @Photo          VARCHAR(500)
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -36,6 +37,7 @@ AS
 				UPDATE	[config].[utbMinisters]
 				SET		[FullName]  = @FullName
 						,[Title]    = @Title
+                        ,[Photo]    = @Photo
 						,[LastModifyDate] = GETDATE()
 						,[LastModifyUser] = @InsertUser
 				WHERE	[MinisterID] = @MinisterID

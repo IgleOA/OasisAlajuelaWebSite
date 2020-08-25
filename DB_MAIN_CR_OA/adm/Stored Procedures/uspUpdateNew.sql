@@ -93,6 +93,7 @@ AS
 										,[Description]	= @Description	
 										,[BannerPath]	= @Banner
 										,[ShowFlag]		= @ShowFlag
+										,[InsertDate]	= @InsertDate
 										,[ActiveFlag]	= 1
 										,[LastModifyDate]	= @InsertDate
 										,[LastModifyUser]	= @User

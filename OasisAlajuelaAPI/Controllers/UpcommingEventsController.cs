@@ -7,6 +7,9 @@ using System.Web.Http;
 using ET;
 using BL;
 using System.Configuration;
+using System.Web.Http.Description;
+using OasisAlajuelaAPI.Filters;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace OasisAlajuelaAPI.Controllers
 {
@@ -15,18 +18,96 @@ namespace OasisAlajuelaAPI.Controllers
         private UpcommingEventsBL UBL = new UpcommingEventsBL();
 
         [HttpPost]
-        public IEnumerable<UpcommingEvents> List([FromBody] UpcommingEventsRequest Request)
+        [ResponseType(typeof(List<UpcommingEvents>))]
+        public HttpResponseMessage List([FromBody] UpcommingEventsRequest Request)
         {
-            return UBL.List(Request.Startdate, Request.UpCommingFlag, Request.ActiveFlag);
+            var r =  UBL.List(Request.Startdate, Request.UpCommingFlag, Request.ActiveFlag);
+
+            return this.Request.CreateResponse(HttpStatusCode.OK, r);
         }
 
         [HttpGet]
         [Route("api/UpcommingEvents/Next")]
-        public UpcommingEvents NextEvent(DateTime id)
+        [ResponseType(typeof(UpcommingEvents))]
+        public HttpResponseMessage NextEvent(DateTime id)
         {
-            return UBL.List(id, false, true).Take(1).FirstOrDefault();
+            var r = UBL.List(id, false, true).Take(1).FirstOrDefault();
+
+            return this.Request.CreateResponse(HttpStatusCode.OK, r);
+
+        }        
+        
+        [HttpPost]
+        [ApiKeyAuthentication]
+        [ResponseType(typeof(Services))]
+        public HttpResponseMessage Details(int id)
+        {
+            var r = UBL.Details(id);
+
+            if (r.EventID > 0)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.OK, r);
+            }
+            else
+            {
+                return this.Request.CreateResponse(HttpStatusCode.NotFound);
+            }
         }
 
-        
+        [HttpPost]
+        [ApiKeyAuthentication]
+        [Route("api/UpcommingEvents/Update")]
+        [ResponseType(typeof(bool))]
+        public HttpResponseMessage Update([FromBody] UpcommingEvents model)
+        {
+            var authHeader = this.Request.Headers.GetValues("Authorization").FirstOrDefault();
+            var token = authHeader.Substring("Bearer ".Length);
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(token);
+            var tokenS = handler.ReadToken(token) as JwtSecurityToken;
+
+            var UserName = tokenS.Claims.First(claim => claim.Type == "UserName").Value;
+
+            model.ScheduledDate = model.ScheduledDate.Add(model.ScheduledTime);
+
+            var r = UBL.Update(model, UserName);
+
+            if (!r)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
+            }
+            else
+            {
+                return this.Request.CreateResponse(HttpStatusCode.OK, r);
+            }
+        }
+
+        [HttpPost]
+        [ApiKeyAuthentication]
+        [Route("api/UpcommingEvents/AddNew")]
+        [ResponseType(typeof(bool))]
+        public HttpResponseMessage AddNew([FromBody] UpcommingEvents model)
+        {
+            var authHeader = this.Request.Headers.GetValues("Authorization").FirstOrDefault();
+            var token = authHeader.Substring("Bearer ".Length);
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(token);
+            var tokenS = handler.ReadToken(token) as JwtSecurityToken;
+
+            var UserName = tokenS.Claims.First(claim => claim.Type == "UserName").Value;
+
+            model.ScheduledDate = model.ScheduledDate.Add(model.ScheduledTime);
+
+            var r = UBL.AddNew(model, UserName);
+
+            if (!r)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
+            }
+            else
+            {
+                return this.Request.CreateResponse(HttpStatusCode.OK, r);
+            }
+        }
     }
 }
