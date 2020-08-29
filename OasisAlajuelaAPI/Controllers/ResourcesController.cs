@@ -3,6 +3,9 @@ using System.Web.Http;
 using ET;
 using BL;
 using System.Reflection;
+using System.Web.Http.Description;
+using System.Net.Http;
+using System.Net;
 
 namespace OasisAlajuelaAPI.Controllers
 {
@@ -10,26 +13,37 @@ namespace OasisAlajuelaAPI.Controllers
     {
         private ResourcesBL RBL = new ResourcesBL();
 
-        [HttpGet]
-        public IEnumerable<ResourceTypes> List(string id)
+        [HttpPost]
+        //[Route("api/Groups/ByUser")]
+        [ResponseType(typeof(List<ResourceTypes>))]
+        public HttpResponseMessage List(string id)
         {
-            return RBL.TypeList(id);
-        }
+            var r = RBL.TypeList(id);
 
-        [HttpGet]
-        public IEnumerable<ResourceTypes> FullList()
-        {
-            return RBL.TypeList(string.Empty);
+            return this.Request.CreateResponse(HttpStatusCode.OK, r);
         }
 
         [HttpPost]
-        public ResourceTypes ResourcesList([FromBody] ResourceRequest model)
+        //[Route("api/Groups/ByUser")]
+        [ResponseType(typeof(List<ResourceTypes>))]
+        public HttpResponseMessage FullList()
+        {
+            var r = RBL.TypeList(string.Empty);
+
+            return this.Request.CreateResponse(HttpStatusCode.OK, r);
+        }
+
+        [HttpPost]
+        [Route("api/Resources/ResourcesList")]
+        [ResponseType(typeof(ResourceTypes))]
+        public HttpResponseMessage ResourcesList([FromBody] ResourceRequest model)
         {
             ResourceTypes Type = RBL.ResourceTypeDetail(model.ResourceTypeID);
 
             Type.TopResources = RBL.ResourceList(model.ResourceTypeID, model.StartDate);
 
-            return Type;
+            return this.Request.CreateResponse(HttpStatusCode.OK, Type);
         }
+        
     }
 }

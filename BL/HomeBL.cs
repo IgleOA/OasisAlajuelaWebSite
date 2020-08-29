@@ -1,5 +1,6 @@
 ﻿using ET;
 using DAL;
+using System;
 
 namespace BL
 {
@@ -15,6 +16,11 @@ namespace BL
         public bool AddHomePage(HomePage hp, string insertuser)
         {
             return HDL.AddHomePage(hp, insertuser);
+        }
+
+        public InitalHomePage HomePage(DateTime id)
+        {
+            return HDL.HomePage(id);
         }
     }
 }

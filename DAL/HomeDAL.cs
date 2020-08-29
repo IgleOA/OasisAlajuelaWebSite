@@ -3,12 +3,18 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
 using ET;
+using System.Linq;
 
 namespace DAL
 {
     public class HomeDAL
     {
         private SqlConnection SqlCon = new SqlConnection(ConfigurationManager.ConnectionStrings["DB_MAIN_CR_OA_Connection"].ToString());
+        private UpcommingEventsDAL UDAL = new UpcommingEventsDAL();
+        private BlogsDAL BDLA = new BlogsDAL();
+        private ServicesDAL SDAL = new ServicesDAL();
+        private BannnersDAL BNDAL = new BannnersDAL();
+        private SermonsDAL SEDAL = new SermonsDAL();
 
         public HomePage Home()
         {
@@ -52,6 +58,57 @@ namespace DAL
             if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return Detail;
         }
+
+        public InitalHomePage HomePage(DateTime id)
+        {
+            var Detail = new InitalHomePage();
+
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[config].[uspReadHomePage]", SqlCon);
+                SqlCmd.CommandType = CommandType.StoredProcedure;
+
+                SqlParameter ActiveFlag = new SqlParameter
+                {
+                    ParameterName = "@ActiveFlag",
+                    SqlDbType = SqlDbType.Bit,
+                    Value = true
+                };
+                SqlCmd.Parameters.Add(ActiveFlag);
+
+                using (var dr = SqlCmd.ExecuteReader())
+                {
+                    dr.Read();
+                    if (dr.HasRows)
+                    {
+                        Detail.DailyVerse = dr["DailyVerse"].ToString();
+                        Detail.DailyVerseReference = dr["DailyVerseReference"].ToString();
+                        Detail.ServicesTitle = dr["ServicesTitle"].ToString();
+                        Detail.ServicesDescription = dr["ServicesDescription"].ToString();
+                        Detail.PodcastTitle = dr["PodcastTitle"].ToString();
+                        Detail.PodcastDescription = dr["PodcastDescription"].ToString();
+                        Detail.SermonsTitle = dr["SermonsTitle"].ToString();
+                        Detail.SermonsDescription = dr["SermonsDescription"].ToString();
+                    }
+                }
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+                
+                Detail.NextEvent = UDAL.List(id, false, true).Take(1).FirstOrDefault();
+                Detail.HPBlogs = BDLA.List().Take(5).ToList();
+                Detail.HPServices = SDAL.List(true);
+                Detail.HPBanners = BNDAL.Banners("HomePage", true);
+                Detail.HPSermons = SEDAL.List(true).Take(3).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            return Detail;
+        }
+
+
 
         public bool AddHomePage(HomePage HP, string InsertUser)
         {

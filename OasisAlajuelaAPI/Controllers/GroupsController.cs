@@ -93,6 +93,18 @@ namespace OasisAlajuelaAPI.Controllers
 
 
         [HttpPost]
+        [ApiKeyAuthentication]
+        [Route("api/Groups/ByResourceType")]
+        [ResponseType(typeof(List<Groups>))]
+        public HttpResponseMessage ByResourceType(int id)
+        {
+            var r = GBL.ListbyRT(id);
+
+            return this.Request.CreateResponse(HttpStatusCode.OK, r);
+        }
+
+
+        [HttpPost]
         [Route("api/Groups/GroupsbyUser")]
         [ResponseType(typeof(bool))]
         public HttpResponseMessage GroupsbyUser([FromBody] GroupsbyUserRequest model)

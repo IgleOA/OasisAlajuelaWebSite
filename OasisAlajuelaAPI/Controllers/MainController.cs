@@ -48,6 +48,17 @@ namespace OasisAlajuelaAPI.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
+        [Route("api/Main/HomePage")]
+        [ResponseType(typeof(HomePage))]
+        public HttpResponseMessage HomePage(DateTime id)
+        {
+            var HP = HBL.HomePage(id);
+
+            return this.Request.CreateResponse(HttpStatusCode.OK, HP);
+        }
+
+        [HttpPost]
         [ApiKeyAuthentication]
         [Route("api/Main/UpdateHomePage")]
         [ResponseType(typeof(bool))]
