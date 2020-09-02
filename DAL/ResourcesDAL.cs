@@ -473,6 +473,7 @@ namespace DAL
                         
                         if (!Convert.IsDBNull(dr["EnableStart"]))
                         {
+                            details.AccessLimited = true;
                             details.EnableStart = Convert.ToDateTime(dr["EnableStart"]);
                             details.EnableEnd = Convert.ToDateTime(dr["EnableEnd"]);
                             details.ESDate = Convert.ToDateTime(dr["EnableStart"]);
@@ -482,6 +483,7 @@ namespace DAL
                         }
                         else
                         {
+                            details.AccessLimited = false;
                             details.EnableStart = null;
                             details.EnableEnd = null;
                         }
@@ -511,9 +513,9 @@ namespace DAL
                 Parm.Add("@ResourceID", RT.ResourceID);
                 Parm.Add("@ActionType", RT.ActionType);
                 Parm.Add("@ResourceTypeID", RT.ResourceTypeID);
-                Parm.Add("@FileName", RT.FileName.Trim());
-                Parm.Add("@Description", RT.Description.Trim()); 
-                Parm.Add("@FileURL", RT.FileURL.Trim());
+                Parm.Add("@FileName", RT.FileName);
+                Parm.Add("@Description", RT.Description); 
+                Parm.Add("@FileURL", RT.FileURL);
                 Parm.Add("@EnableStart", RT.EnableStart);
                 Parm.Add("@EnableEnd", RT.EnableEnd);
 
