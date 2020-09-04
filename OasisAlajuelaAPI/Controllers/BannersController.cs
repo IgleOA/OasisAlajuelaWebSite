@@ -11,9 +11,11 @@ using System.Web.Http.Description;
 using System.Web;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
+using System.Web.Http.Cors;
 
 namespace OasisAlajuelaAPI.Controllers
 {
+    [EnableCors(origins: "https://oasisangular.azurewebsites.net", headers: "*", methods: "*")]
     public class BannersController : ApiController
     {
         private BannersBL BBL = new BannersBL();

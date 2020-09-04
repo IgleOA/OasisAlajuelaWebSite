@@ -10,9 +10,11 @@ using System.Configuration;
 using System.Web.Http.Description;
 using OasisAlajuelaAPI.Filters;
 using System.IdentityModel.Tokens.Jwt;
+using System.Web.Http.Cors;
 
 namespace OasisAlajuelaAPI.Controllers
 {
+    [EnableCors(origins: "https://oasisangular.azurewebsites.net", headers: "*", methods: "*")]
     public class UpcommingEventsController : ApiController
     {
         private UpcommingEventsBL UBL = new UpcommingEventsBL();

@@ -9,12 +9,20 @@ using BL;
 using System.Web.Http.Description;
 using OasisAlajuelaAPI.Filters;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Mail;
+using System.Configuration;
+using System.Text;
+using System.IO;
+using System.Web;
+using System.Web.Http.Cors;
 
 namespace OasisAlajuelaAPI.Controllers
 {
+    [EnableCors(origins: "https://oasisangular.azurewebsites.net", headers: "*", methods: "*")]
     public class SermonsController : ApiController
     {
         private SermonsBL SBL = new SermonsBL();
+        private UsersBL USBL = new UsersBL();
 
         [HttpPost]
         [ResponseType(typeof(List<Sermons>))]
@@ -97,6 +105,51 @@ namespace OasisAlajuelaAPI.Controllers
 
             if (r > 0)
             {
+                #region Email
+                SermonEmail Res = SBL.DetailsForEmail(r);
+                MailAddressCollection emailtoBCC = new MailAddressCollection();
+                List<Users> Subscribers = USBL.Subscribers(0, true);
+
+                if (Subscribers.Count() > 0)
+                {
+                    foreach (var item in Subscribers)
+                    {
+                        emailtoBCC.Add(item.Email);
+                    }
+                }
+                string body = string.Empty;
+                using (StreamReader reader = new StreamReader(HttpContext.Current.Server.MapPath("~/Views/EmailTemplates/NewSermons.html")))
+                {
+                    body = reader.ReadToEnd();
+                }
+                body = body.Replace("{Title}", Res.Title);
+                body = body.Replace("{MinisterName}", Res.MinisterName);
+                body = body.Replace("{Description}", Res.Description);
+
+                Emails Email = new Emails()
+                {
+                    FromEmail = ConfigurationManager.AppSettings["AdminEmail"].ToString(),
+                    ToEmail = ConfigurationManager.AppSettings["Subscribers"].ToString(),
+                    SubjectEmail = "Oasis Alajuela ha subido una Prédica",
+                    BodyEmail = body
+                };
+
+                MailMessage mm = new MailMessage(Email.FromEmail, Email.ToEmail)
+                {
+                    Subject = Email.SubjectEmail,
+                    Body = Email.BodyEmail,
+                    IsBodyHtml = true,
+                    BodyEncoding = Encoding.GetEncoding("utf-8")
+                };
+
+                if (Subscribers.Count() > 0)
+                {
+                    mm.Bcc.Add(emailtoBCC.ToString());
+                }
+
+                SmtpClient smtp = new SmtpClient();
+                smtp.Send(mm);
+                #endregion
                 return this.Request.CreateResponse(HttpStatusCode.OK, true);                
             }
             else

@@ -9,12 +9,20 @@ using System.Net;
 using System.Linq;
 using System.IdentityModel.Tokens.Jwt;
 using OasisAlajuelaAPI.Filters;
+using System.IO;
+using System.Web;
+using System.Configuration;
+using System.Net.Mail;
+using System.Text;
+using System.Web.Http.Cors;
 
 namespace OasisAlajuelaAPI.Controllers
 {
+    [EnableCors(origins: "https://oasisangular.azurewebsites.net", headers: "*", methods: "*")]
     public class ResourcesController : ApiController
     {
         private ResourcesBL RBL = new ResourcesBL();
+        private UsersBL USBL = new UsersBL();
 
         [HttpPost]
         //[Route("api/Groups/ByUser")]
@@ -97,7 +105,7 @@ namespace OasisAlajuelaAPI.Controllers
             var r = RBL.AddNewResourceType(model, UserName);
 
             if (!r)
-            {
+            {                
                 return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
             }
             else
@@ -129,6 +137,52 @@ namespace OasisAlajuelaAPI.Controllers
 
             if (r > 0)
             {
+                #region Email
+                Resources Res = RBL.ResourceDetails(r);
+                MailAddressCollection emailtoBCC = new MailAddressCollection();
+                List<Users> Subscribers = USBL.Subscribers(r, false);
+
+                if (Subscribers.Count() > 0)
+                {
+                    foreach (var item in Subscribers)
+                    {
+                        emailtoBCC.Add(item.Email);
+                    }
+                }
+                string body = string.Empty;         
+                using (StreamReader reader = new StreamReader(HttpContext.Current.Server.MapPath("~/Views/EmailTemplates/NewResource.html")))
+                {
+                    body = reader.ReadToEnd();
+                }
+                body = body.Replace("{ResourceTypeID}", Res.ResourceTypeID.ToString());
+                body = body.Replace("{TypeName}", Res.TypeName);
+                body = body.Replace("{FileName}", Res.FileName);
+                body = body.Replace("{Description}", Res.Description);
+
+                Emails Email = new Emails()
+                {
+                    FromEmail = ConfigurationManager.AppSettings["AdminEmail"].ToString(),
+                    ToEmail = ConfigurationManager.AppSettings["Subscribers"].ToString(),
+                    SubjectEmail = "Oasis Alajuela ha subido un Recurso",
+                    BodyEmail = body
+                };
+
+                MailMessage mm = new MailMessage(Email.FromEmail, Email.ToEmail)
+                {
+                    Subject = Email.SubjectEmail,
+                    Body = Email.BodyEmail,
+                    IsBodyHtml = true,
+                    BodyEncoding = Encoding.GetEncoding("utf-8")
+                };
+
+                if (Subscribers.Count() > 0)
+                {
+                    mm.Bcc.Add(emailtoBCC.ToString());
+                }
+
+                SmtpClient smtp = new SmtpClient();
+                smtp.Send(mm);
+                #endregion
                 return this.Request.CreateResponse(HttpStatusCode.OK, true);                
             }
             else

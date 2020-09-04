@@ -8,9 +8,11 @@ using System.Web.Http.Description;
 using System.Net.Http;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
+using System.Web.Http.Cors;
 
 namespace OasisAlajuelaAPI.Controllers
 {
+    [EnableCors(origins: "https://oasisangular.azurewebsites.net", headers: "*", methods: "*")]
     public class LeadershipController : ApiController
     {
         private LeadershipBL LBL = new LeadershipBL();

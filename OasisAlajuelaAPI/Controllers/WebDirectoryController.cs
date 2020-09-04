@@ -9,10 +9,12 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.IdentityModel.Tokens.Jwt;
+using System.Web.Http.Cors;
 
 namespace OasisAlajuelaAPI.Controllers
 {
     [ApiKeyAuthentication]
+    [EnableCors(origins: "https://oasisangular.azurewebsites.net", headers: "*", methods: "*")]
     public class WebDirectoryController : ApiController
     {
         private WebDirectoryBL WBL = new WebDirectoryBL();

@@ -8,9 +8,11 @@ using System.Net;
 using OasisAlajuelaAPI.Filters;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Web.Http.Cors;
 
 namespace OasisAlajuelaAPI.Controllers
 {
+    [EnableCors(origins: "https://oasisangular.azurewebsites.net", headers: "*", methods: "*")]
     public class MinistryController : ApiController
     {
         private MinistriesBL MBL = new MinistriesBL();

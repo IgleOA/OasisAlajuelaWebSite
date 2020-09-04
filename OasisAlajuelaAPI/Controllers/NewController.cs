@@ -9,9 +9,11 @@ using BL;
 using OasisAlajuelaAPI.Filters;
 using System.Web.Http.Description;
 using System.IdentityModel.Tokens.Jwt;
+using System.Web.Http.Cors;
 
 namespace OasisAlajuelaAPI.Controllers
 {
+    [EnableCors(origins: "https://oasisangular.azurewebsites.net", headers: "*", methods: "*")]
     public class NewController : ApiController
     {
         private NewsBL NBL = new NewsBL();

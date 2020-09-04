@@ -15,11 +15,12 @@ using System.Security.Claims;
 using System.Text;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using System.Web.Http.Description;
 
 namespace OasisAlajuelaAPI.Controllers
 {
-
+    [EnableCors(origins: "https://oasisangular.azurewebsites.net", headers: "*", methods: "*")]
     public class AccountController : ApiController
     {
         private UsersBL UBL = new UsersBL();
