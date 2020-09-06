@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace ET
@@ -32,6 +33,6 @@ namespace ET
         public ReservationEventDetail()
         {
             Layout = new AuditoriumLayout();
-        }
+        }        
     }    
 }

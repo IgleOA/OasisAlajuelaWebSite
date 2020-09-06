@@ -55,6 +55,9 @@
     <Reference Include="Microsoft.IdentityModel.Tokens, Version=6.7.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.IdentityModel.Tokens.6.7.1\lib\net461\Microsoft.IdentityModel.Tokens.dll</HintPath>
     </Reference>
+    <Reference Include="shortid, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\shortid.3.0.0\lib\netstandard2.0\shortid.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -185,6 +188,7 @@
     <Compile Include="Controllers\NewController.cs" />
     <Compile Include="Controllers\NotesController.cs" />
     <Compile Include="Controllers\PrayerController.cs" />
+    <Compile Include="Controllers\ReservationsController.cs" />
     <Compile Include="Controllers\ResourcesController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SermonsController.cs" />
@@ -237,6 +241,7 @@
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Views\EmailTemplates\AdminResetPassword.html" />
+    <Content Include="Views\EmailTemplates\ConfirmReservation.html" />
     <Content Include="Views\EmailTemplates\ForgotPassword.html" />
     <Content Include="Views\EmailTemplates\NewResource.html" />
     <Content Include="Views\EmailTemplates\NewSermons.html" />
