@@ -284,7 +284,44 @@ namespace OasisAlajuelaAPI.Controllers
             }
         }
 
-        
+        [HttpPost]
+        [Route("api/Reservations/Index")]
+        [ResponseType(typeof(List<ReservationLevel1>))]
+        public HttpResponseMessage Index()
+        {
+            var authHeader = this.Request.Headers.GetValues("Authorization").FirstOrDefault();
+            var token = authHeader.Substring("Bearer ".Length);
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(token);
+            var tokenS = handler.ReadToken(token) as JwtSecurityToken;
+
+            var UserID = tokenS.Claims.First(claim => claim.Type == "UserID").Value;
+
+            var r = RBL.ReservationsMainInfo(0, Convert.ToInt32(UserID));
+
+            return this.Request.CreateResponse(HttpStatusCode.OK, r);
+            
+        }
+
+        [HttpPost]
+        [Route("api/Reservations/Master")]
+        [ResponseType(typeof(List<ReservationLevel1>))]
+        public HttpResponseMessage Master()
+        {
+            var authHeader = this.Request.Headers.GetValues("Authorization").FirstOrDefault();
+            var token = authHeader.Substring("Bearer ".Length);
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(token);
+            var tokenS = handler.ReadToken(token) as JwtSecurityToken;
+
+            var UserID = tokenS.Claims.First(claim => claim.Type == "UserID").Value;
+
+            var r = RBL.ReservationsMaster();
+
+            return this.Request.CreateResponse(HttpStatusCode.OK, r);
+
+        }
+
 
     }
 }

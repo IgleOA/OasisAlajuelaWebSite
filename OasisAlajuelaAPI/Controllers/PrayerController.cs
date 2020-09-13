@@ -7,9 +7,11 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using System.Web.Http.Description;
 using BL;
 using ET;
 using Newtonsoft.Json;
+using OasisAlajuelaAPI.Filters;
 
 namespace OasisAlajuelaAPI.Controllers
 {
@@ -20,8 +22,9 @@ namespace OasisAlajuelaAPI.Controllers
         private static string API_KEY = ConfigurationManager.AppSettings["APIStack_KEY"].ToString();
         private static string API_URL = ConfigurationManager.AppSettings["APIStack_URL"].ToString();
 
-        [HttpGet]
+        [HttpPost]
         [Route("api/Prayer/New")]
+        [ResponseType(typeof(bool))]
         public HttpResponseMessage AddNew([FromBody] Prayers Detail)
         {
             GeolocationStack location = GetGeolocation(Detail.IP);
@@ -38,7 +41,7 @@ namespace OasisAlajuelaAPI.Controllers
             }
             else
             {
-                return this.Request.CreateResponse(HttpStatusCode.OK);
+                return this.Request.CreateResponse(HttpStatusCode.OK, r);
             }            
         }
 
@@ -60,6 +63,18 @@ namespace OasisAlajuelaAPI.Controllers
             GeolocationStack location = JsonConvert.DeserializeObject<GeolocationStack>(resultData);
 
             return location;
+        }
+
+        [HttpPost]
+        [Route("api/Prayer")]
+        [ApiKeyAuthentication]
+        [ResponseType(typeof(List<Prayers>))]
+        public HttpResponseMessage List(bool id)
+        {
+            var r = PBL.List(id);
+
+            return this.Request.CreateResponse(HttpStatusCode.OK, r);
+            
         }
     }
 }
