@@ -243,6 +243,7 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Views\EmailTemplates\AdminResetPassword.html" />
     <Content Include="Views\EmailTemplates\ConfirmReservation.html" />
+    <Content Include="Views\EmailTemplates\EnrollerConfirmation.html" />
     <Content Include="Views\EmailTemplates\ForgotPassword.html" />
     <Content Include="Views\EmailTemplates\NewResource.html" />
     <Content Include="Views\EmailTemplates\NewSermons.html" />

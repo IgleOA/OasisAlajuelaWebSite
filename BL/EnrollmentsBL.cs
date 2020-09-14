@@ -42,5 +42,15 @@ namespace BL
         {
             return EDAL.UserList(EnrollmentID);
         }
+
+        public bool Update(Enrollments Details, string InsertUser)
+        {
+            return EDAL.Update(Details, InsertUser);
+        }
+
+        public Enrollments Details (int EnrollmentID)
+        {
+            return EDAL.Details(EnrollmentID);
+        }
     }
 }

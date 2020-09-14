@@ -364,5 +364,107 @@ namespace DAL
             if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return rpta;
         }
+
+        public bool Update(Enrollments Detail, string InsertUser)
+        {
+            bool rpta = false;
+
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[adm].[uspUpdateEnrollment]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                //Insert Parameters
+                SqlParameter pEnrollmentID = new SqlParameter
+                {
+                    ParameterName = "@EnrollmentID",
+                    SqlDbType = SqlDbType.Int,
+                    Value = Detail.EnrollmentID
+                };
+                SqlCmd.Parameters.Add(pEnrollmentID);
+
+                SqlParameter pStartDate = new SqlParameter
+                {
+                    ParameterName = "@StartDate",
+                    SqlDbType = SqlDbType.DateTime,
+                    Value = Detail.OpenRegister
+                };
+                SqlCmd.Parameters.Add(pStartDate);
+
+                SqlParameter pEndDate = new SqlParameter
+                {
+                    ParameterName = "@EndDate",
+                    SqlDbType = SqlDbType.DateTime,
+                    Value = Detail.CloseRegister
+                };
+                SqlCmd.Parameters.Add(pEndDate);
+
+                SqlParameter ParInsertUser = new SqlParameter
+                {
+                    ParameterName = "@InsertUser",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 50,
+                    Value = InsertUser
+                };
+                SqlCmd.Parameters.Add(ParInsertUser);
+
+                //Exec Command
+                SqlCmd.ExecuteNonQuery();
+
+                rpta = true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            return rpta;
+        }
+
+        public Enrollments Details(int EnrollmentID)
+        {
+            Enrollments ET = new Enrollments();
+
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[config].[uspReadEnrollments]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                //Insert Parameters
+                SqlParameter pID = new SqlParameter
+                {
+                    ParameterName = "@EnrollmentID",
+                    SqlDbType = SqlDbType.Int,
+                    Value = EnrollmentID
+                };
+                SqlCmd.Parameters.Add(pID);
+
+                using (var dr = SqlCmd.ExecuteReader())
+                {
+                    dr.Read();
+                    if (dr.HasRows)
+                    {
+                        ET.EnrollmentID = Convert.ToInt32(dr["EnrollmentID"]);
+                        ET.GroupName = dr["GroupName"].ToString();
+                        ET.OpenRegister = Convert.ToDateTime(dr["OpenRegister"]);
+                        ET.CloseRegister = Convert.ToDateTime(dr["CloseRegister"]);
+                    }
+                }
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+                ET.UserList = UserList(EnrollmentID);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            return ET;
+        }
     }
 }
