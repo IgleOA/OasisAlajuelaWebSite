@@ -14,8 +14,8 @@ namespace OasisAlajuelaAPI
             // Web API configuration and services
 
             // Web API routes
-            var cors = new EnableCorsAttribute("*", "*", "*");
-            config.EnableCors(cors);
+            //var cors = new EnableCorsAttribute("*", "*", "*");
+            config.EnableCors();
 
             config.MapHttpAttributeRoutes();
 

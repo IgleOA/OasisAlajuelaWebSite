@@ -15,7 +15,7 @@ using OasisAlajuelaAPI.Filters;
 
 namespace OasisAlajuelaAPI.Controllers
 {
-    [EnableCors(origins: "https://oasisangular.azurewebsites.net", headers: "*", methods: "*")]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class PrayerController : ApiController
     {
         private PrayersBL PBL = new PrayersBL();

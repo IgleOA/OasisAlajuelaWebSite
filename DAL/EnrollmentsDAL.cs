@@ -454,6 +454,7 @@ namespace DAL
                         ET.GroupName = dr["GroupName"].ToString();
                         ET.OpenRegister = Convert.ToDateTime(dr["OpenRegister"]);
                         ET.CloseRegister = Convert.ToDateTime(dr["CloseRegister"]);
+                        ET.ApprovalFlag = Convert.ToBoolean(dr["ApprovalFlag"]);
                     }
                 }
                 if (SqlCon.State == ConnectionState.Open) SqlCon.Close();

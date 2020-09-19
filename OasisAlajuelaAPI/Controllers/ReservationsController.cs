@@ -21,7 +21,7 @@ using System.Text;
 namespace OasisAlajuelaAPI.Controllers
 {
     [ApiKeyAuthentication]
-    [EnableCors(origins: "https://oasisangular.azurewebsites.net", headers: "*", methods: "*")]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ReservationsController : ApiController
     {
         private AuditoriumLayoutBL ABL = new AuditoriumLayoutBL();

@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using OasisAlajuelaAPI.Filters;
 using System;
+using System.ComponentModel;
 using System.Configuration;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
@@ -20,7 +21,7 @@ using System.Web.Http.Description;
 
 namespace OasisAlajuelaAPI.Controllers
 {
-    [EnableCors(origins: "https://oasisangular.azurewebsites.net", headers: "*", methods: "*")]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class AccountController : ApiController
     {
         private UsersBL UBL = new UsersBL();
@@ -32,6 +33,9 @@ namespace OasisAlajuelaAPI.Controllers
         private static string SecretKey = ConfigurationManager.AppSettings["JWT_SECRET_KEY"].ToString();
         private static int expireTime = Convert.ToInt32(ConfigurationManager.AppSettings["JWT_EXPIRE_MINUTES"]);
 
+        /// <summary>
+        /// Method for login a User in Oasis Alajuela apps.
+        /// </summary>
         [HttpGet]
         [BasicAuthentication]
         [Route("api/Account/Login")]

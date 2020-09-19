@@ -17,7 +17,7 @@ using System.Web.Http.Cors;
 
 namespace OasisAlajuelaAPI.Controllers
 {
-    [EnableCors(origins: "https://oasisangular.azurewebsites.net", headers: "*", methods: "*")]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class UsersController : ApiController
     {
         private RightsBL RRBL = new RightsBL();

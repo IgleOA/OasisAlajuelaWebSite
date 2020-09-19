@@ -14,7 +14,7 @@ using System.Web.Http.Cors;
 namespace OasisAlajuelaAPI.Controllers
 {
     [ApiKeyAuthentication]
-    [EnableCors(origins: "https://oasisangular.azurewebsites.net", headers: "*", methods: "*")]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class GroupsController : ApiController
     {
         private GroupsBL GBL = new GroupsBL();

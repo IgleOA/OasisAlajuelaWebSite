@@ -9,11 +9,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
-using ET;
 using BL;
-using System.Security.Principal;
-using System.Threading;
-using System.Web.Security;
 
 namespace OasisAlajuelaAPI.Filters
 {
