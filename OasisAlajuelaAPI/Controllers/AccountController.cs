@@ -81,6 +81,7 @@ namespace OasisAlajuelaAPI.Controllers
 
                 if (token.TokenID.Length > 0)
                 {
+                    Details.NeedResetPwd = LoginUser.NeedResetPwd;
                     Details.Token = token.TokenID;
                     Details.TokenExpires = token.ExpiresDate;
                     Details.TokenExpiresMin = expireTime;
@@ -172,7 +173,17 @@ namespace OasisAlajuelaAPI.Controllers
         [ResponseType(typeof(bool))]
         public HttpResponseMessage ResetPassword([FromBody] ResetPasswordModel model)
         {
-            int validation = UBL.ValidateGUID(model.GUID);
+            int validation;
+
+            if (model.GUID == "No Required")
+            {
+                validation = model.UserID;
+            }
+            else
+            {                
+                validation = UBL.ValidateGUID(model.GUID);
+            }
+
             if (validation == 0)
             {
                 return this.Request.CreateResponse(HttpStatusCode.NotFound);

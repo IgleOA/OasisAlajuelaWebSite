@@ -271,5 +271,22 @@ namespace OasisAlajuelaAPI.Controllers
             }
             
         }
+
+        [HttpPost]
+        [ApiKeyAuthentication]
+        [Route("api/Users/RegisterActivity")]
+        [ResponseType(typeof(bool))]
+        public HttpResponseMessage UpdateAboutPage([FromBody] UserActivity model)
+        {
+            var r = UBL.InsertActivity(model.UserName, model.Controller, model.Action, model.ActivityDate);
+            if (!r)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
+            }
+            else
+            {
+                return this.Request.CreateResponse(HttpStatusCode.OK, r);
+            }
+        }
     }
 }
