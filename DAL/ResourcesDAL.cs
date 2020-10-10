@@ -496,20 +496,93 @@ namespace DAL
             bool rpta;
             try
             {
-                DynamicParameters Parm = new DynamicParameters();
-                Parm.Add("@InsertUser", InsertUser);
-                Parm.Add("@ResourceID", RT.ResourceID);
-                Parm.Add("@ActionType", RT.ActionType);
-                Parm.Add("@ResourceTypeID", RT.ResourceTypeID);
-                Parm.Add("@FileName", RT.FileName.Trim());
-                Parm.Add("@Description", RT.Description.Trim()); 
-                Parm.Add("@FileURL", RT.FileURL.Trim());
-                Parm.Add("@EnableStart", RT.EnableStart);
-                Parm.Add("@EnableEnd", RT.EnableEnd);
-
                 SqlCon.Open();
+                var SqlCmd = new SqlCommand("[adm].[uspUpdateResource]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
 
-                SqlCon.Execute("[adm].[uspUpdateResource]", Parm, commandType: CommandType.StoredProcedure);
+                //Insert Parameters
+                SqlParameter ParInsertUser = new SqlParameter
+                {
+                    ParameterName = "@InsertUser",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 50,
+                    Value = InsertUser
+                };
+                SqlCmd.Parameters.Add(ParInsertUser);
+
+                SqlParameter pResourceID = new SqlParameter
+                {
+                    ParameterName = "@ResourceID",
+                    SqlDbType = SqlDbType.Int,
+                    Value = RT.ResourceID
+                };
+                SqlCmd.Parameters.Add(pResourceID);
+
+                SqlParameter pResourceTypeID = new SqlParameter
+                {
+                    ParameterName = "@ResourceTypeID",
+                    SqlDbType = SqlDbType.Int,
+                    Value = RT.ResourceTypeID
+                };
+                SqlCmd.Parameters.Add(pResourceTypeID);
+
+                SqlParameter pActionType = new SqlParameter
+                {
+                    ParameterName = "@ActionType",
+                    SqlDbType = SqlDbType.VarChar,
+                    Value = RT.ActionType
+                };
+                SqlCmd.Parameters.Add(pActionType);
+
+                SqlParameter pDescription = new SqlParameter
+                {
+                    ParameterName = "@Description",
+                    SqlDbType = SqlDbType.VarChar,
+                    Value = RT.Description
+                };
+                SqlCmd.Parameters.Add(pDescription);
+
+                SqlParameter pFileName = new SqlParameter
+                {
+                    ParameterName = "@FileName",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 500,
+                    Value = RT.FileName
+                };
+                SqlCmd.Parameters.Add(pFileName);
+
+                SqlParameter pFileURL = new SqlParameter
+                {
+                    ParameterName = "@FileURL",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 500,
+                    Value = RT.FileURL
+                };
+                SqlCmd.Parameters.Add(pFileURL);
+
+                if (RT.AccessLimited == true)
+                {
+                    SqlParameter pEnableStart = new SqlParameter
+                    {
+                        ParameterName = "@EnableStart",
+                        SqlDbType = SqlDbType.DateTime,
+                        Value = RT.EnableStart
+                    };
+                    SqlCmd.Parameters.Add(pEnableStart);
+
+                    SqlParameter pEnableEnd = new SqlParameter
+                    {
+                        ParameterName = "@EnableEnd",
+                        SqlDbType = SqlDbType.DateTime,
+                        Value = RT.EnableEnd
+                    };
+                    SqlCmd.Parameters.Add(pEnableEnd);
+                }
+
+                //EXEC Command
+                SqlCmd.ExecuteNonQuery();
 
                 rpta = true;
             }
