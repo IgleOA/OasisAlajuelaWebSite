@@ -53,15 +53,26 @@
                                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                             </div>
                         </div>
-                        @if (Model.FileURL.Length > 0)
+                        @if (Convert.IsDBNull(Model.FileURL))
                         {
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.FileURL, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
-                                <div class="col">
-                                    @Html.EditorFor(model => model.FileURL, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.FileURL, "", new { @class = "text-danger" })
+
+                        }
+                        else
+                        {
+                            if (Model.FileURL == string.Empty)
+                            {
+
+                            }
+                            else
+                            {
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.FileURL, htmlAttributes: new { @class = "control-label col-md-2", @style = "max-width: 100%;" })
+                                    <div class="col">
+                                        @Html.EditorFor(model => model.FileURL, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.FileURL, "", new { @class = "text-danger" })
+                                    </div>
                                 </div>
-                            </div>
+                            }
                         }
                     </div>
                 </div>
