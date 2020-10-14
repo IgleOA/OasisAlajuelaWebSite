@@ -1122,3 +1122,12 @@ span.yr, span.mos {
     color: white;
 }
 
+.LiveVideoFrame {
+    max-width: 100% !important;
+}
+
+@media(max-width: 800px){
+    .LiveVideoFrame{
+        height: calc(100vw * .5625) !important;
+    }
+}

@@ -9,21 +9,35 @@
 
 </div>
 
-<div class="carousel slide ftco-animate animated fadeInUp" data-ride="carousel">
-    <div class="carousel-inner">
-        <div class="carousel-item active">
-            <img src="~/Images/Imagen-Frontal.png" class="d-block w-100" alt="Oasis Alajuela">
-            <div class="carousel-caption d-md-block">             
-                @if (Request.IsAuthenticated)
-                { }
-                else
-                {
-                    <a href='@Url.Action("Register", "Account")' title="Registrar" class="btn btn-dark alt px-4 py-2 btnRegister text-uppercase">Registrate!</a>
-                }
-            </div>
-        </div>        
+@if (ViewBag.LiveEvent)
+{
+    <div class="wrapper style4 bg-light ftco-animate animated fadeInUp">
+        <div class="text-center">
+            @{
+                var VideoURL = "https://www.youtube.com/embed/" + Model.LiveVideo.id + "?autoplay=1&rel=0";
+            }
+            <iframe width="880" height="500" src="@VideoURL" allow="autoplay; encrypted-media" allowfullscreen class="LiveVideoFrame"></iframe>
+        </div>
     </div>
-</div>
+}
+else
+{
+    <div class="carousel slide ftco-animate animated fadeInUp" data-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="~/Images/Imagen-Frontal.png" class="d-block w-100" alt="Oasis Alajuela">
+                <div class="carousel-caption d-md-block">
+                    @if (Request.IsAuthenticated)
+                    { }
+                    else
+                    {
+                        <a href='@Url.Action("Register", "Account")' title="Registrar" class="btn btn-dark alt px-4 py-2 btnRegister text-uppercase">Registrate!</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
 <section class="wrapper style4 p-1 ftco-animate animated fadeInUp">
     @{
         Html.RenderAction("_UpcommingEvents");

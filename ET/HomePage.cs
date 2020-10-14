@@ -8,7 +8,7 @@ namespace ET
         public int HomePageID { get; set; }
 
         [Required]
-        [Display(Name ="Versículo Principal")]
+        [Display(Name = "Versículo Principal")]
         public string DailyVerse { get; set; }
 
         [Required]
@@ -40,5 +40,12 @@ namespace ET
         public string SermonsDescription { get; set; }
 
         public string ActionType { get; set; }
+
+        public YouTubeVideo LiveVideo { get; set; }
+
+        public HomePage()
+        {
+            LiveVideo = new YouTubeVideo();
+        }
     }
 }
