@@ -11,12 +11,30 @@
 
 @if (ViewBag.LiveEvent)
 {
-    <div class="wrapper style4 bg-light ftco-animate animated fadeInUp">
+    <div class="WrapperLiveVideo style4 bg-light ftco-animate animated fadeInUp">
         <div class="text-center">
             @{
                 var VideoURL = "https://www.youtube.com/embed/" + Model.LiveVideo.id + "?autoplay=1&rel=0";
             }
-            <iframe width="880" height="500" src="@VideoURL" allow="autoplay; encrypted-media" allowfullscreen class="LiveVideoFrame"></iframe>
+            <table class="mx-auto my-0">
+                <tr>
+                    <td>
+                        <h2 class="subheading text-white m-0"><span class="fas fa-video"></span> Evento en Vivo</h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <iframe width="880" height="500" src="@VideoURL" allow="autoplay; encrypted-media" allowfullscreen class="LiveVideoFrame"></iframe>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <h2 class="subheading text-capitalize text-white m-0">
+                            @Model.LiveVideo.Title
+                        </h2>
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
 }
