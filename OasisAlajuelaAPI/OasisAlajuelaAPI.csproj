@@ -197,6 +197,7 @@
     <Compile Include="Controllers\UpcommingEventsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\WebDirectoryController.cs" />
+    <Compile Include="Controllers\YouTubeController.cs" />
     <Compile Include="Filters\ApiKeyAuthenticationAttribute.cs" />
     <Compile Include="Filters\BasicAuthenticationAttribute.cs" />
     <Compile Include="Filters\MyCorsPolicyAtrribute.cs" />

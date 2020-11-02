@@ -10,10 +10,10 @@ namespace BL
     {
         private YouTubeDAL YDAL = new YouTubeDAL();
 
-        //public List<YouTubeVideo> Youtubelist(int maxresults)
-        //{
-        //    return YDAL.Youtubelist(maxresults);
-        //}
+        public List<YouTubeVideo> Youtubelist()
+        {
+            return YDAL.YoutubeLiveEvents();            
+        }
 
         //public async Task<string> Insert(YouTubeVideo video)
         //{
