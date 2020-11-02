@@ -1134,6 +1134,8 @@ span.yr, span.mos {
 
 .LiveVideoFrame {
     max-width: 100% !important;
+    margin: 0 auto;
+    border: 20px groove #ddd;
 }
 
 @media(max-width: 800px){
