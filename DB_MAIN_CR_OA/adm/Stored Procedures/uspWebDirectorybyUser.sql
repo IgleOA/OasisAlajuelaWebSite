@@ -11,7 +11,8 @@
 -- ======================================================================
 
 CREATE PROCEDURE [adm].[uspWebDirectorybyUser]
-	@UserName VARCHAR(50) = NULL
+	@UserID INT
+	,@AppID INT
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -21,35 +22,42 @@ AS
             DECLARE @lErrorState INT
 
             -- =======================================================
-				DECLARE @RoleID INT
-
-				SELECT	@RoleID = [RoleID]
-				FROM	[adm].[utbUsers]
-				WHERE	[UserName] = @UserName
-
-				IF(@RoleID IN (2,3,4))
+				IF(@AppID = 2) /*Landing Page*/
 					BEGIN
-						SELECT	W.[WebID]
+						SELECT	W.[AppID]
+								,W.[WebID]
 								,W.[DisplayName]
 								,W.[Controller]
 								,W.[Action]
 								,W.[Parameter]
 								,W.[Order]
-						FROM	[adm].[utbWebDirectory] W
-								LEFT JOIN [adm].[utbRightsbyRole] RR ON RR.[WebID] = W.[WebID] 
-																		AND RR.[ActiveFlag] = 1
-																		AND RR.[Read] = 1
-								LEFT JOIN [adm].[utbUsers] U ON U.[RoleID] = RR.[RoleID]									
+						FROM	[adm].[utbWebDirectory] W				
 						WHERE	W.[ActiveFlag] = 1
-								AND U.[UserName] = @UserName
-								AND W.[AdminMenu] = 1
+								AND W.[PublicMenu] = 1
+								AND W.[AppID] = @AppID
 						ORDER BY W.[Order]
 					END
-				ELSE
+				ELSE 
 					BEGIN
-						IF(LEN(@UserName) > 0)
+						IF(@UserID = 0)
 							BEGIN
-								SELECT	W.[WebID]
+								SELECT	W.[AppID]
+										,W.[WebID]
+										,W.[DisplayName]
+										,W.[Controller]
+										,W.[Action]
+										,W.[Parameter]
+										,W.[Order]
+								FROM	[adm].[utbWebDirectory] W							
+								WHERE	W.[ActiveFlag] = 1
+										AND W.[AppID] = @AppID
+										AND W.[PublicMenu] = 1
+								ORDER BY W.[Order]	
+							END
+						ELSE
+							BEGIN
+								SELECT	W.[AppID]
+										,W.[WebID]
 										,W.[DisplayName]
 										,W.[Controller]
 										,W.[Action]
@@ -61,22 +69,9 @@ AS
 																				AND RR.[Read] = 1
 										LEFT JOIN [adm].[utbUsers] U ON U.[RoleID] = RR.[RoleID] 								
 								WHERE	W.[ActiveFlag] = 1
-										AND U.[UserName] = @UserName
-										AND W.[AdminMenu] = 1
-								ORDER BY W.[Order]
-							END
-						ELSE
-							BEGIN
-								SELECT	W.[WebID]
-										,W.[DisplayName]
-										,W.[Controller]
-										,W.[Action]
-										,W.[Parameter]
-										,W.[Order]
-								FROM	[adm].[utbWebDirectory] W				
-								WHERE	W.[ActiveFlag] = 1
-										AND W.[PublicMenu] = 1
-								ORDER BY W.[Order]
+										AND U.[UserID] = @UserID				
+										AND W.[AppID] = @AppID
+								ORDER BY W.[Order]	
 							END
 					END
 			-- =======================================================

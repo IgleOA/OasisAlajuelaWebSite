@@ -1,19 +1,16 @@
 ﻿CREATE TABLE [config].[utbHomePage] (
-    [HomePageID]          INT           IDENTITY (1, 1) NOT NULL,
-    [DailyVerse]          VARCHAR (MAX) NOT NULL,
-    [DailyVerseReference] VARCHAR (200) NOT NULL,
-    [ServicesTitle]       VARCHAR (200) NOT NULL,
-    [ServicesDescription] VARCHAR (MAX) NOT NULL,
-	[PodcastTitle]        VARCHAR (200) NULL,
-    [PodcastDescription]  VARCHAR (MAX) NULL,
-    [SermonsTitle]        VARCHAR (200) NOT NULL,
-    [SermonsDescription]  VARCHAR (MAX) NOT NULL,
-    [ActiveFlag]          BIT           CONSTRAINT [utbHomePageDefaultActiveFlagTrue] DEFAULT ((1)) NOT NULL,
-    [InsertDate]          DATETIME      CONSTRAINT [utbHomePageDefaultInsertDateSysDateTime] DEFAULT (sysdatetime()) NOT NULL,
-    [InsertUser]          VARCHAR (100) CONSTRAINT [utbHomePageDefaultInsertUserSuser_Sname] DEFAULT (suser_sname()) NOT NULL,
-    [LastModifyDate]      DATETIME      CONSTRAINT [utbHomePageDefaultLastModifyDateSysDateTime] DEFAULT (sysdatetime()) NOT NULL,
-    [LastModifyUser]      VARCHAR (100) CONSTRAINT [utbHomePageDefaultLastModifyUserSuser_Sname] DEFAULT (suser_sname()) NOT NULL,
-    CONSTRAINT [utbHomePageID] PRIMARY KEY CLUSTERED ([HomePageID] ASC)
+    [SectionID]			INT				IDENTITY (1, 1) NOT NULL,
+	[Title]				VARCHAR(500)	NOT NULL,
+	[Description]		VARCHAR(MAX)	NOT NULL,
+	[RouterLink]		VARCHAR(100)	NULL,
+	[Image]				VARCHAR(500)	NULL,
+	[Order]				INT				NULL,
+    [ActiveFlag]        BIT				CONSTRAINT [utbHomePageDefaultActiveFlagTrue] DEFAULT ((1)) NOT NULL,
+    [InsertDate]        DATETIME		CONSTRAINT [utbHomePageDefaultInsertDateSysDateTime] DEFAULT (sysdatetime()) NOT NULL,
+    [InsertUser]        VARCHAR (100)	CONSTRAINT [utbHomePageDefaultInsertUserSuser_Sname] DEFAULT (suser_sname()) NOT NULL,
+    [LastModifyDate]    DATETIME		CONSTRAINT [utbHomePageDefaultLastModifyDateSysDateTime] DEFAULT (sysdatetime()) NOT NULL,
+    [LastModifyUser]    VARCHAR (100)	CONSTRAINT [utbHomePageDefaultLastModifyUserSuser_Sname] DEFAULT (suser_sname()) NOT NULL,
+    CONSTRAINT [utbSectionID] PRIMARY KEY CLUSTERED ([SectionID] ASC)
 );
 
 

@@ -125,10 +125,11 @@
     <Compile Include="BannersLocationDAL.cs" />
     <Compile Include="BannnersDAL.cs" />
     <Compile Include="BlogsDAL.cs" />
+    <Compile Include="ContactsDAL.cs" />
     <Compile Include="EnrollmentsDAL.cs" />
     <Compile Include="GroupsDAL.cs" />
     <Compile Include="HelpersDAL.cs" />
-    <Compile Include="HomeDAL.cs" />
+    <Compile Include="HomePageDAL.cs" />
     <Compile Include="LeadershipDAL.cs" />
     <Compile Include="MinistersDAL.cs" />
     <Compile Include="MinistriesDAL.cs" />

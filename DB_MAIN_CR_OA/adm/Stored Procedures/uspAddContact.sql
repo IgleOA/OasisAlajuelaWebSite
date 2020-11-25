@@ -1,8 +1,8 @@
 ﻿-- ======================================================================
--- Name: [adm].[uspAddHomePage]
--- Desc: Se utiliza para la creación de nuevo HomePage
--- Auth: Jonathan Piedra johmstone@gmail.com
--- Date: 03/27/2020
+-- Name: [adm].[uspAddContact]
+-- Desc: Se utiliza para la insertar una nueva solicitud de Contact
+-- Auth: Jonathan Piedra jonitapc_quimind@hotmail.com
+-- Date: 5/24/2019
 -------------------------------------------------------------
 -- Change History
 -------------------------------------------------------------
@@ -10,13 +10,15 @@
 -- --	----		------		-----------------------------
 -- ======================================================================
 
-CREATE PROCEDURE [adm].[uspAddHomePage]
-	@InsertUser		VARCHAR(50),
-	@Title			VARCHAR(100),
-	@Description    VARCHAR(MAX),
-	@RouterLink		VARCHAR(100) = NULL,
-    @Image          VARCHAR(500) = NULL,
-    @Order          INT = NULL
+CREATE PROCEDURE [adm].[uspAddContact]
+	@Requester		VARCHAR(100),
+	@Email			VARCHAR(50),
+	@PhoneNumber	VARCHAR(50) = NULL,
+	@Reason			VARCHAR(1000),
+	@IP				VARCHAR(20) = NULL,
+	@Country		VARCHAR(50) = NULL,
+	@Region			VARCHAR(50) = NULL,
+	@City			VARCHAR(50) = NULL
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -35,8 +37,8 @@ AS
                 END
 
             -- =======================================================
-				INSERT INTO [config].[utbHomePage] ([Title],[Description],[RouterLink],[Image],[Order],[ActiveFlag],[InsertUser],[LastModifyUser])
-				VALUES (@Title, @Description, @RouterLink, @Image, @Order, 1, @InsertUser, @InsertUser)
+				INSERT INTO [config].[utbContacts] ([Requester],[Email],[PhoneNumber],[Reason],[IP],[Country],[Region],[City])
+				VALUES (@Requester, @Email, @PhoneNumber, @Reason, @IP, @Country, @Region, @City)
 			-- =======================================================
 
         IF ( @@trancount > 0

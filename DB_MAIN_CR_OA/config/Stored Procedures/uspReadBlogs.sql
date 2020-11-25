@@ -117,9 +117,7 @@ AS
 										,[Month]		= DATENAME(MONTH,ISNULL(P.[LastModifyDate],P.[InsertDate]))
 										,[Day]			= CASE WHEN DATEPART(DAY,ISNULL(P.[LastModifyDate],P.[InsertDate])) <10 THEN '0' + CONVERT(VARCHAR(1),DATEPART(DAY,ISNULL(P.[LastModifyDate],P.[InsertDate])))
 																ELSE CONVERT(VARCHAR(2),DATEPART(DAY,ISNULL(P.[LastModifyDate],P.[InsertDate]))) END
-										,[Slide]		= CASE WHEN MD.[Slide] = 2 THEN 400
-															   WHEN MD.[Slide] = 3 THEN 400
-															   ELSE 800 END
+										,MD.[Slide]
 								FROM	@Table MD
 										LEFT JOIN [config].[utbBlogs] P ON MD.[BlogID] = P.[BlogID]
 										LEFT JOIN [config].[utbMinisters] M ON M.[MinisterID] = P.[MinisterID]

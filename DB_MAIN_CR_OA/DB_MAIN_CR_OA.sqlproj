@@ -211,6 +211,9 @@
     <Build Include="adm\Tables\utbUserTokens.sql" />
     <Build Include="adm\Stored Procedures\uspInsertUserToken.sql" />
     <Build Include="adm\Stored Procedures\uspValidateUserToken.sql" />
+    <Build Include="config\Tables\utbContacts.sql" />
+    <Build Include="adm\Stored Procedures\uspAddContact.sql" />
+    <Build Include="adm\Stored Procedures\uspUpdateHomePage.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DB_MAIN_CR_OA_DEV.publish.xml" />

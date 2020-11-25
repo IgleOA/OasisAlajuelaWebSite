@@ -1,6 +1,6 @@
 ﻿-- ======================================================================
--- Name: [adm].[uspAddHomePage]
--- Desc: Se utiliza para la creación de nuevo HomePage
+-- Name: [adm].[uspUpdateHomePage]
+-- Desc: Se utiliza para la actualizar una seccion del HomePage
 -- Auth: Jonathan Piedra johmstone@gmail.com
 -- Date: 03/27/2020
 -------------------------------------------------------------
@@ -10,13 +10,15 @@
 -- --	----		------		-----------------------------
 -- ======================================================================
 
-CREATE PROCEDURE [adm].[uspAddHomePage]
+CREATE PROCEDURE [adm].[uspUpdateHomePage]
 	@InsertUser		VARCHAR(50),
-	@Title			VARCHAR(100),
-	@Description    VARCHAR(MAX),
-	@RouterLink		VARCHAR(100) = NULL,
+	@SectionID		INT,
+	@Title			VARCHAR(100) = NULL,
+	@Description    VARCHAR(MAX) = NULL,
+    @RouterLink     VARCHAR(100) = NULL,
     @Image          VARCHAR(500) = NULL,
-    @Order          INT = NULL
+    @Order          INT = NULL,
+	@ActiveFlag		BIT = NULL
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -35,8 +37,16 @@ AS
                 END
 
             -- =======================================================
-				INSERT INTO [config].[utbHomePage] ([Title],[Description],[RouterLink],[Image],[Order],[ActiveFlag],[InsertUser],[LastModifyUser])
-				VALUES (@Title, @Description, @RouterLink, @Image, @Order, 1, @InsertUser, @InsertUser)
+				UPDATE	[config].[utbHomePage] 
+				SET		[Title]				= ISNULL(@Title,[Title])
+						,[Description]		= ISNULL(@Description,[Description])
+                        ,[RouterLink]       = ISNULL(@RouterLink,[RouterLink])
+                        ,[Image]            = ISNULL(@Image,[Image])
+                        ,[Order]            = ISNULL(@Order,[Order])
+						,[ActiveFlag]		= ISNULL(@ActiveFlag,[ActiveFlag])
+						,[LastModifyUser]	= @InsertUser
+						,[LastModifyDate]	= GETDATE()
+				WHERE	[SectionID] = @SectionID
 			-- =======================================================
 
         IF ( @@trancount > 0

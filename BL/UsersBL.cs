@@ -64,6 +64,11 @@ namespace BL
             return UDAL.Details(userid);
         }
 
+        public Users DetailsbyEmail(string email)
+        {
+            return UDAL.DetailsbyEmail(email);
+        }
+
         public bool InsertActivity(string UserName, string Controller, string Action, DateTime ActivityDate)
         {
             return UDAL.InsertActivity(UserName, Controller, Action, ActivityDate);

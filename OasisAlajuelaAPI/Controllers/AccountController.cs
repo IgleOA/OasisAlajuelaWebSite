@@ -100,11 +100,15 @@ namespace OasisAlajuelaAPI.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("api/Account/CheckAvailability")]
-        public bool CheckAvailability(string id)
+        [ResponseType(typeof(bool))]
+        public HttpResponseMessage CheckAvailability(string id)
         {
-            return UBL.CheckAvailability(id);
+            var r =  UBL.CheckAvailability(id);
+            
+            return this.Request.CreateResponse(HttpStatusCode.OK, r);
+            
         }
 
         [HttpPost]
@@ -126,9 +130,12 @@ namespace OasisAlajuelaAPI.Controllers
 
         [HttpPost]
         [Route("api/Account/ForgotPassword")]
-        public string ForgotPassword([FromBody] ForgotPasswordModel model)
+        [ResponseType(typeof(string))]
+        public HttpResponseMessage ForgotPassword([FromBody] ForgotPasswordModel model)
         {
-            Users User = UBL.List().Where(x => x.Email == model.Email).FirstOrDefault();
+            string GUID;
+
+            Users User = UBL.DetailsbyEmail(model.Email);
 
             if (User.UserID > 0)
             {
@@ -159,11 +166,12 @@ namespace OasisAlajuelaAPI.Controllers
 
                 SmtpClient smtp = new SmtpClient();
                 smtp.Send(mm);
-                return Code.GUID;
+                GUID =  Code.GUID;
+                return this.Request.CreateResponse(HttpStatusCode.OK, GUID);
             }
             else
             {
-                return string.Empty;
+                return this.Request.CreateResponse(HttpStatusCode.NotFound);
             }
         }
 

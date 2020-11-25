@@ -153,7 +153,7 @@ namespace DAL
             return rpta;
         }
 
-        public List<WebDirectory> WDByUser(string UserName)
+        public List<WebDirectory> WDByUser(WebDirectoryRequest Model)
         {
             List<WebDirectory> List = new List<WebDirectory>();
 
@@ -165,14 +165,21 @@ namespace DAL
                     CommandType = CommandType.StoredProcedure
                 };
 
-                SqlParameter pUserName = new SqlParameter
+                SqlParameter pUserID = new SqlParameter
                 {
-                    ParameterName = "@UserName",
-                    SqlDbType = SqlDbType.VarChar,
-                    Size = 50,
-                    Value = UserName
+                    ParameterName = "@UserID",
+                    SqlDbType = SqlDbType.Int,
+                    Value = Model.UserID
                 };
-                SqlCmd.Parameters.Add(pUserName);
+                SqlCmd.Parameters.Add(pUserID);
+
+                SqlParameter pAppID = new SqlParameter
+                {
+                    ParameterName = "@AppID",
+                    SqlDbType = SqlDbType.Int,
+                    Value = Model.AppID
+                };
+                SqlCmd.Parameters.Add(pAppID);
 
                 using (var dr = SqlCmd.ExecuteReader())
                 {
@@ -180,6 +187,7 @@ namespace DAL
                     {
                         var detail = new WebDirectory
                         {
+                            AppID = Convert.ToInt32(dr["AppID"]),
                             WebID = Convert.ToInt32(dr["WebID"]),
                             Controller = dr["Controller"].ToString(),
                             Action = dr["Action"].ToString(),
