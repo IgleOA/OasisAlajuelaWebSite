@@ -20,34 +20,61 @@ namespace DAL
 
         private String UploadedVideoId { get; set; }
 
-        public List<YouTubeVideo> Youtubelist(int MaxResults)
+        public List<YouTubeVideo> YoutubeLiveEvents()
         {
-            var youtubeService = AuthenticateOauth();
+            //var youtubeService = AuthenticateOauth();
 
-            List<YouTubeVideo> list = new List<YouTubeVideo>();
+            var list = new List<YouTubeVideo>();
 
-            var ListRequest = youtubeService.Search.List("snippet");
-            //var ListRequest = yt.Videos.List("snippet");
-            ListRequest.ChannelId = ConfigurationManager.AppSettings["YouTubeOAChannel"].ToString(); //Igle Channel
-            //ListRequest.ChannelId = "UCgs9_FAGGtcforOWC91fgDw"; // test Channel
-            ListRequest.Type = "video";
-            ListRequest.Order = SearchResource.ListRequest.OrderEnum.Date;
-            ListRequest.MaxResults = MaxResults;
-            var ListResponse = ListRequest.Execute();
+            //var ListRequest = youtubeService.Search.List("snippet");
+            ////var ListRequest = yt.Videos.List("snippet");
+            //ListRequest.ChannelId = ConfigurationManager.AppSettings["YouTubeOAChannel"].ToString(); //Igle Channel
+            ////ListRequest.ChannelId = "UCgs9_FAGGtcforOWC91fgDw"; // test Channel
+            //ListRequest.EventType = SearchResource.ListRequest.EventTypeEnum.Live;
+            //ListRequest.Type = "video";
+            //ListRequest.Order = SearchResource.ListRequest.OrderEnum.Date;
+            //var ListResponse = ListRequest.Execute();
 
-            foreach(var item in ListResponse.Items)
+            //foreach (var item in ListResponse.Items)
+            //{
+            //    var detail = new YouTubeVideo
+            //    {
+            //        id = item.Id.VideoId,
+            //        Title = item.Snippet.Title,
+            //        Description = item.Snippet.Description,
+            //        //BannerLink = item.Snippet.Thumbnails.High.Url,
+            //        //Tags = item.Snippet.ETag,
+            //        PublishedAt = Convert.ToDateTime(item.Snippet.PublishedAt)
+            //    };
+            //    list.Add(detail);
+            //}
+
+            //return list;
+
+            var ValidationRequest = yt.Search.List("snippet");
+            ValidationRequest.ChannelId = ConfigurationManager.AppSettings["YouTubeOAChannel"].ToString(); //Igle Channel
+            ValidationRequest.EventType = SearchResource.ListRequest.EventTypeEnum.Live;
+            ValidationRequest.Type = "video";
+            ValidationRequest.Order = SearchResource.ListRequest.OrderEnum.Date;
+
+            var ListResponse = ValidationRequest.Execute();
+
+            foreach (var item in ListResponse.Items)
             {
-                var detail = new YouTubeVideo();
-                detail.id = item.Id.VideoId;
-                detail.Title = item.Snippet.Title;
-                detail.Description = item.Snippet.Description;
-                detail.BannerLink = item.Snippet.Thumbnails.High.Url;
-                detail.Tags = item.Snippet.ETag;
-                detail.PublishedAt = Convert.ToDateTime(item.Snippet.PublishedAt);
-                
+                var detail = new YouTubeVideo
+                {
+                    id = item.Id.VideoId,
+                    Title = item.Snippet.Title,
+                    Description = item.Snippet.Description,
+                    //BannerLink = item.Snippet.Thumbnails.High.Url,
+                    //Tags = item.Snippet.ETag,
+                    PublishedAt = Convert.ToDateTime(item.Snippet.PublishedAt)
+                };
                 list.Add(detail);
             }
+
             return list;
+
         }
 
         public YouTubeVideo YoutubeVideoValidation(string YouTubeID)
@@ -156,12 +183,14 @@ namespace DAL
         public static YouTubeService AuthenticateOauth()
         {
 
-            string[] scopes = new string[] { YouTubeService.Scope.Youtube,
-                                             YouTubeService.Scope.YoutubeForceSsl,
-                                             YouTubeService.Scope.Youtubepartner,
-                                             YouTubeService.Scope.YoutubepartnerChannelAudit,
-                                             YouTubeService.Scope.YoutubeReadonly,
-                                             YouTubeService.Scope.YoutubeUpload};
+            string[] scopes = new string[] { 
+                                             //YouTubeService.Scope.Youtube,
+                                             //,YouTubeService.Scope.YoutubeForceSsl,
+                                             //,YouTubeService.Scope.Youtubepartner,
+                                             //,YouTubeService.Scope.YoutubepartnerChannelAudit,
+                                             YouTubeService.Scope.YoutubeReadonly
+                                             //,YouTubeService.Scope.YoutubeUpload
+                                            };
 
             try
             {
