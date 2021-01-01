@@ -19,7 +19,7 @@ namespace OasisAlajuelaAPI.Controllers
     {
         private WebDirectoryBL WBL = new WebDirectoryBL();
 
-        [HttpGet]
+        [HttpPost]
         [ApiKeyAuthentication]
         [ResponseType(typeof(List<WebDirectory>))]
         public HttpResponseMessage List(int id)

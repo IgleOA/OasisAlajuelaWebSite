@@ -31,6 +31,7 @@ namespace DAL
                         var detail = new WebDirectory
                         {
                             WebID = Convert.ToInt32(dr["WebID"]),
+                            AppID = AppID,
                             Controller = dr["Controller"].ToString(),
                             Action = dr["Action"].ToString(),
                             PublicMenu = Convert.ToBoolean(dr["PublicMenu"]),
