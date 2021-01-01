@@ -38,7 +38,8 @@ namespace DAL
                             AdminMenu = Convert.ToBoolean(dr["AdminMenu"]),
                             DisplayName = dr["DisplayName"].ToString(),
                             Parameter = dr["Parameter"].ToString(),
-                            Order = Convert.ToInt32(dr["Order"])
+                            Order = Convert.ToInt32(dr["Order"]),
+                            ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"])
                         };
                         List.Add(detail);
                     }

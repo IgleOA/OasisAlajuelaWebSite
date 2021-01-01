@@ -23,6 +23,8 @@ namespace ET
         
         public int Order { get; set; }
 
+        public bool ActiveFlag { get; set; }
+
         public string ActionType { get; set; }
     }
 

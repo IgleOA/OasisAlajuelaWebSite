@@ -30,10 +30,10 @@ AS
 						,[DisplayName]
 						,[Parameter]
 						,[Order]						
+                        ,[ActiveFlag]
 				FROM	[adm].[utbWebDirectory]
-				WHERE	[ActiveFlag] = 1
-                        AND [AppID] = @AppID
-				ORDER BY [Order]
+				WHERE	[AppID] = @AppID
+				ORDER BY [ActiveFlag] DESC, [Order]
 			-- =======================================================
 
         END TRY
