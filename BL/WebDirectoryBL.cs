@@ -19,6 +19,11 @@ namespace BL
             return WDAL.AddNew(detail, insertuser);
         }
 
+        public bool Update(WebDirectory detail, string insertuser)
+        {
+            return WDAL.Update(detail, insertuser);
+        }
+
         public List<WebDirectory> WDByUser(WebDirectoryRequest Model)
         {
             return WDAL.WDByUser(Model);

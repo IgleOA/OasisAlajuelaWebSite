@@ -35,6 +35,7 @@ namespace OasisAlajuelaAPI.Controllers
             }
         }
 
+
         [HttpPost]
         [Route("api/WebDirectory/AddNew")]
         [ResponseType(typeof(bool))]
@@ -49,6 +50,31 @@ namespace OasisAlajuelaAPI.Controllers
             var UserName = tokenS.Claims.First(claim => claim.Type == "UserName").Value;
 
             var r = WBL.AddNew(model,UserName);
+
+            if (r)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.OK, r);
+            }
+            else
+            {
+                return this.Request.CreateResponse(HttpStatusCode.NotFound);
+            }
+        }
+
+        [HttpPost]
+        [Route("api/WebDirectory/Update")]
+        [ResponseType(typeof(bool))]
+        public HttpResponseMessage Update([FromBody] WebDirectory model)
+        {
+            var authHeader = this.Request.Headers.GetValues("Authorization").FirstOrDefault();
+            var token = authHeader.Substring("Bearer ".Length);
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(token);
+            var tokenS = handler.ReadToken(token) as JwtSecurityToken;
+
+            var UserName = tokenS.Claims.First(claim => claim.Type == "UserName").Value;
+
+            var r = WBL.Update(model, UserName);
 
             if (r)
             {
