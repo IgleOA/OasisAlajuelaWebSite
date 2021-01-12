@@ -20,7 +20,7 @@ namespace OasisAlajuelaAPI.Controllers
         private RolesBL RBL = new RolesBL();
         private RightsBL RRBL = new RightsBL();
 
-        [HttpGet]
+        [HttpPost]
         [ResponseType(typeof(List<Roles>))]
         public HttpResponseMessage List()
         {
