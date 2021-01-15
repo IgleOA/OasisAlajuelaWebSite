@@ -528,7 +528,7 @@ namespace OasisAlajuelaWebSite.Controllers
                     MS.EnableStart = null;
                     MS.EnableEnd = null;
                 }
-
+                MS.ActionType = "UPDATE";
                 var r = RBL.Update(MS, InsertUser);
 
                 if (!r)
@@ -538,7 +538,6 @@ namespace OasisAlajuelaWebSite.Controllers
                 }
                 else
                 {
-                    MS.ActionType = "UPDATE";
                     MS.TypeList = RBL.TypeList(User.Identity.GetUserName());
                     return View(MS);
                 }

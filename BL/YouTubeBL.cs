@@ -12,7 +12,7 @@ namespace BL
 
         public List<YouTubeVideo> Youtubelist()
         {
-            return YDAL.YoutubeLiveEvents();            
+            return YDAL.YoutubeLiveEvents();
         }
 
         //public async Task<string> Insert(YouTubeVideo video)

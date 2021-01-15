@@ -2260,7 +2260,6 @@
     <Content Include="Content\bootstrap-select.css.map" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\IgleOA - Web Deploy.pubxml" />
-    <None Include="Properties\PublishProfiles\IgleOANew - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\IgleOAUAT - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\PROD_FTP_Server.pubxml" />
     <None Include="Properties\Settings.settings">

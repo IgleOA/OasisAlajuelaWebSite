@@ -339,3 +339,4 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 /OasisAlajuelaWebSite/Files
+/OasisAlajuelaAPI/App_Start
