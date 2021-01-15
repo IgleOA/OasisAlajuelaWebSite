@@ -22,7 +22,7 @@ AS
             DECLARE @lErrorState INT
 
             -- =======================================================
-				IF(@AppID = 2) /*Landing Page*/
+				IF(@AppID = 1) /*Landing Page*/
 					BEGIN
 						SELECT	W.[AppID]
 								,W.[WebID]

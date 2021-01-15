@@ -2,7 +2,7 @@
     [MinisterID]     INT           IDENTITY (1, 1) NOT NULL,
     [Title]          VARCHAR (50)  NOT NULL,
     [FullName]       VARCHAR (100) NOT NULL,
-	[Photo]			 VARCHAR (500) NOT NULL,
+	[Photo]			 VARCHAR (500) NULL,
     [ActiveFlag]     BIT           CONSTRAINT [utbMinistersDefaultActiveFlagIsTrue] DEFAULT ((1)) NOT NULL,
     [InsertDate]     DATETIME      CONSTRAINT [utbMinistersDefaultInsertDatesysdatetime] DEFAULT (sysdatetime()) NOT NULL,
     [InsertUser]     VARCHAR (100) CONSTRAINT [utbMinistersDefaultInsertUsersuser_sname] DEFAULT (suser_sname()) NOT NULL,

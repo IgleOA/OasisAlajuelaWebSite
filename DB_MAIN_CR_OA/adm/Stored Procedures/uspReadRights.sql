@@ -32,6 +32,7 @@ AS
 																AND RR.[ActiveFlag] = 1
 																AND RR.[RoleID] = @RoleID
 				WHERE	W.[ActiveFlag] = 1
+                        AND W.[AppID] = 2
 			-- =======================================================
 
         END TRY
