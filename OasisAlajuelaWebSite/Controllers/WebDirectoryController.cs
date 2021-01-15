@@ -29,7 +29,7 @@ namespace OasisAlajuelaWebSite.Controllers
             {
                 ViewBag.WriteRight = validation.WriteRight;
 
-                var list = WBL.List();
+                var list = WBL.List(1);
                 return View(list.ToList());
             }
             

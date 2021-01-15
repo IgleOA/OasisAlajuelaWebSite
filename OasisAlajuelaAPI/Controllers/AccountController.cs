@@ -1,34 +1,54 @@
 ﻿using BL;
 using ET;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using OasisAlajuelaAPI.Filters;
 using System;
+using System.ComponentModel;
 using System.Configuration;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Net.Mail;
+using System.Security.Claims;
 using System.Text;
 using System.Web;
 using System.Web.Http;
-using System.Web.Mvc;
+using System.Web.Http.Cors;
+using System.Web.Http.Description;
 
 namespace OasisAlajuelaAPI.Controllers
 {
-    
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class AccountController : ApiController
     {
         private UsersBL UBL = new UsersBL();
         private RolesBL RBL = new RolesBL();
         private GroupsBL GBL = new GroupsBL();
+        private TokensBL TBL = new TokensBL();
+        private static string API_KEY = ConfigurationManager.AppSettings["APIStack_KEY"].ToString();
+        private static string API_URL = ConfigurationManager.AppSettings["APIStack_URL"].ToString();
+        private static string SecretKey = ConfigurationManager.AppSettings["JWT_SECRET_KEY"].ToString();
+        private static int expireTime = Convert.ToInt32(ConfigurationManager.AppSettings["JWT_EXPIRE_MINUTES"]);
 
+        /// <summary>
+        /// Method for login a User in Oasis Alajuela apps.
+        /// </summary>
+        [HttpGet]
         [BasicAuthentication]
-        [System.Web.Http.Route("api/Account/Login")]
-        public Users Get()
+        [Route("api/Account/Login")]
+        [ResponseType(typeof(Users))]
+        public HttpResponseMessage Login()
         {
             var authenticationToken = Request.Headers.Authorization.Parameter;
             var decodedAuthenticationToken = Encoding.UTF8.GetString(Convert.FromBase64String(authenticationToken));
             var usernamePasswordArray = decodedAuthenticationToken.Split(':');
             var userName = usernamePasswordArray[0];
             var password = usernamePasswordArray[1];
+
+            var IP = Request.Headers.GetValues("IP").First();
 
             Login login = new Login()
             {
@@ -37,27 +57,85 @@ namespace OasisAlajuelaAPI.Controllers
             };
 
             Users LoginUser = UBL.Login(login);
+            
+            if (LoginUser.UserID > 0)
+            {
+                GeolocationStack location = GetGeolocation(IP);
+                LoginRecord loginRecord = new LoginRecord()
+                {
+                    UserID = LoginUser.UserID,
+                    IP = location.Ip,
+                    Country = location.CountryName,
+                    Region = location.RegionName,
+                    City = location.City
+                };
 
-            Users Details = UBL.Details(LoginUser.UserID);
+                UBL.AddLogin(loginRecord);
 
-            Details.RolesData = RBL.List().Where(x => x.RoleID == Details.RoleID).FirstOrDefault();
-            Details.GroupList = GBL.ListbyUser(Details.UserID);
+                Users Details = UBL.Details(LoginUser.UserID);
 
-            return Details;
+                //Details.RolesData = RBL.List().Where(x => x.RoleID == Details.RoleID).FirstOrDefault();
+                //Details.GroupList = GBL.ListbyUser(Details.UserID);
+
+                var token = GenerateToken(LoginUser.UserID);
+
+                if (token.TokenID.Length > 0)
+                {
+                    Details.NeedResetPwd = LoginUser.NeedResetPwd;
+                    Details.Token = token.TokenID;
+                    Details.TokenExpires = token.ExpiresDate;
+                    Details.TokenExpiresMin = expireTime;
+                    return this.Request.CreateResponse(HttpStatusCode.OK, Details);
+                    
+                }
+                else
+                {
+                    return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
+                }
+            }
+
+            else
+            {
+                return this.Request.CreateResponse(HttpStatusCode.Unauthorized);
+            }
         }
 
-        [ApiKeyAuthentication]
-        [System.Web.Http.Route("api/Account/CheckAvailability")]
-        public bool Get(string id)
+        [HttpPost]
+        [Route("api/Account/CheckAvailability")]
+        [ResponseType(typeof(bool))]
+        public HttpResponseMessage CheckAvailability(string id)
         {
-            return UBL.CheckAvailability(id);
+            var r =  UBL.CheckAvailability(id);
+            
+            return this.Request.CreateResponse(HttpStatusCode.OK, r);
+            
         }
 
-        [ApiKeyAuthentication]
-        [System.Web.Http.Route("api/Account/ForgotPassword")]
-        public string Post([FromBody] ForgotPasswordModel model)
+        [HttpPost]
+        [Route("api/Account/CheckGUID/")]
+        [ResponseType(typeof(int))]
+        public HttpResponseMessage CheckGUID(string GUID)
         {
-            Users User = UBL.List().Where(x => x.Email == model.Email).FirstOrDefault();
+            var r = UBL.ValidateGUID(GUID);
+
+            if (r > 0)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.OK,r);
+            }
+            else
+            {
+                return this.Request.CreateResponse(HttpStatusCode.NotFound);
+            }
+        }
+
+        [HttpPost]
+        [Route("api/Account/ForgotPassword")]
+        [ResponseType(typeof(string))]
+        public HttpResponseMessage ForgotPassword([FromBody] ForgotPasswordModel model)
+        {
+            string GUID;
+
+            Users User = UBL.DetailsbyEmail(model.Email);
 
             if (User.UserID > 0)
             {
@@ -88,39 +166,52 @@ namespace OasisAlajuelaAPI.Controllers
 
                 SmtpClient smtp = new SmtpClient();
                 smtp.Send(mm);
-                return Code.GUID;
+                GUID =  Code.GUID;
+                return this.Request.CreateResponse(HttpStatusCode.OK, GUID);
             }
             else
             {
-                return string.Empty;
+                return this.Request.CreateResponse(HttpStatusCode.NotFound);
             }
         }
 
-        [ApiKeyAuthentication]
-        [System.Web.Http.Route("api/Account/ResetPassword")]
-        public IHttpActionResult Put([FromBody] ResetPasswordModel model)
+        
+        [HttpPost]
+        [Route("api/Account/ResetPassword")]
+        [ResponseType(typeof(bool))]
+        public HttpResponseMessage ResetPassword([FromBody] ResetPasswordModel model)
         {
-            int validation = UBL.ValidateGUID(model.GUID);
+            int validation;
+
+            if (model.GUID == "No Required")
+            {
+                validation = model.UserID;
+            }
+            else
+            {                
+                validation = UBL.ValidateGUID(model.GUID);
+            }
+
             if (validation == 0)
             {
-                return StatusCode(System.Net.HttpStatusCode.NotFound);
+                return this.Request.CreateResponse(HttpStatusCode.NotFound);
             }
             else
             {
                 var r = UBL.ResetPassword(model);
-                return Ok(r);
+                return this.Request.CreateResponse(HttpStatusCode.OK, r);
             }
         }
 
-        [ApiKeyAuthentication]
-        [System.Web.Http.Route("api/Account/Register")]
-        public IHttpActionResult Post([FromBody] Users model)
+        [HttpPost]
+        [Route("api/Account/Register")]
+        public IHttpActionResult Register([FromBody] Users model)
         {
             model.RoleID = 1; /*New User*/
             var r = UBL.AddUser(model, model.FullName);
             if (!r)
             {                
-                return StatusCode(System.Net.HttpStatusCode.BadRequest);
+                return StatusCode(HttpStatusCode.BadRequest);
             }
             else
             {
@@ -156,7 +247,68 @@ namespace OasisAlajuelaAPI.Controllers
             }
         }
 
-        
+        static GeolocationStack GetGeolocation(string IP)
+        {
+
+            string url = API_URL + IP + $"?access_key={API_KEY}";
+            string resultData = string.Empty;
+
+            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+
+            using (HttpWebResponse response = (HttpWebResponse)req.GetResponse())
+            using (Stream stream = response.GetResponseStream())
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                resultData = reader.ReadToEnd();
+            }
+
+            GeolocationStack location = JsonConvert.DeserializeObject<GeolocationStack>(resultData);
+
+            return location;
+        }
+
+        public Token GenerateToken(int UserID)
+        {
+            Users Details = UBL.Details(UserID);
+            var SecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecretKey));
+            var tokenExpires = DateTime.UtcNow.AddMinutes(expireTime);
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim("UserID",Details.UserID.ToString()),
+                    new Claim("UserName",Details.UserName),
+                    new Claim("NeedResetPwd",Details.NeedResetPwd.ToString()),
+                    new Claim("Role",Details.RoleName)
+                }),
+                Expires = tokenExpires,
+                SigningCredentials = new SigningCredentials(SecurityKey, SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+
+            var tokenid = tokenHandler.WriteToken(token);
+
+            Token NewToken = new Token()
+            {
+                TokenID = tokenid,
+                UserID = UserID,
+                ExpiresDate = tokenExpires
+            };
+
+            var r = TBL.AddNew(NewToken);
+
+            if (!r)
+            {
+                return new Token();
+            }
+            else
+            {
+                return NewToken;
+            }
+        }
 
     }
 }

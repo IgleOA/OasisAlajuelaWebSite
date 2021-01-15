@@ -13,7 +13,8 @@
 CREATE PROCEDURE [adm].[uspAddMinister]
 	@InsertUser		VARCHAR(50),
 	@Title			VARCHAR(50),
-	@FullName		VARCHAR(100)
+	@FullName		VARCHAR(100),
+    @Photo          VARCHAR(500)
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -32,8 +33,8 @@ AS
                 END
 
             -- =======================================================
-				INSERT INTO [config].[utbMinisters]([Title],[FullName],[InsertUser],[LastModifyUser])
-				VALUES (@Title, @FullName, @InsertUser, @InsertUser)
+				INSERT INTO [config].[utbMinisters]([Title],[FullName],[Photo],[InsertUser],[LastModifyUser])
+				VALUES (@Title, @FullName, @Photo, @InsertUser, @InsertUser)
 			-- =======================================================
 
         IF ( @@trancount > 0

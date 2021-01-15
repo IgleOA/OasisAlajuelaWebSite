@@ -382,12 +382,7 @@ namespace DAL
                         List.Add(detail);
                     }
                 }
-                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
-
-                foreach (var item in List)
-                {
-                    item.GroupList = GDAL.ListbyUser(item.UserID);
-                }
+                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();                
             }
             catch (Exception ex)
             {
@@ -554,6 +549,50 @@ namespace DAL
                     Value = UserID
                 };
                 SqlCmd.Parameters.Add(pUserID);
+
+                using (var dr = SqlCmd.ExecuteReader())
+                {
+                    dr.Read();
+                    if (dr.HasRows)
+                    {
+                        Detail.UserID = Convert.ToInt32(dr["UserID"]);
+                        Detail.RoleID = Convert.ToInt32(dr["RoleID"]);
+                        Detail.FullName = dr["FullName"].ToString();
+                        Detail.UserName = dr["UserName"].ToString();
+                        Detail.Email = dr["Email"].ToString();
+                        Detail.Subscriber = Convert.ToBoolean(dr["Subscriber"]);
+                        Detail.ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]);
+                        Detail.CreationDate = Convert.ToDateTime(dr["CreationDate"]);
+                        Detail.RoleName = dr["RoleName"].ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            return Detail;
+        }
+
+        public Users DetailsbyEmail(string Email)
+        {
+            var Detail = new Users();
+
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[adm].[uspReadUsers]", SqlCon);
+                SqlCmd.CommandType = CommandType.StoredProcedure;
+
+                SqlParameter pEmail = new SqlParameter
+                {
+                    ParameterName = "@Email",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 100,
+                    Value = Email
+                };
+                SqlCmd.Parameters.Add(pEmail);
 
                 using (var dr = SqlCmd.ExecuteReader())
                 {

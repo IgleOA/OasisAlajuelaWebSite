@@ -11,6 +11,7 @@
 -- ======================================================================
 
 CREATE PROCEDURE [adm].[uspReadWebDirectory]
+    @AppID INT
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -29,9 +30,10 @@ AS
 						,[DisplayName]
 						,[Parameter]
 						,[Order]						
+                        ,[ActiveFlag]
 				FROM	[adm].[utbWebDirectory]
-				WHERE	[ActiveFlag] = 1
-				ORDER BY [Order]
+				WHERE	[AppID] = @AppID
+				ORDER BY [ActiveFlag] DESC, [Order]
 			-- =======================================================
 
         END TRY

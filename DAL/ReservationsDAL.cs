@@ -177,7 +177,8 @@ namespace DAL
                 SqlCmd.Parameters.Add(pInsertUser);
 
                 //EXEC Command
-                rpta = Convert.ToBoolean(SqlCmd.ExecuteScalar());
+                SqlCmd.ExecuteNonQuery();
+                rpta = true;
 
                 if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             }

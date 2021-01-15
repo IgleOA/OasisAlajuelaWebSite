@@ -47,6 +47,8 @@ namespace ET
 
         public string NewDay { get; set; }
 
+        public int Slide { get; set; }
+
         public string ActionType { get; set; }
 
         public class AllowExtensionsAttribute : ValidationAttribute

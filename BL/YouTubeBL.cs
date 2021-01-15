@@ -10,7 +10,7 @@ namespace BL
     {
         private YouTubeDAL YDAL = new YouTubeDAL();
 
-        public List<YouTubeVideo> YoutubeLiveEvents()
+        public List<YouTubeVideo> Youtubelist()
         {
             return YDAL.YoutubeLiveEvents();
         }

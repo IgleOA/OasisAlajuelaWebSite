@@ -39,13 +39,16 @@ namespace DAL
                 };
                 SqlCmd.Parameters.Add(parUp);
 
-                SqlParameter pActiveFlag = new SqlParameter
+                if (ActiveFlag == true)
                 {
-                    ParameterName = "@pActiveFlag",
-                    SqlDbType = SqlDbType.Bit,
-                    Value = ActiveFlag
-                };
-                SqlCmd.Parameters.Add(pActiveFlag);
+                    SqlParameter pActiveFlag = new SqlParameter
+                    {
+                        ParameterName = "@pActiveFlag",
+                        SqlDbType = SqlDbType.Bit,
+                        Value = ActiveFlag
+                    };
+                    SqlCmd.Parameters.Add(pActiveFlag);
+                }
 
                 using (var dr = SqlCmd.ExecuteReader())
                 {
@@ -269,7 +272,7 @@ namespace DAL
                     ParameterName = "@Title",
                     SqlDbType = SqlDbType.VarChar,
                     Size = 50,
-                    Value = Event.Title.Trim()
+                    Value = Event.Title
                 };
                 SqlCmd.Parameters.Add(Title);
 

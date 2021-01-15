@@ -49,7 +49,8 @@ namespace DAL
                             InsertDate = Convert.ToDateTime(dr["Date"]),
                             NewYear = dr["Year"].ToString(),
                             NewMonth = dr["Month"].ToString(),
-                            NewDay = dr["Day"].ToString()
+                            NewDay = dr["Day"].ToString(),
+                            Slide = Convert.ToInt32(dr["Slide"])
                         };
                         List.Add(detail);
                     }
@@ -218,6 +219,7 @@ namespace DAL
                         details.NewYear = dr["Year"].ToString();
                         details.NewMonth = dr["Month"].ToString();
                         details.NewDay = dr["Day"].ToString();
+                        details.Slide = Convert.ToInt32(dr["Slide"]);
                     }
                 }
             }

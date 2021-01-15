@@ -212,12 +212,12 @@
                         break;
                 }
             }
-        <div class="row justify-content-start">
-            @if (Model.PageCount > 1)
-            {
-                @Html.PagedListPager(Model, page => Url.Action("Type", new { id = ViewBag.ResourceTypeID, page, currentFilter = ViewBag.CurrentFilter }), new PagedListRenderOptions() { ContainerDivClasses = new string[] { "p-0" }, UlElementClasses = new string[] { "pagination m-0" } })
-            }
-        </div>
+            <div class="row justify-content-start">
+                @if (Model.PageCount > 1)
+                {
+                    @Html.PagedListPager(Model, page => Url.Action("Type", new { id = ViewBag.ResourceTypeID, page, currentFilter = ViewBag.CurrentFilter }), new PagedListRenderOptions() { ContainerDivClasses = new string[] { "p-0" }, UlElementClasses = new string[] { "pagination m-0" } })
+                }
+            </div>
             <hr />
 
         </div>

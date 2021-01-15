@@ -15,7 +15,7 @@ CREATE PROCEDURE [adm].[uspUpdateEnrollment]
 	@InsertUser		VARCHAR(50),
 	@StartDate		DATETIME = NULL,
 	@EndDate		DATETIME = NULL,
-	@ActiveFlag		BIT = NULL
+	@ActiveFlag		BIT = 1
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -38,6 +38,7 @@ AS
 				SET		[OpenRegister]		= ISNULL(@StartDate,[OpenRegister])
 						,[CloseRegister]	= ISNULL(@EndDate,[CloseRegister])
 						,[ActiveFlag]		= ISNULL(@ActiveFlag,[ActiveFlag])
+                        ,[ApprovalFlag]		= 0
 						,[LastModifyDate]	= GETDATE()
 						,[LastModifyUser]	= @InsertUser
 				WHERE	[EnrollmentID] = @EnrollmentID				

@@ -33,4 +33,14 @@ namespace ET
         [Display(Name = "Escritura")]
         public bool WriteRight { get; set; }
     }
+
+    public class AccessRightsRequest
+    {
+        [Required]
+        public string UserName { get; set; }
+        [Required]
+        public string Controller { get; set; }
+        [Required]
+        public string Action { get; set; }
+    }
 }

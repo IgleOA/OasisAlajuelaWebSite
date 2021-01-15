@@ -12,14 +12,11 @@
 
 CREATE PROCEDURE [adm].[uspAddHomePage]
 	@InsertUser		VARCHAR(50),
-	@DVerse			VARCHAR(MAX),
-	@DVRef			VARCHAR(50),
-	@SVCTitle		VARCHAR(50),
-	@SVCDescription	VARCHAR(MAX),
-	@PodcastTitle	VARCHAR(50),
-	@PCDescription	VARCHAR(MAX),
-	@SerTitle		VARCHAR(50),
-	@SerDescription	VARCHAR(MAX)
+	@Title			VARCHAR(100),
+	@Description    VARCHAR(MAX),
+	@RouterLink		VARCHAR(100) = NULL,
+    @Image          VARCHAR(500) = NULL,
+    @Order          INT = NULL
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -38,14 +35,8 @@ AS
                 END
 
             -- =======================================================
-				UPDATE	[config].[utbHomePage]
-				SET		[ActiveFlag] = 0
-						,[LastModifyDate] = GETDATE()
-						,[LastModifyUser] = @InsertUser
-				WHERE 	[ActiveFlag] = 1
-
-				INSERT INTO [config].[utbHomePage] ([DailyVerse],[DailyVerseReference],[ServicesTitle],[ServicesDescription],[PodcastTitle],[PodcastDescription],[SermonsTitle],[SermonsDescription],[InsertUser],[LastModifyUser])
-				VALUES (@DVerse, @DVRef, @SVCTitle, @SVCDescription, @PodcastTitle, @PCDescription, @SerTitle, @SerDescription, @InsertUser, @InsertUser)
+				INSERT INTO [config].[utbHomePage] ([Title],[Description],[RouterLink],[Image],[Order],[ActiveFlag],[InsertUser],[LastModifyUser])
+				VALUES (@Title, @Description, @RouterLink, @Image, @Order, 1, @InsertUser, @InsertUser)
 			-- =======================================================
 
         IF ( @@trancount > 0

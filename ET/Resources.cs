@@ -58,14 +58,14 @@ namespace ET
         public int ResourceID { get; set; }
 
         [Required]
-        [Display(Name ="Tipo")]
+        [Display(Name = "Tipo")]
         public int ResourceTypeID { get; set; }
 
         public string TypeName { get; set; }
 
         [Required]
         [Display(Name = "Tipo de archivo")]
-        public string  FileType { get; set; }
+        public string FileType { get; set; }
 
         public string FilePath { get; set; }
 
@@ -92,12 +92,12 @@ namespace ET
         [Display(Name = "Acceso Limitado")]
         public bool AccessLimited { get; set; }
 
-        [Display(Name ="Inicio")]
+        [Display(Name = "Inicio")]
         [DataType(DataType.DateTime)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd hh\\:mm tt}")]
         public DateTime? EnableStart { get; set; }
 
-        [Display(Name ="Fin")]
+        [Display(Name = "Fin")]
         [DataType(DataType.DateTime)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd hh\\:mm tt}")]
         public DateTime? EnableEnd { get; set; }
@@ -132,7 +132,7 @@ namespace ET
 
         public enum FileTypesList
         {
-            Video,Documento,Audio
+            Video, Documento, Audio
         }
         public ResourceTypes TypeData { get; set; }
 
@@ -141,6 +141,14 @@ namespace ET
         public Resources()
         {
             TypeData = new ResourceTypes();
-        }
+        }        
+    }
+    public class ResourceRequest
+    {
+        [Required]
+        public int ResourceTypeID { get; set; }
+
+        [Required]
+        public DateTime StartDate { get; set; }
     }
 }

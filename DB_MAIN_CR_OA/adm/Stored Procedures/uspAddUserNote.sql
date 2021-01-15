@@ -39,8 +39,21 @@ AS
 				FROM	[adm].[utbUsers]
 				WHERE	[UserName] = @InsertUser
 
-				INSERT INTO [config].[utbUserNotes] ([UserID],[RequestNote],[ResponseRequired],[InsertUserID],[LastModifyUser])
-				VALUES (@UserID,@RequestNote,@ResponseRequired,@InsertUserID,@InsertUser)
+				iF(@UserID = 0)
+                    BEGIN
+                        INSERT INTO [config].[utbUserNotes] ([UserID],[RequestNote],[ResponseRequired],[InsertUserID],[LastModifyUser])
+				        SELECT  [UserID]
+                                , @RequestNote
+                                , @ResponseRequired
+                                , @InsertUserID
+                                , @InsertUser
+                        FROM    [adm].[utbUsers] 
+                    END
+                ELSE
+                    BEGIN
+                        INSERT INTO [config].[utbUserNotes] ([UserID],[RequestNote],[ResponseRequired],[InsertUserID],[LastModifyUser])
+				        VALUES (@UserID,@RequestNote,@ResponseRequired,@InsertUserID,@InsertUser)
+                    END
 				
 			-- =======================================================
 

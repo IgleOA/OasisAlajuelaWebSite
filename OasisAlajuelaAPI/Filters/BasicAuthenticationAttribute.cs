@@ -43,11 +43,21 @@ namespace OasisAlajuelaAPI.Filters
                     var principal = new GenericPrincipal(new GenericIdentity(userName), null);
                     Thread.CurrentPrincipal = principal;
 
-                    //actionContext.Response =
-                    //   actionContext.Request.CreateResponse(HttpStatusCode.OK,
-                    //      "User " + userName + " successfully authenticated");
-
+                    //actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.OK);
                     return;
+                }
+                else
+                {
+                    if(LoginUser.UserID == -1)
+                    {
+                        actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized);
+                        return;
+                    }
+                    else
+                    {
+                        actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.NotFound);
+                        return;
+                    }
                 }
             }
 
@@ -57,7 +67,7 @@ namespace OasisAlajuelaAPI.Filters
         private static void HandleUnathorized(HttpActionContext actionContext)
         {
             actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized);
-            actionContext.Response.Headers.Add("WWW-Authenticate", "Basic Scheme='Data' location = 'http://localhost:");
+            //actionContext.Response.Headers.Add("WWW-Authenticate", "Basic Scheme='Data' location = 'http://localhost:");
         }
     }
 }

@@ -32,13 +32,16 @@ namespace DAL
                 };
                 SqlCmd.Parameters.Add(parLocation);
 
-                SqlParameter parStatus = new SqlParameter
+                if (ActiveFlag == true)
                 {
-                    ParameterName = "@pActiveFlag",
-                    SqlDbType = SqlDbType.Bit,
-                    Value = ActiveFlag
-                };
-                SqlCmd.Parameters.Add(parStatus);
+                    SqlParameter parStatus = new SqlParameter
+                    {
+                        ParameterName = "@pActiveFlag",
+                        SqlDbType = SqlDbType.Bit,
+                        Value = ActiveFlag
+                    };
+                    SqlCmd.Parameters.Add(parStatus);
+                }
 
                 using (var dr = SqlCmd.ExecuteReader())
                 {

@@ -50,6 +50,12 @@ namespace ET
 
         public bool NeedResetPwd { get; set; }
 
+        public string Token { get; set; }
+
+        public DateTime TokenExpires { get; set; }
+
+        public int TokenExpiresMin { get; set; }
+
         [Display(Name = "Status")]
         public bool ActiveFlag { get; set; }
 
@@ -84,7 +90,32 @@ namespace ET
         public string FullName { get; set; }
 
         public List<Groups> GroupList { get; set; }
+
+        public string ActionType { get; set; }
         
+    }
+
+    public class GroupsbyUserRequest
+    {
+        public string ActionType { get; set; }
+        public int UserID { get; set; }
+        public List<int> GroupID { get; set; }
+    }
+
+    public class UsersbyGroupRequest
+    {
+        public int UserGroupID { get; set; }
+        public string ActionType { get; set; }
+        public List<int> UserID { get; set; }
+        public int GroupID { get; set; }
+    }
+
+    public class RTypesbyGroupRequest
+    {
+        public int ResourceGroupID { get; set; }
+        public string ActionType { get; set; }
+        public List<int> ResourceTypeID { get; set; }
+        public int GroupID { get; set; }
     }
 
     public class Login
@@ -154,5 +185,16 @@ namespace ET
         public string Region { get; set; }
 
         public string City { get; set; }
+    }
+
+    public class UserActivity
+    {
+        public string UserName { get; set; }
+
+        public string Controller { get; set; }
+
+        public string Action { get; set; }
+
+        public DateTime ActivityDate { get; set; }
     }
 }

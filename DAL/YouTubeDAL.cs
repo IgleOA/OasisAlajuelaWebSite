@@ -95,7 +95,7 @@ namespace DAL
                 }
                 else
                 {
-                    if(Convert.IsDBNull(ListResponse.Items[0].Snippet.Thumbnails.Standard))
+                    if (Convert.IsDBNull(ListResponse.Items[0].Snippet.Thumbnails.Standard))
                     {
                         YTVideo.BannerLink = ListResponse.Items[0].Snippet.Thumbnails.Standard.Url;
                     }
@@ -106,7 +106,7 @@ namespace DAL
                 }
                 YTVideo.ActiveFlag = true;
             }
-            
+
             return YTVideo;
         }
 
@@ -196,13 +196,13 @@ namespace DAL
             {
                 // here is where we Request the user to give us access, or use the Refresh Token that was previously stored in %AppData%
                 UserCredential credential = GoogleWebAuthorizationBroker.AuthorizeAsync(new ClientSecrets
-                    {
-                        ClientId = "758172315550-fkdk2nfvpnl4ui5nnf3ded50c2ru8fs4.apps.googleusercontent.com",
-                        ClientSecret = "gxLsEPUS2gmh-C3i375yt1co"
-                    }, 
+                {
+                    ClientId = "758172315550-fkdk2nfvpnl4ui5nnf3ded50c2ru8fs4.apps.googleusercontent.com",
+                    ClientSecret = "gxLsEPUS2gmh-C3i375yt1co"
+                },
                     scopes,
-                    "SingleUser", 
-                    CancellationToken.None, 
+                    "SingleUser",
+                    CancellationToken.None,
                     new FileDataStore("Daimto.YouTube.Auth.Store")).Result;
 
                 YouTubeService service = new YouTubeService(new YouTubeService.Initializer()

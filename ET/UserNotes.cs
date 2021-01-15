@@ -41,6 +41,18 @@ namespace ET
         public string ActionType { get; set; }
     }
 
+    public class UserNoteRequest
+    {
+        [Required]
+        public List<int> UserID { get; set; }
+
+        [Required]
+        [Display(Name = "Mensaje")]
+        public string RequestNote { get; set; }
+
+        public bool ResponseRequired { get; set; }
+
+    }
     public class ResponseUserNote
     {
         [Key]
@@ -53,6 +65,8 @@ namespace ET
         public string ActionType { get; set; }
 
     }
+
+
 
     public class GroupNote
     {

@@ -23,7 +23,7 @@ AS
 
             -- =======================================================
 				SET LANGUAGE Spanish
-				IF(@HistoryFlag = 1)
+				IF(@BlogID IS NOT NULL)
 					BEGIN
 						SELECT	P.[BlogID]
 								,P.[Title]
@@ -31,39 +31,98 @@ AS
 								,P.[Description]
 								,P.[BannerPath]
 								,P.[MinisterID]
-								,[MinisterName] = M.[Title] + ' ' + M.[FullName]
+								,[MinisterName]		= M.[Title] + ' ' + M.[FullName]
+								,[MinisterPhoto]	= M.[Photo]
 								,P.[ActiveFlag]
 								,[Date]			= CONVERT(DATE,ISNULL(P.[LastModifyDate],P.[InsertDate]))
 								,[Year]			= CONVERT(VARCHAR(4),YEAR(ISNULL(P.[LastModifyDate],P.[InsertDate])))
 								,[Month]		= DATENAME(MONTH,ISNULL(P.[LastModifyDate],P.[InsertDate]))
 								,[Day]			= CASE WHEN DATEPART(DAY,ISNULL(P.[LastModifyDate],P.[InsertDate])) <10 THEN '0' + CONVERT(VARCHAR(1),DATEPART(DAY,ISNULL(P.[LastModifyDate],P.[InsertDate])))
-													   ELSE CONVERT(VARCHAR(2),DATEPART(DAY,ISNULL(P.[LastModifyDate],P.[InsertDate]))) END
+														ELSE CONVERT(VARCHAR(2),DATEPART(DAY,ISNULL(P.[LastModifyDate],P.[InsertDate]))) END
 								,[Slide]		= ROW_NUMBER() OVER(ORDER BY P.[LastModifyUser] DESC, P.[InsertDate] DESC) - 1
 						FROM	[config].[utbBlogs] P
 								LEFT JOIN [config].[utbMinisters] M ON M.[MinisterID] = P.[MinisterID]
-						ORDER BY P.[LastModifyUser] DESC, P.[InsertDate] DESC
+						WHERE	P.[BlogID] = @BlogID
 					END
-				ELSE
+				ELSE 
 					BEGIN
-						SELECT	P.[BlogID]
-								,P.[Title]
-								,P.[KeyWord]
-								,P.[Description]
-								,P.[BannerPath]
-								,P.[MinisterID]
-								,[MinisterName] = M.[Title] + ' ' + M.[FullName]
-								,P.[ActiveFlag]
-								,[Date]			= CONVERT(DATE,ISNULL(P.[LastModifyDate],P.[InsertDate]))
-								,[Year]			= CONVERT(VARCHAR(4),YEAR(ISNULL(P.[LastModifyDate],P.[InsertDate])))
-								,[Month]		= DATENAME(MONTH,ISNULL(P.[LastModifyDate],P.[InsertDate]))
-								,[Day]			= CASE WHEN DATEPART(DAY,ISNULL(P.[LastModifyDate],P.[InsertDate])) <10 THEN '0' + CONVERT(VARCHAR(1),DATEPART(DAY,ISNULL(P.[LastModifyDate],P.[InsertDate])))
-													   ELSE CONVERT(VARCHAR(2),DATEPART(DAY,ISNULL(P.[LastModifyDate],P.[InsertDate]))) END
-								,[Slide]		= ROW_NUMBER() OVER(ORDER BY P.[LastModifyUser] DESC, P.[InsertDate] DESC) - 1
-						FROM	[config].[utbBlogs] P
-								LEFT JOIN [config].[utbMinisters] M ON M.[MinisterID] = P.[MinisterID]
-						WHERE	P.[ActiveFlag] = 1
-								AND P.[BlogID] = ISNULL(@BlogID,P.[BlogID])
-						ORDER BY P.[LastModifyUser] DESC, P.[InsertDate] DESC
+						IF(@HistoryFlag = 1)
+							BEGIN
+								SELECT	P.[BlogID]
+										,P.[Title]
+										,P.[KeyWord]
+										,P.[Description]
+										,P.[BannerPath]
+										,P.[MinisterID]
+										,[MinisterName]		= M.[Title] + ' ' + M.[FullName]
+										,[MinisterPhoto]	= M.[Photo]
+										,P.[ActiveFlag]
+										,[Date]			= CONVERT(DATE,ISNULL(P.[LastModifyDate],P.[InsertDate]))
+										,[Year]			= CONVERT(VARCHAR(4),YEAR(ISNULL(P.[LastModifyDate],P.[InsertDate])))
+										,[Month]		= DATENAME(MONTH,ISNULL(P.[LastModifyDate],P.[InsertDate]))
+										,[Day]			= CASE WHEN DATEPART(DAY,ISNULL(P.[LastModifyDate],P.[InsertDate])) <10 THEN '0' + CONVERT(VARCHAR(1),DATEPART(DAY,ISNULL(P.[LastModifyDate],P.[InsertDate])))
+															   ELSE CONVERT(VARCHAR(2),DATEPART(DAY,ISNULL(P.[LastModifyDate],P.[InsertDate]))) END
+										,[Slide]		= 1
+								FROM	[config].[utbBlogs] P
+										LEFT JOIN [config].[utbMinisters] M ON M.[MinisterID] = P.[MinisterID]
+								ORDER BY P.[LastModifyUser] DESC, P.[InsertDate] DESC
+							END
+						ELSE
+							BEGIN
+								DECLARE @Table TABLE ([BlogID] INT, [Slide] INT)
+								DECLARE @Index INT = 1
+
+								DECLARE CURSOR_ITEM CURSOR
+								FOR	SELECT	[BlogID]
+									FROM	[config].[utbBlogs]
+									WHERE	[ActiveFlag] = 1		
+									ORDER BY [InsertDate] DESC
+								OPEN CURSOR_ITEM;
+
+								FETCH NEXT FROM CURSOR_ITEM INTO
+									@BlogID;
+
+								WHILE @@FETCH_STATUS = 0
+									BEGIN
+										IF(@Index = 5)
+											BEGIN
+												INSERT INTO @Table ([BlogID],[Slide])
+												VALUES (@BlogID,1)
+												SET @Index = 2
+											END
+										ELSE
+											BEGIN
+												INSERT INTO @Table ([BlogID],[Slide])
+												VALUES (@BlogID,@Index)
+												SET @Index = @Index + 1
+											END
+										FETCH NEXT FROM CURSOR_ITEM INTO
+											@BlogID;
+									END;
+								CLOSE CURSOR_ITEM;
+
+								DEALLOCATE CURSOR_ITEM;
+
+								SELECT	MD.[BlogID]
+										,P.[Title]
+										,P.[KeyWord]
+										,P.[Description]
+										,P.[BannerPath]
+										,P.[MinisterID]
+										,[MinisterName]		= M.[Title] + ' ' + M.[FullName]
+										,[MinisterPhoto]	= M.[Photo]
+										,P.[ActiveFlag]
+										,[Date]			= CONVERT(DATE,ISNULL(P.[LastModifyDate],P.[InsertDate]))
+										,[Year]			= CONVERT(VARCHAR(4),YEAR(ISNULL(P.[LastModifyDate],P.[InsertDate])))
+										,[Month]		= DATENAME(MONTH,ISNULL(P.[LastModifyDate],P.[InsertDate]))
+										,[Day]			= CASE WHEN DATEPART(DAY,ISNULL(P.[LastModifyDate],P.[InsertDate])) <10 THEN '0' + CONVERT(VARCHAR(1),DATEPART(DAY,ISNULL(P.[LastModifyDate],P.[InsertDate])))
+																ELSE CONVERT(VARCHAR(2),DATEPART(DAY,ISNULL(P.[LastModifyDate],P.[InsertDate]))) END
+										,MD.[Slide]
+								FROM	@Table MD
+										LEFT JOIN [config].[utbBlogs] P ON MD.[BlogID] = P.[BlogID]
+										LEFT JOIN [config].[utbMinisters] M ON M.[MinisterID] = P.[MinisterID]
+								ORDER BY P.[InsertDate] DESC
+							END
 					END
 			-- =======================================================
 

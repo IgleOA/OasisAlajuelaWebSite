@@ -42,6 +42,7 @@ namespace DAL
                             MinisterID = Convert.ToInt32(dr["MinisterID"]),
                             Title = dr["Title"].ToString(),
                             FullName = dr["FullName"].ToString(),
+                            Photo = dr["Photo"].ToString(),
                             ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"])
                         };
                         List.Add(detail);
@@ -85,6 +86,15 @@ namespace DAL
                     Value = Detail.FullName.Trim()
                 };
                 SqlCmd.Parameters.Add(pFullName);
+
+                SqlParameter pPhoto = new SqlParameter
+                {
+                    ParameterName = "@Photo",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 500,
+                    Value = Detail.Photo
+                };
+                SqlCmd.Parameters.Add(pPhoto);
 
                 SqlParameter ParInsertUser = new SqlParameter
                 {
@@ -134,6 +144,7 @@ namespace DAL
                         Detail.MinisterID = Convert.ToInt32(dr["MinisterID"]);
                         Detail.FullName = dr["FullName"].ToString();
                         Detail.Title = dr["Title"].ToString();
+                        Detail.Photo = dr["Photo"].ToString();
                         Detail.ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]);                        
                     }
                 }
@@ -183,6 +194,15 @@ namespace DAL
                     Value = Detail.FullName.Trim()
                 };
                 SqlCmd.Parameters.Add(pFullName);
+
+                SqlParameter pPhoto = new SqlParameter
+                {
+                    ParameterName = "@Photo",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 500,
+                    Value = Detail.Photo
+                };
+                SqlCmd.Parameters.Add(pPhoto);
 
                 SqlParameter ParInsertUser = new SqlParameter
                 {

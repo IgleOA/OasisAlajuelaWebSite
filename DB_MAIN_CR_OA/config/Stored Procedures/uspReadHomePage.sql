@@ -21,17 +21,16 @@ AS
             DECLARE @lErrorState INT
 
             -- =======================================================
-				SELECT	[HomePageID]
-						,[DailyVerse]
-						,[DailyVerseReference]
-						,[ServicesTitle]
-						,[ServicesDescription]
-						,[PodcastTitle]
-						,[PodcastDescription]
-						,[SermonsTitle]
-						,[SermonsDescription]
-				FROM	[config].[utbHomePage]
+				SELECT	[SectionID]
+						,[Title]
+						,[Description]
+                        ,[RouterLink]
+                        ,[Image]
+                        ,[Order]
+						,[ActiveFlag]
+				FROM	[config].[utbHomePage]						
 				WHERE	[ActiveFlag] = ISNULL(@ActiveFlag,[ActiveFlag])
+                ORDER BY [Order]
 			-- =======================================================
 
         END TRY

@@ -23,6 +23,14 @@ namespace ET
         
         public int Order { get; set; }
 
+        public bool ActiveFlag { get; set; }
+
         public string ActionType { get; set; }
+    }
+
+    public class WebDirectoryRequest
+    {
+        public int AppID { get; set; }
+        public int UserID { get; set; }
     }
 }

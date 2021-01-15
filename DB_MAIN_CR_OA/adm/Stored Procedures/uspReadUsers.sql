@@ -11,7 +11,8 @@
 -- ======================================================================
 
 CREATE PROCEDURE [adm].[uspReadUsers]
-	@UserID INT = NULL
+	@UserID		INT = NULL,
+	@Email		VARCHAR(100) = NULL
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -34,6 +35,7 @@ AS
 				FROM	[adm].[utbUsers] U
 						LEFT JOIN [adm].[utbRoles] R ON R.RoleID = U.[RoleID]
 				WHERE	U.[UserID] = ISNULL(@UserID,[UserID])
+						AND U.[Email] = ISNULL(@Email,U.[Email])
 			-- =======================================================
 
         END TRY
