@@ -1122,3 +1122,24 @@ span.yr, span.mos {
     color: white;
 }
 
+.WrapperLiveVideo {
+    background-color: #000;
+    color: #bfbfbf;
+    background-image: url(https://oasisalajuelawebiste.blob.core.windows.net/sharefiles/bg3.jpg);
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    position: relative;
+}
+
+.LiveVideoFrame {
+    max-width: 100% !important;
+    margin: 0 auto;
+    border: 20px groove #ddd;
+}
+
+@media(max-width: 800px){
+    .LiveVideoFrame{
+        height: calc(100vw * .5625) !important;
+    }
+}

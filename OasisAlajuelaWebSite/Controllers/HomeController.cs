@@ -29,7 +29,7 @@ namespace OasisAlajuelaWebSite.Controllers
 
         public ActionResult Index()
         {
-            HomePage Home = HBL.Home();
+            var Home = HBL.Home();
             if (Request.IsAuthenticated)
             {
                 UsBL.InsertActivity(User.Identity.GetUserName(), this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"])));
@@ -41,6 +41,19 @@ namespace OasisAlajuelaWebSite.Controllers
                     ViewBag.Note = true;
                 }
             }
+            var LiveEvents = YBL.YoutubeLiveEvents();
+            ViewBag.LiveEvent = false;
+
+            if (LiveEvents.Count > 0)
+            {
+                ViewBag.LiveEvent = true;
+                Home.LiveVideo = LiveEvents.FirstOrDefault();
+            } 
+            else
+            {
+                Home.LiveVideo = new YouTubeVideo();
+            }
+
             List<Blogs> Casts = PBL.List();
             if(Casts.Count() > 0)
             {
