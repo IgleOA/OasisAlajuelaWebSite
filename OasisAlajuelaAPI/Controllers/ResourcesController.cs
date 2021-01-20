@@ -209,6 +209,11 @@ namespace OasisAlajuelaAPI.Controllers
             {
                 model.EnableStart = model.ESDate.Add(model.ESTime);
                 model.EnableEnd = model.EEDate.Add(model.EETime);
+            } 
+            else
+            {
+                model.EnableEnd = null;
+                model.EnableStart = null;
             }
 
             var r = RBL.Update(model, UserName);
