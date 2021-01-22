@@ -179,6 +179,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LeadershipController.cs" />
     <Compile Include="Controllers\MainController.cs" />
+    <Compile Include="Controllers\MinistersController.cs" />
     <Compile Include="Controllers\NewController.cs" />
     <Compile Include="Controllers\PrayerController.cs" />
     <Compile Include="Controllers\ResourcesController.cs" />
