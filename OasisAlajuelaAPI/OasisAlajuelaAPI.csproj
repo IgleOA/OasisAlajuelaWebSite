@@ -186,6 +186,7 @@
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SermonsController.cs" />
     <Compile Include="Controllers\ServicesController.cs" />
+    <Compile Include="Controllers\UpcommingEventsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\WebDirectoryController.cs" />
     <Compile Include="Controllers\YouTubeController.cs" />

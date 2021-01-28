@@ -145,9 +145,6 @@
     <Build Include="config\Stored Procedures\uspReadResourceTypes.sql" />
     <Build Include="config\Stored Procedures\uspReadResources.sql" />
     <Build Include="config\Stored Procedures\uspReadUpcommingEvents.sql" />
-    <Build Include="book\Stored Procedures\uspReadAuditoriumLayout.sql" />
-    <Build Include="book\Stored Procedures\uspReadAuditoriumRows.sql" />
-    <Build Include="book\Stored Procedures\uspReadAuditoriumSeats.sql" />
     <Build Include="book\Stored Procedures\uspReadReservationEventDetails.sql" />
     <Build Include="book\Stored Procedures\uspAddReservation.sql" />
     <Build Include="config\Stored Procedures\uspReadGroups.sql" />

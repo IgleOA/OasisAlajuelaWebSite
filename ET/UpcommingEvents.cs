@@ -8,11 +8,7 @@ namespace ET
     public class UpcommingEventsRequest
     {
         [Required]
-        public DateTime Startdate { get; set; }
-        [Required]
-        public bool UpCommingFlag { get; set; }
-        [Required]
-        public bool ActiveFlag { get; set; }
+        public DateTime Startdate { get; set; }        
     }
     public class UpcommingEvents
     {
@@ -67,9 +63,6 @@ namespace ET
 
         [Display(Name = "Capacidad")]
         public int? Capacity { get; set; }
-
-        [Display(Name = "Distanciamiento")]
-        public int? SocialDistance { get; set; }
 
         public int Available { get; set; }
 

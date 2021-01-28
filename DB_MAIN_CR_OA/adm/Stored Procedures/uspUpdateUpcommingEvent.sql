@@ -12,15 +12,14 @@
 
 CREATE PROCEDURE [adm].[uspUpdateUpcommingEvent]
 	@InsertUser			VARCHAR(50),
-	@UpdateType			VARCHAR(10),
+	@ActionType			VARCHAR(10),
 	@EventID			INT,
 	@Title				VARCHAR(50) = NULL,
 	@MinisterID			INT = NULL,
 	@Description		VARCHAR(MAX) = NULL,
 	@ScheduleDate		DATETIME = NULL,
 	@ReservationFlag	BIT = NULL,
-	@Capacity			INT = NULL,
-	@SocialDistance		INT = NULL
+	@Capacity			INT = NULL
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -39,29 +38,43 @@ AS
                 END
 
             -- =======================================================
-				IF(@UpdateType = 'DISABLE')
-					BEGIN						
-						UPDATE	[config].[utbUpcomingEvents]
-						SET		[ActiveFlag] =	0
-								,[LastModifyDate] = GETDATE()
-								,[LastModifyUser] = @InsertUser
+				IF(@ActionType = 'CHGST')
+					BEGIN				
+						DECLARE @Status BIT
+						SELECT	@Status = [ActiveFlag]
+						FROM	[config].[utbUpcomingEvents]
 						WHERE	[EventID] = @EventID
 						
+                        IF(@Status =1)
+                            BEGIN
+						        UPDATE	[config].[utbUpcomingEvents]
+						        SET		[ActiveFlag] =	0
+								        ,[LastModifyDate] = GETDATE()
+								        ,[LastModifyUser] = @InsertUser
+						        WHERE	[EventID] = @EventID
+                            END
+                        ELSE
+                            BEGIN 
+                                UPDATE	[config].[utbUpcomingEvents]
+						        SET		[ActiveFlag] =	1
+								        ,[LastModifyDate] = GETDATE()
+								        ,[LastModifyUser] = @InsertUser
+						        WHERE	[EventID] = @EventID
+                            END
 					END
 				ELSE
 					BEGIN
 						UPDATE	[config].[utbUpcomingEvents]
-						SET		[Title]	=	@Title
-                                ,[ActiveFlag] = 1
-								,[MinisterID] = @MinisterID
-								,[Description] = @Description
-								,[ScheduledDate] = @ScheduleDate
-								,[ReservationFlag] = @ReservationFlag
-								,[Capacity] = @Capacity
-								,[SocialDistance] =	@SocialDistance
-								,[LastModifyDate] = GETDATE()
-								,[LastModifyUser] = @InsertUser
-						WHERE	[EventID] = @EventID
+						SET		[Title]	        = @Title
+                                ,[ActiveFlag]   = 1
+								,[MinisterID]   = @MinisterID
+								,[Description]  = @Description
+								,[ScheduledDate]    = @ScheduleDate
+								,[ReservationFlag]  = @ReservationFlag
+								,[Capacity]         = @Capacity
+								,[LastModifyDate]   = GETDATE()
+								,[LastModifyUser]   = @InsertUser
+						WHERE	[EventID]       = @EventID
 					END
 			-- =======================================================
 

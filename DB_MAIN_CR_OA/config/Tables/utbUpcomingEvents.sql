@@ -6,7 +6,6 @@
     [ScheduledDate]		DATETIME      NOT NULL,
 	[ReservationFlag]	BIT			  NOT NULL,
 	[Capacity]			INT           NULL,
-	[SocialDistance]	INT		      NULL,
     [ActiveFlag]		BIT           CONSTRAINT [utbUpcomingEventsDefaultActiveFlagIsTrue] DEFAULT ((1)) NOT NULL,
     [InsertDate]		DATETIME      CONSTRAINT [utbUpcomingEventsDefaultInsertDatesysdatetime] DEFAULT (sysdatetime()) NOT NULL,
     [InsertUser]		VARCHAR (100) CONSTRAINT [utbUpcomingEventsDefaultInsertUsersuser_sname] DEFAULT (suser_sname()) NOT NULL,

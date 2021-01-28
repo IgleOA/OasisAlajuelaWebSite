@@ -9,11 +9,14 @@ namespace BL
     {
         private UpcommingEventsDAL UDAL = new UpcommingEventsDAL();
 
-        public List<UpcommingEvents> List(DateTime startdate, bool upcommingflag, bool? activeflag)
+        public List<UpcommingEvents> List(DateTime startdate)
         {
-            return UDAL.List(startdate, upcommingflag, activeflag);
+            return UDAL.List(startdate);
         }
-
+        public List<UpcommingEvents> History()
+        {
+            return UDAL.History();
+        }
         public bool AddNew(UpcommingEvents Event, string insertuser)
         {
             return UDAL.AddNew(Event, insertuser);

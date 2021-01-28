@@ -41,15 +41,9 @@ AS
 								,[Time]				= CONVERT(VARCHAR(10),FORMAT(IE.[ScheduledDate], 'hh:mm tt','en-US'))
 								,IE.[ReservationFlag]	
 								,[Capacity]			= ISNULL(IE.[Capacity],0)
-								,[SocialDistance]	= ISNULL(IE.[SocialDistance],0)
-								,[Available]		= A.[Available] - B.[Booked]
+								,[Available]		= ISNULL(IE.[Capacity],0) - B.[Booked]
 						FROM	[config].[utbUpcomingEvents] IE
 								LEFT JOIN [config].[utbMinisters] M ON M.[MinisterID] = IE.[MinisterID]
-
-								OUTER APPLY (SELECT [Available] = CASE WHEN IE.[Capacity] > 0 THEN IE.[Capacity]
-																		ELSE COUNT(S.[SeatID]) END
-													,[Total] = COUNT(S.[SeatID])
-												FROM	[book].[utbAuditoriumSeats] S) A
 						
 								OUTER APPLY (SELECT [Booked] = COUNT(R.[ReservationID])
 												FROM	[book].[utbReservations] R
@@ -77,15 +71,9 @@ AS
 										,[Time]				= CONVERT(VARCHAR(10),FORMAT(IE.[ScheduledDate], 'hh:mm tt','en-US'))
 										,IE.[ReservationFlag]	
 										,[Capacity]			= ISNULL(IE.[Capacity],0)
-										,[SocialDistance]	= ISNULL(IE.[SocialDistance],0)
-										,[Available]		= A.[Available] - B.[Booked]
+										,[Available]		= ISNULL(IE.[Capacity],0) - B.[Booked]
 								FROM	[config].[utbUpcomingEvents] IE
 										LEFT JOIN [config].[utbMinisters] M ON M.[MinisterID] = IE.[MinisterID]
-
-										OUTER APPLY (SELECT [Available] = CASE WHEN IE.[Capacity] > 0 THEN IE.[Capacity]
-																			   ELSE COUNT(S.[SeatID]) END
-															,[Total] = COUNT(S.[SeatID])
-													 FROM	[book].[utbAuditoriumSeats] S) A
 						
 										OUTER APPLY (SELECT [Booked] = COUNT(R.[ReservationID])
 													 FROM	[book].[utbReservations] R
@@ -94,7 +82,7 @@ AS
 
 								WHERE	IE.[ActiveFlag] = ISNULL(@pActiveFlag,IE.[ActiveFlag])
 										--AND IE.[EventID] = ISNULL(@pEventID,[EventID])
-										AND IE.[ScheduledDate] >= @pDate
+										AND IE.[ScheduledDate] >= ISNULL(@pDate, IE.[ScheduledDate])
 								ORDER BY IE.[ScheduledDate]
 							END
 						ELSE
@@ -123,7 +111,6 @@ AS
 										,[Time]				= CONVERT(VARCHAR(10),FORMAT((CONVERT(DATETIME,Y.[Date]) + CONVERT(DATETIME,W.[Schedule])), 'hh:mm tt','en-US'))
 										,[ReservationFlag]	= 0
 										,[Capacity]			= 0
-										,[SocialDistance]	= 0
 										,[Available]		= 0
 										,[Order]			= 2
 								INTO	#MainData
@@ -152,15 +139,10 @@ AS
 										,[Time]				= CONVERT(VARCHAR(10),FORMAT(IE.[ScheduledDate], 'hh:mm tt','en-US'))
 										,IE.[ReservationFlag]	
 										,[Capacity]			= ISNULL(IE.[Capacity],0)
-										,[SocialDistance]	= ISNULL(IE.[SocialDistance],0)
-										,[Available]		= A.[Available] - B.[Booked]
+										,[Available]		= ISNULL(IE.[Capacity],0) - B.[Booked]
 										,[Order]			= 1
 								FROM	[config].[utbUpcomingEvents] IE
 										LEFT JOIN [config].[utbMinisters] M ON M.[MinisterID] = IE.[MinisterID]
-										OUTER APPLY (SELECT [Available] = CASE WHEN IE.[Capacity] > 0 THEN IE.[Capacity]
-																			   ELSE COUNT(S.[SeatID]) END
-															,[Total] = COUNT(S.[SeatID])
-													 FROM	[book].[utbAuditoriumSeats] S) A
 						
 										OUTER APPLY (SELECT [Booked] = COUNT(R.[ReservationID])
 													 FROM	[book].[utbReservations] R
