@@ -42,6 +42,7 @@ AS
 								,IE.[ReservationFlag]	
 								,[Capacity]			= ISNULL(IE.[Capacity],0)
 								,[Available]		= ISNULL(IE.[Capacity],0) - B.[Booked]
+								,B.[Booked]
 						FROM	[config].[utbUpcomingEvents] IE
 								LEFT JOIN [config].[utbMinisters] M ON M.[MinisterID] = IE.[MinisterID]
 						
@@ -72,6 +73,7 @@ AS
 										,IE.[ReservationFlag]	
 										,[Capacity]			= ISNULL(IE.[Capacity],0)
 										,[Available]		= ISNULL(IE.[Capacity],0) - B.[Booked]
+										,B.[Booked]
 								FROM	[config].[utbUpcomingEvents] IE
 										LEFT JOIN [config].[utbMinisters] M ON M.[MinisterID] = IE.[MinisterID]
 						
@@ -112,6 +114,7 @@ AS
 										,[ReservationFlag]	= 0
 										,[Capacity]			= 0
 										,[Available]		= 0
+										,[Booked]			= 0
 										,[Order]			= 2
 								INTO	#MainData
 								FROM	(SELECT [Date] = DATEADD(DAY, rn - 1, @StartDate)
@@ -140,6 +143,7 @@ AS
 										,IE.[ReservationFlag]	
 										,[Capacity]			= ISNULL(IE.[Capacity],0)
 										,[Available]		= ISNULL(IE.[Capacity],0) - B.[Booked]
+										,B.[Booked]
 										,[Order]			= 1
 								FROM	[config].[utbUpcomingEvents] IE
 										LEFT JOIN [config].[utbMinisters] M ON M.[MinisterID] = IE.[MinisterID]

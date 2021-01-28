@@ -66,6 +66,8 @@ namespace ET
 
         public int Available { get; set; }
 
+        public int Booked { get; set; }
+
         public UpcommingEvents ()
         {
             MinisterData = new Ministers();

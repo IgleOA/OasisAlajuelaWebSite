@@ -67,7 +67,8 @@ namespace DAL
                             EventTime = dr["Time"].ToString(),
                             ReservationFlag = Convert.ToBoolean(dr["ReservationFlag"]),
                             Capacity = Convert.ToInt32(dr["Capacity"]),
-                            Available = Convert.ToInt32(dr["Available"])
+                            Available = Convert.ToInt32(dr["Available"]),
+                            Booked = Convert.ToInt32(dr["Booked"])
                         };
 
                         List.Add(detail);
@@ -121,7 +122,8 @@ namespace DAL
                             EventTime = dr["Time"].ToString(),
                             ReservationFlag = Convert.ToBoolean(dr["ReservationFlag"]),
                             Capacity = Convert.ToInt32(dr["Capacity"]),
-                            Available = Convert.ToInt32(dr["Available"])
+                            Available = Convert.ToInt32(dr["Available"]),
+                            Booked = Convert.ToInt32(dr["Booked"])
                         };
 
                         List.Add(detail);
@@ -262,6 +264,7 @@ namespace DAL
                         ET.ReservationFlag = Convert.ToBoolean(dr["ReservationFlag"]);
                         ET.Capacity = Convert.ToInt32(dr["Capacity"]);
                         ET.Available = Convert.ToInt32(dr["Available"]);
+                        ET.Booked = Convert.ToInt32(dr["Booked"]);
                     }
                 }
             }

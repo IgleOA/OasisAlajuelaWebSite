@@ -74,6 +74,8 @@ namespace OasisAlajuelaAPI.Controllers
 
             var UserName = tokenS.Claims.First(claim => claim.Type == "UserName").Value;
 
+            model.ScheduledDate = model.ScheduledDate.Add(model.ScheduledTime);
+
             var r = UBL.Update(model, UserName);
 
             if (!r)
@@ -99,6 +101,8 @@ namespace OasisAlajuelaAPI.Controllers
             var tokenS = handler.ReadToken(token) as JwtSecurityToken;
 
             var UserName = tokenS.Claims.First(claim => claim.Type == "UserName").Value;
+
+            model.ScheduledDate = model.ScheduledDate.Add(model.ScheduledTime);
 
             var r = UBL.AddNew(model, UserName);
 
