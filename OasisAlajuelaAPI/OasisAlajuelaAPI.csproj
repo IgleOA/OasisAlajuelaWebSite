@@ -182,6 +182,7 @@
     <Compile Include="Controllers\MinistersController.cs" />
     <Compile Include="Controllers\NewController.cs" />
     <Compile Include="Controllers\PrayerController.cs" />
+    <Compile Include="Controllers\ReservationsController.cs" />
     <Compile Include="Controllers\ResourcesController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SermonsController.cs" />

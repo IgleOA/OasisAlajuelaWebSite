@@ -12,39 +12,9 @@ namespace BL
     {
         private ReservationsDAL RDAL = new ReservationsDAL();
 
-        public List<ReserveDetail> AddReservation(Reservations Reservation, string InsertUser)
+        public bool AddNew (ReservationRequest model, string insertuser)
         {
-            return RDAL.AddReservation(Reservation, InsertUser);
-        }
-
-        public List<Reservations> Details (string GUID)
-        {
-            return RDAL.Details(GUID);
-        }
-
-        public string Remove(int ReservationID, string InsertUser)
-        {
-            return RDAL.Remove(ReservationID, InsertUser);
-        }
-
-        public bool RemoveGUID(string GUID, string InsertUser)
-        {
-            return RDAL.RemoveGUID(GUID, InsertUser);
-        }
-
-        public List<Reservations> ReservationsFullInfo(int EventID, int UserID)
-        {
-            return RDAL.ReservationsFullInfo(EventID, UserID);
-        }
-
-        public List<ReservationLevel1> ReservationsMainInfo(int EventID, int UserID)
-        {
-            return RDAL.ReservationsMainInfo(EventID, UserID);
-        }
-
-        public List<ReservationLevel1> ReservationsMaster()
-        {
-            return RDAL.ReservationsMaster();
+            return RDAL.AddNew(model, insertuser);
         }
     }
 }

@@ -70,7 +70,6 @@
     <Folder Include="adm\Stored Procedures\" />
     <Folder Include="config\Stored Procedures\" />
     <Folder Include="book\Stored Procedures\" />
-    <Folder Include="book\Functions" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="config\Tables\utbMinistries.sql" />
@@ -170,7 +169,6 @@
     <Build Include="book\Stored Procedures\uspUpdateReservation.sql" />
     <Build Include="book\Stored Procedures\uspReadReservationsByUser.sql" />
     <Build Include="book\Stored Procedures\uspReadMainInfoReservationsbyUser.sql" />
-    <Build Include="book\Functions\ufnCheckSeatAvailability.sql" />
     <Build Include="config\Tables\utbLeadership.sql" />
     <Build Include="config\Stored Procedures\uspReadLeadership.sql" />
     <Build Include="adm\Stored Procedures\uspAddLeadership.sql" />

@@ -27,7 +27,6 @@ AS
 						,R.[EventID]
 						,W.[Title]
 						,W.[ScheduledDate]
-						,R.[SeatID]
 						,R.[BookedBy]
 						,[BookedByName]		= U.[FullName]
 						,R.[BookedFor]

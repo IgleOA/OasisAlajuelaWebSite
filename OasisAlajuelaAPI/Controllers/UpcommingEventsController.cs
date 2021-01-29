@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -9,11 +8,6 @@ using BL;
 using System.Web.Http.Description;
 using OasisAlajuelaAPI.Filters;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net.Mail;
-using System.Configuration;
-using System.Text;
-using System.IO;
-using System.Web;
 using System.Web.Http.Cors;
 
 namespace OasisAlajuelaAPI.Controllers
