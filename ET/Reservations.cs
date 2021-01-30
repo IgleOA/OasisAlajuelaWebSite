@@ -21,15 +21,13 @@ namespace ET
 
         public int BookedBy { get; set; }
 
-        [Display(Name = "Reservado Por")]
         public string BookedByName { get; set; }
 
-        [Display(Name = "Reservado Para")]
-        public string BookedFor { get; set; }
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
 
         public string IdentityID { get; set; }
-
-        public bool ActiveFlag { get; set; }
 
         public DateTime ReservationDate { get; set; }
 
@@ -44,7 +42,26 @@ namespace ET
         public int BookedBy { get; set; }
 
         public string JSONBookedFor { get; set; }
+    }
 
-        public DateTime ReservationDate { get; set; }
+    public class ReservationResult
+    {
+
+        public string GUID { get; set; }
+
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        public string IdentityID { get; set; }
+
+        public string Status { get; set; }
+    }
+
+    public class ReservationListRequest
+    {
+        public string GUID { get; set; }
+
+        public int? EventID { get; set; }
     }
 }

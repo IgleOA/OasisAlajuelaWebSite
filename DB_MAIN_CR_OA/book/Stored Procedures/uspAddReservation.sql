@@ -33,11 +33,67 @@ AS
                 END
 
             -- =======================================================
-                DECLARE @pBookedFor     VARCHAR(100)
-                        ,@pIdentityID   VARCHAR(100)
+                DECLARE @pGUID			VARCHAR(MAX),
+						@pEventID		INT,
+						@pBookedBy		INT,
+						@pFirstName		VARCHAR(100),
+						@pLastName		VARCHAR(100),
+						@pIdentityID	VARCHAR(100),
+						@pInsertUser	VARCHAR(100)
+						   
+				SELECT	[GUID]		= @GUID
+						,[EventID]	= @EventID
+						,[BookedBy]	= @BookedBy
+						,[FirstName]	= TRIM([FirstName])
+						,[LastName]		= TRIM([LastName])
+						,[IdentityID]
+						,[InsertUser]	= @InsertUser
+						,[IsValid]	= 0
+				INTO	#CursorData
+				FROM	OPENJSON ( @JSONBookedFor )  
+				WITH	(
+							FirstName	varchar(100) '$.FirstName' ,  
+							LastName	varchar(100) '$.LastName' ,  
+							IdentityID	varchar(100) '$.IdentityID' 
+						)
 
-				INSERT INTO [book].[utbReservations] ([GUID],[EventID],[BookedBy],[BookedFor],[IdentityID],[InsertUser],[LastModifyUser])
-				VALUES (@GUID, @EventID, @BookedBy, @pBookedFor, @pIdentityID, @InsertUser, @InsertUser)
+				DECLARE ActionProcess CURSOR FOR 
+				SELECT	[GUID]
+						,[EventID]
+						,[BookedBy]
+						,[FirstName] 
+						,[LastName]
+						,[IdentityID]
+						,[InsertUser] 
+				FROM	#CursorData
+
+				OPEN ActionProcess
+				FETCH NEXT FROM ActionProcess INTO @pGUID, @pEventID, @pBookedBy, @pFirstName, @pLastName, @pIdentityID, @pInsertUser
+
+				WHILE @@FETCH_STATUS = 0
+					BEGIN
+						IF NOT EXISTS ( SELECT *
+										FROM	[book].[utbReservations] 
+										WHERE	[EventID] = @pEventID
+												AND [IdentityID] = @pIdentityID
+												AND [ActiveFlag] = 1)
+							BEGIN
+								INSERT INTO [book].[utbReservations] ([GUID],[EventID],[BookedBy],[FirstName], [LastName],[IdentityID],[InsertUser],[LastModifyUser])
+								VALUES (@pGUID, @pEventID, @pBookedBy, @pFirstName, @pLastName, @pIdentityID,@pInsertUser, @pInsertUser)
+
+								UPDATE	#CursorData
+								SET		[IsValid] = 1
+								WHERE	[IdentityID] = @pIdentityID
+							END						
+						FETCH NEXT FROM ActionProcess INTO @pGUID, @pEventID, @pBookedBy, @pFirstName, @pLastName, @pIdentityID, @pInsertUser
+					END
+
+					CLOSE ActionProcess
+					DEALLOCATE ActionProcess
+
+					SELECT * FROM #CursorData
+	
+					DROP TABLE #CursorData
 			-- =======================================================
 
         IF ( @@trancount > 0

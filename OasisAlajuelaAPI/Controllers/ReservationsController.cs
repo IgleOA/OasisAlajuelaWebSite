@@ -20,7 +20,7 @@ namespace OasisAlajuelaAPI.Controllers
 
         [HttpPost]
         [Route("api/Reservations/AddNew")]
-        [ResponseType(typeof(bool))]
+        [ResponseType(typeof(List<ReservationResult>))]
         public HttpResponseMessage AddNew([FromBody] ReservationRequest model)
         {
             var authHeader = this.Request.Headers.GetValues("Authorization").FirstOrDefault();
@@ -33,13 +33,30 @@ namespace OasisAlajuelaAPI.Controllers
 
             var r = RBL.AddNew(model, UserName);
 
-            if (!r)
+            if (r.Count > 0)
             {
-                return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
+                return this.Request.CreateResponse(HttpStatusCode.OK, r);
             }
             else
             {
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError);                
+            }
+        }
+
+        [HttpPost]
+        [Route("api/Reservations")]
+        [ResponseType(typeof(List<Reservations>))]
+        public HttpResponseMessage List([FromBody] ReservationListRequest model)
+        {
+            var r = RBL.List(model);
+
+            if (r.Count > 0)
+            {
                 return this.Request.CreateResponse(HttpStatusCode.OK, r);
+            }
+            else
+            {
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
             }
         }
     }

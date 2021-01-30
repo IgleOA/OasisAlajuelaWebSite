@@ -12,9 +12,14 @@ namespace BL
     {
         private ReservationsDAL RDAL = new ReservationsDAL();
 
-        public bool AddNew (ReservationRequest model, string insertuser)
+        public List<ReservationResult> AddNew (ReservationRequest model, string insertuser)
         {
             return RDAL.AddNew(model, insertuser);
+        }
+
+        public List<Reservations> List (ReservationListRequest model)
+        {
+            return RDAL.List(model);
         }
     }
 }

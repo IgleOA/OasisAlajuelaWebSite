@@ -144,7 +144,6 @@
     <Build Include="config\Stored Procedures\uspReadResourceTypes.sql" />
     <Build Include="config\Stored Procedures\uspReadResources.sql" />
     <Build Include="config\Stored Procedures\uspReadUpcommingEvents.sql" />
-    <Build Include="book\Stored Procedures\uspReadReservationEventDetails.sql" />
     <Build Include="book\Stored Procedures\uspAddReservation.sql" />
     <Build Include="config\Stored Procedures\uspReadGroups.sql" />
     <Build Include="adm\Stored Procedures\uspAddBanner.sql" />
@@ -167,8 +166,6 @@
     <Build Include="Security\config.sql" />
     <Build Include="book\Stored Procedures\uspReadReservation.sql" />
     <Build Include="book\Stored Procedures\uspUpdateReservation.sql" />
-    <Build Include="book\Stored Procedures\uspReadReservationsByUser.sql" />
-    <Build Include="book\Stored Procedures\uspReadMainInfoReservationsbyUser.sql" />
     <Build Include="config\Tables\utbLeadership.sql" />
     <Build Include="config\Stored Procedures\uspReadLeadership.sql" />
     <Build Include="adm\Stored Procedures\uspAddLeadership.sql" />
