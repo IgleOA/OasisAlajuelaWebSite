@@ -33,8 +33,8 @@ namespace ET
         [Display(Name ="Fecha")]
         [DataType(DataType.Date)]
         [CheckDate(ErrorMessage ="Por ingrese una fecha superior a la actual.")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
-        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy hh:mm tt}")]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy hh:mm tt}")]
         public DateTime ScheduledDate { get; set; }
 
         [Required]
@@ -67,6 +67,8 @@ namespace ET
         public int Available { get; set; }
 
         public int Booked { get; set; }
+
+        public List<Reservations> ReservationList { get; set; }
 
         public UpcommingEvents ()
         {

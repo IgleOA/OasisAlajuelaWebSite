@@ -9,6 +9,7 @@ using System.Web.Http.Description;
 using OasisAlajuelaAPI.Filters;
 using System.IdentityModel.Tokens.Jwt;
 using System.Web.Http.Cors;
+using RotativaHQ.MVC5;
 
 namespace OasisAlajuelaAPI.Controllers
 {
@@ -17,6 +18,7 @@ namespace OasisAlajuelaAPI.Controllers
     public class ReservationsController : ApiController
     {
         private ReservationsBL RBL = new ReservationsBL();
+        private UpcommingEventsBL UPL = new UpcommingEventsBL();
 
         [HttpPost]
         [Route("api/Reservations/AddNew")]
@@ -59,5 +61,27 @@ namespace OasisAlajuelaAPI.Controllers
                 return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
             }
         }
+
+        //[HttpPost]
+        //[Route("api/ReservationsPDF")]
+        //public HttpResponseMessage ReservationsPDF(int id)
+        //{
+        //    ReservationListRequest ListRequest = new ReservationListRequest()
+        //    {
+        //        EventID = id,
+        //        GUID = null
+        //    };
+
+        //    List<Reservations> ReservationList = new List<Reservations>();
+
+        //    var EventDetails = UPL.Details(id);
+
+        //    ReservationList = RBL.List(ListRequest);
+
+        //    string filename = "Reservaciones_" + EventDetails.Title;
+
+        //    return new ViewAsPdf("~/Home/ReservationsPrintVersion", ReservationList) { FileName = filename };
+            
+        //}
     }
 }
