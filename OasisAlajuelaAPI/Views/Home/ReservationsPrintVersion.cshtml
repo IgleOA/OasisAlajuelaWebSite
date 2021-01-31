@@ -9,7 +9,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Email confirmation</title>
+    <title>Reservaciones - @Html.DisplayFor(model => model.Title)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -102,12 +102,13 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @{ int RowNo = 0; }
                     @foreach (var item in Model.ReservationList)
                     {
                         var Code = item.GUID + "_" + item.ReservationID.ToString();
 
                         <tr>
-                            <td class="align-middle text-center">@Html.DisplayFor(modelItem => item.ReservationID) </td>
+                            <td class="align-middle text-center">@{RowNo++;} @RowNo </td>
                             <td class="align-middle">@Html.DisplayFor(modelItem => Code)</td>
                             <td class="align-middle">@Html.DisplayFor(modelItem => item.LastName)</td>
                             <td class="align-middle">@Html.DisplayFor(modelItem => item.FirstName)</td>

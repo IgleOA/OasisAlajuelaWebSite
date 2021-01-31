@@ -152,5 +152,49 @@ namespace DAL
 
             return Results;
         }
+
+        public Reservations Details(int ReservationID)
+        {
+            Reservations detail = new Reservations();
+
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[book].[uspReadReservation]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                SqlCmd.Parameters.AddWithValue("@ReservationID", ReservationID);
+
+                //EXEC Command
+                using (var dr = SqlCmd.ExecuteReader())
+                {
+                    dr.Read();
+                    if (dr.HasRows)
+                    {
+                        detail.ReservationID = Convert.ToInt32(dr["ReservationID"]);
+                        detail.GUID = dr["GUID"].ToString();
+                        detail.EventID = Convert.ToInt32(dr["EventID"]);
+                        detail.Title = dr["Title"].ToString();
+                        detail.ScheduledDate = Convert.ToDateTime(dr["ScheduledDate"]);
+                        detail.BookedBy = Convert.ToInt32(dr["BookedBy"]);
+                        detail.BookedByName = dr["BookedByName"].ToString();
+                        detail.FirstName = dr["FirstName"].ToString();
+                        detail.LastName = dr["LastName"].ToString();
+                        detail.IdentityID = dr["IdentityID"].ToString();
+                        detail.ReservationDate = Convert.ToDateTime(dr["ReservationDate"]);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            return detail;
+        }
+
+
     }
 }
