@@ -21,5 +21,15 @@ namespace BL
         {
             return RDAL.List(model);
         }
+
+        public List<Reserver> Reservers()
+        {
+            return RDAL.Reservers();
+        }
+
+        public bool Update(Reservations model, string insertuser)
+        {
+            return RDAL.Update(model, insertuser);
+        }
     }
 }

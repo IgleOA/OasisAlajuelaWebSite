@@ -32,7 +32,7 @@ namespace OasisAlajuelaAPI.Controllers
         [ResponseType(typeof(List<UpcommingEvents>))]
         public HttpResponseMessage History()
         {
-            var r = UBL.History();
+            var r = UBL.History().OrderByDescending(x => x.ScheduledDate);
 
             return this.Request.CreateResponse(HttpStatusCode.OK, r);
         }

@@ -52,7 +52,9 @@ namespace OasisAlajuelaAPI.Controllers
 
             EventDetails.ReservationList = RBL.List(ListRequest);
 
-            string filename = "Reservaciones_" + EventDetails.Title + ".pdf";
+            string filename = "Reservas_" 
+                              + EventDetails.Title + "_"
+                              + EventDetails.ScheduledDate.ToString().Substring(0,13) + ".pdf";
 
             return new ViewAsPdf("ReservationsPrintVersion", EventDetails) { FileName = filename };
 

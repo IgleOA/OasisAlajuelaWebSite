@@ -11,8 +11,11 @@
 -- ======================================================================
 CREATE PROCEDURE [book].[uspUpdateReservation]
 	@InsertUser		VARCHAR(100),
-	@ReservationID	INT = NULL,
-	@GUID			VARCHAR(MAX) = NULL
+	@ReservationID	INT,
+    @FirstName      VARCHAR(100) = NULL,
+    @LastName       VARCHAR(100) = NULL,
+    @IdentityID     VARCHAR(100) = NULL,
+	@ActionType     VARCHAR(10)
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -31,24 +34,22 @@ AS
                 END
 
             -- =======================================================
-				IF(@GUID IS NOT NULL)
+				IF(@ActionType = 'CHGST')
 					BEGIN
-						UPDATE	[book].[utbReservations] 
-						SET		[ActiveFlag] = 0
-								,[LastModifyDate] = GETDATE()
-								,[LastModifyUser] = @InsertUser
-						WHERE	[GUID] = @GUID
-					END
-				ELSE
-					BEGIN
-						UPDATE	[book].[utbReservations] 
+                        UPDATE	[book].[utbReservations] 
 						SET		[ActiveFlag] = 0
 								,[LastModifyDate] = GETDATE()
 								,[LastModifyUser] = @InsertUser
 						WHERE	[ReservationID] = @ReservationID
-
-						SELECT	[GUID]
-						FROM	[book].[utbReservations] 
+					END
+				ELSE
+					BEGIN
+						UPDATE	[book].[utbReservations] 
+						SET		[FirstName] = @FirstName
+                                ,[LastName] = @LastName
+                                ,[IdentityID] = @IdentityID
+								,[LastModifyDate] = GETDATE()
+								,[LastModifyUser] = @InsertUser
 						WHERE	[ReservationID] = @ReservationID
 					END
 			-- =======================================================

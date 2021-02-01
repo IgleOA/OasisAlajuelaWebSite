@@ -62,26 +62,46 @@ namespace OasisAlajuelaAPI.Controllers
             }
         }
 
-        //[HttpPost]
-        //[Route("api/ReservationsPDF")]
-        //public HttpResponseMessage ReservationsPDF(int id)
-        //{
-        //    ReservationListRequest ListRequest = new ReservationListRequest()
-        //    {
-        //        EventID = id,
-        //        GUID = null
-        //    };
+        [HttpPost]
+        [Route("api/Reservers")]
+        [ResponseType(typeof(List<Reserver>))]
+        public HttpResponseMessage Reservers()
+        {            
+            var r = RBL.Reservers();
 
-        //    List<Reservations> ReservationList = new List<Reservations>();
+            if (r.Count > 0)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.OK, r);
+            }
+            else
+            {
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
+            }
+        }
 
-        //    var EventDetails = UPL.Details(id);
+        [HttpPost]
+        [Route("api/Reservations/Update")]
+        [ResponseType(typeof(bool))]
+        public HttpResponseMessage Update([FromBody] Reservations model)
+        {
+            var authHeader = this.Request.Headers.GetValues("Authorization").FirstOrDefault();
+            var token = authHeader.Substring("Bearer ".Length);
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(token);
+            var tokenS = handler.ReadToken(token) as JwtSecurityToken;
 
-        //    ReservationList = RBL.List(ListRequest);
+            var UserName = tokenS.Claims.First(claim => claim.Type == "UserName").Value;
 
-        //    string filename = "Reservaciones_" + EventDetails.Title;
+            var r = RBL.Update(model, UserName);
 
-        //    return new ViewAsPdf("~/Home/ReservationsPrintVersion", ReservationList) { FileName = filename };
-            
-        //}
+            if (r)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.OK, r);
+            }
+            else
+            {
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
+            }
+        }
     }
 }

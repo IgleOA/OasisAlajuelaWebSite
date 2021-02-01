@@ -75,7 +75,6 @@
     <Compile Include="UserProfileBL.cs" />
     <Compile Include="UsersBL.cs" />
     <Compile Include="WebDirectoryBL.cs" />
-    <Compile Include="ReservationEventDetailBL.cs" />
     <Compile Include="YouTubeBL.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -195,6 +195,117 @@ namespace DAL
             return detail;
         }
 
+        public List<Reserver> Reservers()
+        {
+            List<Reserver> Results = new List<Reserver>();
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[book].[uspReadReservers]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };               
 
+                //Exec Command
+                using (var dr = SqlCmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        var detail = new Reserver
+                        {
+                            FirstName = dr["FirstName"].ToString(),
+                            LastName = dr["LastName"].ToString(),
+                            IdentityID = dr["IdentityID"].ToString()                            
+                        };
+                        Results.Add(detail);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+
+            return Results;
+        }
+
+        public bool Update(Reservations Detail, string InsertUser)
+        {
+            bool rpta = false;
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[book].[uspUpdateReservation]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                //Insert Parameters
+                SqlParameter pReservationID = new SqlParameter
+                {
+                    ParameterName = "@ReservationID",
+                    SqlDbType = SqlDbType.Int,
+                    Value = Detail.ReservationID
+                };
+                SqlCmd.Parameters.Add(pReservationID);
+
+                SqlParameter ParInsertUser = new SqlParameter
+                {
+                    ParameterName = "@InsertUser",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 50,
+                    Value = InsertUser
+                };
+                SqlCmd.Parameters.Add(ParInsertUser);
+
+                SqlParameter pActionType = new SqlParameter
+                {
+                    ParameterName = "@ActionType",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 10,
+                    Value = Detail.ActionType
+                };
+                SqlCmd.Parameters.Add(pActionType);
+
+                SqlParameter pFN = new SqlParameter
+                {
+                    ParameterName = "@FirstName",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 100,
+                    Value = Detail.FirstName
+                };
+                SqlCmd.Parameters.Add(pFN);
+
+                SqlParameter pLN = new SqlParameter
+                {
+                    ParameterName = "@LastName",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 100,
+                    Value = Detail.LastName
+                };
+                SqlCmd.Parameters.Add(pLN);
+
+                SqlParameter pID = new SqlParameter
+                {
+                    ParameterName = "@IdentityID",
+                    SqlDbType = SqlDbType.VarChar,
+                    Size = 100,
+                    Value = Detail.IdentityID
+                };
+                SqlCmd.Parameters.Add(pID);
+
+                //Exec Command
+                SqlCmd.ExecuteNonQuery();
+
+                rpta = true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            return rpta;
+        }
     }
 }

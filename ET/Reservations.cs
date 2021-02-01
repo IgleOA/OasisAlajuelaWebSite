@@ -31,6 +31,8 @@ namespace ET
 
         public DateTime ReservationDate { get; set; }
 
+        public string ActionType { get; set; }
+
     }
     
     public class ReservationRequest
@@ -63,5 +65,12 @@ namespace ET
         public string GUID { get; set; }
 
         public int? EventID { get; set; }
+    }
+
+    public class Reserver
+    {
+        public string IdentityID { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
     }
 }
