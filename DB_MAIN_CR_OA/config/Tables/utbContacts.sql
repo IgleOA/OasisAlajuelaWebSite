@@ -2,8 +2,9 @@
 (
 	[ContactID]			INT				IDENTITY (1,1) NOT NULL,
     [Requester]			VARCHAR(100)	NOT NULL,
-    [Email]				VARCHAR(50)		NOT NULL,
+    [Email]				VARCHAR(100)	NOT NULL,
     [PhoneNumber]		VARCHAR(50)		NULL,
+    [ContactType]       VARCHAR(100)	NOT NULL,
 	[Reason]			VARCHAR(1000)	NOT NULL,
     [InsertDate]		DATETIME		CONSTRAINT [utbContactsDefaultInsertDateSysDateTime] DEFAULT (sysdatetime()) NOT NULL,
 	[IP]				VARCHAR (20)	NULL,

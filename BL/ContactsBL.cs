@@ -13,9 +13,9 @@ namespace BL
             return CDAL.Add(Model);
         }
 
-        public List<Contacts> List(bool HistoryFlag)
+        public List<Contacts> List(ContactListRequest model)
         {
-            return CDAL.List(HistoryFlag);
+            return CDAL.List(model);
         }
 
         public Contacts Details(int ContactID)

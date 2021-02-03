@@ -61,7 +61,6 @@
     <Compile Include="MinistriesBL.cs" />
     <Compile Include="NewsBL.cs" />
     <Compile Include="PodcastsBL.cs" />
-    <Compile Include="PrayersBL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReservationsBL.cs" />
     <Compile Include="ResourcesBL.cs" />

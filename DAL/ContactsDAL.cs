@@ -26,6 +26,7 @@ namespace DAL
                 SqlCmd.Parameters.AddWithValue("@Requester", Model.Requester);
                 SqlCmd.Parameters.AddWithValue("@Email", Model.Email);
                 SqlCmd.Parameters.AddWithValue("@PhoneNumber", Model.PhoneNumber);
+                SqlCmd.Parameters.AddWithValue("@ContactType", Model.ContactType);
                 SqlCmd.Parameters.AddWithValue("@Reason", Model.Reason);
                 SqlCmd.Parameters.AddWithValue("@IP", Model.IP);
                 SqlCmd.Parameters.AddWithValue("@Country", Model.Country);
@@ -44,7 +45,7 @@ namespace DAL
             return rpta;
         }
 
-        public List<Contacts> List(bool HistoryFlag)
+        public List<Contacts> List(ContactListRequest Model)
         {
             List<Contacts> List = new List<Contacts>();
 
@@ -56,7 +57,8 @@ namespace DAL
                     CommandType = CommandType.StoredProcedure
                 };
 
-                SqlCmd.Parameters.AddWithValue("@HistoryFlag", HistoryFlag);
+                SqlCmd.Parameters.AddWithValue("@HistoryFlag", Model.HistoryFlag);
+                SqlCmd.Parameters.AddWithValue("@ContactTpe", Model.ContactType);
 
                 using (var dr = SqlCmd.ExecuteReader())
                 {
@@ -68,6 +70,7 @@ namespace DAL
                             Requester = dr["Requester"].ToString(),
                             Email = dr["Email"].ToString(),
                             PhoneNumber = dr["PhoneNumber"].ToString(),
+                            ContactType = dr["ContactType"].ToString(),
                             Reason = dr["Reason"].ToString(),
                             InsertDate = Convert.ToDateTime(dr["InsertDate"]),
                             IP = dr["IP"].ToString(),
@@ -112,6 +115,7 @@ namespace DAL
                         Detail.Requester = dr["Requester"].ToString();
                         Detail.Email = dr["Email"].ToString();
                         Detail.PhoneNumber = dr["PhoneNumber"].ToString();
+                        Detail.ContactType = dr["ContactType"].ToString();
                         Detail.Reason = dr["Reason"].ToString();
                         Detail.InsertDate = Convert.ToDateTime(dr["InsertDate"]);
                         Detail.IP = dr["IP"].ToString();

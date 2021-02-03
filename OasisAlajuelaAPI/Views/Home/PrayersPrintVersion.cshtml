@@ -1,0 +1,150 @@
+﻿@model IEnumerable<ET.Contacts>
+@using System.Globalization;
+
+@{
+    ViewBag.Title = "PrayersPrintVersion";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Peticiones</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <style>
+        #header {
+            background: #2201f6;
+            color: white;
+            cursor: default;
+            height: 4.25em;
+            left: 0;
+            /* line-height: 3.25em; */
+            position: fixed;
+            /* text-align: right; */
+            top: 0;
+            width: 100%;
+            z-index: 10001;
+        }
+
+        header .banner {
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .headerFixed {
+            position: fixed;
+            height: 60px !important;
+        }
+
+        footer {
+            background-color: #2201f6;
+            color: white;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            z-index: 1;
+        }
+
+            footer a,
+            footer a:visited {
+                color: white;
+            }
+
+                footer a:hover,
+                footer a:focus {
+                    color: gray;
+                }
+    </style>
+    <header id="header" class="headerFixed">
+        <nav>
+            <a class="text-decoration-none">
+                <picture>
+                    <source media="(min-width:650px)" srcset="https://oasisalajuelawebiste.blob.core.windows.net/sharefiles/LogoOALargeSize_White.png">
+                    <img src="https://oasisalajuelawebiste.blob.core.windows.net/sharefiles/LogoOALargeSize_White.png" alt="Oasis Alajuela" class="m-2" style="height: 3rem;">
+                </picture>
+            </a>
+            <div class="d-flex float-right my-2">
+                <div class="col">
+                    <h4 class="text-font-base text-white font-weight-light m-0"> Oasis Alajuela </h4>
+                    <p class="text-font-base" style="font-size: 0.74rem;"> Auditorio del Espíritu Santo </p>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div id="header" class="headerFixed" style="z-index: -1; position: relative;"></div>
+    <div class="container mt-3 mb-5 bg-white-25 p-0" style="max-width: 90%">
+        <div class="text-center text-font-base pt-2">
+            <h2 class="m-0">Lista de Reservación</h2>
+            <p class="subtitle m-0">Peticiones de Oración</p>
+        </div>
+        <hr />
+        <div class="d-flex justify-content-start my-2 text-font-base">
+            <table class="table table-responsive-sm table-striped table-borderless">
+                <thead class="thead-dark">
+                    <tr>
+                        <th class="align-middle text-center"></th>
+                        <th class="align-middle">información</th>
+                        <th class="align-middle" style="width: 250px;">Contacto</th>
+                        <th class="align-middle text-center">Check</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ int RowNo = 0; }
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="align-middle text-center">@{RowNo++;} @RowNo </td>
+                            <td class="align-middle">
+                                <p class="m-0">
+                                    <strong>Solicitante:</strong> @Html.DisplayFor(modelItem => item.Requester)
+                                </p>
+                                <p>
+                                    <strong>Motivo:</strong> @Html.DisplayFor(modelItem => item.Reason)
+                                </p>
+                            </td>
+                            <td class="align-middle">
+                                <p class="m-0">
+                                    <i class="fas fa-globe-americas align-middle"></i> @Html.DisplayFor(modelItem => item.Country), @Html.DisplayFor(modelItem => item.Region), @Html.DisplayFor(modelItem => item.City)
+                                </p>
+                                <p class="m-0">
+                                    <i class="fas fa-envelope align-middle"></i> @Html.DisplayFor(modelItem => item.Email)
+                                </p>
+                                @if (item.PhoneNumber.Length > 0)
+                                {
+                                    <p class="m-0">
+                                        <i class="fas fa-phone-alt align-middle"></i> @Html.DisplayFor(modelItem => item.PhoneNumber)
+                                    </p>
+                                }
+                            </td>
+                            <td class="align-middle text-center">
+                                <i class="far fa-square fa-2x"></i>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="headerFixed" style="z-index:-1;position:relative;"></div>
+    <footer>
+        <div class="row p-0 m-0">
+            <div class="w-100 my-3">
+                <p class="m-0 font-weight-light">Oasis Alajuela &copy; @DateTime.Now.Year Derechos reservados</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>

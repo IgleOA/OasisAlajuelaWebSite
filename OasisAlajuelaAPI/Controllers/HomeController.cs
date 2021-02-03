@@ -59,5 +59,22 @@ namespace OasisAlajuelaAPI.Controllers
             return new ViewAsPdf("ReservationsPrintVersion", EventDetails) { FileName = filename };
 
         }
+
+        //public ActionResult PrayersPrintVersion(bool id)
+        //{
+        //    var prayersList = PBL.List(id);
+
+        //    return View(prayersList);
+        //}
+        //public ActionResult PrayersPDF(bool id)
+        //{
+        //    var prayersList = PBL.List(id);
+
+        //    string filename = "Peticiones_"
+        //                      + DateTime.Today.ToString("dd_MM_yyyy") + ".pdf";
+
+        //    return new ViewAsPdf("PrayersPrintVersion", prayersList) { FileName = filename };
+
+        //}
     }
 }

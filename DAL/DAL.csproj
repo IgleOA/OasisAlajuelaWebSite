@@ -135,7 +135,6 @@
     <Compile Include="MinistriesDAL.cs" />
     <Compile Include="NewsDAL.cs" />
     <Compile Include="PodcastsDAL.cs" />
-    <Compile Include="PrayersDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReservationsDAL.cs" />
     <Compile Include="ResourcesDAL.cs" />

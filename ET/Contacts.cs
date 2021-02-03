@@ -21,6 +21,10 @@ namespace ET
         [DataType(DataType.PhoneNumber)]
         public string PhoneNumber { get; set; }
 
+        [Display(Name = "Tipo de Contacto")]
+        public string ContactType { get; set; }
+
+
         [Required(ErrorMessage = "Este campo es obligatorio")]
         [Display(Name = "Motivo de Oración")]
         public string Reason { get; set; }
@@ -43,5 +47,12 @@ namespace ET
 
         public string ActionType { get; set; }
 
+    }
+
+    public class ContactListRequest
+    {
+        public bool HistoryFlag { get; set; }
+
+        public string ContactType { get; set; }
     }
 }
