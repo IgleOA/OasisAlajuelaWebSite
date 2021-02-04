@@ -1,19 +1,18 @@
-﻿@model IEnumerable<ET.Contacts>
-@using System.Globalization;
+﻿@model ET.ContactType
 
 @{
-    ViewBag.Title = "PrayersPrintVersion";
     Layout = null;
 }
 <!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Peticiones</title>
+    <title>@Html.DisplayFor(model => model.TypeSubtitle)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
@@ -63,6 +62,15 @@
                 footer a:focus {
                     color: gray;
                 }
+        .text-font-base {
+            font-family: 'Montserrat', sans-serif !important;
+        }
+
+        .subtitle {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1.5em;
+        }
+
     </style>
     <header id="header" class="headerFixed">
         <nav>
@@ -83,23 +91,29 @@
     <div id="header" class="headerFixed" style="z-index: -1; position: relative;"></div>
     <div class="container mt-3 mb-5 bg-white-25 p-0" style="max-width: 90%">
         <div class="text-center text-font-base pt-2">
-            <h2 class="m-0">Lista de Reservación</h2>
-            <p class="subtitle m-0">Peticiones de Oración</p>
+            <h2 class="m-0 text-capitalize">@Html.DisplayFor(model => model.TypeTitle)</h2>
+            @if (Model.HistoryFlag == true)
+            {
+                <p class="subtitle m-0">Historial @Html.DisplayFor(model => model.TypeSubtitle)</p>
+            }
+            else
+            {
+                <p class="subtitle m-0">Listado del último mes</p>
+            }
         </div>
-        <hr />
         <div class="d-flex justify-content-start my-2 text-font-base">
             <table class="table table-responsive-sm table-striped table-borderless">
                 <thead class="thead-dark">
                     <tr>
                         <th class="align-middle text-center"></th>
                         <th class="align-middle">información</th>
-                        <th class="align-middle" style="width: 250px;">Contacto</th>
+                        <th class="align-middle" style="width: 300px;">Contacto</th>
                         <th class="align-middle text-center">Check</th>
                     </tr>
                 </thead>
                 <tbody>
                     @{ int RowNo = 0; }
-                    @foreach (var item in Model)
+                    @foreach (var item in Model.ContactList)
                     {
                         <tr>
                             <td class="align-middle text-center">@{RowNo++;} @RowNo </td>

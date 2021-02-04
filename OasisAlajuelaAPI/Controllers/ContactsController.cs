@@ -65,13 +65,33 @@ namespace OasisAlajuelaAPI.Controllers
         [HttpPost]
         [Route("api/Contact")]
         [ApiKeyAuthentication]
-        [ResponseType(typeof(List<Contacts>))]
+        [ResponseType(typeof(ContactType))]
         public HttpResponseMessage List([FromBody] ContactListRequest model)
         {
-            var r = CBL.List(model);
+            var CT = CBL.Details(model.ContactTypeID);
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, r);
+            CT.ContactList = CBL.ContactList(model);
+
+            if (CT.ContactTypeID > 0)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.OK, CT);
+            }
+            else
+            {
+                return this.Request.CreateResponse(HttpStatusCode.NotFound);
+            }
 
         }
+
+        [HttpPost]
+        [Route("api/Contact/ContactTypes")]
+        [ResponseType(typeof(List<ContactType>))]
+        public HttpResponseMessage ContactTypeList()
+        {
+            var r = CBL.ContactTypesList();
+
+            return this.Request.CreateResponse(HttpStatusCode.OK, r);           
+        }
+
     }
 }

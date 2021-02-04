@@ -17,6 +17,7 @@ namespace OasisAlajuelaAPI.Controllers
     {
         private ReservationsBL RBL = new ReservationsBL();
         private UpcommingEventsBL UBL = new UpcommingEventsBL();
+        private ContactsBL CBL = new ContactsBL();
 
         public ActionResult Index()
         {
@@ -60,21 +61,37 @@ namespace OasisAlajuelaAPI.Controllers
 
         }
 
-        //public ActionResult PrayersPrintVersion(bool id)
-        //{
-        //    var prayersList = PBL.List(id);
+        public ActionResult ContactsPrintVersion(bool historyflag, int contacttypeid)
+        {
+            var CLR = new ContactListRequest()
+            {
+                ContactTypeID = contacttypeid,
+                HistoryFlag = historyflag
+            };
 
-        //    return View(prayersList);
-        //}
-        //public ActionResult PrayersPDF(bool id)
-        //{
-        //    var prayersList = PBL.List(id);
+            var CTDetails = CBL.Details(contacttypeid);
+            CTDetails.HistoryFlag = historyflag;
+            CTDetails.ContactList = CBL.ContactList(CLR);
 
-        //    string filename = "Peticiones_"
-        //                      + DateTime.Today.ToString("dd_MM_yyyy") + ".pdf";
+            return View(CTDetails);
+        }
 
-        //    return new ViewAsPdf("PrayersPrintVersion", prayersList) { FileName = filename };
+        public ActionResult ContactsPDF(bool historyflag, int contacttypeid)
+        {
+            var CLR = new ContactListRequest()
+            {
+                ContactTypeID = contacttypeid,
+                HistoryFlag = historyflag
+            };
 
-        //}
+            var CTDetails = CBL.Details(contacttypeid);
+            CTDetails.HistoryFlag = historyflag;
+            CTDetails.ContactList = CBL.ContactList(CLR);
+
+            string filename = CTDetails.TypeTitle + "_" + DateTime.Today.ToString("dd_MM_yyyy") + ".pdf";
+
+            return new ViewAsPdf("ContactsPrintVersion", CTDetails) { FileName = filename };
+
+        }
     }
 }

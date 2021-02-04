@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace ET
@@ -22,7 +23,7 @@ namespace ET
         public string PhoneNumber { get; set; }
 
         [Display(Name = "Tipo de Contacto")]
-        public string ContactType { get; set; }
+        public int ContactTypeID { get; set; }
 
 
         [Required(ErrorMessage = "Este campo es obligatorio")]
@@ -53,6 +54,29 @@ namespace ET
     {
         public bool HistoryFlag { get; set; }
 
-        public string ContactType { get; set; }
+        public int ContactTypeID { get; set; }        
+    }
+
+    public class ContactType
+    {
+        public int ContactTypeID { get; set; }
+
+        public string Type { get; set; }
+
+        public string TypeName { get; set; }
+
+        public string TypeTitle { get; set; }
+
+        public string TypeSubtitle { get; set; }
+
+        public int Order { get; set; }
+
+        public bool ActiveFlag { get; set; }
+
+        public List<Contacts> ContactList { get; set; }
+
+        public string ActionType { get; set; }
+
+        public bool HistoryFlag { get; set; }
     }
 }

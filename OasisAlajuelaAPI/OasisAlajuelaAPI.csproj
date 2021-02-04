@@ -370,7 +370,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\ReservationsPrintVersion.cshtml" />
-    <Content Include="Views\Home\PrayersPrintVersion.cshtml" />
+    <Content Include="Views\Home\ContactsPrintVersion.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
     <Content Include="Scripts\umd\popper.js.map" />
     <Content Include="Scripts\umd\popper.js.flow" />

@@ -13,14 +13,19 @@ namespace BL
             return CDAL.Add(Model);
         }
 
-        public List<Contacts> List(ContactListRequest model)
+        public List<Contacts> ContactList(ContactListRequest model)
         {
-            return CDAL.List(model);
+            return CDAL.ContactList(model);
         }
 
-        public Contacts Details(int ContactID)
+        public List<ContactType> ContactTypesList ()
         {
-            return CDAL.Details(ContactID);
+            return CDAL.ContactTypeList();
+        }
+
+        public ContactType Details(int contacttypeid)
+        {
+            return CDAL.Details(contacttypeid);
         }
     }
 }
