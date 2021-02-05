@@ -8,11 +8,7 @@ namespace ET
     public class UpcommingEventsRequest
     {
         [Required]
-        public DateTime Startdate { get; set; }
-        [Required]
-        public bool UpCommingFlag { get; set; }
-        [Required]
-        public bool ActiveFlag { get; set; }
+        public DateTime Startdate { get; set; }        
     }
     public class UpcommingEvents
     {
@@ -37,8 +33,8 @@ namespace ET
         [Display(Name ="Fecha")]
         [DataType(DataType.Date)]
         [CheckDate(ErrorMessage ="Por ingrese una fecha superior a la actual.")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
-        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy hh:mm tt}")]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy hh:mm tt}")]
         public DateTime ScheduledDate { get; set; }
 
         [Required]
@@ -68,10 +64,11 @@ namespace ET
         [Display(Name = "Capacidad")]
         public int? Capacity { get; set; }
 
-        [Display(Name = "Distanciamiento")]
-        public int? SocialDistance { get; set; }
-
         public int Available { get; set; }
+
+        public int Booked { get; set; }
+
+        public List<Reservations> ReservationList { get; set; }
 
         public UpcommingEvents ()
         {

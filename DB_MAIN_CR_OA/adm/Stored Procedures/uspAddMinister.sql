@@ -14,7 +14,7 @@ CREATE PROCEDURE [adm].[uspAddMinister]
 	@InsertUser		VARCHAR(50),
 	@Title			VARCHAR(50),
 	@FullName		VARCHAR(100),
-    @Photo          VARCHAR(500)
+    @Photo          VARCHAR(500) = NULL
 AS 
     BEGIN
         SET NOCOUNT ON

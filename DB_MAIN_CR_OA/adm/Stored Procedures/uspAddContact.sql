@@ -12,8 +12,9 @@
 
 CREATE PROCEDURE [adm].[uspAddContact]
 	@Requester		VARCHAR(100),
-	@Email			VARCHAR(50),
+	@Email			VARCHAR(100),
 	@PhoneNumber	VARCHAR(50) = NULL,
+    @ContactTypeID  INT,
 	@Reason			VARCHAR(1000),
 	@IP				VARCHAR(20) = NULL,
 	@Country		VARCHAR(50) = NULL,
@@ -37,8 +38,8 @@ AS
                 END
 
             -- =======================================================
-				INSERT INTO [config].[utbContacts] ([Requester],[Email],[PhoneNumber],[Reason],[IP],[Country],[Region],[City])
-				VALUES (@Requester, @Email, @PhoneNumber, @Reason, @IP, @Country, @Region, @City)
+				INSERT INTO [config].[utbContacts] ([Requester],[Email],[PhoneNumber],[ContactTypeID],[Reason],[IP],[Country],[Region],[City])
+				VALUES (@Requester, @Email, @PhoneNumber, @ContactTypeID, @Reason, @IP, @Country, @Region, @City)
 			-- =======================================================
 
         IF ( @@trancount > 0

@@ -70,7 +70,6 @@
     <Folder Include="adm\Stored Procedures\" />
     <Folder Include="config\Stored Procedures\" />
     <Folder Include="book\Stored Procedures\" />
-    <Folder Include="book\Functions" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="config\Tables\utbMinistries.sql" />
@@ -145,10 +144,6 @@
     <Build Include="config\Stored Procedures\uspReadResourceTypes.sql" />
     <Build Include="config\Stored Procedures\uspReadResources.sql" />
     <Build Include="config\Stored Procedures\uspReadUpcommingEvents.sql" />
-    <Build Include="book\Stored Procedures\uspReadAuditoriumLayout.sql" />
-    <Build Include="book\Stored Procedures\uspReadAuditoriumRows.sql" />
-    <Build Include="book\Stored Procedures\uspReadAuditoriumSeats.sql" />
-    <Build Include="book\Stored Procedures\uspReadReservationEventDetails.sql" />
     <Build Include="book\Stored Procedures\uspAddReservation.sql" />
     <Build Include="config\Stored Procedures\uspReadGroups.sql" />
     <Build Include="adm\Stored Procedures\uspAddBanner.sql" />
@@ -171,9 +166,6 @@
     <Build Include="Security\config.sql" />
     <Build Include="book\Stored Procedures\uspReadReservation.sql" />
     <Build Include="book\Stored Procedures\uspUpdateReservation.sql" />
-    <Build Include="book\Stored Procedures\uspReadReservationsByUser.sql" />
-    <Build Include="book\Stored Procedures\uspReadMainInfoReservationsbyUser.sql" />
-    <Build Include="book\Functions\ufnCheckSeatAvailability.sql" />
     <Build Include="config\Tables\utbLeadership.sql" />
     <Build Include="config\Stored Procedures\uspReadLeadership.sql" />
     <Build Include="adm\Stored Procedures\uspAddLeadership.sql" />
@@ -184,9 +176,6 @@
     <Build Include="adm\Stored Procedures\uspUpdateUserNote.sql" />
     <Build Include="adm\Tables\utbLogins.sql" />
     <Build Include="adm\Stored Procedures\uspAddLogin.sql" />
-    <Build Include="config\Tables\utbPayers.sql" />
-    <Build Include="adm\Stored Procedures\uspAddPrayer.sql" />
-    <Build Include="config\Stored Procedures\uspReadPrayers.sql" />
     <Build Include="adm\Stored Procedures\uspRemoveSubscriber.sql" />
     <Build Include="config\Stored Procedures\uspReadSubscribers.sql" />
     <Build Include="config\Tables\utbRegistrations.sql" />
@@ -214,9 +203,15 @@
     <Build Include="config\Tables\utbContacts.sql" />
     <Build Include="adm\Stored Procedures\uspAddContact.sql" />
     <Build Include="adm\Stored Procedures\uspUpdateHomePage.sql" />
+    <Build Include="adm\Stored Procedures\uspUpdateWebDirectory.sql" />
+    <Build Include="book\Stored Procedures\uspReadReservers.sql" />
+    <Build Include="config\Stored Procedures\uspReadContactTypes.sql" />
+    <Build Include="config\Tables\utbContactTypes.sql" />
+    <Build Include="config\Stored Procedures\uspReadContacts.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DB_MAIN_CR_OA_DEV.publish.xml" />
     <None Include="DB_MAIN_CR_OA_PROD.publish.xml" />
+    <None Include="DB_MAIN_CR_OA_PROD.publish.publish.xml" />
   </ItemGroup>
 </Project>

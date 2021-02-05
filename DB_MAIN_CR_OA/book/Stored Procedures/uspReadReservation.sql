@@ -11,7 +11,9 @@
 -- ======================================================================
 
 CREATE PROCEDURE [book].[uspReadReservation]
-	@GUID VARCHAR(MAX)
+	@GUID VARCHAR(MAX) = NULL,
+	@EventID INT = NULL,
+	@ReservationID INT = NULL
 AS 
     BEGIN
         SET NOCOUNT ON
@@ -26,17 +28,20 @@ AS
 						,R.[EventID]
 						,W.[Title]
 						,W.[ScheduledDate]
-						,R.[SeatID]
 						,R.[BookedBy]
 						,[BookedByName]		= U.[FullName]
-						,R.[BookedFor]
-						,[ActiveFlag]		= CASE WHEN W.[ScheduledDate] < DATEADD(HOUR,-6,GETDATE()) THEN 0 ELSE 1 END
+						,R.[FirstName]
+						,R.[LastName]
+						,R.[IdentityID]
 						,[ReservationDate]	= DATEADD(HOUR,-6,R.[InsertDate])
 				FROM	[book].[utbReservations] R
 						LEFT JOIN [adm].[utbUsers] U ON U.[UserID] = R.[BookedBy]
 						LEFT JOIN [config].[utbUpcomingEvents]  W ON W.[EventID] = R.[EventID] AND W.[ActiveFlag] = 1
-				WHERE	R.[GUID] = @GUID
+				WHERE	R.[GUID] = ISNULL(@GUID,R.[GUID])
+						AND R.[EventID] = ISNULL(@EventID,R.[EventID])
+						AND R.[ReservationID] = ISNULL(@ReservationID,R.[ReservationID])
 						AND R.[ActiveFlag] = 1
+				ORDER BY R.[LastName], R.[FirstName]
 			-- =======================================================
 
         END TRY

@@ -11,7 +11,7 @@ namespace DAL
     {
         private SqlConnection SqlCon = new SqlConnection(ConfigurationManager.ConnectionStrings["DB_MAIN_CR_OA_Connection"].ToString());
 
-        public List<UpcommingEvents> List(DateTime Startdate, bool UpCommingFlag, bool? ActiveFlag)
+        public List<UpcommingEvents> List(DateTime Startdate)
         {
             List<UpcommingEvents> List = new List<UpcommingEvents>();
 
@@ -35,20 +35,18 @@ namespace DAL
                 {
                     ParameterName = "@pUpCommingFlag",
                     SqlDbType = SqlDbType.Bit,
-                    Value = UpCommingFlag
+                    Value = 1
                 };
                 SqlCmd.Parameters.Add(parUp);
 
-                if (ActiveFlag == true)
+                SqlParameter pActiveFlag = new SqlParameter
                 {
-                    SqlParameter pActiveFlag = new SqlParameter
-                    {
-                        ParameterName = "@pActiveFlag",
-                        SqlDbType = SqlDbType.Bit,
-                        Value = ActiveFlag
-                    };
-                    SqlCmd.Parameters.Add(pActiveFlag);
-                }
+                    ParameterName = "@pActiveFlag",
+                    SqlDbType = SqlDbType.Bit,
+                    Value = 1
+                };
+                SqlCmd.Parameters.Add(pActiveFlag);
+                
 
                 using (var dr = SqlCmd.ExecuteReader())
                 {
@@ -69,8 +67,8 @@ namespace DAL
                             EventTime = dr["Time"].ToString(),
                             ReservationFlag = Convert.ToBoolean(dr["ReservationFlag"]),
                             Capacity = Convert.ToInt32(dr["Capacity"]),
-                            SocialDistance = Convert.ToInt32(dr["SocialDistance"]),
-                            Available = Convert.ToInt32(dr["Available"])
+                            Available = Convert.ToInt32(dr["Available"]),
+                            Booked = Convert.ToInt32(dr["Booked"])
                         };
 
                         List.Add(detail);
@@ -78,6 +76,61 @@ namespace DAL
                 }                
             }
             catch(Exception ex)
+            {
+                throw ex;
+            }
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            return List;
+        }
+
+        public List<UpcommingEvents> History()
+        {
+            List<UpcommingEvents> List = new List<UpcommingEvents>();
+
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[config].[uspReadUpcommingEvents]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                SqlParameter parUp = new SqlParameter
+                {
+                    ParameterName = "@pUpCommingFlag",
+                    SqlDbType = SqlDbType.Bit,
+                    Value = 1
+                };
+                SqlCmd.Parameters.Add(parUp);
+
+                using (var dr = SqlCmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        var detail = new UpcommingEvents
+                        {
+                            EventID = Convert.ToInt32(dr["EventID"]),
+                            Title = dr["Title"].ToString(),
+                            MinisterID = Convert.ToInt32(dr["MinisterID"]),
+                            MinisterName = dr["MinisterName"].ToString(),
+                            Description = dr["Description"].ToString(),
+                            ScheduledDate = Convert.ToDateTime(dr["ScheduledDate"]),
+                            ScheduledTime = (TimeSpan)dr["ScheduledTime"],
+                            ActiveFlag = Convert.ToBoolean(dr["ActiveFlag"]),
+                            EventMonth = dr["Month"].ToString(),
+                            EventDay = dr["Day"].ToString(),
+                            EventTime = dr["Time"].ToString(),
+                            ReservationFlag = Convert.ToBoolean(dr["ReservationFlag"]),
+                            Capacity = Convert.ToInt32(dr["Capacity"]),
+                            Available = Convert.ToInt32(dr["Available"]),
+                            Booked = Convert.ToInt32(dr["Booked"])
+                        };
+
+                        List.Add(detail);
+                    }
+                }
+            }
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -146,15 +199,7 @@ namespace DAL
                         SqlDbType = SqlDbType.Int,
                         Value = Event.Capacity
                     };
-                    SqlCmd.Parameters.Add(pCapacity);
-
-                    SqlParameter pDistance = new SqlParameter
-                    {
-                        ParameterName = "@SocialDistance",
-                        SqlDbType = SqlDbType.Int,
-                        Value = Event.SocialDistance
-                    };
-                    SqlCmd.Parameters.Add(pDistance);
+                    SqlCmd.Parameters.Add(pCapacity);                    
                 }
 
                 SqlParameter ParInsertUser = new SqlParameter
@@ -192,23 +237,7 @@ namespace DAL
                 };
 
                 //Insert Parameters
-                SqlParameter parDate = new SqlParameter
-                {
-                    ParameterName = "@pDate",
-                    SqlDbType = SqlDbType.DateTime,
-                    Value = DateTime.Now.AddHours(Convert.ToInt32(ConfigurationManager.AppSettings["ServerHourAdjust"]))
-                };
-                SqlCmd.Parameters.Add(parDate);
-
-                SqlParameter parUp = new SqlParameter
-                {
-                    ParameterName = "@pUpCommingFlag",
-                    SqlDbType = SqlDbType.Bit,
-                    Value = 1
-                };
-                SqlCmd.Parameters.Add(parUp);
-
-                SqlParameter pEventID = new SqlParameter
+               SqlParameter pEventID = new SqlParameter
                 {
                     ParameterName = "@pEventID",
                     SqlDbType = SqlDbType.Int,
@@ -234,8 +263,8 @@ namespace DAL
                         ET.EventTime = dr["Time"].ToString();
                         ET.ReservationFlag = Convert.ToBoolean(dr["ReservationFlag"]);
                         ET.Capacity = Convert.ToInt32(dr["Capacity"]);
-                        ET.SocialDistance = Convert.ToInt32(dr["SocialDistance"]);
                         ET.Available = Convert.ToInt32(dr["Available"]);
+                        ET.Booked = Convert.ToInt32(dr["Booked"]);
                     }
                 }
             }
@@ -317,14 +346,6 @@ namespace DAL
                         Value = Event.Capacity
                     };
                     SqlCmd.Parameters.Add(pCapacity);
-
-                    SqlParameter pDistance = new SqlParameter
-                    {
-                        ParameterName = "@SocialDistance",
-                        SqlDbType = SqlDbType.Int,
-                        Value = Event.SocialDistance
-                    };
-                    SqlCmd.Parameters.Add(pDistance);
                 }
 
                 SqlParameter ParInsertUser = new SqlParameter
@@ -338,7 +359,7 @@ namespace DAL
 
                 SqlParameter UpdateType = new SqlParameter
                 {
-                    ParameterName = "@UpdateType",
+                    ParameterName = "@ActionType",
                     SqlDbType = SqlDbType.VarChar,
                     Size = 10,
                     Value = Event.ActionType

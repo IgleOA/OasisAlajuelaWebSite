@@ -17,16 +17,32 @@ namespace OasisAlajuelaAPI.Controllers
     {
         private LeadershipBL LBL = new LeadershipBL();
 
-        [HttpGet]
-        public IEnumerable<Leadership> List()
+        [HttpPost]
+        [ResponseType(typeof(List<Leadership>))]
+        public HttpResponseMessage List()
         {
-            return LBL.List();            
+            var r = LBL.List();
+
+            return this.Request.CreateResponse(HttpStatusCode.OK, r);
         }
         
-        [HttpGet]
-        public Leadership Details(int id)
+
+        [HttpPost]
+        [ApiKeyAuthentication]
+        [Route("api/Leadership/Details")]
+        [ResponseType(typeof(Leadership))]
+        public HttpResponseMessage Details(int id)
         {
-            return LBL.Details(id);
+            var r = LBL.Details(id);
+
+            if (r.LeaderID>0)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.OK, r);
+            }
+            else
+            {                
+                return this.Request.CreateResponse(HttpStatusCode.NotFound);
+            }
         }
 
         [HttpPost]
