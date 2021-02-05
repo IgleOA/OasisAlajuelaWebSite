@@ -205,6 +205,9 @@
     <Build Include="adm\Stored Procedures\uspUpdateHomePage.sql" />
     <Build Include="adm\Stored Procedures\uspUpdateWebDirectory.sql" />
     <Build Include="book\Stored Procedures\uspReadReservers.sql" />
+    <Build Include="config\Stored Procedures\uspReadContactTypes.sql" />
+    <Build Include="config\Tables\utbContactTypes.sql" />
+    <Build Include="config\Stored Procedures\uspReadContacts.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DB_MAIN_CR_OA_DEV.publish.xml" />
