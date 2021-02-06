@@ -23,19 +23,19 @@ AS
             DECLARE @lErrorState INT
 
             -- =======================================================
-				SELECT	W.[WebID]
-						,[ReadRight]	= CONVERT(BIT,ISNULL(R.[Read],0))
-						,[WriteRight]	= CONVERT(BIT,ISNULL(R.[Write],0))
+                SELECT	W.[WebID]
+                        ,[ReadRight]	= CONVERT(BIT,ISNULL(R.[Read],0))
+                        ,[WriteRight]	= CONVERT(BIT,ISNULL(R.[Write],0))
 			
-			  FROM		[adm].[utbWebDirectory] W
-						OUTER APPLY (SELECT	RR.[Read]
-											,RR.[Write]
-									 FROM	[adm].[utbRightsbyRole] RR
-											INNER JOIN [adm].[utbUsers] U ON U.[RoleID] = RR.[RoleID] 
-									 WHERE  RR.[WebID] = W.[WebID]
-											AND U.[UserName] = @UserName) R
-			  WHERE		W.[Controller] = @Controller
-						AND W.[Action] = @Action											
+                FROM		[adm].[utbWebDirectory] W
+                OUTER APPLY (SELECT	RR.[Read]
+				                    ,RR.[Write]
+			                 FROM	[adm].[utbRightsbyRole] RR
+				                    INNER JOIN [adm].[utbUsers] U ON U.[RoleID] = RR.[RoleID] 
+			                 WHERE  RR.[WebID] = W.[WebID]
+				                    AND U.[UserName] = @UserName) R
+                WHERE		W.[Controller] = @Controller
+                AND W.[Action] = @Action											
 			-- =======================================================
 
         END TRY
