@@ -71,6 +71,7 @@ AS
 								WHERE	W.[ActiveFlag] = 1
 										AND U.[UserID] = @UserID				
 										AND W.[AppID] = @AppID
+										AND (W.[PublicMenu] = 1 OR W.[AdminMenu] = 1)
 								ORDER BY W.[Order]	
 							END
 					END
