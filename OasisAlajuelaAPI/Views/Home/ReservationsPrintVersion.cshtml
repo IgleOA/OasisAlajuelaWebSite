@@ -106,7 +106,6 @@
                     @foreach (var item in Model.ReservationList)
                     {
                         var Code = item.GUID + "_" + item.ReservationID.ToString();
-
                         <tr>
                             <td class="align-middle text-center fa-15x">@{RowNo++;} @RowNo </td>
                             <td class="align-middle fa-15x">@Html.DisplayFor(modelItem => item.LastName)</td>
