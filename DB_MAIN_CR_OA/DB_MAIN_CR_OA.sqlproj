@@ -208,6 +208,7 @@
     <Build Include="config\Stored Procedures\uspReadContactTypes.sql" />
     <Build Include="config\Tables\utbContactTypes.sql" />
     <Build Include="config\Stored Procedures\uspReadContacts.sql" />
+    <Build Include="book\Stored Procedures\uspReservationRegisterAttend.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DB_MAIN_CR_OA_DEV.publish.xml" />

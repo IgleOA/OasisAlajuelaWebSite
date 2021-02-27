@@ -103,5 +103,45 @@ namespace OasisAlajuelaAPI.Controllers
                 return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
             }
         }
+
+
+        [HttpPost]
+        [Route("api/Reservations/RegisterAttend")]
+        [ResponseType(typeof(bool))]
+        public HttpResponseMessage RegisterAttend([FromBody] RegisterAttend model)
+        {
+            var r = RBL.RegisterAttend(model);
+
+            if (r)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.OK, r);
+            }
+            else
+            {
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpPost]
+        [Route("api/Reservations/Print/{id}")]
+        public HttpResponseMessage Print(int id)
+        {
+            ReservationListRequest ListRequest = new ReservationListRequest()
+            {
+                EventID = id,
+                GUID = null
+            };
+
+            var EventDetails = UPL.Details(id);
+
+            EventDetails.ReservationList = RBL.List(ListRequest);
+
+            string filename = "Reservas_"
+                              + EventDetails.Title + "_"
+                              + EventDetails.ScheduledDate.ToString().Substring(0, 13) + ".pdf";
+
+            return Request.CreatePdfResponse("~/Views/Home/ReservationsPrintVersion.cshtml", model: EventDetails, filename);
+            
+        }
     }
 }
