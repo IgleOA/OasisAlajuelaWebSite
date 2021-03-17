@@ -39,8 +39,16 @@ AS
 						@pFirstName		VARCHAR(100),
 						@pLastName		VARCHAR(100),
 						@pIdentityID	VARCHAR(100),
-						@pInsertUser	VARCHAR(100)
-						   
+						@pInsertUser	VARCHAR(100),
+						@PrevGUID		VARCHAR(MAX)
+
+				DECLARE	@Results TABLE (
+						[GUID] VARCHAR(MAX)
+						, [FirstName] VARCHAR(100)
+						, [LastName] VARCHAR(100)
+						, [IdentityID] VARCHAR(100)
+						, [Status] VARCHAR(100))
+
 				SELECT	[GUID]		= @GUID
 						,[EventID]	= @EventID
 						,[BookedBy]	= @BookedBy
@@ -48,7 +56,6 @@ AS
 						,[LastName]		= TRIM([LastName])
 						,[IdentityID]
 						,[InsertUser]	= @InsertUser
-						,[IsValid]	= 0
 				INTO	#CursorData
 				FROM	OPENJSON ( @JSONBookedFor )  
 				WITH	(
@@ -72,26 +79,33 @@ AS
 
 				WHILE @@FETCH_STATUS = 0
 					BEGIN
-						IF NOT EXISTS ( SELECT *
-										FROM	[book].[utbReservations] 
-										WHERE	[EventID] = @pEventID
-												AND [IdentityID] = @pIdentityID
-												AND [ActiveFlag] = 1)
+						SELECT	@PrevGUID = [GUID] + '_' + CONVERT(VARCHAR(MAX),[ReservationID])
+						FROM	[book].[utbReservations] 
+						WHERE	[EventID] = @pEventID
+								AND [IdentityID] = @pIdentityID
+								AND [ActiveFlag] = 1
+
+						IF (@PrevGUID IS NULL)
 							BEGIN
 								INSERT INTO [book].[utbReservations] ([GUID],[EventID],[BookedBy],[FirstName], [LastName],[IdentityID],[InsertUser],[LastModifyUser])
 								VALUES (@pGUID, @pEventID, @pBookedBy, @pFirstName, @pLastName, @pIdentityID,@pInsertUser, @pInsertUser)
 
-								UPDATE	#CursorData
-								SET		[IsValid] = 1
-								WHERE	[IdentityID] = @pIdentityID
+								INSERT INTO @Results 
+								VALUES (@pGUID, @pFirstName, @pLastName, @pIdentityID,'Reservado')
 							END						
+						ELSE 
+							BEGIN
+								INSERT INTO @Results 
+								VALUES (@pGUID, @pFirstName, @pLastName, @pIdentityID, @PrevGUID)								
+							END
+
 						FETCH NEXT FROM ActionProcess INTO @pGUID, @pEventID, @pBookedBy, @pFirstName, @pLastName, @pIdentityID, @pInsertUser
 					END
 
 					CLOSE ActionProcess
 					DEALLOCATE ActionProcess
 
-					SELECT * FROM #CursorData
+					SELECT * FROM @Results
 	
 					DROP TABLE #CursorData
 			-- =======================================================

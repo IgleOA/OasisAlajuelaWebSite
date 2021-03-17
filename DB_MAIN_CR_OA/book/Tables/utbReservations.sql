@@ -7,6 +7,7 @@
     [LastName]       VARCHAR (100) NOT NULL,
     [IdentityID]     VARCHAR (100) NOT NULL,
     [ActiveFlag]     BIT           CONSTRAINT [utbReservationsDefaultActiveFlagIsTrue] DEFAULT ((1)) NOT NULL,
+    [Attended]       BIT           CONSTRAINT [utbReservationsDefaultAttendedIsFalse] DEFAULT ((0)) NOT NULL,   
     [InsertDate]     DATETIME      CONSTRAINT [utbReservationsDefaultInsertDatesysdatetime] DEFAULT (sysdatetime()) NOT NULL,
     [InsertUser]     VARCHAR (100) CONSTRAINT [utbReservationsDefaultInsertUsersuser_sname] DEFAULT (suser_sname()) NOT NULL,
     [LastModifyDate] DATETIME      CONSTRAINT [utbReservationsDefaultLastModifyDatesysdatetime] DEFAULT (sysdatetime()) NOT NULL,

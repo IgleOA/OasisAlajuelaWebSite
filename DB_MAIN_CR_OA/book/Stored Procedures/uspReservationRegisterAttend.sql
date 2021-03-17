@@ -1,45 +1,56 @@
 ﻿-- ======================================================================
--- Name: [adm].[uspValidationRight]
--- Desc: Valida los derechos de cada usuario
+-- Name: [book].[uspReservationRegisterAttend]
+-- Desc: Se utiliza para registrar asistencia
 -- Auth: Jonathan Piedra johmstone@gmail.com
--- Date: 3/13/2020
+-- Date: 03/27/2020
 -------------------------------------------------------------
 -- Change History
 -------------------------------------------------------------
 -- CI	Date		Author		Description
 -- --	----		------		-----------------------------
 -- ======================================================================
-
-CREATE PROCEDURE [adm].[uspValidationRight]
-	@UserName	VARCHAR(50),
-	@Controller VARCHAR(50),
-	@Action		VARCHAR(50)
+CREATE PROCEDURE [book].[uspReservationRegisterAttend]
+	@ReservationID	INT,
+    @AttendFlag     BIT
 AS 
     BEGIN
         SET NOCOUNT ON
+        SET XACT_ABORT ON
+                           
         BEGIN TRY
             DECLARE @lErrorMessage NVARCHAR(4000)
             DECLARE @lErrorSeverity INT
             DECLARE @lErrorState INT
+            DECLARE @lLocalTran BIT = 0
+                               
+            IF @@TRANCOUNT = 0 
+                BEGIN
+                    BEGIN TRANSACTION
+                    SET @lLocalTran = 1
+                END
 
             -- =======================================================
-                SELECT	W.[WebID]
-                        ,[ReadRight]	= CONVERT(BIT,ISNULL(R.[Read],0))
-                        ,[WriteRight]	= CONVERT(BIT,ISNULL(R.[Write],0))
-			
-                FROM		[adm].[utbWebDirectory] W
-                OUTER APPLY (SELECT	RR.[Read]
-				                    ,RR.[Write]
-			                 FROM	[adm].[utbRightsbyRole] RR
-				                    INNER JOIN [adm].[utbUsers] U ON U.[RoleID] = RR.[RoleID] 
-			                 WHERE  RR.[WebID] = W.[WebID]
-				                    AND U.[UserName] = @UserName) R
-                WHERE		W.[Controller] = @Controller
-                AND W.[Action] = @Action											
+				UPDATE	[book].[utbReservations] 
+				SET		[Attended] = @AttendFlag
+						,[LastModifyDate] = GETDATE()
+						,[LastModifyUser] = 'Servidor'
+				WHERE	[ReservationID] = @ReservationID				
 			-- =======================================================
 
+        IF ( @@trancount > 0
+                 AND @lLocalTran = 1
+               ) 
+                BEGIN
+                    COMMIT TRANSACTION
+                END
         END TRY
         BEGIN CATCH
+            IF ( @@trancount > 0
+                 AND XACT_STATE() <> 0
+               ) 
+                BEGIN
+                    ROLLBACK TRANSACTION
+                END
 
             SELECT  @lErrorMessage = ERROR_MESSAGE() ,
                     @lErrorSeverity = ERROR_SEVERITY() ,
@@ -48,7 +59,6 @@ AS
             RAISERROR (@lErrorMessage, @lErrorSeverity, @lErrorState);
         END CATCH
     END
+
     SET NOCOUNT OFF
-	/*
-	
-	*/
+    SET XACT_ABORT OFF

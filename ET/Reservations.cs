@@ -73,4 +73,11 @@ namespace ET
         public string FirstName { get; set; }
         public string LastName { get; set; }
     }
+
+    public class RegisterAttend
+    {
+        public int ReservationID { get; set; }
+
+        public bool AttendFlag { get; set; }
+    }
 }

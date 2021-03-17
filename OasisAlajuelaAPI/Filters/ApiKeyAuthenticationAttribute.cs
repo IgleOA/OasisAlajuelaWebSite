@@ -15,10 +15,9 @@ namespace OasisAlajuelaAPI.Filters
 {
     public class ApiKeyAuthenticationAttribute : AuthorizationFilterAttribute
     {
-
+        private static string AdminToken = ConfigurationManager.AppSettings["AdminToken"].ToString();
         private static string SecretKey = ConfigurationManager.AppSettings["JWT_SECRET_KEY"].ToString();
         private TokensBL TBL = new TokensBL();
-        private UsersBL UBL = new UsersBL();
 
         private static void HandleUnathorized(HttpActionContext actionContext)
         {
@@ -29,6 +28,11 @@ namespace OasisAlajuelaAPI.Filters
         {
             var authHeader = actionContext.Request.Headers.GetValues("Authorization").FirstOrDefault();
             var token = authHeader.Substring("Bearer ".Length);
+
+            if(token == AdminToken)
+            {
+                return;
+            }
 
             SecurityToken validatedToken;
             var SecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecretKey));

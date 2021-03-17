@@ -31,5 +31,10 @@ namespace BL
         {
             return RDAL.Update(model, insertuser);
         }
+
+        public bool RegisterAttend(RegisterAttend model)
+        {
+            return RDAL.RegisterAttend(model);
+        }
     }
 }

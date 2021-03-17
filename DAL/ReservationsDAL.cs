@@ -307,5 +307,33 @@ namespace DAL
             if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
             return rpta;
         }
+
+        public bool RegisterAttend(RegisterAttend Model)
+        {
+            bool rpta;
+            try
+            {
+                SqlCon.Open();
+                var SqlCmd = new SqlCommand("[book].[uspReservationRegisterAttend]", SqlCon)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                //Insert Parameters
+                SqlCmd.Parameters.AddWithValue("@ReservationID", Model.ReservationID);
+                SqlCmd.Parameters.AddWithValue("@AttendFlag", Model.AttendFlag);
+
+                //Exec Command
+                SqlCmd.ExecuteNonQuery();
+
+                rpta = true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
+            return rpta;
+        }
     }
 }
